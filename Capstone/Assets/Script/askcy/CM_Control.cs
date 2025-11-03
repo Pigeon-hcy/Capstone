@@ -31,6 +31,19 @@ public class CM_Control : MonoBehaviour
     private float velocityY = 0f; // Y轴平滑速度
     private float currentGroundLevel; // 当前检测到的地面高度
     private float lastValidGroundLevel; // 最后有效的地面高度（备用）
+
+    [Header("FOV动态调整设置")]
+    public float stopFOV = 60f; // 停止时的FOV
+    public float playerMovingFOV = 70f; // 移动时的FOV
+    public float FOVChangeSpeed = 5f; // FOV变化速度
+    public float FOVThreshold = 5f; // 速度阈值，超过此速度时切换FOV
+    public float slowSpeedDuration = 1.5f; // 速度过慢持续多久后才缩小FOV（秒）
+    
+    private float targetFOV; // 目标FOV
+    private float currentFOV; // 当前FOV
+    private float slowSpeedTimer = 0f; // 速度过慢的计时器
+
+
     
     void Start()
     {
@@ -55,6 +68,14 @@ public class CM_Control : MonoBehaviour
             DetectGroundLevel();
             lastValidGroundLevel = currentGroundLevel;
         }
+        
+        // 初始化FOV
+        if (virtualCamera != null)
+        {
+            currentFOV = stopFOV;
+            targetFOV = stopFOV;
+            virtualCamera.Lens.FieldOfView = currentFOV;
+        }
     }
 
     void Update()
@@ -69,6 +90,9 @@ public class CM_Control : MonoBehaviour
         
         // 应用镜头偏移
         ApplyCameraOffset();
+        
+        // 调整FOV
+        UpdateFOV();
     }
     
     void CalculateCameraOffset()
@@ -112,6 +136,41 @@ public class CM_Control : MonoBehaviour
         
         // 应用新的偏移
         positionComposer.TargetOffset = new Vector2(newX, newY);
+    }
+    
+    void UpdateFOV()
+    {
+        if (virtualCamera == null || playerRb == null) return;
+        
+        // 获取玩家速度大小（综合考虑水平和垂直速度）
+        float playerSpeed = playerRb.linearVelocity.magnitude;
+        
+        // 根据速度决定目标FOV
+        if (playerSpeed > FOVThreshold)
+        {
+            // 速度超过阈值，立即使用移动FOV
+            targetFOV = playerMovingFOV;
+            // 重置计时器
+            slowSpeedTimer = 0f;
+        }
+        else
+        {
+            // 速度低于阈值，开始计时
+            slowSpeedTimer += Time.deltaTime;
+            
+            // 只有当速度持续过慢超过指定时间后，才缩小FOV
+            if (slowSpeedTimer >= slowSpeedDuration)
+            {
+                targetFOV = stopFOV;
+            }
+            // 否则保持移动FOV
+        }
+        
+        // 使用Lerp平滑过渡到目标FOV
+        currentFOV = Mathf.Lerp(currentFOV, targetFOV, Time.deltaTime * FOVChangeSpeed);
+        
+        // 应用到虚拟相机
+        virtualCamera.Lens.FieldOfView = currentFOV;
     }
     
     void DetectGroundLevel()
