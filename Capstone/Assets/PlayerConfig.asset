@@ -32,10 +32,10 @@ MonoBehaviour:
   minJumpForce: 0
   doubleJumpForce: 6
   maxChargeTime: 2
-  maxMoveSpeed: 50
+  maxMoveSpeed: 10
   maxAirHorizontalSpeed: 10
   airAccel: 2.5
-  groundAccel: 50
+  groundAccel: 2.5
   turnDecel: 5
   pushAccel: 15
   groundLinearDamping: 0.5
