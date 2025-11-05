@@ -7,7 +7,6 @@ public abstract class AirborneMovementState : StateBase
     
     public sealed override void Update()
     {
-        /* 移动由OnMoveInput事件处理 */
         float moveInput = inputModel.Move.Value.x;
         player.SendEvent<MoveInputEvent>(new MoveInputEvent { HorizontalInput = moveInput });
         switchGroundMovement();

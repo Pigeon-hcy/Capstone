@@ -4,16 +4,11 @@ using QFramework;
 
 public class PowerGrindState : GroundMovementState
 {
-    private float deceleration;
-    private float direction;
-
 
     public PowerGrindState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
         this.rb = rb;
-        deceleration = playerModel.Config.Value.powerGrindDeceleration;
-        direction = playerModel.PowerGrindDirection.Value;
     }
 
     public override string GetStateName() => "PowerGrind";
@@ -22,9 +17,6 @@ public class PowerGrindState : GroundMovementState
     {
         // 开始检查反向输入窗口
         StartCheckReverseWindow();
-        // 设置方向
-        direction = Mathf.Sign(rb.linearVelocity.x);
-        if (direction == 0) direction = 1f;
         
         // 播放MMF效果
         if (player.powerGrindEffect != null)
@@ -35,23 +27,17 @@ public class PowerGrindState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        float vx = rb.linearVelocity.x;
-
-        // 逐渐减少的速度，保持方向不变
-        float newVx = vx - direction * deceleration * Time.deltaTime;
-
-        // 防止越过零点
-        if (Mathf.Sign(newVx) != direction || Mathf.Abs(newVx) < 0.01f)
+        player.SendEvent<PowerGrindInputEvent>();
+        if (!inputModel.Trick.Value)
         {
-            newVx = 0;
-        }
-
-        rb.linearVelocity = new Vector2(newVx, rb.linearVelocity.y);
-
-
-        if (!inputModel.Trick.Value || Mathf.Abs(rb.linearVelocity.x) <= 0.5f)
-        {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
+            if (Mathf.Abs(rb.linearVelocity.x) <= 0.5f)
+            {
+                player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
+            }
+            else
+            {
+                player.stateMachine.SwitchState(StateLayer.Movement, "Move");
+            }
         }
         // 检测反向输入
         CheckReverse();

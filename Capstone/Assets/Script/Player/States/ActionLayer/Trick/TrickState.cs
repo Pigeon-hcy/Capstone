@@ -46,7 +46,6 @@ public class TrickState : ActionStateBase
     {
         if (playerModel.IsInPower.Value)
             {
-                player.RewardJump();
                 playerModel.IsInPower.Value = false; // 消耗能量状态
             }
     }

@@ -17,8 +17,6 @@ public class DoubleJumpState : AirborneMovementState
     {
         // player.animator.Play("oPlayer@KickFlip", 0);
         playerModel.CanDoubleJump.Value = false;
-        // 直接跳起来
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerModel.Config.Value.maxJumpForce);
         jumpTimer = 0f;
         // 发送技巧执行事件给系统，更新UIController
         player.SendEvent<JumpExecuteEvent>();

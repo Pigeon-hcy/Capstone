@@ -5,13 +5,19 @@ namespace SkateGame
 {
     public interface IPlayerSystem : ISystem
     {
+        void FixedUpdate(Rigidbody2D rb);
     }
 
     public class PlayerSystem : AbstractSystem, IPlayerSystem, ICanSendCommand
     {
         private PlayerController playerController;
         private IPlayerModel playerModel;
-        
+        private float cachedMoveInput;
+        private bool jumpQueued;
+        private bool pushQueued;
+        private bool rewardJumpQueued;
+        private bool powerGrindQueued;
+        private bool grindQueued;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -25,7 +31,9 @@ namespace SkateGame
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
             this.RegisterEvent<PushInputEvent>(OnPushInput);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
-            
+            this.RegisterEvent<RewardJumpEvent>(OnRewardJump);
+            this.RegisterEvent<GrindInputEvent>(OnGrindInput);
+            this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -49,16 +57,53 @@ namespace SkateGame
             }
         }
 
+        public void FixedUpdate(Rigidbody2D rb)
+        {
+            bool isGrounded = playerModel.IsGrounded.Value;
+
+            rb.linearDamping = isGrounded ? playerModel.Config.Value.groundLinearDamping : playerModel.Config.Value.airLinearDamping;
+
+            ApplyHorizontalAddForce(rb, cachedMoveInput, isGrounded);
+
+            if (jumpQueued)
+            {
+                ApplyJumpImpulse(rb);
+                jumpQueued = false;
+            }
+
+            if (pushQueued)
+            {
+                ApplyPushForce(rb);
+                pushQueued = false;
+            }
+            if (rewardJumpQueued)
+            {
+                ApplyRewardJump(rb);
+                rewardJumpQueued = false;
+            }
+            if (powerGrindQueued)
+            {
+                ApplyPowerGrind(rb);
+                powerGrindQueued = false;
+            }
+            if (grindQueued)
+            {
+                ApplyGrind(rb);
+                grindQueued = false;
+            }
+            ClampHorizontalSpeed(rb, isGrounded);
+        }
+
         // 输入事件处理
         
         #region Event
         private void OnMoveInput(MoveInputEvent evt)
         {
-            ApplyHorizontalMovement(evt.HorizontalInput, playerModel.IsGrounded.Value);
+            cachedMoveInput = evt.HorizontalInput;
         }
-         private void OnJumpInput(JumpExecuteEvent evt)
+        private void OnJumpInput(JumpExecuteEvent evt)
         {
-            ApplyJumpMovement();
+            jumpQueued = true;
         }
         private void OnStateChanged(StateChangedEvent evt)
         {
@@ -67,64 +112,23 @@ namespace SkateGame
         }
         private void OnPushInput(PushInputEvent evt)
         {
-            ApplyPushMovement();
+            pushQueued = true;
+        }
+        private void OnRewardJump(RewardJumpEvent evt)
+        {
+            rewardJumpQueued = true;
+        }
+        private void OnPowerGrindInput(PowerGrindInputEvent evt)
+        {
+            powerGrindQueued = true;
+        }
+        private void OnGrindInput(GrindInputEvent evt)
+        {
+            grindQueued = true;
         }
         #endregion
 
         #region Method
-        public void ApplyHorizontalMovement(float horizontalInput, bool isGrounded)
-        {
-            // 空值检查，防止场景切换时访问已销毁的对象
-            if (playerController == null) return;
-            
-            Rigidbody2D rb = playerController.GetRigidbody();
-            if (rb == null) return;
-
-            float currentSpeed = rb.linearVelocity.x;
-            float targetSpeed = horizontalInput * (isGrounded ? playerModel.Config.Value.maxMoveSpeed : playerModel.Config.Value.maxAirHorizontalSpeed);
-            float newSpeed = currentSpeed;
-
-            // ------------------------
-            // 1. 有输入时
-            // ------------------------
-            if (Mathf.Abs(horizontalInput) > 0.01f)
-            {
-                // (1) 转向时，先减速 → 不能立刻掉头
-                if (Mathf.Sign(currentSpeed) != Mathf.Sign(horizontalInput) && Mathf.Abs(currentSpeed) > 0.1f)
-                {
-                    newSpeed = Mathf.MoveTowards(currentSpeed, 0, playerModel.Config.Value.turnDecel * Time.deltaTime);
-                }
-                else
-                {
-                    // (2) 同方向，加速逼近目标速度
-                    newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, 
-                    (isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel) * Time.deltaTime);
-                }
-            }
-            // ------------------------
-            // 2. 没有输入时 → 滑行
-            // --------------------
-            else
-            {
-                float decel = isGrounded ? playerModel.Config.Value.groundDecel : playerModel.Config.Value.airDecel;
-                newSpeed = Mathf.MoveTowards(currentSpeed, 0, decel * Time.deltaTime);
-            }
-
-            rb.linearVelocity = new Vector2(newSpeed, rb.linearVelocity.y);
-        }
-
-        public void ApplyJumpMovement()
-        {
-            // 空值检查，防止场景切换时访问已销毁的对象
-            if (playerController == null) return;
-            
-            var rb = playerController.GetRigidbody();
-            if (rb == null) return;
-            
-            float jumpForce = playerModel.Config.Value.maxJumpForce;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        }
-
         public void ApplyStateChanged(StateChangedEvent evt)
         {
             if (evt.Layer == StateLayer.Movement)
@@ -137,18 +141,73 @@ namespace SkateGame
             }
         }
 
-        public void ApplyPushMovement()
+
+
+        private void ApplyHorizontalAddForce(Rigidbody2D rb, float horizontalInput, bool isGrounded)
         {
-            Rigidbody2D rb = playerController.GetRigidbody();
-            if (rb == null) return;
+            float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
+
             float currentSpeed = rb.linearVelocity.x;
-            float targetSpeed = playerModel.Config.Value.maxMoveSpeed * (playerModel.IsFacingRight.Value ? 1 : -1);
-            
-            float newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, 
-                    playerModel.Config.Value.pushAccel * Time.deltaTime);
-            rb.linearVelocity = new Vector2(newSpeed, rb.linearVelocity.y);
+            if (Mathf.Abs(horizontalInput) > 0.01f)
+            {
+                if (Mathf.Sign(currentSpeed) != Mathf.Sign(horizontalInput) && Mathf.Abs(currentSpeed) > 0.1f)
+                {
+                    float turnDecel = playerModel.Config.Value.turnDecel;
+                    rb.AddForce(Vector2.left * Mathf.Sign(currentSpeed) * turnDecel * rb.mass, ForceMode2D.Force);
+                }
+                rb.AddForce(Vector2.right * (horizontalInput * accel * rb.mass), ForceMode2D.Force);
+            }
         }
 
+        private void ApplyJumpImpulse(Rigidbody2D rb)
+        {
+            rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+        }
+
+        private void ApplyPushForce(Rigidbody2D rb)
+        {
+            float dir = playerModel.IsFacingRight.Value ? 1f : -1f;
+            float pushAccel = playerModel.Config.Value.pushAccel;
+            rb.AddForce(Vector2.right * (dir * pushAccel * rb.mass), ForceMode2D.Force);
+        }
+
+        private void ApplyRewardJump(Rigidbody2D rb)
+        {
+            rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+        }
+
+        private void ApplyPowerGrind(Rigidbody2D rb)
+        {   
+            float vx = rb.linearVelocity.x;
+            
+            float deceleration = playerModel.Config.Value.powerGrindDeceleration;
+            float direction = playerModel.IsFacingRight.Value ? 1f : -1f;
+            // 逐渐减少的速度，保持方向不变
+            float newVx = vx - direction * deceleration * Time.fixedDeltaTime;
+
+            // 防止越过零点
+            if (Mathf.Sign(newVx) != direction || Mathf.Abs(newVx) < 0.01f)
+            {
+                newVx = 0f;
+            }
+
+            rb.linearVelocity = new Vector2(newVx, rb.linearVelocity.y);
+        }
+
+        private void ApplyGrind(Rigidbody2D rb)
+        {
+        }
+
+        private void ClampHorizontalSpeed(Rigidbody2D rb, bool isGrounded)
+        {
+            float max = isGrounded ? playerModel.Config.Value.maxMoveSpeed : playerModel.Config.Value.maxAirHorizontalSpeed;
+            Vector2 v = rb.linearVelocity;
+            if (Mathf.Abs(v.x) > max)
+            {
+                v.x = Mathf.Sign(v.x) * max;
+                rb.linearVelocity = v;
+            }
+        }
         #endregion
 
         #region Helper

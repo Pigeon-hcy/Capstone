@@ -11,7 +11,6 @@ namespace SkateGame
         BindableProperty<MovementStates> CurrentMovementState { get; }
         BindableProperty<ActionStates> CurrentActionState { get; }
         BindableProperty<bool> IsGrounded { get; }
-        BindableProperty<bool> IsInAir { get; }
         BindableProperty<bool> IsNearTrack { get; }
         BindableProperty<bool> IsNearWall { get; }
         
@@ -30,14 +29,11 @@ namespace SkateGame
         /// </summary>
         BindableProperty<float> Speed { get; }
         BindableProperty<Vector2> GrindDirection { get; }
-        BindableProperty<bool> IsJumping { get; }
         BindableProperty<float> NormalG { get; }
 
         /// <summary>
         /// jump相关
         /// </summary>
-        BindableProperty<bool> HasJumped { get; }
-        BindableProperty<float> InitialHorizontalVelocity { get; }
         BindableProperty<float> JumpDuration { get; }
         BindableProperty<float> DoubleJumpDuration { get; }
 
@@ -50,28 +46,12 @@ namespace SkateGame
         /// <summary>
         /// move相关
         /// </summary>
-        BindableProperty<float> CurrentVelocityX { get; }
-        BindableProperty<float> Acceleration { get; }
-        BindableProperty<float> MoveDeceleration { get; }
-        BindableProperty<float> MaxSpeed { get; }
         BindableProperty<float> PushDuration { get; }
-
-        /// <summary>
-        /// power grind相关
-        /// </summary>
-        BindableProperty<float> PowerGrindDeceleration { get; }
-        BindableProperty<float> PowerGrindDirection { get; }
 
         /// <summary>
         /// Trick相关
         /// </summary>
         BindableProperty<bool> IsInPower { get; }
-
-        ///———————从inputcontroller迁移———————
-        /// <summary>
-        /// 跳跃设置
-        /// </summary>
-        BindableProperty<float> MaxChargeTime { get; }
         
         /// <summary>
         /// Action Layer 基础参数
@@ -107,8 +87,6 @@ namespace SkateGame
         public BindableProperty<MovementStates> CurrentMovementState { get; } = new BindableProperty<MovementStates>(MovementStates.Idle);
         public BindableProperty<ActionStates> CurrentActionState { get; } = new BindableProperty<ActionStates>(ActionStates.None);
         public BindableProperty<bool> IsGrounded { get; } = new BindableProperty<bool>(true);
-        public BindableProperty<bool> IsInAir { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<float> AirTime { get; } = new BindableProperty<float>(0f);
         public BindableProperty<bool> IsNearTrack { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsNearWall { get; } = new BindableProperty<bool>(false);
 
@@ -121,12 +99,9 @@ namespace SkateGame
         // grind相关
         public BindableProperty<float> Speed { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> GrindDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);
-        public BindableProperty<bool> IsJumping { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> NormalG { get; } = new BindableProperty<float>(1f);
         
         // jump相关
-        public BindableProperty<bool> HasJumped { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<float> InitialHorizontalVelocity { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> JumpDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> DoubleJumpDuration { get; } = new BindableProperty<float>(0f);
         
@@ -135,21 +110,11 @@ namespace SkateGame
         public BindableProperty<float> DoubleJumpLandDuration { get; } = new BindableProperty<float>(0f);
 
         // move相关
-        public BindableProperty<float> CurrentVelocityX { get; } = new BindableProperty<float>(0f);
-        public BindableProperty<float> Acceleration { get; } = new BindableProperty<float>(15f);
-        public BindableProperty<float> MoveDeceleration { get; } = new BindableProperty<float>(20f);
-        public BindableProperty<float> MaxSpeed { get; } = new BindableProperty<float>(5f);
         public BindableProperty<float> PushDuration { get; } = new BindableProperty<float>(0f);
-        // power grind相关
-        public BindableProperty<float> PowerGrindDeceleration { get; } = new BindableProperty<float>(1f);
-        public BindableProperty<float> PowerGrindDirection { get; } = new BindableProperty<float>(0f);
 
         // Trick相关
         
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);
-
-        // 跳跃设置
-        public BindableProperty<float> MaxChargeTime { get; } = new BindableProperty<float>(2f);
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);

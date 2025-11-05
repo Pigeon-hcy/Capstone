@@ -71,6 +71,10 @@ namespace SkateGame
     {
         public TrickState LatestTrick;
     }
+    // 奖励跳跃事件
+    public struct RewardJumpEvent
+    {
+    }
     
     // 通过重生检查点事件
     public struct PassRespawnPointEvent

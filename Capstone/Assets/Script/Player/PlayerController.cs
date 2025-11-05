@@ -16,6 +16,7 @@ namespace SkateGame
         public PlayerConfig playerConfig;
         private IPlayerModel playerModel;
         private IInputModel inputModel;
+        private IPlayerSystem playerSystem;
         [Header("状态机")]
         public LayeredStateMachine stateMachine;
         private Rigidbody2D rb;
@@ -51,6 +52,7 @@ namespace SkateGame
             // 获取玩家参数
             playerModel = this.GetModel<IPlayerModel>();
             inputModel = this.GetModel<IInputModel>();
+            playerSystem = this.GetSystem<IPlayerSystem>();
             this.GetSystem<IPlayerAssetSystem>().SetPlayerConfig(playerConfig);
 
             // 获取组件
@@ -94,6 +96,11 @@ namespace SkateGame
             // 初始各层状态
             stateMachine.SwitchState(StateLayer.Movement, "Idle");
             stateMachine.SwitchState(StateLayer.Action, "None");
+        }
+
+        private void FixedUpdate()
+        {
+            playerSystem?.FixedUpdate(rb);
         }
 
         protected override void OnRealTimeUpdate()
@@ -221,18 +228,6 @@ namespace SkateGame
         public Rigidbody2D GetRigidbody()
         {
             return rb;
-        }
-
-        // 奖励跳跃方法 - 用于高等级技巧奖励
-        public void RewardJump()
-        {
-            if (rb != null)
-            {
-                // 给予一个额外的跳跃力
-                Vector2 currentVelocity = rb.linearVelocity;
-                rb.linearVelocity = new Vector2(currentVelocity.x, 10f);
-                Debug.Log("奖励跳跃！获得额外跳跃力");
-            }
         }
 
         // 延迟切换状态的协程

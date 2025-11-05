@@ -45,11 +45,11 @@ namespace SkateGame
         public float maxMoveSpeed = 5f;
         public float maxAirHorizontalSpeed = 10f;
         public float airAccel = 20f;
-        public float airDecel = 10f;
         public float groundAccel = 20f;
-        public float groundDecel = 10f;
         public float turnDecel = 40f;
         public float pushAccel = 20f;
+        public float groundLinearDamping = 6f;
+        public float airLinearDamping = 0.5f;
 
         [Header("Air相关")]
         public float airControlForceConfig = 10f;

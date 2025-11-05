@@ -47,7 +47,7 @@ public class TrickAState : TrickState, ICanGetSystem, IBelongToArchitecture
                 this.GetModel<IPlayerModel>().IsInPower.Value = true;
                 if(this.GetModel<IPlayerModel>().IsInPower.Value){
                     player.TrickABoostEffect.PlayFeedbacks();
-                    player.RewardJump();
+                    player.SendEvent<RewardJumpEvent>();
                 }
             }
         }

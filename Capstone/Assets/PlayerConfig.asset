@@ -32,20 +32,20 @@ MonoBehaviour:
   minJumpForce: 0
   doubleJumpForce: 6
   maxChargeTime: 2
-  maxMoveSpeed: 10
+  maxMoveSpeed: 50
   maxAirHorizontalSpeed: 10
   airAccel: 2.5
-  airDecel: 2.5
-  groundAccel: 2.5
-  groundDecel: 2.5
+  groundAccel: 50
   turnDecel: 5
   pushAccel: 15
+  groundLinearDamping: 0.5
+  airLinearDamping: 0.5
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
   normalG: 1
   wallRideCooldown: 1.5
   wallrideDuration: 0.6
-  powerGrindDeceleration: 25
+  powerGrindDeceleration: 1
   reverseInputWindow: 2
   grindJumpIgnoreTime: 0.2
   baseMaxAimTime: 3

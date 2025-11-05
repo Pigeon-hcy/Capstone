@@ -4,20 +4,11 @@ using QFramework;
 
 public class MoveState : GroundMovementState
 {
-    // 加速度相关参数
-    private float currentVelocityX;
-    private float acceleration;
-    private float deceleration;
-    private float maxSpeed;
 
     public MoveState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
         this.rb = rb;
-        currentVelocityX = playerModel.CurrentVelocityX.Value;
-        acceleration = playerModel.Acceleration.Value;
-        deceleration = playerModel.MoveDeceleration.Value;
-        maxSpeed = playerModel.MaxSpeed.Value;
     }
 
     public override string GetStateName() => "Move";
