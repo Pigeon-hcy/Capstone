@@ -536,8 +536,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: FMOD/Skame/Skame.fspro
-  sourceBankPath: FMOD/Skame/Build
+  sourceProjectPath: Assets/FMOD/Skame/Skame.fspro
+  sourceBankPath: Assets/FMOD/Skame/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
