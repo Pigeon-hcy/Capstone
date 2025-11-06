@@ -2421,7 +2421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 124857761, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+  m_Sprite: {fileID: 124857761, guid: a7b5496468d79194cb513a11b8adc7e7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2608,7 +2608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3473549734662218369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2652,9 +2652,10 @@ MonoBehaviour:
   NameForDialogue: Demo
   text: {fileID: 1989671895274479348}
   image: {fileID: 8151262964532678315}
+  textAnimatorPlayer: {fileID: 0}
   dialogueList:
   - text: aaaaaaaaa
-    image: {fileID: 124857761, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+    image: {fileID: 124857761, guid: a7b5496468d79194cb513a11b8adc7e7, type: 3}
     hasChoices: 1
     indexForJump: 020000000200000001000000
     buttonTexts:
@@ -2662,7 +2663,7 @@ MonoBehaviour:
     - yyy
     - ssds
   - text: hhahahaha
-    image: {fileID: 124857761, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+    image: {fileID: 124857761, guid: a7b5496468d79194cb513a11b8adc7e7, type: 3}
     hasChoices: 0
     indexForJump: 000000000000000000000000
     buttonTexts:
@@ -2670,7 +2671,7 @@ MonoBehaviour:
     - 
     - 
   - text: llllllllllll
-    image: {fileID: 124857761, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+    image: {fileID: 124857761, guid: a7b5496468d79194cb513a11b8adc7e7, type: 3}
     hasChoices: 0
     indexForJump: 000000000000000000000000
     buttonTexts:
@@ -2678,7 +2679,7 @@ MonoBehaviour:
     - 
     - 
   - text: kkkkkkkkkkkkkkkkkk
-    image: {fileID: 124857761, guid: 6582f34ddd5f686408c019550cd94c9d, type: 3}
+    image: {fileID: 124857761, guid: a7b5496468d79194cb513a11b8adc7e7, type: 3}
     hasChoices: 0
     indexForJump: 000000000000000000000000
     buttonTexts:
@@ -2686,10 +2687,22 @@ MonoBehaviour:
     - 
     - 
   clickButton: {fileID: 6900148178327967272}
+  clickButtonFadeIn: {fileID: 0}
+  clickButtonFadeOut: {fileID: 0}
   buttons:
   - {fileID: 5275531791848130650}
   - {fileID: 7104055788972294462}
   - {fileID: 6235070863302120247}
+  buttonFadeIns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  buttonFadeOuts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  mmfPlayersFadeIn: {fileID: 0}
+  mmfPlayersFadeOut: {fileID: 0}
 --- !u!1 &2622581720395880178
 GameObject:
   m_ObjectHideFlags: 0
