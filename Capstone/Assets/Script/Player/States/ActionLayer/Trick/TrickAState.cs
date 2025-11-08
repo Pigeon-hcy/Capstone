@@ -3,7 +3,7 @@ using System.Collections;
 using SkateGame;
 using QFramework;
 
-public class TrickAState : TrickState, ICanGetSystem, IBelongToArchitecture
+public class TrickAState : TrickState
 {
     
     public TrickAState(PlayerController player, Rigidbody2D rb) : base(player, rb)
@@ -19,36 +19,16 @@ public class TrickAState : TrickState, ICanGetSystem, IBelongToArchitecture
     public override string GetStateName() => "TrickA";
     protected override void EnterActionState()
     {
-       
-        
+        base.EnterActionState();
         player.TrickAEffect.PlayFeedbacks();
-
-        DetectInteractiveObjectsWithRaycast();
-        
-        var trickSystem = this.GetSystem<ITrickSystem>();
-        
-        if (trickSystem != null)
-        {
-            trickSystem.AddTrick(this);
-            trickSystem.printTrickList();
-        }
         
     }
-    private void DetectInteractiveObjectsWithRaycast()
-        {
-            if (player == null) return;
-            Vector2 playerPosition = player.transform.position;
-            float detectionRadius = 2f; // 检测半径
-            
-            // 方法1: 使用 Physics2D.OverlapCircle 检测圆形区域
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(playerPosition, detectionRadius, LayerMask.GetMask("InteractiveLayer"));
-            if(colliders.Length > 0)
-            {
-                this.GetModel<IPlayerModel>().IsInPower.Value = true;
-                if(this.GetModel<IPlayerModel>().IsInPower.Value){
-                    player.TrickABoostEffect.PlayFeedbacks();
-                    player.SendEvent<RewardJumpEvent>();
-                }
-            }
+    protected override void UpdateActionState()
+    {
+        if(DetectInteractiveObjectsWithRaycast()){
+            player.TrickABoostEffect.PlayFeedbacks();
+            player.SendEvent<RewardJumpEvent>();
+            player.stateMachine.SwitchState(StateLayer.Action, "None");
         }
+    }
 }

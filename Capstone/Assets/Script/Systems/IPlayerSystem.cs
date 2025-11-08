@@ -161,6 +161,7 @@ namespace SkateGame
 
         private void ApplyJumpImpulse(Rigidbody2D rb)
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
         }
 

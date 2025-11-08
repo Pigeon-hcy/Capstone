@@ -3,7 +3,7 @@ using System.Collections;
 using SkateGame;
 using QFramework;
 
-public class TrickState : ActionStateBase
+public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
 {   protected int scoreValue;
     protected string trickName;
 
@@ -20,7 +20,14 @@ public class TrickState : ActionStateBase
 
     protected override void EnterActionState()
     {
-        PerformTrick();
+        var trickSystem = this.GetSystem<ITrickSystem>();
+        
+        if (trickSystem != null)
+        {
+            trickSystem.AddTrick(this);
+            trickSystem.printTrickList();
+        }
+        // PerformTrick();
     }
 
     private void PerformTrick()
@@ -49,4 +56,19 @@ public class TrickState : ActionStateBase
                 playerModel.IsInPower.Value = false; // 消耗能量状态
             }
     }
+    protected bool DetectInteractiveObjectsWithRaycast()
+        {
+            if (player == null) return false;
+            Vector2 playerPosition = player.transform.position;
+            float detectionRadius = 2f; // 检测半径
+            
+            // 方法1: 使用 Physics2D.OverlapCircle 检测圆形区域
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(playerPosition, detectionRadius, LayerMask.GetMask("InteractiveLayer"));
+            if(colliders.Length > 0)
+            {
+                this.GetModel<IPlayerModel>().IsInPower.Value = true;
+                return true;
+            }
+            return false;
+        }
 } 

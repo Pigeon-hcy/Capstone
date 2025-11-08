@@ -34,6 +34,11 @@ namespace SkateGame
         public float durationTrickA = 0.5f;
         public Vector2 ignoreMovementLayerDurationTrickA = new Vector2(0f, 0f);
         public Vector2 recoveryDurationTrickA = new Vector2(0f, 0.5f);
+        [Header("Trick B State")]
+        public bool isLoopTrickB = false;
+        public float durationTrickB = 0.5f;
+        public Vector2 ignoreMovementLayerDurationTrickB = new Vector2(0f, 0f);
+        public Vector2 recoveryDurationTrickB = new Vector2(0f, 0.5f);
 
         [Header("跳跃设置")]
         public float maxJumpForce = 6f;

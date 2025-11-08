@@ -38,8 +38,8 @@ MonoBehaviour:
   groundAccel: 2.5
   turnDecel: 5
   pushAccel: 15
-  groundLinearDamping: 0.5
-  airLinearDamping: 0.5
+  groundLinearDamping: 0.25
+  airLinearDamping: 0.25
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
   normalG: 1
