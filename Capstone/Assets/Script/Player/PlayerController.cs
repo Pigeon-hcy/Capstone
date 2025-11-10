@@ -3,6 +3,8 @@ using QFramework;
 using System.Collections;
 using MoreMountains.Feedbacks;
 using System;
+using UnityEditor.ShaderGraph;
+using Unity.VisualScripting;
 
 namespace SkateGame
 {
@@ -17,6 +19,7 @@ namespace SkateGame
         private IPlayerModel playerModel;
         private IInputModel inputModel;
         private IPlayerSystem playerSystem;
+        private ICollisionSystem collisionSystem;
         [Header("状态机")]
         public LayeredStateMachine stateMachine;
         private Rigidbody2D rb;
@@ -53,6 +56,7 @@ namespace SkateGame
             playerModel = this.GetModel<IPlayerModel>();
             inputModel = this.GetModel<IInputModel>();
             playerSystem = this.GetSystem<IPlayerSystem>();
+            collisionSystem = this.GetSystem<ICollisionSystem>();
             this.GetSystem<IPlayerAssetSystem>().SetPlayerConfig(playerConfig);
 
             // 获取组件
@@ -100,7 +104,7 @@ namespace SkateGame
 
         private void FixedUpdate()
         {
-            playerSystem?.FixedUpdate(rb);
+            playerSystem?.FixedUpdate();
         }
 
         protected override void OnRealTimeUpdate()
@@ -111,7 +115,7 @@ namespace SkateGame
             HandleAimAndShoot();
             
             // 更新着地状态
-            IsGrounded();
+            collisionSystem.GroundCheck(transform.position);
 
             // 更新冷却计时器
             UpdateCooldownTimers();
@@ -171,15 +175,6 @@ namespace SkateGame
             SwitchItem();
             Trick();
         }
-        private void SwitchItem()
-        {
-            if (inputModel.SwitchItem.Value)
-            {
-                playerModel.CurrentBulletIndex.Value =
-                (playerModel.CurrentBulletIndex.Value + 1) % playerModel.Config.Value.bulletPrefabs.Length;
-                Debug.Log("当前子弹类型: " + playerModel.CurrentBulletIndex.Value);
-            }
-        }
         private void Trick()
         {
             if (inputModel.TrickStart.Value && stateMachine.GetMovementStateName() == "Air")
@@ -187,43 +182,6 @@ namespace SkateGame
                 this.SendEvent<TrickAInputEvent>();
             }
         }
-
-        #region Collision
-        private bool IsGrounded()
-        {
-            // 使用多个射线检测来提高准确性
-            Vector2 rayStart = transform.position;
-            Vector2 rayDirection = Vector2.down;
-            float rayDistance = 0.35f; // 减少检测距离，避免误判
-
-            // 主射线检测
-            RaycastHit2D hit = Physics2D.Raycast(rayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
-
-            // 如果主射线没检测到，尝试左右偏移的射线
-            if (hit.collider == null)
-            {
-                Vector2 leftRayStart = rayStart + Vector2.left * 0.3f;
-                Vector2 rightRayStart = rayStart + Vector2.right * 0.3f;
-
-                RaycastHit2D leftHit = Physics2D.Raycast(leftRayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
-                RaycastHit2D rightHit = Physics2D.Raycast(rightRayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
-
-                if (leftHit.collider != null)
-                {
-                    hit = leftHit;
-                }
-                else if (rightHit.collider != null)
-                {
-                    hit = rightHit;
-                }
-            }
-
-            bool grounded = hit.collider != null;
-            playerModel.WasGrounded.Value = playerModel.IsGrounded.Value;
-            playerModel.IsGrounded.Value = grounded;
-            return grounded;
-        }
-        #endregion
 
         public Rigidbody2D GetRigidbody()
         {
@@ -238,6 +196,7 @@ namespace SkateGame
         }
 
         // 碰撞检测
+
         void OnTriggerEnter2D(Collider2D other)
         {
             Debug.Log($"OnTriggerEnter2D: {other.name} (isTrigger: {other.isTrigger})");
@@ -264,8 +223,6 @@ namespace SkateGame
 
         void OnTriggerExit2D(Collider2D other)
         {
-
-
             if (other.isTrigger)
             {
                 Track track = SafeGetComponent<Track>(other.gameObject);
@@ -286,6 +243,7 @@ namespace SkateGame
             }
         }
 
+        #region Aim and Shoot
         private void HandleAimAndShoot()
         {
             // 按住R键进入瞄准
@@ -381,6 +339,23 @@ namespace SkateGame
             playerModel.HasPerformedTrickInAir.Value = true;
             Debug.Log("InputController: 标记已执行trick");
         }
+        
+        // 重置瞄准时间上限到基础值
+        public void ResetAimTimeToBase()
+        {
+            playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;
+            Debug.Log($"InputController: 重置瞄准时间上限到基础值: {playerModel.MaxAimTime.Value}秒");
+        }
+        
+        private void SwitchItem()
+        {
+            if (inputModel.SwitchItem.Value)
+            {
+                playerModel.CurrentBulletIndex.Value =
+                (playerModel.CurrentBulletIndex.Value + 1) % playerModel.Config.Value.bulletPrefabs.Length;
+                Debug.Log("当前子弹类型: " + playerModel.CurrentBulletIndex.Value);
+            }
+        }
 
         // 处理落地时的瞄准时间奖励
         public void HandleLandingAimTimeBonus()
@@ -396,15 +371,12 @@ namespace SkateGame
             }
         }
 
-        // 重置瞄准时间上限到基础值
-        public void ResetAimTimeToBase()
-        {
-            playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;
-            Debug.Log($"InputController: 重置瞄准时间上限到基础值: {playerModel.MaxAimTime.Value}秒");
-        }
 
         // 获取基础瞄准时间上限（供UI使用）
         public float baseMaxAimTime => playerModel.Config.Value.baseMaxAimTime;
+
+        #endregion
+
 
         // 检测玩家方向并更新例子特效容器
         private void CheckPlayerDirectionChange()
@@ -429,6 +401,7 @@ namespace SkateGame
             }
         }
 
+        #region Helper Methods
         public T SafeGetComponent<T>(GameObject obj) where T : MonoBehaviour
         {
             T get1 = obj.GetComponent<T>();
@@ -447,5 +420,6 @@ namespace SkateGame
 
             return null;
         }
+        #endregion
     }
 }

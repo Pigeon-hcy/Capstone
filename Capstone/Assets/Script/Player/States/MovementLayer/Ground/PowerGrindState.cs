@@ -15,6 +15,7 @@ public class PowerGrindState : GroundMovementState
 
     protected override void EnterGroundMovement()
     {
+        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true });
         // 开始检查反向输入窗口
         StartCheckReverseWindow();
         
@@ -27,7 +28,6 @@ public class PowerGrindState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        player.SendEvent<PowerGrindInputEvent>();
         if (!inputModel.Trick.Value)
         {
             if (Mathf.Abs(rb.linearVelocity.x) <= 0.5f)
@@ -51,6 +51,7 @@ public class PowerGrindState : GroundMovementState
             player.powerGrindEffect.StopFeedbacks();
 
         }
+        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = false });
     }
 
     private void CheckReverse()

@@ -64,6 +64,9 @@ namespace SkateGame
         /// </summary>
         BindableProperty<int> CurrentBulletIndex { get; }
         BindableProperty<int> CurrentBulletCount  { get; }
+        BindableProperty<bool> IsAiming { get; }
+        BindableProperty<float> MaxAimTime { get; }
+        BindableProperty<float> AimTimer { get; }
 
 
 
@@ -74,11 +77,10 @@ namespace SkateGame
         BindableProperty<bool> WasGrounded { get; }
         BindableProperty<bool> IsCheckingReverseWindow { get; }
         BindableProperty<float> ReverseTimer { get; }
-        BindableProperty<bool> IsAiming { get; }
-        BindableProperty<float> MaxAimTime { get; }
-        BindableProperty<float> AimTimer { get; }
         BindableProperty<bool> HasPerformedTrickInAir { get; }
         BindableProperty<bool> IsFacingRight { get; }
+        BindableProperty<float> CurrentRotationDeg { get; }
+        BindableProperty<float> TargetRotationDeg { get; }
     }
 
     public class PlayerModel : AbstractModel, IPlayerModel
@@ -123,6 +125,9 @@ namespace SkateGame
         // 子弹相关
         public BindableProperty<int> CurrentBulletIndex { get; } = new BindableProperty<int>(0);
         public BindableProperty<int> CurrentBulletCount { get; } = new BindableProperty<int>(0);
+        public BindableProperty<bool> IsAiming { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<float> MaxAimTime { get; } = new BindableProperty<float>(3f);
+        public BindableProperty<float> AimTimer { get; } = new BindableProperty<float>(0f);
 
         // 非输入的运行时/调参（来自 InputController，但不包含 isEHeld/isWHeld 等原始输入）
         public BindableProperty<Track> CurrentTrack { get; } = new BindableProperty<Track>(null);
@@ -131,11 +136,10 @@ namespace SkateGame
         public BindableProperty<bool> WasGrounded { get; } = new BindableProperty<bool>(true);
         public BindableProperty<bool> IsCheckingReverseWindow { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> ReverseTimer { get; } = new BindableProperty<float>(0f);
-        public BindableProperty<bool> IsAiming { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<float> MaxAimTime { get; } = new BindableProperty<float>(3f);
-        public BindableProperty<float> AimTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<bool> HasPerformedTrickInAir { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsFacingRight { get; } = new BindableProperty<bool>(true);
+        public BindableProperty<float> CurrentRotationDeg { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> TargetRotationDeg { get; } = new BindableProperty<float>(0f);
         protected override void OnInit()
         {
             // 初始化逻辑

@@ -28,24 +28,38 @@ MonoBehaviour:
   durationTrickA: 0.5
   ignoreMovementLayerDurationTrickA: {x: 0, y: 0}
   recoveryDurationTrickA: {x: 0, y: 0.5}
+  isLoopTrickB: 0
+  durationTrickB: 0.5
+  ignoreMovementLayerDurationTrickB: {x: 0, y: 0}
+  recoveryDurationTrickB: {x: 0, y: 0.5}
+  groundRotationSpeed: 10
+  airRotationSpeed: 4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckDistance: 0.35
+  groundCheckOffset: 0.3
   maxJumpForce: 8
   minJumpForce: 0
   doubleJumpForce: 6
   maxChargeTime: 2
-  maxMoveSpeed: 10
-  maxAirHorizontalSpeed: 10
-  airAccel: 2.5
-  groundAccel: 2.5
-  turnDecel: 5
-  pushAccel: 15
-  groundLinearDamping: 0.25
-  airLinearDamping: 0.25
+  groundForce: 10
+  slopeCompensationForce: 0.25
+  maxMoveSpeed: 12
+  maxAirHorizontalSpeed: 12
+  airAccel: 1
+  groundAccel: 1
+  turnDecel: 1
+  airTurnDecel: 10
+  pushAccel: 20
+  groundLinearDamping: 0.02
+  airLinearDamping: 0.02
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
   normalG: 1
   wallRideCooldown: 1.5
   wallrideDuration: 0.6
-  powerGrindDeceleration: 1
+  powerGrindDeceleration: 8
   reverseInputWindow: 2
   grindJumpIgnoreTime: 0.2
   baseMaxAimTime: 3
@@ -55,6 +69,3 @@ MonoBehaviour:
   - {fileID: 9141978474503307967, guid: d3b347cd22ab0934d8acd88568dfeecb, type: 3}
   bulletSpeed: 15
   bulletMaxCount: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64

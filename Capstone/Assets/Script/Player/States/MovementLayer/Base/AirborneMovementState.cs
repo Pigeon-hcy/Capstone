@@ -9,8 +9,8 @@ public abstract class AirborneMovementState : StateBase
     {
         float moveInput = inputModel.Move.Value.x;
         player.SendEvent<MoveInputEvent>(new MoveInputEvent { HorizontalInput = moveInput });
-        switchGroundMovement();
         UpdateAirMovement();
+        switchGroundMovement();
     }
     private void switchGroundMovement()
     {

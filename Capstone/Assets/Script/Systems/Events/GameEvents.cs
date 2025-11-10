@@ -28,6 +28,7 @@ namespace SkateGame
     // 轨道输入事件
     public struct GrindInputEvent
     {
+        public bool IsGrinding;
     }
     
     // 技巧A输入事件
@@ -43,6 +44,7 @@ namespace SkateGame
     // 强力轨道输入事件
     public struct PowerGrindInputEvent
     {
+        public bool IsPowerGrinding;
     }
     
     // 反向输入事件
@@ -64,6 +66,7 @@ namespace SkateGame
     // Push输入事件
     public struct PushInputEvent
     {
+        public bool IsPushing;
     }
     
     // Trick列表变化事件

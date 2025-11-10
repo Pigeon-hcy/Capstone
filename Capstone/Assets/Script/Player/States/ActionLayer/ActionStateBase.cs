@@ -36,15 +36,16 @@ public abstract class ActionStateBase : StateBase
     }
     public sealed override void Update()
     {
-        StateTimeUpdate();
+        stateTimer += Time.deltaTime;
         CheckIgnoreMovementLayer();
         CheckRecovering();
-
+        UpdateActionState();
+        
+        if(!isLoop && stateTimer > stateTotalDuration){player.stateMachine.SwitchState(StateLayer.Action, "None");}
         if(playerModel.IsRecovering.Value)
         {
             CheckSwitchAction();
         }
-        UpdateActionState();
     }
     public sealed override void Exit()
     {
@@ -53,11 +54,6 @@ public abstract class ActionStateBase : StateBase
 
     private void StateTimeUpdate()
     {
-        stateTimer += Time.deltaTime;
-        if(!isLoop && stateTimer > stateTotalDuration)
-        {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-        }
     }
     
     // 检查是否忽略运动层

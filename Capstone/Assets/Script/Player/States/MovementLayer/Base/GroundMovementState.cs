@@ -12,8 +12,8 @@ public abstract class GroundMovementState : StateBase
     {
         float moveInput = inputModel.Move.Value.x;
         player.SendEvent<MoveInputEvent>(new MoveInputEvent { HorizontalInput = moveInput });
-        switchAirborneMovement();
         UpdateGroundMovement();
+        switchAirborneMovement();
     }
 
     public sealed override void Enter()

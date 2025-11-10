@@ -28,7 +28,6 @@ namespace SkateGame
         public Vector2 ignoreMovementLayerDurationPush = new Vector2(0f, 0f);
         public Vector2 recoveryDurationPush = new Vector2(0f, 0.3f);
 
-
         [Header("Trick A State")]
         public bool isLoopTrickA = false;
         public float durationTrickA = 0.5f;
@@ -39,6 +38,18 @@ namespace SkateGame
         public float durationTrickB = 0.5f;
         public Vector2 ignoreMovementLayerDurationTrickB = new Vector2(0f, 0f);
         public Vector2 recoveryDurationTrickB = new Vector2(0f, 0.5f);
+        
+
+        [Header("========== 基础参数 ==========")]
+        
+        [Header("Rotation")]
+        public float groundRotationSpeed = 50f;
+        public float airRotationSpeed = 10f;
+
+        [Header("Collision")]
+        public LayerMask groundLayer;
+        public float groundCheckDistance = 0.35f;
+        public float groundCheckOffset = 0.3f;
 
         [Header("跳跃设置")]
         public float maxJumpForce = 6f;
@@ -47,11 +58,18 @@ namespace SkateGame
         public float maxChargeTime = 2f;
 
         [Header("移动设置")]
+        [Tooltip("地面吸力")]
+        public float groundForce = 10f;
+        [Tooltip("坡度补偿力"), Range(0f, 1f)]
+        public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
         public float maxAirHorizontalSpeed = 10f;
         public float airAccel = 20f;
         public float groundAccel = 20f;
+        [Tooltip("低速状态减速提升"), Range(0f, -2f)]
+        public float stopDecelIncrement = -1f;
         public float turnDecel = 40f;
+        public float airTurnDecel = 40f;
         public float pushAccel = 20f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
@@ -77,8 +95,5 @@ namespace SkateGame
         public GameObject[] bulletPrefabs;   // 可切换的子弹类型
         public float bulletSpeed = 15f;
         public int bulletMaxCount = 2;
-        
-        [Header("Ground Detection")]
-        public LayerMask groundLayer; 
     }
 }

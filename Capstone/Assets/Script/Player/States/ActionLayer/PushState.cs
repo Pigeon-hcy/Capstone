@@ -20,10 +20,14 @@ public class PushState : ActionStateBase
 
     protected override void UpdateActionState()
     {
-        player.SendEvent<PushInputEvent>();
+        if (stateTimer >= 0.3f)
+        {
+            player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true });
+        }
     }
 
     protected override void ExitActionState()
     {
+        player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = false });
     }
 }
