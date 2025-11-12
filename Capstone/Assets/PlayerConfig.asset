@@ -13,26 +13,26 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   isLoopNoAction: 1
-  ignoreMovementLayerDurationNoAction: {x: -1, y: -1}
+  ignoringMovementLayerNoAction: 0
   isLoopGrind: 1
-  ignoreMovementLayerDurationGrind: {x: 1, y: 1}
+  ignoringMovementLayerGrind: 0
   isLoopWallRide: 1
-  ignoreMovementLayerDurationWallRide: {x: -1, y: -1}
+  ignoringMovementLayerWallRide: 0
   isLoopGrab: 1
-  ignoreMovementLayerDurationGrab: {x: -1, y: -1}
+  ignoringMovementLayerGrab: 0
   isLoopPush: 0
-  ignoreMovementLayerDurationPush: {x: 0, y: 0}
+  ignoringMovementLayerPush: 0
   recoveryDurationPush: 0
   isLoopTrickA: 0
   durationTrickA: 0.5
-  ignoreMovementLayerDurationTrickA: {x: 0, y: 0}
+  ignoringMovementLayerTrickA: 1
   recoveryDurationTrickA: 0
   isLoopTrickB: 0
   durationTrickB: 0.2
-  ignoreMovementLayerDurationTrickB: {x: 0, y: 0.75}
+  ignoringMovementLayerTrickB: 1
   recoveryDurationTrickB: 0.5
   TrickBinertia: 0.5
-  TrickBspeed: 12
+  TrickBspeed: 20
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
