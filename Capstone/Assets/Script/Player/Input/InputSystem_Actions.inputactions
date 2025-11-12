@@ -42,9 +42,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Trick",
+                    "name": "TrickA",
                     "type": "Button",
                     "id": "e41bd53a-ee34-439a-b8ee-60d6d1471fbd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TrickB",
+                    "type": "Button",
+                    "id": "33c740eb-c1bb-40b8-91b4-904d77b2dae9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TrickC",
+                    "type": "Button",
+                    "id": "ea9d28fb-a6d9-42cc-b376-b16c56c99dd3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -273,7 +291,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Trick",
+                    "action": "TrickA",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -284,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Trick",
+                    "action": "TrickA",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -351,6 +369,50 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Push",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1960405a-e4ae-47ab-a23b-6e7275021aee",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "TrickB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5891c902-0014-4d90-a8dc-af1331606ef8",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "TrickB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cc217488-e4c8-4701-8f9f-9624a9a93af7",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "TrickC",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c144c7b0-3ed6-4de0-9908-3ade5b1d34b3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "TrickC",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -17,7 +17,7 @@ public class GrindState : ActionStateBase
         direction = playerModel.GrindDirection.Value;
         normalG = playerModel.NormalG.Value;
         isLoop = playerModel.Config.Value.isLoopGrind;
-        ignoreMovementLayerDuration = playerModel.Config.Value.ignoreMovementLayerDurationGrind;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerGrind;
         trackRef = null;
     }
 

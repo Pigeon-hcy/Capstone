@@ -7,7 +7,7 @@ public class GrabbingState : ActionStateBase
     public GrabbingState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopGrab;
-        ignoreMovementLayerDuration = playerModel.Config.Value.ignoreMovementLayerDurationGrab;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerGrab;
     }
 
     public override string GetStateName() => "Grab";

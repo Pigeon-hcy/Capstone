@@ -11,7 +11,7 @@ public class WallRideState : ActionStateBase
     public WallRideState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopWallRide;
-        ignoreMovementLayerDuration = playerModel.Config.Value.ignoreMovementLayerDurationWallRide;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerWallRide;
     }
 
     public override string GetStateName() => "WallRide";

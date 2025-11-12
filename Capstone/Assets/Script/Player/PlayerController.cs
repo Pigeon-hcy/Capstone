@@ -93,6 +93,7 @@ namespace SkateGame
             // Action Layer
             stateMachine.AddState("None", new NoActionState(this, rb), StateLayer.Action);
             stateMachine.AddState("TrickA", new TrickAState(this, rb), StateLayer.Action);
+            stateMachine.AddState("TrickB", new TrickBState(this, rb), StateLayer.Action);
             stateMachine.AddState("Grind", new GrindState(this, rb), StateLayer.Action);
             stateMachine.AddState("Grab", new GrabbingState(this, rb), StateLayer.Action);
             stateMachine.AddState("WallRide", new WallRideState(this, rb), StateLayer.Action);
@@ -177,7 +178,7 @@ namespace SkateGame
         }
         private void Trick()
         {
-            if (inputModel.TrickStart.Value && stateMachine.GetMovementStateName() == "Air")
+            if (inputModel.TrickAStart.Value && stateMachine.GetMovementStateName() == "Air")
             {
                 this.SendEvent<TrickAInputEvent>();
             }

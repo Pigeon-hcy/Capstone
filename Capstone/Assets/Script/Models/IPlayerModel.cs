@@ -52,7 +52,7 @@ namespace SkateGame
         /// Trick相关
         /// </summary>
         BindableProperty<bool> IsInPower { get; }
-        
+        BindableProperty<float> VelocityBeforeTrick { get; }
         /// <summary>
         /// Action Layer 基础参数
         /// </summary>
@@ -115,8 +115,8 @@ namespace SkateGame
         public BindableProperty<float> PushDuration { get; } = new BindableProperty<float>(0f);
 
         // Trick相关
-        
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<float> VelocityBeforeTrick { get; } = new BindableProperty<float>(0f);
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);

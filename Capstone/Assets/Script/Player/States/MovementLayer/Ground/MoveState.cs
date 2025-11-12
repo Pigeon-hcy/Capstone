@@ -31,7 +31,7 @@ public class MoveState : GroundMovementState
             player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
         }
         // PowerGrind
-        if (inputModel.TrickStart.Value)
+        if (inputModel.TrickAStart.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "PowerGrind");
         }

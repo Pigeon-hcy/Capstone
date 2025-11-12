@@ -10,15 +10,14 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
     // Public read-only accessors for external systems
     public int ScoreValue => scoreValue;
     public string TrickName => trickName;
-    public float StateTotalDuration => stateTotalDuration;
-
+    protected virtual void EnterTrickState(){}
     public TrickState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
     }
 
     public override string GetStateName() => "Trick";
 
-    protected override void EnterActionState()
+    protected sealed override void EnterActionState()
     {
         var trickSystem = this.GetSystem<ITrickSystem>();
         
@@ -27,6 +26,7 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
             trickSystem.AddTrick(this);
             trickSystem.printTrickList();
         }
+        EnterTrickState();
         // PerformTrick();
     }
 

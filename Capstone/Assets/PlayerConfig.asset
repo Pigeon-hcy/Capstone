@@ -21,17 +21,18 @@ MonoBehaviour:
   isLoopGrab: 1
   ignoreMovementLayerDurationGrab: {x: -1, y: -1}
   isLoopPush: 0
-  durationPush: 0.6
   ignoreMovementLayerDurationPush: {x: 0, y: 0}
-  recoveryDurationPush: {x: 0, y: 0.6}
+  recoveryDurationPush: 0
   isLoopTrickA: 0
   durationTrickA: 0.5
   ignoreMovementLayerDurationTrickA: {x: 0, y: 0}
-  recoveryDurationTrickA: {x: 0, y: 0.5}
+  recoveryDurationTrickA: 0
   isLoopTrickB: 0
-  durationTrickB: 0.5
-  ignoreMovementLayerDurationTrickB: {x: 0, y: 0}
-  recoveryDurationTrickB: {x: 0, y: 0.5}
+  durationTrickB: 0.2
+  ignoreMovementLayerDurationTrickB: {x: 0, y: 0.75}
+  recoveryDurationTrickB: 0.5
+  TrickBinertia: 0.5
+  TrickBspeed: 12
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
@@ -49,9 +50,10 @@ MonoBehaviour:
   maxAirHorizontalSpeed: 12
   airAccel: 1
   groundAccel: 1
+  stopDecelIncrement: -1
   turnDecel: 1
   airTurnDecel: 10
-  pushAccel: 20
+  pushAccel: 25
   groundLinearDamping: 0.02
   airLinearDamping: 0.02
   airControlForceConfig: 10

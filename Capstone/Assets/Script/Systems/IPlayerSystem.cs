@@ -17,9 +17,12 @@ namespace SkateGame
         private float cachedMoveInput;
         private bool jumpQueued;
         private bool rewardJumpQueued;
+        private bool resetSpeedQueued;
         private bool pushing;
         private bool powerGrinding;
         private bool grinding;
+        private bool trickingB;
+        private float trickBdirection;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -35,6 +38,9 @@ namespace SkateGame
             this.RegisterEvent<PushInputEvent>(OnPushInput);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
+            this.RegisterEvent<TrickAInputEvent>(OnTrickAInput);
+            this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
+            this.RegisterEvent<ResetSpeedEvent>(OnResetSpeed);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -70,6 +76,7 @@ namespace SkateGame
         #region Event
         private void OnMoveInput(MoveInputEvent evt)
         {
+            cachedMoveInput = 0;
             cachedMoveInput = evt.HorizontalInput;
         }
         private void OnJumpInput(JumpExecuteEvent evt)
@@ -97,6 +104,18 @@ namespace SkateGame
         {
             grinding = evt.IsGrinding;
         }
+        private void OnTrickAInput(TrickAInputEvent evt)
+        {
+        }
+        private void OnTrickBInput(TrickBInputEvent evt)
+        {
+            trickingB = evt.IsTrickingB;
+            if(trickingB){ trickBdirection = evt.Direction; }
+        }
+        private void OnResetSpeed(ResetSpeedEvent evt)
+        {
+            resetSpeedQueued = true;
+        }
         #endregion
 
         #region Method
@@ -110,13 +129,16 @@ namespace SkateGame
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
             }
-            ApplyHorizontalAddForce(cachedMoveInput, isGrounded);
+
+            ApplyHorizontalSpeed(cachedMoveInput, isGrounded);
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
             if (rewardJumpQueued){ ApplyRewardJump(); rewardJumpQueued = false; }
-            if (pushing){ ApplyPushAddforce();}
+            if (pushing){ ApplyPushSpeed();}
             if (powerGrinding){ ApplyPowerGrind();}
             if (grinding){ ApplyGrind();}
+            if (trickingB){ ApplyTrickB(trickBdirection);}
+            if (resetSpeedQueued){ ResetSpeedAfterTrick(); resetSpeedQueued = false; }
         }
         public void ApplyRotation()
         {
@@ -144,7 +166,7 @@ namespace SkateGame
             }
         }
 
-        private void ApplyHorizontalAddForce(float horizontalInput, bool isGrounded)
+        private void ApplyHorizontalSpeed(float horizontalInput, bool isGrounded)
         {
             float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
 
@@ -177,11 +199,11 @@ namespace SkateGame
 			Vector2 up = playerModel.IsGrounded.Value ? 
                 (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.up).normalized : Vector2.up;
 			float vUp = Vector2.Dot(rb.linearVelocity, up);
-			rb.linearVelocity = rb.linearVelocity - vUp * up;
+			rb.linearVelocity -= vUp * up;
             rb.AddForce(up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
         }
 
-        private void ApplyPushAddforce()
+        private void ApplyPushSpeed()
         {
             float dir = playerModel.IsFacingRight.Value ? 1f : -1f;
             float pushAccel = playerModel.Config.Value.pushAccel;
@@ -195,6 +217,7 @@ namespace SkateGame
 
         private void ApplyRewardJump()
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
         }
 
@@ -220,7 +243,16 @@ namespace SkateGame
         private void ApplyGrind()
         {
         }
-
+        private void ApplyTrickB(float direction)
+        {
+            float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
+            rb.linearVelocity = new Vector2(direction * speed, 0);
+        }
+        private void ResetSpeedAfterTrick()
+        {
+            float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
+            rb.linearVelocity = new Vector2(speed * trickBdirection * playerModel.Config.Value.TrickBinertia, 0);
+        }
         // 将玩家稍微吸向地面
         private void ApplyGroundForce()
         {

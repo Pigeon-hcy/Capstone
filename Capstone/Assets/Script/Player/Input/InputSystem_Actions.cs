@@ -64,9 +64,27 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Trick"",
+                    ""name"": ""TrickA"",
                     ""type"": ""Button"",
                     ""id"": ""e41bd53a-ee34-439a-b8ee-60d6d1471fbd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TrickB"",
+                    ""type"": ""Button"",
+                    ""id"": ""33c740eb-c1bb-40b8-91b4-904d77b2dae9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TrickC"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea9d28fb-a6d9-42cc-b376-b16c56c99dd3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -295,7 +313,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Trick"",
+                    ""action"": ""TrickA"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -306,7 +324,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Trick"",
+                    ""action"": ""TrickA"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -373,6 +391,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Push"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1960405a-e4ae-47ab-a23b-6e7275021aee"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""TrickB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5891c902-0014-4d90-a8dc-af1331606ef8"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""TrickB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc217488-e4c8-4701-8f9f-9624a9a93af7"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""TrickC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c144c7b0-3ed6-4de0-9908-3ade5b1d34b3"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""TrickC"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -964,7 +1026,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Grind = m_Player.FindAction("Grind", throwIfNotFound: true);
         m_Player_SwitchItem = m_Player.FindAction("SwitchItem", throwIfNotFound: true);
-        m_Player_Trick = m_Player.FindAction("Trick", throwIfNotFound: true);
+        m_Player_TrickA = m_Player.FindAction("TrickA", throwIfNotFound: true);
+        m_Player_TrickB = m_Player.FindAction("TrickB", throwIfNotFound: true);
+        m_Player_TrickC = m_Player.FindAction("TrickC", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_AimDirection = m_Player.FindAction("AimDirection", throwIfNotFound: true);
         m_Player_Push = m_Player.FindAction("Push", throwIfNotFound: true);
@@ -1051,7 +1115,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Grind;
     private readonly InputAction m_Player_SwitchItem;
-    private readonly InputAction m_Player_Trick;
+    private readonly InputAction m_Player_TrickA;
+    private readonly InputAction m_Player_TrickB;
+    private readonly InputAction m_Player_TrickC;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_AimDirection;
     private readonly InputAction m_Player_Push;
@@ -1063,7 +1129,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Grind => m_Wrapper.m_Player_Grind;
         public InputAction @SwitchItem => m_Wrapper.m_Player_SwitchItem;
-        public InputAction @Trick => m_Wrapper.m_Player_Trick;
+        public InputAction @TrickA => m_Wrapper.m_Player_TrickA;
+        public InputAction @TrickB => m_Wrapper.m_Player_TrickB;
+        public InputAction @TrickC => m_Wrapper.m_Player_TrickC;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @AimDirection => m_Wrapper.m_Player_AimDirection;
         public InputAction @Push => m_Wrapper.m_Player_Push;
@@ -1088,9 +1156,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchItem.started += instance.OnSwitchItem;
             @SwitchItem.performed += instance.OnSwitchItem;
             @SwitchItem.canceled += instance.OnSwitchItem;
-            @Trick.started += instance.OnTrick;
-            @Trick.performed += instance.OnTrick;
-            @Trick.canceled += instance.OnTrick;
+            @TrickA.started += instance.OnTrickA;
+            @TrickA.performed += instance.OnTrickA;
+            @TrickA.canceled += instance.OnTrickA;
+            @TrickB.started += instance.OnTrickB;
+            @TrickB.performed += instance.OnTrickB;
+            @TrickB.canceled += instance.OnTrickB;
+            @TrickC.started += instance.OnTrickC;
+            @TrickC.performed += instance.OnTrickC;
+            @TrickC.canceled += instance.OnTrickC;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
@@ -1116,9 +1190,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchItem.started -= instance.OnSwitchItem;
             @SwitchItem.performed -= instance.OnSwitchItem;
             @SwitchItem.canceled -= instance.OnSwitchItem;
-            @Trick.started -= instance.OnTrick;
-            @Trick.performed -= instance.OnTrick;
-            @Trick.canceled -= instance.OnTrick;
+            @TrickA.started -= instance.OnTrickA;
+            @TrickA.performed -= instance.OnTrickA;
+            @TrickA.canceled -= instance.OnTrickA;
+            @TrickB.started -= instance.OnTrickB;
+            @TrickB.performed -= instance.OnTrickB;
+            @TrickB.canceled -= instance.OnTrickB;
+            @TrickC.started -= instance.OnTrickC;
+            @TrickC.performed -= instance.OnTrickC;
+            @TrickC.canceled -= instance.OnTrickC;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
@@ -1314,7 +1394,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnGrind(InputAction.CallbackContext context);
         void OnSwitchItem(InputAction.CallbackContext context);
-        void OnTrick(InputAction.CallbackContext context);
+        void OnTrickA(InputAction.CallbackContext context);
+        void OnTrickB(InputAction.CallbackContext context);
+        void OnTrickC(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAimDirection(InputAction.CallbackContext context);
         void OnPush(InputAction.CallbackContext context);
