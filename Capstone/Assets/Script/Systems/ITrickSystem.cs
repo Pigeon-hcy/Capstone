@@ -8,7 +8,6 @@ namespace SkateGame
     {
         void AddTrick(TrickState trick);
         void RemoveAllTricks();
-        string GetTrickName(TrickState trick);
         int GetTrickScore(TrickState trick);
         int SumOfScore();
         char DetectGrade(int sumScore);
@@ -45,7 +44,6 @@ namespace SkateGame
                     LatestTrick = trick
                 });
                 
-                Debug.Log($"TrickSystem: 添加技巧 {trick.TrickName}，发送事件");
             }
         }
         
@@ -54,11 +52,6 @@ namespace SkateGame
         {
             trickListModel.TrickList.Value.Clear();
             
-        }
-
-        public string GetTrickName(TrickState trick)
-        {
-            return trick?.TrickName ?? "";
         }
 
         public int GetTrickScore(TrickState trick)
@@ -95,7 +88,7 @@ namespace SkateGame
         {
             foreach (TrickState trick in trickListModel.TrickList.Value)
             {
-                Debug.Log("System print trick list: " + trick.TrickName);
+                Debug.Log("System print trick list: " + trick.GetStateName());
             }
         }
         #endregion

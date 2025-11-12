@@ -17,12 +17,12 @@ namespace SkateGame
         private float cachedMoveInput;
         private bool jumpQueued;
         private bool rewardJumpQueued;
-        private bool resetSpeedQueued;
         private bool pushing;
         private bool powerGrinding;
         private bool grinding;
-        private bool trickingB;
+        private int trickingB;
         private float trickBdirection;
+        private int trickingC;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -40,7 +40,7 @@ namespace SkateGame
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
             this.RegisterEvent<TrickAInputEvent>(OnTrickAInput);
             this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
-            this.RegisterEvent<ResetSpeedEvent>(OnResetSpeed);
+            this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -109,12 +109,12 @@ namespace SkateGame
         }
         private void OnTrickBInput(TrickBInputEvent evt)
         {
-            trickingB = evt.IsTrickingB;
-            if(trickingB){ trickBdirection = evt.Direction; }
+            trickingB = evt.IsTrickingB ? 1 : -1;
+            if(trickingB == 1){ trickBdirection = evt.Direction; }
         }
-        private void OnResetSpeed(ResetSpeedEvent evt)
+        private void OnTrickCInput(TrickCInputEvent evt)
         {
-            resetSpeedQueued = true;
+            trickingC = evt.IsTrickingC ? 1 : -1;
         }
         #endregion
 
@@ -137,8 +137,10 @@ namespace SkateGame
             if (pushing){ ApplyPushSpeed();}
             if (powerGrinding){ ApplyPowerGrind();}
             if (grinding){ ApplyGrind();}
-            if (trickingB){ ApplyTrickB(trickBdirection);}
-            if (resetSpeedQueued){ ResetSpeedAfterTrick(); resetSpeedQueued = false; }
+            if (trickingB == 1){ ApplyTrickB(trickBdirection);}
+            if (trickingC == 1){ ApplyTrickC();}
+            if (trickingB == -1){ ResetSpeedAfterTrickB();}
+            if (trickingC == -1){ ResetSpeedAfterTrickC();}
         }
         public void ApplyRotation()
         {
@@ -248,10 +250,21 @@ namespace SkateGame
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
             rb.linearVelocity = new Vector2(direction * speed, 0);
         }
-        private void ResetSpeedAfterTrick()
+        private void ResetSpeedAfterTrickB()
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
             rb.linearVelocity = new Vector2(speed * trickBdirection * playerModel.Config.Value.TrickBinertia, 0);
+            trickingB = 0;
+        }
+
+        private void ApplyTrickC()
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCspeed);
+        }
+        private void ResetSpeedAfterTrickC()
+        {
+            // rb.linearVelocity = new Vector2(0, -playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia);
+            trickingC = 0;
         }
         // 将玩家稍微吸向地面
         private void ApplyGroundForce()

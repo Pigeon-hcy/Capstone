@@ -16,7 +16,6 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
         this.scoreValue = 10; 
     }
 
-    public override string GetStateName() => "TrickB";
     protected override void EnterTrickState()
     {
         resetSpeedSent = false;
@@ -29,7 +28,6 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
         if (stateTimer > stateDuration && !resetSpeedSent)
         {
             player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = false});
-            player.SendEvent<ResetSpeedEvent>(new ResetSpeedEvent());
             resetSpeedSent = true;
         }
     }

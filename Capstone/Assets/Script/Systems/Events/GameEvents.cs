@@ -42,8 +42,11 @@ namespace SkateGame
         public float Direction;
         public bool IsTrickingB;
     }
-    public struct ResetSpeedEvent
+    
+    // 技巧C输入事件
+    public struct TrickCInputEvent
     {
+        public bool IsTrickingC;
     }
     
     // 强力轨道输入事件

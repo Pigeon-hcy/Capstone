@@ -111,7 +111,7 @@ namespace SkateGame
             
             foreach (var trick in trickModel.TrickList.Value)
             {
-                sb.Append(trick.TrickName);
+                sb.Append(trick.GetStateName());
                 sb.Append("   ");
                 sb.Append(trick.ScoreValue);
                 sb.Append("\n\n");  // 两个换行符，形成空行

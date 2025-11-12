@@ -16,7 +16,6 @@ public class TrickAState : TrickState
         this.scoreValue = 10; 
     }
 
-    public override string GetStateName() => "TrickA";
     protected override void EnterTrickState()
     {
         player.TrickAEffect.PlayFeedbacks();
