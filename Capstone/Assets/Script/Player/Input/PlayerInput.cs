@@ -15,7 +15,9 @@ namespace SkateGame
         InputAction _jumpAction;
         InputAction _grindAction;
         InputAction _switchItemAction;
-        InputAction _trickAction;
+        InputAction _trickAAction;
+        InputAction _trickBAction;
+        InputAction _trickCAction;
         InputAction _pushAction;
         InputAction _shootStartAction;
         InputAction _shootEndAction;
@@ -29,7 +31,9 @@ namespace SkateGame
             _jumpAction = _actions.FindAction("Player/Jump");
             _grindAction = _actions.FindAction("Player/Grind");
             _switchItemAction = _actions.FindAction("Player/SwitchItem");
-            _trickAction = _actions.FindAction("Player/Trick");
+            _trickAAction = _actions.FindAction("Player/TrickA");
+            _trickBAction = _actions.FindAction("Player/TrickB");
+            _trickCAction = _actions.FindAction("Player/TrickC");
             _pushAction = _actions.FindAction("Player/Push");
             _shootStartAction = _actions.FindAction("Player/Shoot");
             _shootEndAction = _actions.FindAction("Player/Shoot");
@@ -47,50 +51,36 @@ namespace SkateGame
 		{
 			InputSystem.onEvent -= OnInputEvent;
 		} 
-
-        public FrameInput Gather()
-        {
-            return new FrameInput
-            {
-                Move = _moveAction.ReadValue<Vector2>(),
-                JumpStart = _jumpAction.WasPressedThisFrame(),
-                Grind = _grindAction.IsPressed(),
-                SwitchItem = _switchItemAction.WasPressedThisFrame(),
-                Trick = _trickAction.IsPressed(),
-                TrickStart= _trickAction.WasPressedThisFrame(),
-                Push = _pushAction.WasPressedThisFrame(),
-                ShootStart = _shootStartAction.WasPressedThisFrame(),
-                ShootEnd = _shootEndAction.WasReleasedThisFrame(),
-                AimDirection = _aimDirectionAction.ReadValue<Vector2>(),
-            };
-        }
-
         void Update()
         {
-            FrameInput frameInput = Gather();
             var inputModel = this.GetModel<IInputModel>();
-            inputModel.Move.Value = frameInput.Move;
-            inputModel.JumpStart.Value = frameInput.JumpStart;
-            inputModel.Grind.Value = frameInput.Grind;
-            inputModel.SwitchItem.Value = frameInput.SwitchItem;
-            inputModel.Trick.Value = frameInput.Trick;
-            inputModel.TrickStart.Value = frameInput.TrickStart;
-            inputModel.Push.Value = frameInput.Push;
-            inputModel.ShootStart.Value = frameInput.ShootStart;
-            inputModel.ShootEnd.Value = frameInput.ShootEnd;
-			inputModel.AimDirection.Value = GetAimDirection();
+            inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
+            inputModel.JumpStart.Value = _jumpAction.WasPressedThisFrame();
+            inputModel.Grind.Value = _grindAction.IsPressed();
+            inputModel.SwitchItem.Value = _switchItemAction.WasPressedThisFrame();
+            inputModel.TrickA.Value = _trickAAction.IsPressed();
+            inputModel.TrickAStart.Value = _trickAAction.WasPressedThisFrame();
+            inputModel.TrickB.Value = _trickBAction.IsPressed();
+            inputModel.TrickBStart.Value = _trickBAction.WasPressedThisFrame();
+            inputModel.TrickC.Value = _trickCAction.IsPressed();
+            inputModel.TrickCStart.Value = _trickCAction.WasPressedThisFrame();
+            inputModel.Push.Value = _pushAction.WasPressedThisFrame();
+            inputModel.ShootStart.Value = _shootStartAction.WasPressedThisFrame();
+            inputModel.ShootEnd.Value = _shootEndAction.WasReleasedThisFrame();
+            Vector2 aimDirection = _aimDirectionAction.ReadValue<Vector2>();
+			inputModel.AimDirection.Value = GetAimDirection(aimDirection);
         }
 
-		private Vector2 GetAimDirection()
+		private Vector2 GetAimDirection(Vector2 aimDirection)
 		{
             if (_currentDevice is Gamepad)
             {
-                return Gather().AimDirection;
+                return aimDirection;
             }
             else if (_currentDevice is Mouse)
             {
                 // 获取鼠标屏幕位置
-                Vector3 mouseScreenPos = Gather().AimDirection;
+                Vector3 mouseScreenPos = aimDirection;
                 
                 // 根据相机投影模式设置正确的z值
                 if (Camera.main.orthographic)
@@ -109,7 +99,7 @@ namespace SkateGame
             }
             else if (_currentDevice is Keyboard)
             {
-                return Gather().AimDirection;
+                return aimDirection;
             }
             else return Vector2.right;
 		}
@@ -123,20 +113,6 @@ namespace SkateGame
             {
                 _currentDevice = device;
             }
-        }
-
-        public struct FrameInput
-        {
-            public Vector2 Move;
-            public bool JumpStart;
-            public bool Grind;
-            public bool SwitchItem;
-            public bool Trick;
-            public bool TrickStart;
-            public bool Push;
-            public bool ShootStart;
-            public bool ShootEnd;
-            public Vector2 AimDirection;
         }
 
     }

@@ -69,7 +69,7 @@ public class JumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && inputModel.JumpStart.Value)
+        if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
         }

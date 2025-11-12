@@ -5,21 +5,32 @@ using QFramework;
 
 public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
 {
-    
+    private bool resetSpeedSent = false;
     public TrickBState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickB;
-        stateTotalDuration = playerModel.Config.Value.durationTrickB;
-        ignoreMovementLayerDuration = playerModel.Config.Value.ignoreMovementLayerDurationTrickB;
+        stateDuration = playerModel.Config.Value.durationTrickB;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickB;
         recoveryDuration = playerModel.Config.Value.recoveryDurationTrickB;
         this.trickName = "TrickB";
         this.scoreValue = 10; 
     }
 
     public override string GetStateName() => "TrickB";
-    protected override void EnterActionState()
+    protected override void EnterTrickState()
     {
-        base.EnterActionState();
-        player.SendEvent<TrickBInputEvent>();
+        resetSpeedSent = false;
+        playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
+        player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = true, Direction = playerModel.IsFacingRight.Value ? 1f : -1f });
+        
+    }
+    protected override void UpdateActionState()
+    {
+        if (stateTimer > stateDuration && !resetSpeedSent)
+        {
+            player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = false});
+            player.SendEvent<ResetSpeedEvent>(new ResetSpeedEvent());
+            resetSpeedSent = true;
+        }
     }
 }

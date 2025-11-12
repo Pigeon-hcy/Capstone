@@ -6,10 +6,12 @@ using SkateGame;
 public abstract class ActionStateBase : StateBase
 {
     protected float stateTimer;
-    protected float stateTotalDuration = -1f;
+    protected float stateDuration = -1f;
     protected bool isLoop = true;
+    protected bool ignoringMovementLayer = false;
     protected Vector2 ignoreMovementLayerDuration = new Vector2(-1f, -1f); // 第一个参数是开始忽略的时间，第二个参数是结束忽略的时间
-    protected Vector2 recoveryDuration = new Vector2(-1f, -1f); // 第一个参数是开始后摇的时间，第二个参数是结束后摇的时间
+    protected float recoveryDuration = -1f;
+    protected float stateTotalDuration => stateDuration + recoveryDuration;
     protected virtual void UpdateActionState(){}
     protected virtual void EnterActionState(){}
     protected virtual void ExitActionState(){}
@@ -21,8 +23,9 @@ public abstract class ActionStateBase : StateBase
     public sealed override void Enter()
     {
         stateTimer = 0f;
-        CheckIgnoreMovementLayer();
         CheckRecovering();
+        playerModel.IsIgnoringMovementLayer.Value = ignoringMovementLayer;
+        // 设置动画层权重
         if(GetStateName() != "None")
         {
             player.animator.SetLayerWeight(0, 0);
@@ -32,58 +35,35 @@ public abstract class ActionStateBase : StateBase
         {
             player.animator.SetLayerWeight(0, 1);
             player.animator.SetLayerWeight(1, 0);}
+
         EnterActionState();
     }
     public sealed override void Update()
     {
         stateTimer += Time.deltaTime;
-        CheckIgnoreMovementLayer();
         CheckRecovering();
         UpdateActionState();
         
-        if(!isLoop && stateTimer > stateTotalDuration){player.stateMachine.SwitchState(StateLayer.Action, "None");}
-        if(playerModel.IsRecovering.Value)
+        if(isLoop) CheckSwitchAction();
+        if(playerModel.IsRecovering.Value) 
         {
-            CheckSwitchAction();
+            playerModel.IsIgnoringMovementLayer.Value = false;
+            CheckSwitchActionInRecovery();
         }
+        if(!isLoop && stateTimer > stateTotalDuration){player.stateMachine.SwitchState(StateLayer.Action, "None");}
     }
     public sealed override void Exit()
     {
         ExitActionState();
     }
 
-    private void StateTimeUpdate()
-    {
-    }
-    
-    // 检查是否忽略运动层
-    private void CheckIgnoreMovementLayer()
-    {
-        if(isLoop)
-        {
-            playerModel.IsIgnoringMovementLayer.Value = ignoreMovementLayerDuration.x == -1f ? false : true;
-        }
-        else
-        {      
-            if(stateTimer > ignoreMovementLayerDuration.x && stateTimer < ignoreMovementLayerDuration.y)
-            {
-                playerModel.IsIgnoringMovementLayer.Value = true;
-            }
-            else playerModel.IsIgnoringMovementLayer.Value = false;
-        }
-    }
-
     // 检查是否后摇
     private void CheckRecovering()
     {
-        if(isLoop) playerModel.IsRecovering.Value = true;
-        else
+        playerModel.IsRecovering.Value = false;
+        if(!isLoop && stateTimer >stateDuration && stateTimer < stateTotalDuration)
         {
-            if(stateTimer > recoveryDuration.x && stateTimer < recoveryDuration.y)
-            {
-                playerModel.IsRecovering.Value = true;
-            }
-            else playerModel.IsRecovering.Value = false;
+            playerModel.IsRecovering.Value = true;
         }
     }
 
@@ -94,9 +74,17 @@ public abstract class ActionStateBase : StateBase
         state再增多的话顺序可能需要调整
         */
         // 优先Trick
-        if(inputModel.TrickStart.Value && !playerModel.IsGrounded.Value)
+        if(inputModel.TrickAStart.Value && !playerModel.IsGrounded.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Action, "TrickA");
+        }
+        else if(inputModel.TrickBStart.Value && !playerModel.IsGrounded.Value)
+        {
+            player.stateMachine.SwitchState(StateLayer.Action, "TrickB");
+        }
+        else if(inputModel.TrickCStart.Value && !playerModel.IsGrounded.Value)
+        {
+            // player.stateMachine.SwitchState(StateLayer.Action, "TrickC");
         }
         else if (inputModel.Push.Value && playerModel.IsGrounded.Value)
         {
@@ -109,10 +97,18 @@ public abstract class ActionStateBase : StateBase
             GrindInput();
         }
 
-        // 循环且无输入时None
-        else if (isLoop)
+        // 无输入时None
+        else
         {
             player.stateMachine.SwitchState(StateLayer.Action, "None");
+        }
+    }
+
+    private void CheckSwitchActionInRecovery()
+    {
+        if (inputModel.Grind.Value)
+        {
+            GrindInput();   
         }
     }
     private void GrindInput()

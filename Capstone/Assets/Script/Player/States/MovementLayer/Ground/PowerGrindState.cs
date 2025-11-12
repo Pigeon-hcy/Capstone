@@ -28,7 +28,7 @@ public class PowerGrindState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        if (!inputModel.Trick.Value)
+        if (!inputModel.TrickA.Value)
         {
             if (Mathf.Abs(rb.linearVelocity.x) <= 0.5f)
             {

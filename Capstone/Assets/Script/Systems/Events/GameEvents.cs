@@ -39,6 +39,11 @@ namespace SkateGame
     // 技巧B输入事件
     public struct TrickBInputEvent
     {
+        public float Direction;
+        public bool IsTrickingB;
+    }
+    public struct ResetSpeedEvent
+    {
     }
     
     // 强力轨道输入事件

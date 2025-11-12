@@ -9,17 +9,16 @@ public class TrickAState : TrickState
     public TrickAState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickA;
-        stateTotalDuration = playerModel.Config.Value.durationTrickA;
-        ignoreMovementLayerDuration = playerModel.Config.Value.ignoreMovementLayerDurationTrickA;
+        stateDuration = playerModel.Config.Value.durationTrickA;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickA;
         recoveryDuration = playerModel.Config.Value.recoveryDurationTrickA;
         this.trickName = "TrickA";
         this.scoreValue = 10; 
     }
 
     public override string GetStateName() => "TrickA";
-    protected override void EnterActionState()
+    protected override void EnterTrickState()
     {
-        base.EnterActionState();
         player.TrickAEffect.PlayFeedbacks();
         
     }

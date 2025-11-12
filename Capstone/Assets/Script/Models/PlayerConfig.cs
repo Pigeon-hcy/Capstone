@@ -8,36 +8,37 @@ namespace SkateGame
         [Header("========== Action Layer基础参数 ==========")]
         [Header("No Action State")]
         public bool isLoopNoAction = true;
-        public Vector2 ignoreMovementLayerDurationNoAction = new Vector2(-1f, -1f);
+        public bool ignoringMovementLayerNoAction = false;
 
         [Header("Grind State")]
         public bool isLoopGrind = true;
-        public Vector2 ignoreMovementLayerDurationGrind = new Vector2(1f, 1f);
+        public bool ignoringMovementLayerGrind = false;
 
         [Header("Wall Ride State")]
         public bool isLoopWallRide = true;
-        public Vector2 ignoreMovementLayerDurationWallRide = new Vector2(-1f, -1f);
+        public bool ignoringMovementLayerWallRide = false;
 
         [Header("Grabbing State")]
         public bool isLoopGrab = true;
-        public Vector2 ignoreMovementLayerDurationGrab = new Vector2(-1f, -1f);
+        public bool ignoringMovementLayerGrab = false;
 
         [Header("Push State")]
         public bool isLoopPush = false;
-        public float durationPush = 0.3f;
-        public Vector2 ignoreMovementLayerDurationPush = new Vector2(0f, 0f);
-        public Vector2 recoveryDurationPush = new Vector2(0f, 0.3f);
+        public bool ignoringMovementLayerPush = false;
+        public float recoveryDurationPush = 0;
 
         [Header("Trick A State")]
         public bool isLoopTrickA = false;
         public float durationTrickA = 0.5f;
-        public Vector2 ignoreMovementLayerDurationTrickA = new Vector2(0f, 0f);
-        public Vector2 recoveryDurationTrickA = new Vector2(0f, 0.5f);
+        public bool ignoringMovementLayerTrickA = true;
+        public float recoveryDurationTrickA = 0f;
         [Header("Trick B State")]
         public bool isLoopTrickB = false;
-        public float durationTrickB = 0.5f;
-        public Vector2 ignoreMovementLayerDurationTrickB = new Vector2(0f, 0f);
-        public Vector2 recoveryDurationTrickB = new Vector2(0f, 0.5f);
+        public float durationTrickB = 0.25f;
+        public bool ignoringMovementLayerTrickB = true;
+        public float recoveryDurationTrickB = 0.5f;
+        [Range(0f, 1f)] public float TrickBinertia = 0.67f;
+        public float TrickBspeed = 10f;
         
 
         [Header("========== 基础参数 ==========")]
@@ -58,16 +59,16 @@ namespace SkateGame
         public float maxChargeTime = 2f;
 
         [Header("移动设置")]
-        [Tooltip("地面吸力")]
-        public float groundForce = 10f;
-        [Tooltip("坡度补偿力"), Range(0f, 1f)]
-        public float slopeCompensationForce = 0.5f;
+        
+        [Tooltip("地面吸力")] public float groundForce = 10f;
+        
+        [Tooltip("坡度补偿力"), Range(0f, 1f)] public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
         public float maxAirHorizontalSpeed = 10f;
         public float airAccel = 20f;
         public float groundAccel = 20f;
-        [Tooltip("低速状态减速提升"), Range(0f, -2f)]
-        public float stopDecelIncrement = -1f;
+        
+        [Tooltip("低速状态减速提升"), Range(0f, -2f)] public float stopDecelIncrement = -1f;
         public float turnDecel = 40f;
         public float airTurnDecel = 40f;
         public float pushAccel = 20f;
