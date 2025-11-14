@@ -19,6 +19,16 @@ namespace SkateGame
 
         BindableProperty<Vector2> Position { get; }
 
+        BindableProperty<float> GuardProcess { get; }
+        public BindableProperty<float> DetectRadius {get;}
+         public BindableProperty<float> GuardIncreaseSpeed {get;}
+         public BindableProperty<float> GuardDecreaseSpeed {get;}
+          public BindableProperty<float> JumpAngleModifier {get;}
+
+           public BindableProperty<float> JumpForce {get;}
+
+
+
         void ApplyDamage(int amount, DamageType type);
     }
 
@@ -36,7 +46,16 @@ namespace SkateGame
         public BindableProperty<float> PatrolLeftX { get; } = new BindableProperty<float>(-2.0f);
         public BindableProperty<float> PatrolRightX { get; } = new BindableProperty<float>(2.0f);
 
+        public BindableProperty<float> GuardProcess {get;} = new BindableProperty<float>(0);
+        public BindableProperty<float> DetectRadius {get;} = new BindableProperty<float>(3);
+         public BindableProperty<float> GuardIncreaseSpeed {get;} = new BindableProperty<float>(1);
+         public BindableProperty<float> GuardDecreaseSpeed {get;} = new BindableProperty<float>(0.5f);
+
         public BindableProperty<Vector2> Position { get; } = new BindableProperty<Vector2>(Vector2.zero);
+
+        public BindableProperty<float> JumpAngleModifier {get;} = new BindableProperty<float>(0.7f);
+
+           public BindableProperty<float> JumpForce {get;} = new BindableProperty<float>(10f);
 
         protected override void OnInit()
         {
