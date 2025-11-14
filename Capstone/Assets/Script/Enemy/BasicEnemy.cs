@@ -22,6 +22,14 @@ namespace SkateGame
     public bool IsAlive => enemyModel.IsAlive.Value;
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
+     public bool IfDrawRange = false;
+    
+    private bool movePaused = false;
+
+    public LayerMask GroundLayer;
+    private float resetMoveTime = 3;
+    private float timeCount = 0;
+
     void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
@@ -32,6 +40,11 @@ namespace SkateGame
         enemyModel.Health.Value    = enemyModel.Config.Value.maxHealth;
         enemyModel.MaxHealth.Value = enemyModel.Config.Value.maxHealth;
         enemyModel.IsAlive.Value   = true;
+        enemyModel.GuardProcess.Value = 0;
+        enemyModel.DetectRadius.Value = enemyModel.Config.Value.detectRadius;
+        enemyModel.GuardIncreaseSpeed.Value = enemyModel.Config.Value.guardIncreaseSpeed;
+        enemyModel.JumpForce.Value = enemyModel.Config.Value.jumpForce;
+        enemyModel.JumpAngleModifier.Value = enemyModel.Config.Value.jumpAngleModifier;
 
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
@@ -53,36 +66,111 @@ namespace SkateGame
             return;
         }
 
-        if (waiting)
-        {
-            // 等待阶段：原地不动，倒计时
-            if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            waitTimer -= Time.deltaTime;
-            if (waitTimer <= 0f)
+            if(IsPlayerNearWrapper(out Transform trans))
             {
-                waiting   = false;
-                movingRight = !movingRight;                    // 等完换方向
-                moveTimer = Mathf.Max(0.01f, moveDuration);    // 开始下一段移动
+                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value+enemyModel.GuardIncreaseSpeed.Value/10*Time.deltaTime);   
+                //到达1执行跳跃，要可以覆写
+                if(enemyModel.GuardProcess.Value == 1)
+                {
+                    enemyModel.GuardProcess.Value = -0.5f;
+                    JumpTowardPlayer(trans);
+                }
+            }else
+            {
+                //警戒降低还要加
+                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value-enemyModel.GuardDecreaseSpeed.Value/10*Time.deltaTime);   
             }
-            return;
-        }
 
-        // 移动阶段：按方向和速度行进
-        float speed = enemyModel.Config.Value.moveSpeed * (movingRight ? 1f : -1f);
-        if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+            //Debug.Log(enemyModel.GuardProcess.Value);
+            if(!movePaused)
+            {
+                if (waiting )
+                {
+                    // 等待阶段：原地不动，倒计时
+                    if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                    waitTimer -= Time.deltaTime;
+                    if (waitTimer <= 0f)
+                    {
+                        waiting   = false;
+                        movingRight = !movingRight;                    // 等完换方向
+                        moveTimer = Mathf.Max(0.01f, moveDuration);    // 开始下一段移动
+                    }
+                    return;
+                }
 
-        moveTimer -= Time.deltaTime;
-        if (moveTimer <= 0f)
-        {
-            // 本段移动结束 → 进入等待阶段
-            waiting   = true;
-            waitTimer = Mathf.Max(0f, enemyModel.Config.Value.waitTime);
-            if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        }
+                // 移动阶段：按方向和速度行进
+                float speed = enemyModel.Config.Value.moveSpeed * (movingRight ? 1f : -1f);
+                if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+
+                moveTimer -= Time.deltaTime;
+                if (moveTimer <= 0f)
+                {
+                    // 本段移动结束 → 进入等待阶段
+                    waiting   = true;
+                    waitTimer = Mathf.Max(0f, enemyModel.Config.Value.waitTime);
+                    if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                }
+            }else
+            {
+                timeCount  -= Time.deltaTime;
+                if(timeCount<=0)
+                    movePaused = false;
+            }
+        
     }
 
-    // ===== IAttackable =====
-    public bool TakeDamage(int amount, DamageType type, Vector2? hitPoint)
+        protected virtual void JumpTowardPlayer(Transform pTrans)
+        {
+            movePaused = true;
+            timeCount = resetMoveTime;
+            //Debug.LogError("jump");
+             Vector2 selfPos = transform.position;
+            Vector2 targetPos = pTrans.position;
+
+            Vector2 dir = (targetPos - selfPos).normalized;
+
+            float rawAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+            if (rawAngle <= -90f && rawAngle >= -180f)
+            {
+                rawAngle += 360f;
+            }
+            //Debug.LogError(" Raw angle"+ rawAngle);
+
+             float offsetFromUp = rawAngle - 90f;
+
+             float result = offsetFromUp * enemyModel.JumpAngleModifier.Value;
+
+            float realResult = result+90f;
+            //Debug.LogError(" Jump Result:"+ realResult);
+
+            Vector2 jumpDir = new Vector2(
+                Mathf.Cos(realResult * Mathf.Deg2Rad),
+                Mathf.Sin(realResult * Mathf.Deg2Rad)
+            ).normalized;
+
+            Debug.Log(jumpDir);
+            
+
+            float jumpForce = enemyModel.JumpForce.Value*1000;
+
+            rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
+
+
+        }
+
+        void OnDrawGizmos()
+        {
+            if(IfDrawRange)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, config.detectRadius);
+            }
+               
+        }
+
+        // ===== IAttackable =====
+        public bool TakeDamage(int amount, DamageType type, Vector2? hitPoint)
     {
         if (!enemyModel.IsAlive.Value) return false;
 
@@ -101,6 +189,40 @@ namespace SkateGame
         if (rb) rb.linearVelocity = Vector2.zero;
         Destroy(gameObject, 0.1f);
     }
+
+        private Transform player;
+        protected bool IsPlayerNearWrapper(out Transform trans)
+        {
+            trans = null;
+            if (player == null)
+                player = FindFirstObjectByType<PlayerController>().transform;
+
+            if (player == null)
+                return false;
+
+            trans = player;
+            return IsPlayerNear2D(transform, player, enemyModel.DetectRadius.Value);
+        }
+
+        bool IsPlayerNear2D(Transform self, Transform player, float radius)
+        {
+            Vector2 a = self.position;
+            Vector2 b = player.position;
+
+            return (a - b).sqrMagnitude <= radius * radius;
+        }
+
+        public bool IsOnGround(Transform trans, float checkDistance, LayerMask groundMask)
+        {
+            Vector2 origin = trans.position;
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, checkDistance, groundMask);
+
+            Debug.DrawLine(origin, origin + Vector2.down * checkDistance, hit ? Color.green : Color.red);
+
+            return hit.collider != null;
+        }
     }
+
+    
 }
 
