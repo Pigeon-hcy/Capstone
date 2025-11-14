@@ -11,4 +11,8 @@ public class NoActionState : ActionStateBase
         isLoop = playerModel.Config.Value.isLoopNoAction;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerNoAction;
     }
+    protected override void UpdateActionState()
+    {
+        CheckSwitchAction();
+    }
 }

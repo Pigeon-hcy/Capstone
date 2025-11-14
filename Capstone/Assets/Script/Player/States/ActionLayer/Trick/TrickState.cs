@@ -9,13 +9,12 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
 
     // Public read-only accessors for external systems
     public int ScoreValue => scoreValue;
-    public string TrickName => trickName;
     protected virtual void EnterTrickState(){}
     public TrickState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
     }
 
-    public override string GetStateName() => "Trick";
+    public override string GetStateName() => trickName;
 
     protected sealed override void EnterActionState()
     {
@@ -56,7 +55,7 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
                 playerModel.IsInPower.Value = false; // 消耗能量状态
             }
     }
-    protected bool DetectInteractiveObjectsWithRaycast()
+    protected bool DetectInteractiveObjects()
         {
             if (player == null) return false;
             Vector2 playerPosition = player.transform.position;

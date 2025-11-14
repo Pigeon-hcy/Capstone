@@ -8,6 +8,7 @@ namespace SkateGame
 		BindableProperty<Vector2> Move { get; }
 		BindableProperty<bool> JumpStart { get; }
 		BindableProperty<bool> Grind { get; }
+		BindableProperty<bool> GrindStart { get; }
 		BindableProperty<bool> SwitchItem { get; }
 		BindableProperty<bool> TrickA { get; }
 		BindableProperty<bool> TrickAStart { get; }
@@ -26,6 +27,7 @@ namespace SkateGame
 		public BindableProperty<Vector2> Move { get; } = new BindableProperty<Vector2>(Vector2.zero);
 		public BindableProperty<bool> JumpStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> Grind { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> GrindStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> SwitchItem { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> TrickA { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> TrickAStart { get; } = new BindableProperty<bool>(false);

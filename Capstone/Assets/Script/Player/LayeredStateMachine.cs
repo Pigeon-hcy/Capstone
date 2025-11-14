@@ -53,9 +53,11 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
         }
         else
         {
+            var from = mAction.GetCurrentStateName();
+            playerModel.LastActionStateName.Value = from;
             mAction.SwitchState(stateName);
             this.SendEvent<StateChangedEvent>(new StateChangedEvent { Layer = StateLayer.Action, 
-                FromState = mAction.GetCurrentStateName(), ToState = stateName });
+                FromState = from, ToState = stateName });
         }
     }
 

@@ -16,13 +16,17 @@ namespace SkateGame
         private Rigidbody2D rb;
         private float cachedMoveInput;
         private bool jumpQueued;
-        private bool rewardJumpQueued;
-        private bool resetSpeedQueued;
         private bool pushing;
         private bool powerGrinding;
         private bool grinding;
         private bool trickingB;
         private float trickBdirection;
+        private bool trickingC;
+        private bool TrickBResetSpeedQueued;
+        private bool TrickCResetSpeedQueued;
+        private bool trickARewardQueued;
+        private bool trickBRewarding;
+        private bool trickCRewardQueued;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -34,13 +38,17 @@ namespace SkateGame
             // 监听输入事件
             this.RegisterEvent<MoveInputEvent>(OnMoveInput);
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
-            this.RegisterEvent<RewardJumpEvent>(OnRewardJump);
+            this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
+            this.RegisterEvent<TrickBRewardEvent>(OnTrickBReward);
+            this.RegisterEvent<TrickCRewardEvent>(OnTrickCReward);
             this.RegisterEvent<PushInputEvent>(OnPushInput);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
             this.RegisterEvent<TrickAInputEvent>(OnTrickAInput);
             this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
-            this.RegisterEvent<ResetSpeedEvent>(OnResetSpeed);
+            this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
+            this.RegisterEvent<TrickBResetSpeedEvent>(OnTrickBResetSpeed);
+            this.RegisterEvent<TrickCResetSpeedEvent>(OnTrickCResetSpeed);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -88,10 +96,6 @@ namespace SkateGame
             ApplyStateChanged(evt);
             UpdateAnimatorOnStateChanged(evt);
         }
-        private void OnRewardJump(RewardJumpEvent evt)
-        {
-            rewardJumpQueued = true;
-        }
         private void OnPushInput(PushInputEvent evt)
         {
             pushing = evt.IsPushing;
@@ -112,9 +116,29 @@ namespace SkateGame
             trickingB = evt.IsTrickingB;
             if(trickingB){ trickBdirection = evt.Direction; }
         }
-        private void OnResetSpeed(ResetSpeedEvent evt)
+        private void OnTrickCInput(TrickCInputEvent evt)
         {
-            resetSpeedQueued = true;
+            trickingC = evt.IsTrickingC;
+        }
+        private void OnTrickAReward(TrickARewardEvent evt)
+        {
+            trickARewardQueued = true;
+        }
+        private void OnTrickBReward(TrickBRewardEvent evt)
+        {
+            trickBRewarding = evt.IsTrickBRewarding;
+        }
+        private void OnTrickCReward(TrickCRewardEvent evt)
+        {
+            trickCRewardQueued = true;
+        }
+        private void OnTrickBResetSpeed(TrickBResetSpeedEvent evt)
+        {
+            TrickBResetSpeedQueued = true;
+        }
+        private void OnTrickCResetSpeed(TrickCResetSpeedEvent evt)
+        {
+            TrickCResetSpeedQueued = true;
         }
         #endregion
 
@@ -133,12 +157,15 @@ namespace SkateGame
             ApplyHorizontalSpeed(cachedMoveInput, isGrounded);
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
-            if (rewardJumpQueued){ ApplyRewardJump(); rewardJumpQueued = false; }
+            if (trickARewardQueued){ ApplyTrickAReward(); trickARewardQueued = false; }
+            if (trickCRewardQueued){ ApplyTrickCReward(); trickCRewardQueued = false; }
             if (pushing){ ApplyPushSpeed();}
             if (powerGrinding){ ApplyPowerGrind();}
             if (grinding){ ApplyGrind();}
             if (trickingB){ ApplyTrickB(trickBdirection);}
-            if (resetSpeedQueued){ ResetSpeedAfterTrick(); resetSpeedQueued = false; }
+            if (trickingC){ ApplyTrickC();}
+            if (TrickBResetSpeedQueued){ ResetSpeedAfterTrickB(); TrickBResetSpeedQueued = false; }
+            if (TrickCResetSpeedQueued){ ResetSpeedAfterTrickC(); TrickCResetSpeedQueued = false; }
         }
         public void ApplyRotation()
         {
@@ -215,12 +242,6 @@ namespace SkateGame
             }
         }
 
-        private void ApplyRewardJump()
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
-        }
-
         private void ApplyPowerGrind()
         {   
             Vector2 right = (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
@@ -243,22 +264,43 @@ namespace SkateGame
         private void ApplyGrind()
         {
         }
+        
         private void ApplyTrickB(float direction)
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
             rb.linearVelocity = new Vector2(direction * speed, 0);
         }
-        private void ResetSpeedAfterTrick()
+        private void ResetSpeedAfterTrickB()
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
             rb.linearVelocity = new Vector2(speed * trickBdirection * playerModel.Config.Value.TrickBinertia, 0);
         }
+        private void ApplyTrickC()
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCspeed);
+        }
+        private void ResetSpeedAfterTrickC()
+        {
+            rb.linearVelocity = new Vector2(0, -playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia);
+        }
+
+        private void ApplyTrickAReward()
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+        }
+
+        private void ApplyTrickCReward()
+        {
+        }
+
         // 将玩家稍微吸向地面
         private void ApplyGroundForce()
         {
             Vector2 down = (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.down).normalized;
             rb.AddForce(down * (playerModel.Config.Value.groundForce * rb.mass), ForceMode2D.Force);
         }
+
         // 如果坡度发生变化，补偿损失的速度
         private void ApplySlopeCompensation()
         {
@@ -276,6 +318,7 @@ namespace SkateGame
         private Vector2 right => Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right;
         private float vUp => Vector2.Dot(rb.linearVelocity, up);
         private float vRight => Vector2.Dot(rb.linearVelocity, right);
+
 
         // Update animator on state changed
         private void UpdateAnimatorOnStateChanged(StateChangedEvent evt)

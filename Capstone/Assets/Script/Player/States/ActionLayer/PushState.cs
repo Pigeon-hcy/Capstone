@@ -10,7 +10,6 @@ public class PushState : ActionStateBase
         isLoop = playerModel.Config.Value.isLoopPush;
         stateDuration = playerModel.PushDuration.Value;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerPush;
-        recoveryDuration = playerModel.Config.Value.recoveryDurationPush;
     }
 
     public override string GetStateName() => "Push";

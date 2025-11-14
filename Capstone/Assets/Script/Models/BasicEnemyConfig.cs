@@ -16,5 +16,17 @@ namespace SkateGame
 
         [Header("物理")]
         public float gravityScale    = 2f;   // 地面型用得到；飞行型可设为 0
+
+        [Header("警戒速度")]
+        public float guardIncreaseSpeed = 1;
+        public float guardDecreaseSpeed = 0.5f;
+        [Header("警戒举例")]
+        public float detectRadius = 3;
+
+        [Header("扑的角度修改")]
+        public float jumpAngleModifier = 0.7f;
+
+        [Header("扑的力度")]
+         public float jumpForce = 10f;
     }
 }
