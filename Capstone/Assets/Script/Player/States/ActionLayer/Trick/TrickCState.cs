@@ -19,10 +19,15 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
+        if(!inputModel.TrickC.Value)
+        {
+            player.stateMachine.SwitchState(StateLayer.Action, "None");
+        }
     }
 
     protected override void ExitActionState()
     {
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = false });
+        player.SendEvent<TrickCResetSpeedEvent>();
     } 
 }

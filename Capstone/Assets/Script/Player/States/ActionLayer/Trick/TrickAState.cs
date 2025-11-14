@@ -11,7 +11,6 @@ public class TrickAState : TrickState
         isLoop = playerModel.Config.Value.isLoopTrickA;
         stateDuration = playerModel.Config.Value.durationTrickA;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickA;
-        recoveryDuration = playerModel.Config.Value.recoveryDurationTrickA;
         this.trickName = "TrickA";
         this.scoreValue = 10; 
     }
@@ -23,9 +22,9 @@ public class TrickAState : TrickState
     }
     protected override void UpdateActionState()
     {
-        if(DetectInteractiveObjectsWithRaycast()){
+        if(DetectInteractiveObjects()){
             player.TrickABoostEffect.PlayFeedbacks();
-            player.SendEvent<RewardJumpEvent>();
+            player.SendEvent<TrickARewardEvent>();
             player.stateMachine.SwitchState(StateLayer.Action, "None");
         }
     }

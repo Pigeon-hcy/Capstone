@@ -57,7 +57,6 @@ namespace SkateGame
         /// Action Layer 基础参数
         /// </summary>
         BindableProperty<bool> IsIgnoringMovementLayer { get; }
-        BindableProperty<bool> IsRecovering { get; }
 
         /// <summary>
         /// 子弹相关
@@ -68,7 +67,10 @@ namespace SkateGame
         BindableProperty<float> MaxAimTime { get; }
         BindableProperty<float> AimTimer { get; }
 
-
+        /// <summary>
+        /// State Machine相关
+        /// </summary>
+        BindableProperty<string> LastActionStateName { get; }
 
         // 非输入的运行时/调参（来自 InputController，但不包含 isEHeld/isWHeld 等原始输入）
         BindableProperty<Track> CurrentTrack { get; }
@@ -120,7 +122,6 @@ namespace SkateGame
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<bool> IsRecovering { get; } = new BindableProperty<bool>(false);
         
         // 子弹相关
         public BindableProperty<int> CurrentBulletIndex { get; } = new BindableProperty<int>(0);
@@ -128,6 +129,9 @@ namespace SkateGame
         public BindableProperty<bool> IsAiming { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> MaxAimTime { get; } = new BindableProperty<float>(3f);
         public BindableProperty<float> AimTimer { get; } = new BindableProperty<float>(0f);
+
+        // State Machine相关
+        public BindableProperty<string> LastActionStateName { get; } = new BindableProperty<string>("None");
 
         // 非输入的运行时/调参（来自 InputController，但不包含 isEHeld/isWHeld 等原始输入）
         public BindableProperty<Track> CurrentTrack { get; } = new BindableProperty<Track>(null);

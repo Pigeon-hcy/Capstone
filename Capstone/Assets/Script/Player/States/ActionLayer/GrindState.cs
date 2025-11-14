@@ -30,7 +30,7 @@ public class GrindState : ActionStateBase
         if (playerModel.CurrentTrack.Value == null)
         {
             Debug.LogError("GrindState.Enter: currentTrack为null，无法进入滑轨状态");
-            player.stateMachine.SwitchState(StateLayer.Action, "Jump");
+            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
             return;
         }
         

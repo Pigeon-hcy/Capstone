@@ -10,8 +10,7 @@ public abstract class ActionStateBase : StateBase
     protected bool isLoop = true;
     protected bool ignoringMovementLayer = false;
     protected Vector2 ignoreMovementLayerDuration = new Vector2(-1f, -1f); // 第一个参数是开始忽略的时间，第二个参数是结束忽略的时间
-    protected float recoveryDuration = -1f;
-    protected float stateTotalDuration => stateDuration + recoveryDuration;
+
     protected virtual void UpdateActionState(){}
     protected virtual void EnterActionState(){}
     protected virtual void ExitActionState(){}
@@ -23,9 +22,11 @@ public abstract class ActionStateBase : StateBase
     public sealed override void Enter()
     {
         stateTimer = 0f;
-        CheckRecovering();
         playerModel.IsIgnoringMovementLayer.Value = ignoringMovementLayer;
-        // 设置动画层权重
+        
+        /* 
+        设置动画层权重 
+        */
         if(GetStateName() != "None")
         {
             player.animator.SetLayerWeight(0, 0);
@@ -41,38 +42,21 @@ public abstract class ActionStateBase : StateBase
     public sealed override void Update()
     {
         stateTimer += Time.deltaTime;
-        CheckRecovering();
         UpdateActionState();
         
-        if(isLoop) CheckSwitchAction();
-        if(playerModel.IsRecovering.Value) 
+        // 非循环状态到期，切换到Recovery状态
+        if(!isLoop && stateTimer > stateDuration && GetStateName() != "Recovery")
         {
-            playerModel.IsIgnoringMovementLayer.Value = false;
-            CheckSwitchActionInRecovery();
+            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
         }
-        if(!isLoop && stateTimer > stateTotalDuration){player.stateMachine.SwitchState(StateLayer.Action, "None");}
     }
     public sealed override void Exit()
     {
         ExitActionState();
     }
 
-    // 检查是否后摇
-    private void CheckRecovering()
+    protected void CheckSwitchAction()
     {
-        playerModel.IsRecovering.Value = false;
-        if(!isLoop && stateTimer >stateDuration && stateTimer < stateTotalDuration)
-        {
-            playerModel.IsRecovering.Value = true;
-        }
-    }
-
-    // 检查是否切换到其他状态
-    private void CheckSwitchAction()
-    {
-        /*
-        state再增多的话顺序可能需要调整
-        */
         // 优先Trick
         if(inputModel.TrickAStart.Value && !playerModel.IsGrounded.Value)
         {
@@ -90,28 +74,13 @@ public abstract class ActionStateBase : StateBase
         {
             player.stateMachine.SwitchState(StateLayer.Action, "Push");
         }
-        
         // 其次Grind
         else if (inputModel.Grind.Value)
         {
             GrindInput();
         }
-
-        // 无输入时None
-        else
-        {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-        }
     }
-
-    private void CheckSwitchActionInRecovery()
-    {
-        if (inputModel.Grind.Value)
-        {
-            GrindInput();   
-        }
-    }
-    private void GrindInput()
+    protected void GrindInput()
     {
         // 优先滑轨
         if (playerModel.GrindJumpTimer.Value <= 0f && playerModel.IsNearTrack.Value)
@@ -125,11 +94,6 @@ public abstract class ActionStateBase : StateBase
             {
                 player.stateMachine.SwitchState(StateLayer.Action, "WallRide");
             }
-            // 最后Grab
-            else
-            {
-                player.stateMachine.SwitchState(StateLayer.Action, "Grab");
-            }
-        }
+        }   
     }
 }

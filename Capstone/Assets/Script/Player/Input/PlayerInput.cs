@@ -57,6 +57,7 @@ namespace SkateGame
             inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
             inputModel.JumpStart.Value = _jumpAction.WasPressedThisFrame();
             inputModel.Grind.Value = _grindAction.IsPressed();
+            inputModel.GrindStart.Value = _grindAction.WasPressedThisFrame();
             inputModel.SwitchItem.Value = _switchItemAction.WasPressedThisFrame();
             inputModel.TrickA.Value = _trickAAction.IsPressed();
             inputModel.TrickAStart.Value = _trickAAction.WasPressedThisFrame();

@@ -10,6 +10,10 @@ namespace SkateGame
         public bool isLoopNoAction = true;
         public bool ignoringMovementLayerNoAction = false;
 
+        [Header("Recovery State")]
+        public bool isLoopRecovery = false;
+        public bool ignoringMovementLayerRecovery = false;
+
         [Header("Grind State")]
         public bool isLoopGrind = true;
         public bool ignoringMovementLayerGrind = false;
@@ -39,7 +43,10 @@ namespace SkateGame
         public float recoveryDurationTrickB = 0.5f;
         [Range(0f, 1f)] public float TrickBinertia = 0.67f;
         public float TrickBspeed = 10f;
-        
+        [Header("Trick B Boost State")] 
+        public bool isLoopTrickBBoost = false;
+        public float durationTrickBBoost = 0.5f;
+        public bool ignoringMovementLayerTrickBBoost = false;
         [Header("Trick C State")]
         public bool isLoopTrickC = true;
         public bool ignoringMovementLayerTrickC = true;

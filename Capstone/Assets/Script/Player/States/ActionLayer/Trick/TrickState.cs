@@ -55,7 +55,7 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
                 playerModel.IsInPower.Value = false; // 消耗能量状态
             }
     }
-    protected bool DetectInteractiveObjectsWithRaycast()
+    protected bool DetectInteractiveObjects()
         {
             if (player == null) return false;
             Vector2 playerPosition = player.transform.position;
