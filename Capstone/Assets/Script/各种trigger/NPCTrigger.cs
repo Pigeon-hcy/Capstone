@@ -28,15 +28,27 @@ namespace SkateGame
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(Deactived) return;
-            dialogueViewer.gameObject.SetActive(true);
-            playerInputs?.SetShootLock(false);
+            if (Deactived || !other.CompareTag(playerTag)) return;
+
+            if (dialogueViewer != null)
+            {
+                dialogueViewer.gameObject.SetActive(true);
+            }
+
+            if (playerInputs == null)
+            {
+                playerInputs = other.GetComponent<PlayerInputs>() ?? other.GetComponentInParent<PlayerInputs>();
+            }
+
+            playerInputs?.SetShootLock(true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
+            if (!other.CompareTag(playerTag)) return;
+
             Deactived = true;
-            playerInputs?.SetShootLock(true);
+            playerInputs?.SetShootLock(false);
         }
     }
 }
