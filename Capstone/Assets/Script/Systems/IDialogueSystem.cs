@@ -36,7 +36,12 @@ namespace SkateGame
         private void InitDialogues()
         {
             // 查找场景中所有的DialogueViewer
-            var dialogueViewers = Object.FindObjectsByType<DialogueViewer>(FindObjectsSortMode.None);
+            DialogueViewer[] dialogueViewers;
+#if UNITY_2022_2_OR_NEWER
+            dialogueViewers = Object.FindObjectsByType<DialogueViewer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
+            dialogueViewers = Resources.FindObjectsOfTypeAll<DialogueViewer>();
+#endif
             
             if (dialogueViewers == null || dialogueViewers.Length == 0)
             {

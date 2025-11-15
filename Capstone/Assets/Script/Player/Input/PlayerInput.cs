@@ -22,6 +22,7 @@ namespace SkateGame
         InputAction _shootStartAction;
         InputAction _shootEndAction;
         InputAction _aimDirectionAction;
+        private bool _isShootLocked = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
         
         void Awake()
@@ -66,8 +67,18 @@ namespace SkateGame
             inputModel.TrickC.Value = _trickCAction.IsPressed();
             inputModel.TrickCStart.Value = _trickCAction.WasPressedThisFrame();
             inputModel.Push.Value = _pushAction.WasPressedThisFrame();
-            inputModel.ShootStart.Value = _shootStartAction.WasPressedThisFrame();
-            inputModel.ShootEnd.Value = _shootEndAction.WasReleasedThisFrame();
+
+            bool shootStart = _shootStartAction.WasPressedThisFrame();
+            bool shootEnd = _shootEndAction.WasReleasedThisFrame();
+
+            if (_isShootLocked)
+            {
+                shootStart = false;
+                shootEnd = false;
+            }
+
+            inputModel.ShootStart.Value = shootStart;
+            inputModel.ShootEnd.Value = shootEnd;
             Vector2 aimDirection = _aimDirectionAction.ReadValue<Vector2>();
 			inputModel.AimDirection.Value = GetAimDirection(aimDirection);
         }
@@ -113,6 +124,17 @@ namespace SkateGame
             if (_currentDevice != device)
             {
                 _currentDevice = device;
+            }
+        }
+
+        public void SetShootLock(bool locked)
+        {
+            _isShootLocked = locked;
+            if (locked)
+            {
+                var inputModel = this.GetModel<IInputModel>();
+                inputModel.ShootStart.Value = false;
+                inputModel.ShootEnd.Value = false;
             }
         }
 

@@ -40,10 +40,13 @@ namespace SkateGame
         
         // 私有变量
         private List<DialogueObj> ThisDialogueList;
-        private int current = 0;
+        public int current = 0;
         private int lastCurrent = -1; // 记录上一次的对话索引
         private IDialogueSystem dialogueSystem;
         private IDialogueModel dialogueModel;
+        public int CurrentIndex => current;
+        public IReadOnlyList<DialogueObj> CurrentDialogueList => ThisDialogueList;
+        public bool IsDialogueFinished => ThisDialogueList != null && ThisDialogueList.Count > 0 && current >= ThisDialogueList.Count - 1;
         
         protected override void InitializeController()
         {
@@ -141,7 +144,6 @@ namespace SkateGame
                 lastCurrent = current;
             }
             
-            EndDialogue();
         }
         
         /// <summary>
@@ -149,12 +151,16 @@ namespace SkateGame
         /// </summary>
         public void Click()
         {
-            if (dialogueModel.TableForDialogue.ContainsKey(NameForDialogue))
+           
+            if (current >= ThisDialogueList.Count - 1)
             {
-                int totalCount = dialogueModel.TableForDialogue[NameForDialogue].Count;
-                current = (current + 1) % totalCount;
-                Debug.Log($"DialogueViewer [{NameForDialogue}]: 切换到第 {current + 1}/{totalCount} 条");
+                this.gameObject.SetActive(false);
+                return;
             }
+            
+            // 继续切换到下一条
+            current++;
+        
         }
         
         /// <summary>
@@ -186,30 +192,10 @@ namespace SkateGame
             }
         }
         
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            
-            if (clickButton != null)
-            {
-                clickButton.onClick.RemoveListener(Click);
-            }
-        }
+     
         /// <summary>
         /// 结束对话，如果是最后一条则隐藏对话框
         /// </summary>
-        public void EndDialogue()
-        {
-            if (dialogueModel.TableForDialogue.ContainsKey(NameForDialogue))
-            {
-                if (current == dialogueModel.TableForDialogue[NameForDialogue].Count - 1)
-                {
-                    // 隐藏对话框GameObject
-                    mmfPlayersFadeOut.PlayFeedbacks();
-                    this.gameObject.SetActive(false);
-                    Debug.Log($"DialogueViewer [{NameForDialogue}]: 对话结束，已隐藏");
-                }
-            }
-        }
+        
     }
 }
