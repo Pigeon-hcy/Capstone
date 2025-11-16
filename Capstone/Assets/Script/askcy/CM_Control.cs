@@ -7,6 +7,10 @@ public class CM_Control : MonoBehaviour
     public CinemachineCamera virtualCamera;
     public CinemachinePositionComposer positionComposer;
     
+    [Header("Z轴锁定")]
+    public bool lockZAxis = true; // 是否锁定相机Z轴
+    public float lockedZ = -10f; // 锁定的Z轴位置
+    
     [Header("镜头跟随设置")]
     public float followSpeed = 2f; // 镜头跟随速度
     public float maxOffset = 3f; // 最大偏移距离
@@ -93,6 +97,16 @@ public class CM_Control : MonoBehaviour
         
         // 调整FOV
         UpdateFOV();
+    }
+    
+    void LateUpdate()
+    {
+        // 锁定相机Z轴位置
+        if (lockZAxis && virtualCamera != null)
+        {
+            Transform camTransform = virtualCamera.transform;
+            camTransform.position = new Vector3(camTransform.position.x, camTransform.position.y, lockedZ);
+        }
     }
     
     void CalculateCameraOffset()

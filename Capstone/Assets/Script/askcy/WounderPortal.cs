@@ -5,6 +5,8 @@ public class WounderPortal : MonoBehaviour
     public float targetZ;
     public bool reCover = false;
 
+    public OrthSync orthSync;
+    public float orthSyncOffsetNumber;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
@@ -23,6 +25,8 @@ public class WounderPortal : MonoBehaviour
                     spriteRenderer.color = Color.white;
                 }
             }
+
+            orthSync.syncDistance = orthSyncOffsetNumber;
         
         }
     }
