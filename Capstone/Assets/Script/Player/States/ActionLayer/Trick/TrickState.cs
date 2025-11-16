@@ -55,8 +55,9 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
                 playerModel.IsInPower.Value = false; // 消耗能量状态
             }
     }
-    protected bool DetectInteractiveObjects()
+    protected bool DetectInteractiveObjects(out Collider2D[] detectColliders)
         {
+            detectColliders = null;   
             if (player == null) return false;
             Vector2 playerPosition = player.transform.position;
             float detectionRadius = 2f; // 检测半径
@@ -66,6 +67,7 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
             if(colliders.Length > 0)
             {
                 this.GetModel<IPlayerModel>().IsInPower.Value = true;
+                detectColliders  =colliders;
                 return true;
             }
             return false;

@@ -22,7 +22,7 @@ public class TrickAState : TrickState
     }
     protected override void UpdateActionState()
     {
-        if(DetectInteractiveObjects()){
+        if(DetectInteractiveObjects(out Collider2D[] colldiers)){
             player.TrickABoostEffect.PlayFeedbacks();
             player.SendEvent<TrickARewardEvent>();
             player.stateMachine.SwitchState(StateLayer.Action, "None");

@@ -3,7 +3,12 @@ using QFramework;
 
 namespace SkateGame
 {
-    public class BasicEnemyController : MonoBehaviour, IController, IAttackable
+
+    public enum EnemyMessage
+    {
+        Die
+    }
+    public class BasicEnemyController : MonoBehaviour, IController, IAttackable, IInteractable
     {
         public EnemyConfig config;
 
@@ -157,6 +162,14 @@ namespace SkateGame
             rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
 
 
+        }
+
+        public void DoInteraction()
+        {
+            MessageBox box = new MessageBox();
+            box.gmo = this.gameObject;
+            MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
+            Destroy(gameObject);
         }
 
         void OnDrawGizmos()

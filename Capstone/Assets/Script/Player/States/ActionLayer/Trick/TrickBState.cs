@@ -22,7 +22,10 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
-        if(DetectInteractiveObjects()){
+        if(DetectInteractiveObjects(out Collider2D[] colliders)){
+            //尝试对第一个进行交互
+            IInteractable interact = colliders[0].GetComponent<IInteractable>();
+            interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
             player.stateMachine.SwitchState(StateLayer.Action, "TrickBBoost");
         }

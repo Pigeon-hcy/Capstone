@@ -66,6 +66,7 @@ public class MessageBox
     public Vector3 vec3;      // 常见空间类型
     public object extra;      // 万能扩展字段
     public Transform trans;
+    public GameObject gmo;
 
     public MessageBox Copy()
     {
@@ -81,6 +82,7 @@ public class MessageBox
         c.vec3 = vec3;
         c.extra = extra;
         c.trans = trans;
+        c.gmo = gmo;
 
         
         return c;
