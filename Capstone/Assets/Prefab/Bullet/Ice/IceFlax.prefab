@@ -282,9 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d511a2e327e67f546a139d6c9e84ebb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
-  timeToCreateTrack: 0.075
-  trackPrefab: {fileID: 6713856993244096129, guid: babdd7140ad9edf46a2d06f12dcfbc02, type: 3}
+  speed: 75
+  timeToCreateTrack: 0.15
+  trackPrefab: {fileID: 6713856993244096129, guid: bae0ceb3aa4dd264d86846a997bbb813, type: 3}
   elapsedTime: 0
   spawned: 0
   TempLiftPrefab: {fileID: 0}

@@ -18,6 +18,15 @@ public class Lifetime : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        lifetime -= Time.deltaTime;
+        if (lifetime <= 0)
+        {
+            DestroyObject();
+        }
+    }
+
     void DestroyObject()
     {
         Destroy(gameObject);
