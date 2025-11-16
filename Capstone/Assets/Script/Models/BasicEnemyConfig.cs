@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkateGame
@@ -28,5 +29,11 @@ namespace SkateGame
 
         [Header("扑的力度")]
          public float jumpForce = 10f;
+
+         [Header("扑之后攻击box启动时间")]
+         public float JumpAtkBoxActiveTime = 3;
+
+         [Header("攻击的tag")]
+         public List<string> AtkTags;
     }
 }
