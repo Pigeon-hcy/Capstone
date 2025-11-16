@@ -167,12 +167,12 @@ namespace SkateGame
             float jumpForce = enemyModel.JumpForce.Value*1000;
 
             rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
+            BoxCollider2D cld = GetComponent<BoxCollider2D>();
             if(dmgBox == null)
             {
                 dmgBox = Instantiate(Resources.Load<GameObject>(PathReference.ReportBoxPath),transform).GetComponent<ReportBox>();
-                BoxCollider2D cld = GetComponent<BoxCollider2D>();
-                dmgBox.ReportBoxOn(enemyModel.AtkTags.Value, AtkHandler,cld == null?new Vector2(1,1):cld.size );
             }
+            dmgBox.ReportBoxOn(enemyModel.AtkTags.Value, AtkHandler,cld == null?new Vector2(1,1):cld.size );
             
 
         }
@@ -187,7 +187,7 @@ namespace SkateGame
             MessageBox box = new MessageBox();
             box.gmo = this.gameObject;
             MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
-            Destroy(gameObject);
+            Die();
         }
 
         void OnDrawGizmos()
@@ -218,6 +218,9 @@ namespace SkateGame
     void Die()
     {
         if (rb) rb.linearVelocity = Vector2.zero;
+        if(dmgBox!= null)
+            dmgBox.ReportBoxClose();
+        dmgBox = null;
         Destroy(gameObject, 0.1f);
     }
 
