@@ -1,5 +1,6 @@
 using UnityEngine;
 using QFramework;
+using System.Collections.Generic;
 
 namespace SkateGame
 {
@@ -26,6 +27,8 @@ namespace SkateGame
           public BindableProperty<float> JumpAngleModifier {get;}
 
            public BindableProperty<float> JumpForce {get;}
+           public BindableProperty<float> JumpAtkBoxActiveTime  {get;}
+           public BindableProperty<List<string>> AtkTags {get;} 
 
 
 
@@ -56,6 +59,9 @@ namespace SkateGame
         public BindableProperty<float> JumpAngleModifier {get;} = new BindableProperty<float>(0.7f);
 
            public BindableProperty<float> JumpForce {get;} = new BindableProperty<float>(10f);
+           public BindableProperty<float> JumpAtkBoxActiveTime  {get;} = new BindableProperty<float>(1);
+
+           public BindableProperty<List<string>> AtkTags {get;} = new BindableProperty<List<string>>();
 
         protected override void OnInit()
         {

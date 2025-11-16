@@ -23,3 +23,6 @@ MonoBehaviour:
   detectRadius: 20
   jumpAngleModifier: 0.7
   jumpForce: 10
+  JumpAtkBoxActiveTime: 3
+  AtkTags:
+  - Player

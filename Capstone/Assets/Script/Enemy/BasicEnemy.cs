@@ -32,9 +32,9 @@ namespace SkateGame
     private bool movePaused = false;
 
     public LayerMask GroundLayer;
-    private float resetMoveTime = 3;
     private float timeCount = 0;
 
+    protected ReportBox dmgBox;
     void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
@@ -50,6 +50,8 @@ namespace SkateGame
         enemyModel.GuardIncreaseSpeed.Value = enemyModel.Config.Value.guardIncreaseSpeed;
         enemyModel.JumpForce.Value = enemyModel.Config.Value.jumpForce;
         enemyModel.JumpAngleModifier.Value = enemyModel.Config.Value.jumpAngleModifier;
+        enemyModel.JumpAtkBoxActiveTime.Value = enemyModel.Config.Value.JumpAtkBoxActiveTime;
+        enemyModel.AtkTags.Value  = enemyModel.Config.Value.AtkTags;
 
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
@@ -119,7 +121,12 @@ namespace SkateGame
             {
                 timeCount  -= Time.deltaTime;
                 if(timeCount<=0)
-                    movePaused = false;
+                {
+                     movePaused = false;
+                     dmgBox.ReportBoxClose();
+                     dmgBox = null;
+                }
+                   
             }
         
     }
@@ -127,7 +134,7 @@ namespace SkateGame
         protected virtual void JumpTowardPlayer(Transform pTrans)
         {
             movePaused = true;
-            timeCount = resetMoveTime;
+            timeCount = enemyModel.JumpAtkBoxActiveTime.Value;
             //Debug.LogError("jump");
              Vector2 selfPos = transform.position;
             Vector2 targetPos = pTrans.position;
@@ -160,8 +167,19 @@ namespace SkateGame
             float jumpForce = enemyModel.JumpForce.Value*1000;
 
             rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
+            if(dmgBox == null)
+            {
+                dmgBox = Instantiate(Resources.Load<GameObject>(PathReference.ReportBoxPath),transform).GetComponent<ReportBox>();
+                BoxCollider2D cld = GetComponent<BoxCollider2D>();
+                dmgBox.ReportBoxOn(enemyModel.AtkTags.Value, AtkHandler,cld == null?new Vector2(1,1):cld.size );
+            }
+            
 
+        }
 
+        public void AtkHandler(GameObject gameObject)
+        {
+            Debug.Log("PlayerDie!");
         }
 
         public void DoInteraction()
