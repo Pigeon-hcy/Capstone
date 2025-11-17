@@ -52,6 +52,7 @@ public class fireBullet : MonoBehaviour
                 Debug.Log("iceExplodeWithoutDestroy");
             }else{
                 iceExplode(other.gameObject);
+                
             }
             return;
         }
@@ -90,7 +91,15 @@ public class fireBullet : MonoBehaviour
     {
         Instantiate(BIGexplosionPrefab, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
-        Destroy(other.gameObject);
+        // 删除父物体而不是子物体
+        if (other.transform.parent != null)
+        {
+            Destroy(other.transform.parent.gameObject);
+        }
+        else
+        {
+            Destroy(other.gameObject);
+        }
     }
 
 
