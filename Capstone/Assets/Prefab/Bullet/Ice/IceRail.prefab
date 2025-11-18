@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 415440860543884462}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Ice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 27791774688788805}
   m_Layer: 0
   m_Name: IceRail
-  m_TagString: Ice
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

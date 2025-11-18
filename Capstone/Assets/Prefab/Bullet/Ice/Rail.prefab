@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 7400881546395731753}
   m_Layer: 0
   m_Name: Rail
-  m_TagString: Ice
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
