@@ -35,7 +35,8 @@ public abstract class ActionStateBase : StateBase
         else
         {
             player.animator.SetLayerWeight(0, 1);
-            player.animator.SetLayerWeight(1, 0);}
+            player.animator.SetLayerWeight(1, 0);
+        }
 
         EnterActionState();
     }

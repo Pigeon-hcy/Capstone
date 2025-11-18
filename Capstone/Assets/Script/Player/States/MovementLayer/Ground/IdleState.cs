@@ -24,7 +24,6 @@ public class IdleState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        float moveInput = inputModel.Move.Value.x;
 
         /* 状态切换 */
         // 移动 

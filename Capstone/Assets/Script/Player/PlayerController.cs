@@ -2,10 +2,7 @@ using UnityEngine;
 using QFramework;
 using System.Collections;
 using MoreMountains.Feedbacks;
-using System;
-using UnityEditor.ShaderGraph;
-using Unity.VisualScripting;
-
+using TMPro;
 namespace SkateGame
 {
     /// <summary>

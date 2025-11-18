@@ -26,5 +26,6 @@ public class TrickBBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void ExitActionState()
     {
         player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = false });
+        player.SendEvent<TrickBResetSpeedEvent>();
     } 
 }
