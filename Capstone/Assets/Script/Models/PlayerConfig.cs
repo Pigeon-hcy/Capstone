@@ -52,6 +52,7 @@ namespace SkateGame
         public bool ignoringMovementLayerTrickC = true;
         public float TrickCspeed = 10f;
         [Range(0f, 1f)] public float TrickCinertia = 0.67f;
+        public float recoveryDurationTrickC = 0.5f;
 
         [Header("========== 基础参数 ==========")]
         

@@ -15,8 +15,9 @@ public class RecoveryState : ActionStateBase
     {
         var prev = playerModel.LastActionStateName.Value;
         stateDuration = 0f;
-        if (prev == "TrickB") stateDuration = playerModel.Config.Value.recoveryDurationTrickB;
-        else if (prev == "TrickA") stateDuration = playerModel.Config.Value.recoveryDurationTrickA;
+        if (prev == "TrickA") stateDuration = playerModel.Config.Value.recoveryDurationTrickA;
+        else if (prev == "TrickB") stateDuration = playerModel.Config.Value.recoveryDurationTrickB;
+        else if (prev == "TrickC") stateDuration = playerModel.Config.Value.recoveryDurationTrickC;
         else if (prev == "Push") stateDuration = playerModel.Config.Value.recoveryDurationPush;
     }
     protected override void UpdateActionState()

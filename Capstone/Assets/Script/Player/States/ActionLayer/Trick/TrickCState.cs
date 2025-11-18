@@ -21,7 +21,7 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     {
         if(!inputModel.TrickC.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
+            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
         }
     }
 

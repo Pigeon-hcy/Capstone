@@ -281,7 +281,7 @@ namespace SkateGame
         }
         private void ResetSpeedAfterTrickC()
         {
-            rb.linearVelocity = new Vector2(0, -playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia);
         }
 
         private void ApplyTrickAReward()
