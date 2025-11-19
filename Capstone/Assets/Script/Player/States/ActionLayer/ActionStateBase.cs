@@ -66,7 +66,7 @@ public abstract class ActionStateBase : StateBase
         {
             player.stateMachine.SwitchState(StateLayer.Action, "TrickB");
         }
-        else if(inputModel.TrickC.Value && !playerModel.IsGrounded.Value)
+        else if(inputModel.TrickCStart.Value && !playerModel.IsGrounded.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Action, "TrickC");
         }

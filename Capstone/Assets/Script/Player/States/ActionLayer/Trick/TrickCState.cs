@@ -23,6 +23,10 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
         {
             player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
         }
+        if(playerModel.IsGrounded.Value)
+        {
+            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
+        }
     }
 
     protected override void ExitActionState()
