@@ -244,9 +244,6 @@ namespace SkateGame
 
         private void ApplyPowerGrind()
         {   
-            Vector2 right = (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
-            float vRight = Vector2.Dot(rb.linearVelocity, right);
-            
             float deceleration = playerModel.Config.Value.powerGrindDeceleration;
             float direction = Mathf.Sign(vRight);
             // 逐渐减少的速度，保持方向不变
@@ -257,8 +254,7 @@ namespace SkateGame
             {
                 newVx = 0f;
             }
-
-            rb.linearVelocity = new Vector2(newVx, rb.linearVelocity.y);
+            rb.linearVelocity = newVx*right + vUp*up;
         }
 
         private void ApplyGrind()
@@ -281,7 +277,14 @@ namespace SkateGame
         }
         private void ResetSpeedAfterTrickC()
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia);
+            Vector2 targetRight = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
+            Vector2 vHorizontal = new Vector2(rb.linearVelocity.x, 0);
+            Debug.Log("vHorizontal: " + vHorizontal);
+            float targetVRight = Vector2.Dot(vHorizontal, targetRight);
+            Debug.Log("targetVRight: " + targetVRight);
+            Vector2 targetUp = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized; 
+            rb.linearVelocity = targetVRight*targetRight + 
+                playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia * targetUp;
         }
 
         private void ApplyTrickAReward()
@@ -314,8 +317,8 @@ namespace SkateGame
         #region Helper
 
         // Direction
-        private Vector2 up => Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.up;
-        private Vector2 right => Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right;
+        private Vector2 up => (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.up).normalized;
+        private Vector2 right => (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
         private float vUp => Vector2.Dot(rb.linearVelocity, up);
         private float vRight => Vector2.Dot(rb.linearVelocity, right);
 
