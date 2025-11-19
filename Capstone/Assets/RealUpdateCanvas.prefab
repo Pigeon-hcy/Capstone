@@ -359,6 +359,7 @@ MonoBehaviour:
   - {fileID: 1443190807939881256, guid: 8554712f8ff149b4581480fc76cdec5c, type: 3}
   - {fileID: 7596078805163123562, guid: 0b3cc1ea2b01dc84fab9d9aeacac1f34, type: 3}
   gradeImage: {fileID: 646278441353493996}
+  decreaseRatePerSecond: 15
 --- !u!114 &2881793555786794175
 MonoBehaviour:
   m_ObjectHideFlags: 0
