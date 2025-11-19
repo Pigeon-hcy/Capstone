@@ -28,7 +28,7 @@ public abstract class GroundMovementState : StateBase
 
     private void switchAirborneMovement()
     {
-        if (inputModel.JumpStart.Value)
+        if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
         }

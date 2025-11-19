@@ -27,6 +27,12 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
         {
             player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
         }
+        if(DetectInteractiveObjects(out Collider2D[] colliders))
+        {
+            IInteractable interact = colliders[0].GetComponent<IInteractable>();
+            interact?.DoInteraction();
+            player.stateMachine.SwitchState(StateLayer.Action, "TrickCBoost");
+        }
     }
 
     protected override void ExitActionState()
