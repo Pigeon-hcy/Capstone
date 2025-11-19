@@ -209,7 +209,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "Rank\u5E95\u6846_0": -2629128578349120220
+      "Rank\u5E95\u6846_1": 6471684179054321096
+      "Rank\u5E95\u6846_2": 9072668112749737758
+      "Rank\u5E95\u6846_3": 2426289315043312583
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -41,7 +41,7 @@ MonoBehaviour:
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
   TrickCspeed: 15
-  TrickCinertia: 0.8
+  TrickCinertia: 0.25
   recoveryDurationTrickC: 0.5
   groundRotationSpeed: 10
   airRotationSpeed: 4

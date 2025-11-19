@@ -26,6 +26,7 @@ namespace SkateGame
 
         [Header("Animation")]
         public Animator animator;
+        private GameObject sprite => animator.gameObject;
 
         [Header("瞄准与射击设置")]
         public LineRenderer aimLine;      // 瞄准线 temp
@@ -388,7 +389,7 @@ namespace SkateGame
             float currentMoveInput = inputModel.Move.Value.x;
 
             // 检测是否有移动输入
-            if (Mathf.Abs(currentMoveInput) > 0.01f)
+            if (Mathf.Abs(rb.linearVelocity.x) > 0.01f)
             {
                 bool shouldFaceRight = currentMoveInput > 0;
                 // 检测方向是否改变
@@ -403,6 +404,8 @@ namespace SkateGame
                     }
                 }
             }
+            // 更新Sprite方向
+            sprite.transform.localScale = new Vector3(playerModel.IsFacingRight.Value ? 1 : -1, 1, 1);
         }
 
         #region Helper Methods
