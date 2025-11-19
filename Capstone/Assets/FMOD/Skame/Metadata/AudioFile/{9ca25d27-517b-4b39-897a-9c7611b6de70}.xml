@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{9ca25d27-517b-4b39-897a-9c7611b6de70}">
+		<property name="assetPath">
+			<value>skateboard_whoosh_pre_land.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.7084583333333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>
+		</relationship>
+	</object>
+</objects>
