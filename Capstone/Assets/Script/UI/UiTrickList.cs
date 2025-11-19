@@ -11,6 +11,8 @@ namespace SkateGame
     {
         public TextMeshProUGUI tricksText;     
         public TextMeshProUGUI gradeText;
+        public Sprite[] gradeSprites = new Sprite[5];
+        public Image gradeImage;
         private ITrickListModel trickModel;
         private IPlayerModel playerModel;
         private ITrickSystem trickSystem;
@@ -43,14 +45,14 @@ namespace SkateGame
         protected override void OnRealTimeUpdate()
         {
             // 检测落地，清空技巧列表
+            
             if (playerModel != null && playerModel.IsGrounded.Value)
             {
                 tricksText.text = "";
                 sum += trickSystem.SumOfScore();
                 
-                // 根据分数计算等级
-                char grade = CalculateGrade(sum);
-                gradeText.text = grade.ToString();
+                // 根据分数更新等级图片
+                DisplayGrade();
                 
                 trickSystem.RemoveAllTricks();
             }
@@ -59,36 +61,36 @@ namespace SkateGame
         /// <summary>
         /// 根据分数计算等级
         /// </summary>
-        private char CalculateGrade(int score)
+        private int CalculateGrade(int score)
         {
-            char grade;
+            int index;
             switch (score)
             {
                 case >= 100:
-                    grade = 'S'; // 最高等级
+                    index=0;
                     break;
                 case >= 80:
-                    grade = 'A';
+                     index=1;
                     break;
                 case >= 60:
-                    grade = 'B';
+                   index=2;
                     break;
                 case >= 40:
-                    grade = 'C';
+                    index=3;
                     break;
                 case >= 20:
-                    grade = 'D';
+                    index=4;
                     break;
                 case >= 10:
-                    grade = 'E';
+                    index=4;
                     break;
                 default:
-                    grade = 'F'; // 最低等级
+                    index=4;
                     break;
             }
             
-            Debug.Log($"UiTrickList: 分数 {score} -> 等级 {grade}");
-            return grade;
+            Debug.Log($"UiTrickList: 分数 {score} -> 等级索引 {index}");
+            return index;
         }
         
         /// <summary>
@@ -123,11 +125,17 @@ namespace SkateGame
 
         public void DisplayGrade()
         {
-            if (gradeText == null || trickModel == null) return;
+            if (gradeImage == null || gradeSprites == null || gradeSprites.Length == 0) return;
             
-            // 使用当前总分计算等级
-            char currentGrade = CalculateGrade(sum);
-            gradeText.text = currentGrade.ToString();
+            // 使用当前总分计算等级索引
+            int gradeIndex = CalculateGrade(sum);
+            
+            // 确保索引在有效范围内
+            if (gradeIndex >= 0 && gradeIndex < gradeSprites.Length)
+            {
+                gradeImage.sprite = gradeSprites[gradeIndex];
+                gradeImage.enabled = true;
+            }
         }
     }
 }

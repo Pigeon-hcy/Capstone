@@ -14,6 +14,7 @@ namespace SkateGame
         BindableProperty<List<TrickState>> TrickList { get; }
         BindableProperty<char> Grade { get; }
         void printTrickList();
+        int DecreaseSumByTime(int currentSum, float elapsedSeconds, float decreasePerSecond = 1f);
     }
 
     public class TrickSystem : AbstractSystem, ITrickSystem, ICanSendCommand, ICanSendEvent
@@ -91,6 +92,26 @@ namespace SkateGame
                 Debug.Log("System print trick list: " + trick.GetStateName());
             }
         }
+        
+       
+        public int DecreaseSumByTime(int currentSum, float elapsedSeconds, float decreasePerSecond = 1f)
+        {
+            if (currentSum <= 0 || elapsedSeconds <= 0)
+            {
+                return currentSum;
+            }
+            
+            // 计算应该减少的分数
+            float decreaseAmount = elapsedSeconds * decreasePerSecond;
+            
+            // 减少分数，确保不会小于0
+            int newSum = Mathf.Max(0, currentSum - Mathf.RoundToInt(decreaseAmount));
+            
+            Debug.Log($"TrickSystem: 总分随时间减少 - 原始: {currentSum}, 经过时间: {elapsedSeconds}秒, 减少: {Mathf.RoundToInt(decreaseAmount)}, 新总分: {newSum}");
+            
+            return newSum;
+        }
+        
         #endregion
 
         #region Private Methods
