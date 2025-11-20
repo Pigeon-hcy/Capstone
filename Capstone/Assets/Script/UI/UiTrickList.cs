@@ -14,12 +14,14 @@ namespace SkateGame
         public Sprite[] gradeSprites = new Sprite[5];
         public Image gradeImage;
         [Header("分数减少设置")]
-        public float decreaseRatePerSecond = 15f; // 默认每秒减少15分，类似鬼泣风格
+        public float decreaseRatePerSecond = 10f;
+        [Header("Fill衰减设置")]
+        public float maxSumForFill = 100f; // fillAmount为1时的最大分数值
         
         private ITrickListModel trickModel;
         private IPlayerModel playerModel;
         private ITrickSystem trickSystem;
-        private int sum = 0;
+        private float sum = 0f;
         private float lastUpdateTime = 0f;
         private float accumulatedDecrease = 0f; // 累积的减少量（用于平滑衰减）
 
@@ -52,61 +54,31 @@ namespace SkateGame
 
         protected override void OnRealTimeUpdate()
         {
-            if (sum > 0)
-            {
-                float currentTime = Time.time;
-                float deltaTime = currentTime - lastUpdateTime;
-                
-                if (deltaTime > 0 && lastUpdateTime > 0)
-                {
-                    // 累积减少量（每帧都累积，实现平滑连续衰减）
-                    accumulatedDecrease += deltaTime * decreaseRatePerSecond;
-                    
-                    // 当累积减少量达到0.1分或更多时，减少分数（阈值低，衰减更平滑）
-                    if (accumulatedDecrease >= 0.1f)
-                    {
-                        int decreaseAmount = Mathf.FloorToInt(accumulatedDecrease);
-                        if (decreaseAmount > 0)
-                        {
-                            int oldSum = sum;
-                            sum = Mathf.Max(0, sum - decreaseAmount);
-                            accumulatedDecrease -= decreaseAmount; // 保留小数部分
-                            
-                            // 如果分数发生变化，更新等级图片
-                            if (sum != oldSum)
-                            {
-                                DisplayGrade();
-                            }
-                        }
-                    }
-                }
-                
-                lastUpdateTime = currentTime;
-            }
-            else
-            {
-                // sum为0时，重置累积减少量
-                accumulatedDecrease = 0f;
-                lastUpdateTime = Time.time;
-            }
             
-            // 检测落地，清空技巧列表
+            // 计算时间差
+            float currentTime = Time.time;
+            float deltaTime = currentTime - lastUpdateTime;
+            
+            // 每秒减少1，确保不小于0
+            float decreaseAmount = 1f * deltaTime;
+            sum = Mathf.Max(0f, sum - decreaseAmount);
+            
+            // 更新最后更新时间
+            lastUpdateTime = currentTime;
+            gradeImage.fillAmount = sum%20/20;
+            
             if (playerModel != null && playerModel.IsGrounded.Value)
             {
                 tricksText.text = "";
                 sum += trickSystem.SumOfScore();
                 
-                // 重置累积减少量（落地时重新开始计时）
-                accumulatedDecrease = 0f;
-                
+             
                 // 根据分数更新等级图片
                 DisplayGrade();
                 
-                // 重置更新时间
-                lastUpdateTime = Time.time;
-                
                 trickSystem.RemoveAllTricks();
             }
+            
         }
         
         /// <summary>
@@ -141,21 +113,13 @@ namespace SkateGame
             }
             
             Debug.Log($"UiTrickList: 分数 {score} -> 等级索引 {index}");
+
             return index;
         }
         
-        /// <summary>
-        /// 重置总分（可在Inspector中调用）
-        /// </summary>
-        [ContextMenu("重置总分")]
-        public void ResetSum()
-        {
-            sum = 0;
-            Debug.Log("UiTrickList: 总分已重置为 0");
-            DisplayGrade();
-        }
+    
 
-
+       
         public void RefreshUI()
         {
             if (tricksText == null || trickModel == null || trickModel.TrickList.Value.Count == 0) return;
@@ -178,8 +142,8 @@ namespace SkateGame
         {
             if (gradeImage == null || gradeSprites == null || gradeSprites.Length == 0) return;
             
-            // 使用当前总分计算等级索引
-            int gradeIndex = CalculateGrade(sum);
+            // 使用当前总分计算等级索引（将float转换为int）
+            int gradeIndex = CalculateGrade(Mathf.RoundToInt(sum));
             
             // 确保索引在有效范围内
             if (gradeIndex >= 0 && gradeIndex < gradeSprites.Length)
@@ -187,6 +151,7 @@ namespace SkateGame
                 gradeImage.sprite = gradeSprites[gradeIndex];
                 gradeImage.enabled = true;
             }
+            
         }
     }
 }
