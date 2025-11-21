@@ -18,7 +18,7 @@ MonoBehaviour:
   maxHealth: 30
   startFacingRight: 1
   gravityScale: 2
-  guardIncreaseSpeed: 5
+  guardIncreaseSpeed: 2
   guardDecreaseSpeed: 0.5
   detectRadius: 20
   jumpAngleModifier: 0.7

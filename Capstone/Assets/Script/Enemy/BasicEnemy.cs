@@ -52,6 +52,7 @@ namespace SkateGame
         enemyModel.JumpAngleModifier.Value = enemyModel.Config.Value.jumpAngleModifier;
         enemyModel.JumpAtkBoxActiveTime.Value = enemyModel.Config.Value.JumpAtkBoxActiveTime;
         enemyModel.AtkTags.Value  = enemyModel.Config.Value.AtkTags;
+        enemyModel.CanBeKilledByQ.Value = enemyModel.Config.Value.canBeKilledByQ;
 
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
@@ -180,14 +181,23 @@ namespace SkateGame
         public void AtkHandler(GameObject gameObject)
         {
             Debug.Log("PlayerDie!");
+            var respawnSystem  = this.GetSystem<IRespawnSystem>();
+            if(respawnSystem!=null)
+            {
+                respawnSystem.RespawnPlayer();
+            }
         }
 
         public void DoInteraction()
         {
-            MessageBox box = new MessageBox();
-            box.gmo = this.gameObject;
-            MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
-            Die();
+            if(enemyModel.CanBeKilledByQ.Value)
+            {
+                 MessageBox box = new MessageBox();
+                box.gmo = this.gameObject;
+                MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
+                Die();
+            }
+           
         }
 
         void OnDrawGizmos()
