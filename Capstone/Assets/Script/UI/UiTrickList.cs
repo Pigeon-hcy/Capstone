@@ -22,7 +22,6 @@ namespace SkateGame
         private IPlayerModel playerModel;
         private ITrickSystem trickSystem;
         private float sum = 0f;
-        private float lastUpdateTime = 0f;
         private float accumulatedDecrease = 0f; // 累积的减少量（用于平滑衰减）
 
         protected override void InitializeController()
