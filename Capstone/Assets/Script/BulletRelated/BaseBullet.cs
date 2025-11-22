@@ -33,7 +33,7 @@ namespace BulletToolKit
     }
 
     
-    [CreateAssetMenu(fileName = "BaseBulletFactory", menuName = "Factory/BaseBulletFactory")]
+    [CreateAssetMenu(fileName = "BaseBulletFact", menuName = "Factory/BaseBulletFact")]
     public class BaseBulletFactory : BulletFactory
     {
         public GameObject prefab;

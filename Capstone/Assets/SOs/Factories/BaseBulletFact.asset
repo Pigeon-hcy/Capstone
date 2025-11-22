@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: BaseBulletFactory
+  m_Name: BaseBulletFact
   m_EditorClassIdentifier: Assembly-CSharp:BulletToolKit:BaseBulletFactory
   prefab: {fileID: 550507837884511860, guid: 458602e0ece0d41fc83cf73719af5677, type: 3}

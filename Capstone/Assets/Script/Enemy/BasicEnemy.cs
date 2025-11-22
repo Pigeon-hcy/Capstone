@@ -61,6 +61,8 @@ namespace SkateGame
 
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
+        rb.linearVelocity = Vector2.zero;
+        
 
         // 初始化为移动阶段
         waiting   = false;
