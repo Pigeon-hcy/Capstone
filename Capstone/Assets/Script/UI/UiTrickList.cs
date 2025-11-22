@@ -1,192 +1,157 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Text;
-using System.Collections;
-using System.Linq;
 using QFramework;
 using TMPro;
+
 namespace SkateGame
 {
     public class UiTrickList : ViewerControllerBase
     {
-        public TextMeshProUGUI tricksText;     
-        public TextMeshProUGUI gradeText;
+        public TextMeshProUGUI tricksText;
+
         public Sprite[] gradeSprites = new Sprite[5];
         public Image gradeImage;
-        [Header("分数减少设置")]
-        public float decreaseRatePerSecond = 15f; // 默认每秒减少15分，类似鬼泣风格
+
         
+        public Sprite[] frameSprites = new Sprite[5];
+        public Image frameImage;
+
+       
+        public Sprite[] decorationSprites = new Sprite[5];
+        public Image decorationImage;
+
+       
+        public float decayPerSecond = 0.1f;
+
         private ITrickListModel trickModel;
         private IPlayerModel playerModel;
         private ITrickSystem trickSystem;
-        private int sum = 0;
-        private float lastUpdateTime = 0f;
-        private float accumulatedDecrease = 0f; // 累积的减少量（用于平滑衰减）
 
+        private float sum = 0f;
+        private int gradeIndex = 4; // S=0, A=1, B=2, C=3, D=4
+        private float fill = 0f;
+
+        private int groundedFrame = 0;
+        private const int groundedNeed = 3;
+
+        //-------------------------------------------------------
+        // 初始化
+        //-------------------------------------------------------
         protected override void InitializeController()
         {
             trickModel = this.GetModel<ITrickListModel>();
             playerModel = this.GetModel<IPlayerModel>();
             trickSystem = this.GetSystem<ITrickSystem>();
-            
-            // 初始化时间跟踪
-            lastUpdateTime = Time.time;
-            
-            if (trickModel != null)
-            {
-                RefreshUI();
-                DisplayGrade();
-                
-                // 注册事件监听
-                this.RegisterEvent<TrickListChangedEvent>(OnTrickListChanged)
-                    .UnRegisterWhenGameObjectDestroyed(gameObject);
-                
-            }
-        }
-        
-        private void OnTrickListChanged(TrickListChangedEvent evt)
-        {
-            
-            RefreshUI();
+
+            gradeIndex = 4; 
+            fill = 0f;
+
+            UpdateAllSprites();
+            gradeImage.fillAmount = 0f;
         }
 
+        //-------------------------------------------------------
+        // 实时检测（基类 Update 调用）
+        //-------------------------------------------------------
         protected override void OnRealTimeUpdate()
         {
-            if (sum > 0)
+            HandleLandingDetection();
+            UpdateFill(Time.deltaTime);
+        }
+
+        //-------------------------------------------------------
+        // 落地检测（稳定 3 帧）
+        //-------------------------------------------------------
+        private void HandleLandingDetection()
+        {
+            if (playerModel == null) return;
+
+            if (playerModel.IsGrounded.Value)
             {
-                float currentTime = Time.time;
-                float deltaTime = currentTime - lastUpdateTime;
-                
-                if (deltaTime > 0 && lastUpdateTime > 0)
-                {
-                    // 累积减少量（每帧都累积，实现平滑连续衰减）
-                    accumulatedDecrease += deltaTime * decreaseRatePerSecond;
-                    
-                    // 当累积减少量达到0.1分或更多时，减少分数（阈值低，衰减更平滑）
-                    if (accumulatedDecrease >= 0.1f)
-                    {
-                        int decreaseAmount = Mathf.FloorToInt(accumulatedDecrease);
-                        if (decreaseAmount > 0)
-                        {
-                            int oldSum = sum;
-                            sum = Mathf.Max(0, sum - decreaseAmount);
-                            accumulatedDecrease -= decreaseAmount; // 保留小数部分
-                            
-                            // 如果分数发生变化，更新等级图片
-                            if (sum != oldSum)
-                            {
-                                DisplayGrade();
-                            }
-                        }
-                    }
-                }
-                
-                lastUpdateTime = currentTime;
+                groundedFrame++;
+
+                if (groundedFrame == groundedNeed)
+                    OnLanding();
             }
             else
             {
-                // sum为0时，重置累积减少量
-                accumulatedDecrease = 0f;
-                lastUpdateTime = Time.time;
+                groundedFrame = 0;
             }
-            
-            // 检测落地，清空技巧列表
-            if (playerModel != null && playerModel.IsGrounded.Value)
-            {
-                tricksText.text = "";
-                sum += trickSystem.SumOfScore();
-                
-                // 重置累积减少量（落地时重新开始计时）
-                accumulatedDecrease = 0f;
-                
-                // 根据分数更新等级图片
-                DisplayGrade();
-                
-                // 重置更新时间
-                lastUpdateTime = Time.time;
-                
-                trickSystem.RemoveAllTricks();
-            }
-        }
-        
-        /// <summary>
-        /// 根据分数计算等级
-        /// </summary>
-        private int CalculateGrade(int score)
-        {
-            int index;
-            switch (score)
-            {
-                case >= 100:
-                    index=0;
-                    break;
-                case >= 80:
-                     index=1;
-                    break;
-                case >= 60:
-                   index=2;
-                    break;
-                case >= 20:
-                    index=3;
-                    break;
-                case >= 15:
-                    index=4;
-                    break;
-                case >= 10:
-                    index=4;
-                    break;
-                default:
-                    index=4;
-                    break;
-            }
-            
-            Debug.Log($"UiTrickList: 分数 {score} -> 等级索引 {index}");
-            return index;
-        }
-        
-        /// <summary>
-        /// 重置总分（可在Inspector中调用）
-        /// </summary>
-        [ContextMenu("重置总分")]
-        public void ResetSum()
-        {
-            sum = 0;
-            Debug.Log("UiTrickList: 总分已重置为 0");
-            DisplayGrade();
         }
 
-
-        public void RefreshUI()
+        //-------------------------------------------------------
+        // fill 衰减与掉级
+        //-------------------------------------------------------
+        private void UpdateFill(float dt)
         {
-            if (tricksText == null || trickModel == null || trickModel.TrickList.Value.Count == 0) return;
-            
-            StringBuilder sb = new StringBuilder();
-            
-            foreach (var trick in trickModel.TrickList.Value)
+            fill -= decayPerSecond * dt;
+
+            if (fill <= 0f)
             {
-                sb.Append(trick.GetStateName());
-                sb.Append("   ");
-                sb.Append(trick.ScoreValue);
-                sb.Append("\n\n");  // 两个换行符，形成空行
+                fill = 0f;
+
+                if (gradeIndex < 4)
+                {
+                    gradeIndex++;
+                    fill = 1f;
+                    UpdateAllSprites();
+                }
             }
-            
-            tricksText.text = sb.ToString();
-            
+
+            gradeImage.fillAmount = fill;
         }
 
-        public void DisplayGrade()
+        //-------------------------------------------------------
+        // 落地：加分 + 升级（不降）
+        //-------------------------------------------------------
+        private void OnLanding()
         {
-            if (gradeImage == null || gradeSprites == null || gradeSprites.Length == 0) return;
+            tricksText.text = "";
+
             
-            // 使用当前总分计算等级索引
-            int gradeIndex = CalculateGrade(sum);
-            
-            // 确保索引在有效范围内
-            if (gradeIndex >= 0 && gradeIndex < gradeSprites.Length)
+            int added = trickSystem.SumOfScore();
+            sum += added;
+
+            int newGrade = CalculateGrade((int)sum);
+
+            if (newGrade < gradeIndex)   // ★ 升级
             {
-                gradeImage.sprite = gradeSprites[gradeIndex];
-                gradeImage.enabled = true;
+                gradeIndex = newGrade;
+                fill = 1f;
+                UpdateAllSprites();
             }
+
+            trickSystem.RemoveAllTricks();
+        }
+       
+
+        //-------------------------------------------------------
+        // 分数 → 等级
+        //-------------------------------------------------------
+        private int CalculateGrade(int s)
+        {
+            if (s >= 100) return 0;
+            if (s >= 80)  return 1;
+            if (s >= 60)  return 2;
+            if (s >= 20)  return 3;
+            return 4;
+        }
+
+        //-------------------------------------------------------
+        // 同步更新：Fill 图 + 主框 + 装饰框
+        //-------------------------------------------------------
+        private void UpdateAllSprites()
+        {
+            // Fill Sprite（等级内部）
+            gradeImage.sprite = gradeSprites[gradeIndex];
+
+            // 主框
+            frameImage.sprite = frameSprites[gradeIndex];
+            frameImage.enabled = true;
+
+            // 装饰框
+            decorationImage.sprite = decorationSprites[gradeIndex];
+            decorationImage.enabled = true;
         }
     }
 }

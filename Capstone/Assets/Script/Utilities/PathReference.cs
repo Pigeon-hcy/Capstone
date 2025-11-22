@@ -10,6 +10,8 @@ public static class PathReference
         return type switch
         {
             EnemyType.BasicEnemy => "BasicEnemy",
+            EnemyType.BoostEnemy => "BoostEnemy",
+            EnemyType.FlyEnemy => "FlyEnemy",
             _=>"BasicEnemy"
         };
     }

@@ -1,5 +1,6 @@
 using SkateGame;
 using UnityEngine;
+using BaseUtility;
 
 public class WhiteShadow : MessageBehavior
 {

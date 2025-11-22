@@ -1,5 +1,8 @@
 using UnityEngine;
 using QFramework;
+using System.Net.Security;
+using BaseUtility;
+using Hitbox;
 
 namespace SkateGame
 {
@@ -12,7 +15,9 @@ namespace SkateGame
     {
         public EnemyConfig config;
 
-    private IEnemyModel enemyModel;
+    [Header("各种工厂")]
+    public ReportBoxFactory reportBoxFactory;
+    protected IEnemyModel enemyModel;
     private Rigidbody2D rb;
 
     // 基于时间的巡逻
@@ -34,8 +39,8 @@ namespace SkateGame
     public LayerMask GroundLayer;
     private float timeCount = 0;
 
-    protected ReportBox dmgBox;
-    void Start()
+    protected IHitBox dmgBox;
+    protected virtual void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
         this.GetSystem<IEnemyAssetSystem>().SetEnemyConfig(config);
@@ -52,9 +57,12 @@ namespace SkateGame
         enemyModel.JumpAngleModifier.Value = enemyModel.Config.Value.jumpAngleModifier;
         enemyModel.JumpAtkBoxActiveTime.Value = enemyModel.Config.Value.JumpAtkBoxActiveTime;
         enemyModel.AtkTags.Value  = enemyModel.Config.Value.AtkTags;
+        enemyModel.CanBeKilledByQ.Value = enemyModel.Config.Value.canBeKilledByQ;
 
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
+        rb.linearVelocity = Vector2.zero;
+        
 
         // 初始化为移动阶段
         waiting   = false;
@@ -80,7 +88,7 @@ namespace SkateGame
                 if(enemyModel.GuardProcess.Value == 1)
                 {
                     enemyModel.GuardProcess.Value = -0.5f;
-                    JumpTowardPlayer(trans);
+                    AtkTowardsPlayer(trans);
                 }
             }else
             {
@@ -122,24 +130,34 @@ namespace SkateGame
                 timeCount  -= Time.deltaTime;
                 if(timeCount<=0)
                 {
-                     movePaused = false;
-                     dmgBox.ReportBoxClose();
-                     dmgBox = null;
+                    movePaused = false;
+                    if(dmgBox!=null)
+                        dmgBox.CloseBox();
+                    dmgBox = null;
                 }
                    
             }
         
     }
 
-        protected virtual void JumpTowardPlayer(Transform pTrans)
+        /// <summary>
+        /// 停止移动一段时间，在so里调。停止的时间也是攻击box开启的时间
+        /// </summary>
+        protected void PauseMove()
         {
             movePaused = true;
             timeCount = enemyModel.JumpAtkBoxActiveTime.Value;
-            //Debug.LogError("jump");
-             Vector2 selfPos = transform.position;
-            Vector2 targetPos = pTrans.position;
+            
+        }
 
-            Vector2 dir = (targetPos - selfPos).normalized;
+        protected virtual void AtkTowardsPlayer(Transform pTrans)
+        {
+            PauseMove();
+            Vector2 CalDir()
+            {
+                return ((Vector2)pTrans.position - (Vector2)transform.position).normalized;
+            }
+            Vector2 dir = CalDir();
 
             float rawAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
@@ -170,24 +188,33 @@ namespace SkateGame
             BoxCollider2D cld = GetComponent<BoxCollider2D>();
             if(dmgBox == null)
             {
-                dmgBox = Instantiate(Resources.Load<GameObject>(PathReference.ReportBoxPath),transform).GetComponent<ReportBox>();
+                dmgBox = reportBoxFactory.CreateHitbox(transform);
             }
-            dmgBox.ReportBoxOn(enemyModel.AtkTags.Value, AtkHandler,cld == null?new Vector2(1,1):cld.size );
+            dmgBox.OpenBox(enemyModel.AtkTags.Value, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
             
 
         }
 
-        public void AtkHandler(GameObject gameObject)
+        public virtual void AtkHandler(GameObject gameObject)
         {
             Debug.Log("PlayerDie!");
+            var respawnSystem  = this.GetSystem<IRespawnSystem>();
+            if(respawnSystem!=null)
+            {
+                respawnSystem.RespawnPlayer();
+            }
         }
 
         public void DoInteraction()
         {
-            MessageBox box = new MessageBox();
-            box.gmo = this.gameObject;
-            MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
-            Die();
+            if(enemyModel.CanBeKilledByQ.Value)
+            {
+                 MessageBox box = new MessageBox();
+                box.gmo = this.gameObject;
+                MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
+                Die();
+            }
+           
         }
 
         void OnDrawGizmos()
@@ -219,7 +246,7 @@ namespace SkateGame
     {
         if (rb) rb.linearVelocity = Vector2.zero;
         if(dmgBox!= null)
-            dmgBox.ReportBoxClose();
+            dmgBox.CloseBox();
         dmgBox = null;
         Destroy(gameObject, 0.1f);
     }

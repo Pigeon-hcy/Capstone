@@ -27,7 +27,9 @@ public class EnemyWave : ScriptableObject
 
 public enum EnemyType
 {
-    BasicEnemy
+    BasicEnemy,
+    BoostEnemy,
+    FlyEnemy
 }
 
 [Serializable]

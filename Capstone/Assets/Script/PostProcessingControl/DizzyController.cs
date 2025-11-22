@@ -1,5 +1,6 @@
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using BaseUtility;
 
 public class DizzyController : MessageBehavior
 {

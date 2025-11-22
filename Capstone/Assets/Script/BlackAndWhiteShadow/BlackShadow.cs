@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using SkateGame;
 using Unity.VisualScripting;
 using UnityEngine;
+using BaseUtility;
 
 public class BlackShadow : MonoBehaviour
 {

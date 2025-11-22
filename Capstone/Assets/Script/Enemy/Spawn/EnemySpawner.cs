@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using SkateGame;
 using Unity.Mathematics;
 using UnityEngine;
+using BaseUtility;
 
 public class EnemySpawner : MessageBehavior
 {
