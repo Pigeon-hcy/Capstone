@@ -11,6 +11,7 @@ public static class PathReference
         {
             EnemyType.BasicEnemy => "BasicEnemy",
             EnemyType.BoostEnemy => "BoostEnemy",
+            EnemyType.FlyEnemy => "FlyEnemy",
             _=>"BasicEnemy"
         };
     }

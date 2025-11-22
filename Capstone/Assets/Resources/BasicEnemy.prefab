@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: ae8f1f6dfb697456d86f207104993a2a, type: 2}
+  reportBoxFactory: {fileID: 11400000, guid: 592abc605fc8245158752e8e4f3349c0, type: 2}
   IfDrawRange: 0
   GroundLayer:
     serializedVersion: 2

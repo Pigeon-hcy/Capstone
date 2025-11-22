@@ -1,29 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 using QFramework;
+using Hitbox;
 
-public class ReportBox : MonoBehaviour
+public class ReportBox : MonoBehaviour, IHitBox
 {
-
-    public delegate void ReportHandler(GameObject obj);
     protected List<string> targetTags = new List<string>();
 
     protected List<GameObject> reported = new List<GameObject>();
 
-    protected ReportHandler recordHandler;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    protected HitboxHandler recordHandler;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject GetGameObject() => gameObject;
 
-    public void ReportBoxOn(List<string> tags,ReportHandler hander, Vector2 scale)
+    public void OpenBox(List<string> tags,HitboxHandler hander, Vector3 scale)
     {
         targetTags = tags;
         reported.Clear();
@@ -31,7 +21,7 @@ public class ReportBox : MonoBehaviour
         GetComponent<BoxCollider2D>().size = scale;
     }
 
-    public void ReportBoxClose()
+    public void CloseBox()
     {
         Destroy(gameObject);
     }
@@ -55,5 +45,23 @@ public class ReportBox : MonoBehaviour
                 recordHandler?.Invoke(obj);
             }
         }
+    }
+}
+
+[CreateAssetMenu(fileName = "ReportBoxFactory", menuName = "Factory/ReportBoxFactory")]
+public class ReportBoxFactory : HitBoxFactory
+{
+    public GameObject prefab;
+    public override IHitBox CreateHitbox(Transform trans)
+    {
+        GameObject go = Instantiate(prefab, trans);
+        return go.GetComponent<IHitBox>();
+    }
+
+    public override IHitBox CreateAndOpenHitbox(Transform trans, HitBoxInitValue initV)
+    {
+        IHitBox box = CreateHitbox(trans);
+        box.OpenBox(initV.tags, initV.Handler, initV.scaleRef);
+        return box;
     }
 }
