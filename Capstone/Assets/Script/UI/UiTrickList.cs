@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Text;
 using QFramework;
 using TMPro;
 
@@ -8,22 +7,30 @@ namespace SkateGame
 {
     public class UiTrickList : ViewerControllerBase
     {
-        public TextMeshProUGUI tricksText;     
+        public TextMeshProUGUI tricksText;
+
+        // ★ Fill 用（保持不动）
         public Sprite[] gradeSprites = new Sprite[5];
         public Image gradeImage;
 
-        public float decayPerSecond = 0.1f; //fill掉落速度（每秒掉多少）
+        // ★ 主框（等级框）
+        public Sprite[] frameSprites = new Sprite[5];
+        public Image frameImage;
+
+        // ★ 装饰框（随等级变化）
+        public Sprite[] decorationSprites = new Sprite[5];
+        public Image decorationImage;
+
+        public float decayPerSecond = 0.1f;
 
         private ITrickListModel trickModel;
         private IPlayerModel playerModel;
         private ITrickSystem trickSystem;
 
         private float sum = 0f;
-
-        private int gradeIndex = 4; // S=0, A=1, B=2, C=3, D=4
+        private int gradeIndex = 4; 
         private float fill = 0f;
 
-        // 落地检测（稳定）
         private int groundedFrame = 0;
         private const int groundedNeed = 3;
 
@@ -35,21 +42,20 @@ namespace SkateGame
 
             gradeIndex = 4;
             fill = 0f;
-            DisplayGrade();
+
+            UpdateAllSprites();
+            gradeImage.fillAmount = fill;
         }
 
-        //--------------------------------------------------
-        //              ★ 实时检测（每帧执行）
-        //--------------------------------------------------
         protected override void OnRealTimeUpdate()
         {
-            HandleLandingDetection();   // 落地检测
-            UpdateFill(Time.deltaTime); // ★ 正确平滑UI衰减
+            HandleLandingDetection();
+            UpdateFill(Time.deltaTime);
         }
 
-        //--------------------------------------------------
-        //              落地检测（从空中->地面）
-        //--------------------------------------------------
+        //---------------------------------------------
+        // 落地检测
+        //---------------------------------------------
         private void HandleLandingDetection()
         {
             if (playerModel == null) return;
@@ -68,9 +74,9 @@ namespace SkateGame
             }
         }
 
-        //--------------------------------------------------
-        //              UI fill 平滑衰减（每帧）
-        //--------------------------------------------------
+        //---------------------------------------------
+        // Fill 衰减
+        //---------------------------------------------
         private void UpdateFill(float dt)
         {
             fill -= decayPerSecond * dt;
@@ -79,21 +85,22 @@ namespace SkateGame
             {
                 fill = 0f;
 
-                // 掉级逻辑
-                if (gradeIndex < 4) // D=4
+                // 掉级
+                if (gradeIndex < 4)
                 {
                     gradeIndex++;
                     fill = 1f;
-                    DisplayGrade();
+
+                    UpdateAllSprites();
                 }
             }
 
             gradeImage.fillAmount = fill;
         }
 
-        //--------------------------------------------------
-        //              落地时触发（只升不降）
-        //--------------------------------------------------
+        //---------------------------------------------
+        // 落地触发（只升不降）
+        //---------------------------------------------
         private void OnLanding()
         {
             tricksText.text = "";
@@ -101,36 +108,44 @@ namespace SkateGame
 
             int newGrade = CalculateGrade((int)sum);
 
-            // 只处理升级（降级由 fill 控制）
             if (newGrade < gradeIndex)
             {
                 gradeIndex = newGrade;
                 fill = 1f;
-                DisplayGrade();
+
+                UpdateAllSprites();
             }
 
             trickSystem.RemoveAllTricks();
         }
 
-        //--------------------------------------------------
-        //              分数 → 等级
-        //--------------------------------------------------
+        //---------------------------------------------
+        // 分数 → 等级
+        //---------------------------------------------
         private int CalculateGrade(int s)
         {
-            if (s >= 100) return 0;
+            if (s >= 100) return 0; 
             if (s >= 80) return 1;
             if (s >= 60) return 2;
             if (s >= 20) return 3;
-            return 4;
+            return 4; 
         }
 
-        //--------------------------------------------------
-        //              显示等级图片
-        //--------------------------------------------------
-        private void DisplayGrade()
+        //---------------------------------------------
+        // ★ 主框 + 装饰框 + Fill 图 同步更新
+        //---------------------------------------------
+        private void UpdateAllSprites()
         {
+            // fill 用图
             gradeImage.sprite = gradeSprites[gradeIndex];
-            gradeImage.enabled = true;
+
+            // 主框
+            frameImage.sprite = frameSprites[gradeIndex];
+            frameImage.enabled = true;
+
+            // 装饰框（你的需求：逻辑和 frame 一样）
+            decorationImage.sprite = decorationSprites[gradeIndex];
+            decorationImage.enabled = true;
         }
     }
 }
