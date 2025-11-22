@@ -40,7 +40,7 @@ namespace SkateGame
     private float timeCount = 0;
 
     protected IHitBox dmgBox;
-    void Start()
+    protected virtual void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
         this.GetSystem<IEnemyAssetSystem>().SetEnemyConfig(config);
@@ -190,7 +190,7 @@ namespace SkateGame
             {
                 dmgBox = reportBoxFactory.CreateHitbox(transform);
             }
-            dmgBox.OpenBox(enemyModel.AtkTags.Value, AtkHandler,cld == null?new Vector2(1,1):cld.size );
+            dmgBox.OpenBox(enemyModel.AtkTags.Value, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
             
 
         }

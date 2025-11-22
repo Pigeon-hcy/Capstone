@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
+using BaseUtility;
 
 
 namespace Hitbox
 {
     public interface IHitBox
     {
-        void OpenBox(List<string> tags, HitboxHandler handler, Vector3 scaleRef);
+        void OpenBox(List<string> tags,EffectPackage package, Vector3 scaleRef);
         void CloseBox();
         GameObject GetGameObject();
     }
-    public delegate void HitboxHandler(GameObject obj);
 
     public abstract class HitBoxFactory : ScriptableObject
     {
@@ -22,12 +22,12 @@ namespace Hitbox
     public struct HitBoxInitValue
         {
             public List<string> tags;
-            public HitboxHandler Handler;
+            public EffectPackage package;
             public Vector3 scaleRef;
-            public HitBoxInitValue(List<string>t, HitboxHandler h, Vector3 f)
+            public HitBoxInitValue(List<string>t,EffectPackage p, Vector3 f)
             {
                 tags = t;
-                Handler = h;
+               package = p;
                 scaleRef = f;
             }
         }

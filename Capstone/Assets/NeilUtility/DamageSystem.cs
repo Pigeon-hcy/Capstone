@@ -9,19 +9,16 @@ namespace BaseUtility
 
     public static class DamageSystem
     {
-        public static void ProcessDamage( EffectPackage package, IAttackable target)
-        {
-            if (package.directKillPlayer)
-            {
-                Debug.Log("PlayerDie!");
-                MessageSystem.Instance.Send(TempActions.KillPlayer, null);
-            }
+        public static void ProcessDamage( EffectPackage package, ITarget target){
 
-            
+            foreach (IEPDecoration deco in package.decorations)
+            {
+                deco.Decorate(target);
+            }
         }
     }
 
-    public interface IAttackable
+    public interface ITarget
     {
     }
 

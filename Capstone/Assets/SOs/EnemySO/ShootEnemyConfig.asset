@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f0d58837a10c4935ae90071cd3a8eb1, type: 3}
-  m_Name: ShootEnemySO
+  m_Script: {fileID: 11500000, guid: f08c0d770149246929baee4c3b5de093, type: 3}
+  m_Name: ShootEnemyConfig
   m_EditorClassIdentifier: 
   moveDuration: 2
   moveSpeed: 2
@@ -18,12 +18,13 @@ MonoBehaviour:
   maxHealth: 30
   startFacingRight: 1
   canBeKilledByQ: 1
-  gravityScale: 0
-  guardIncreaseSpeed: 2
+  gravityScale: 2
+  guardIncreaseSpeed: 1
   guardDecreaseSpeed: 0.5
-  detectRadius: 20
+  detectRadius: 3
   jumpAngleModifier: 0.7
   jumpForce: 10
   JumpAtkBoxActiveTime: 3
-  AtkTags:
-  - Player
+  AtkTags: []
+  bSpeed: 0
+  bLifeTime: 0

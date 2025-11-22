@@ -14,7 +14,7 @@ public class ReportBoxFactory : HitBoxFactory
     public override IHitBox CreateAndOpenHitbox(Transform trans, HitBoxInitValue initV)
     {
         IHitBox box = CreateHitbox(trans);
-        box.OpenBox(initV.tags, initV.Handler, initV.scaleRef);
+        box.OpenBox(initV.tags, initV.package, initV.scaleRef);
         return box;
     }
 }

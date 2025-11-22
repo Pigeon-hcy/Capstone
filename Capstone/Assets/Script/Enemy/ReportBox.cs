@@ -1,48 +1,74 @@
 using UnityEngine;
 using System.Collections.Generic;
+using BaseUtility;
 using QFramework;
 using Hitbox;
+using SkateGame;
 
-public class ReportBox : MonoBehaviour, IHitBox
+namespace SkateGame
 {
-    protected List<string> targetTags = new List<string>();
-
-    protected List<GameObject> reported = new List<GameObject>();
-
-    protected HitboxHandler recordHandler;
-
-    public GameObject GetGameObject() => gameObject;
-
-    public void OpenBox(List<string> tags,HitboxHandler hander, Vector3 scale)
+    public class ReportBox : ViewerControllerBase, IHitBox
     {
-        targetTags = tags;
-        reported.Clear();
-        recordHandler = hander;
-        GetComponent<BoxCollider2D>().size = scale;
-    }
+        protected List<string> targetTags = new List<string>();
 
-    public void CloseBox()
-    {
-        Destroy(gameObject);
-    }
+        protected List<GameObject> reported = new List<GameObject>();
 
-    void OnTriggerStay2D(Collider2D collision)
-    {
-        if (targetTags == null || targetTags.Count == 0)
-            return;
+        protected EffectPackage recordPackage;
 
-        string colTag = collision.tag;
+        public GameObject GetGameObject() => gameObject;
 
-        // 如果这个 tag 在目标列表里
-        if (targetTags.Contains(colTag))
+        protected override void InitializeController()
         {
-            GameObject obj = collision.gameObject;
+            base.InitializeController();
+        }
 
-            // 防止重复添加
-            if (!reported.Contains(obj))
+        protected override void OnRealTimeUpdate()
+        { 
+            
+        }
+
+        public void OpenBox(List<string> tags, EffectPackage p, Vector3 scale)
+        {
+            targetTags = tags;
+            reported.Clear();
+            recordPackage = p;
+            GetComponent<BoxCollider2D>().size = scale;
+        }
+
+        public void CloseBox()
+        {
+            Destroy(gameObject);
+        }
+
+        void OnTriggerStay2D(Collider2D collision)
+        {
+            if (targetTags == null || targetTags.Count == 0)
+                return;
+
+            string colTag = collision.tag;
+
+            // 如果这个 tag 在目标列表里
+            if (targetTags.Contains(colTag))
             {
-                reported.Add(obj);
-                recordHandler?.Invoke(obj);
+                GameObject obj = collision.gameObject;
+
+                // 防止重复添加
+                if (!reported.Contains(obj))
+                {
+                    reported.Add(obj);
+                
+                    DamageSystem.ProcessDamage(recordPackage, null);
+                    if (obj.GetComponent<PlayerController>() != null)
+                    {
+                        Debug.Log("PlayerDie!");
+                        var respawnSystem  = this.GetSystem<IRespawnSystem>();
+                        if(respawnSystem!=null)
+                        {
+                            respawnSystem.RespawnPlayer();
+                        }
+                    }
+
+                }
             }
         }
     }

@@ -78,8 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a126fb54fbad444ca910720f66b1470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 9c94ac9bc6e8b48278b53227ce2ca5aa, type: 2}
-  reportBoxFactory: {fileID: 0}
+  config: {fileID: 11400000, guid: c711c9ed40353441686fea73fdfff8fa, type: 2}
+  reportBoxFactory: {fileID: 11400000, guid: ec0b14ae412bc4a52abfefb1ca04d0bf, type: 2}
   IfDrawRange: 0
   GroundLayer:
     serializedVersion: 2
