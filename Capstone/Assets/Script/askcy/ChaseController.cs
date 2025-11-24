@@ -5,7 +5,8 @@ public class ChaseController : MonoBehaviour
     public ChaseEnemy chaseEnemy;
     public enum EnterMode {
         StartChase,
-        StopChase
+        StopChase,
+        BeginChase
     }
 
     public EnterMode enterMode = EnterMode.StartChase;
@@ -19,10 +20,15 @@ public class ChaseController : MonoBehaviour
                 switch (enterMode)
                 {
                     case EnterMode.StartChase:
-                        chaseEnemy.StartChase();
+                        chaseEnemy.gameObject.SetActive(true);
+                        chaseEnemy.RestartChase();
                         break;
                     case EnterMode.StopChase:
                         chaseEnemy.StopChase();
+                        break;
+                    case EnterMode.BeginChase:
+                        chaseEnemy.gameObject.SetActive(true);
+                        chaseEnemy.StartCoroutine(chaseEnemy.BeginChase());
                         break;
                 }
             }
