@@ -1,58 +1,74 @@
 using UnityEngine;
 using System.Collections.Generic;
+using BaseUtility;
 using QFramework;
+using Hitbox;
+using SkateGame;
 
-public class ReportBox : MonoBehaviour
+namespace SkateGame
 {
-
-    public delegate void ReportHandler(GameObject obj);
-    protected List<string> targetTags = new List<string>();
-
-    protected List<GameObject> reported = new List<GameObject>();
-
-    protected ReportHandler recordHandler;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class ReportBox : ViewerControllerBase, IHitBox
     {
-        
-    }
+        protected List<string> targetTags = new List<string>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        protected List<GameObject> reported = new List<GameObject>();
 
-    public void ReportBoxOn(List<string> tags,ReportHandler hander, Vector2 scale)
-    {
-        targetTags = tags;
-        reported.Clear();
-        recordHandler = hander;
-        GetComponent<BoxCollider2D>().size = scale;
-    }
+        protected EffectPackage recordPackage;
 
-    public void ReportBoxClose()
-    {
-        Destroy(gameObject);
-    }
+        public GameObject GetGameObject() => gameObject;
 
-    void OnTriggerStay2D(Collider2D collision)
-    {
-        if (targetTags == null || targetTags.Count == 0)
-            return;
-
-        string colTag = collision.tag;
-
-        // 如果这个 tag 在目标列表里
-        if (targetTags.Contains(colTag))
+        protected override void InitializeController()
         {
-            GameObject obj = collision.gameObject;
+            base.InitializeController();
+        }
 
-            // 防止重复添加
-            if (!reported.Contains(obj))
+        protected override void OnRealTimeUpdate()
+        { 
+            
+        }
+
+        public void OpenBox(List<string> tags, EffectPackage p, Vector3 scale)
+        {
+            targetTags = tags;
+            reported.Clear();
+            recordPackage = p;
+            GetComponent<BoxCollider2D>().size = scale;
+        }
+
+        public void CloseBox()
+        {
+            Destroy(gameObject);
+        }
+
+        void OnTriggerStay2D(Collider2D collision)
+        {
+            if (targetTags == null || targetTags.Count == 0)
+                return;
+
+            string colTag = collision.tag;
+
+            // 如果这个 tag 在目标列表里
+            if (targetTags.Contains(colTag))
             {
-                reported.Add(obj);
-                recordHandler?.Invoke(obj);
+                GameObject obj = collision.gameObject;
+
+                // 防止重复添加
+                if (!reported.Contains(obj))
+                {
+                    reported.Add(obj);
+                
+                    DamageSystem.ProcessDamage(recordPackage, null);
+                    if (obj.GetComponent<PlayerController>() != null)
+                    {
+                        Debug.Log("PlayerDie!");
+                        var respawnSystem  = this.GetSystem<IRespawnSystem>();
+                        if(respawnSystem!=null)
+                        {
+                            respawnSystem.RespawnPlayer();
+                        }
+                    }
+
+                }
             }
         }
     }

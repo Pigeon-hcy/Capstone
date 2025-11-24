@@ -9,7 +9,6 @@ public abstract class ActionStateBase : StateBase
     protected float stateDuration = -1f;
     protected bool isLoop = true;
     protected bool ignoringMovementLayer = false;
-    protected Vector2 ignoreMovementLayerDuration = new Vector2(-1f, -1f); // 第一个参数是开始忽略的时间，第二个参数是结束忽略的时间
 
     protected virtual void UpdateActionState(){}
     protected virtual void EnterActionState(){}
@@ -66,7 +65,7 @@ public abstract class ActionStateBase : StateBase
         {
             player.stateMachine.SwitchState(StateLayer.Action, "TrickB");
         }
-        else if(inputModel.TrickC.Value && !playerModel.IsGrounded.Value)
+        else if(inputModel.TrickCStart.Value && !playerModel.IsGrounded.Value)
         {
             player.stateMachine.SwitchState(StateLayer.Action, "TrickC");
         }

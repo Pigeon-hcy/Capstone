@@ -26,6 +26,7 @@ namespace SkateGame
 
         [Header("Animation")]
         public Animator animator;
+        private GameObject sprite => animator.gameObject;
 
         [Header("瞄准与射击设置")]
         public LineRenderer aimLine;      // 瞄准线 temp
@@ -96,6 +97,7 @@ namespace SkateGame
             stateMachine.AddState("TrickB", new TrickBState(this, rb), StateLayer.Action);
             stateMachine.AddState("TrickBBoost", new TrickBBoostState(this, rb), StateLayer.Action);
             stateMachine.AddState("TrickC", new TrickCState(this, rb), StateLayer.Action);
+            stateMachine.AddState("TrickCBoost", new TrickCBoostState(this, rb), StateLayer.Action);
             stateMachine.AddState("Grind", new GrindState(this, rb), StateLayer.Action);
             stateMachine.AddState("Grab", new GrabbingState(this, rb), StateLayer.Action);
             stateMachine.AddState("WallRide", new WallRideState(this, rb), StateLayer.Action);
@@ -385,12 +387,10 @@ namespace SkateGame
         // 检测玩家方向并更新例子特效容器
         private void CheckPlayerDirectionChange()
         {
-            float currentMoveInput = inputModel.Move.Value.x;
-
             // 检测是否有移动输入
-            if (Mathf.Abs(currentMoveInput) > 0.01f)
+            if (Mathf.Abs(rb.linearVelocity.x) > 0.01f)
             {
-                bool shouldFaceRight = currentMoveInput > 0;
+                bool shouldFaceRight = rb.linearVelocity.x > 0;
                 // 检测方向是否改变
                 if (shouldFaceRight != playerModel.IsFacingRight.Value)
                 {
@@ -403,6 +403,8 @@ namespace SkateGame
                     }
                 }
             }
+            // 更新Sprite方向
+            sprite.transform.localScale = new Vector3(playerModel.IsFacingRight.Value ? 1 : -1, 1, 1);
         }
 
         #region Helper Methods
