@@ -7,6 +7,8 @@ public class LandState : GroundMovementState
     private float landTimer;
     private bool isDoubleJumpLand;
 
+
+
     public LandState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
@@ -21,6 +23,10 @@ public class LandState : GroundMovementState
         isDoubleJumpLand = playerModel.CanDoubleJump.Value;
         playerModel.CanDoubleJump.Value = true;
         landTimer = 0f;
+
+        #region FMOD
+        playLanding();
+        #endregion
     }
 
     protected override void UpdateGroundMovement()
@@ -48,7 +54,14 @@ public class LandState : GroundMovementState
             else
             {
                 player.stateMachine.SwitchState(StateLayer.Movement, "Move");
+                
             }
         }
+    }
+
+    public void playLanding()
+    {
+        AudioManager.Instance.fmodPlayLanding();
+        AudioManager.Instance.fmodPlayMove();
     }
 } 
