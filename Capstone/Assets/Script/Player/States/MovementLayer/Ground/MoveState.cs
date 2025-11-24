@@ -29,6 +29,7 @@ public class MoveState : GroundMovementState
         if (rb.linearVelocity.x == 0)
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
+            pauseMove();
         }
         // PowerGrind
         if (inputModel.TrickAStart.Value)
@@ -43,5 +44,10 @@ public class MoveState : GroundMovementState
         {
             player.moveEffect.StopFeedbacks();
         }
+    }
+
+    public void pauseMove()
+    {
+        AudioManager.Instance.fmodPauseMove();
     }
 } 

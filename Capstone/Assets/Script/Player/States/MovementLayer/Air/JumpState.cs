@@ -26,6 +26,7 @@ public class JumpState : AirborneMovementState
         {
             player.JumpEffect.PlayFeedbacks();
         }
+        playOllie();
     }
 
     protected override void UpdateAirMovement()
@@ -73,5 +74,11 @@ public class JumpState : AirborneMovementState
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
         }
+    }
+
+    public void playOllie()
+    {
+        AudioManager.Instance.fmodPlayOllie();
+        AudioManager.Instance.fmodPauseMove();
     }
 } 

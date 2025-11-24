@@ -1,4 +1,6 @@
 using UnityEngine;
+using Unity.Cinemachine;
+using System.Collections;
 
 public class ChaseEnemy : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class ChaseEnemy : MonoBehaviour
     
     public bool isChasing = false;
     private float currentSpeed = 0f; // 当前移动速度
+
+    public CinemachineCamera originalCamera;
+    public CinemachineCamera chaseCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,6 +68,11 @@ public class ChaseEnemy : MonoBehaviour
 
     public void StartChase()
     {
+        StartCoroutine(BeginChase());
+    }
+
+    public void RestartChase()
+    {
         isChasing = true;
     }
 
@@ -80,7 +90,20 @@ public class ChaseEnemy : MonoBehaviour
             spawnPosition.x -= DistanceAfterSpawn; // 在玩家左侧DistanceAfterSpawn距离处生成
             spawnPosition.y = player.position.y; // 保持相同的y轴位置
             transform.position = spawnPosition;
-            StartChase();
+            RestartChase();
         }
+    }
+
+    public IEnumerator BeginChase()
+    {
+        originalCamera.Priority = 0;
+        chaseCamera.Priority = 99;
+        yield return new WaitForSeconds(2f);
+        isChasing = true;
+        yield return new WaitForSeconds(1f);
+        originalCamera.Priority = 99;
+        chaseCamera.Priority = 0;
+        yield return new WaitForSeconds(1f);
+        
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{df62a290-8065-48a9-8f16-91c3b2dfd640}">
+		<property name="assetPath">
+			<value>skateboard_push_2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.7084583333333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>
+		</relationship>
+	</object>
+</objects>
