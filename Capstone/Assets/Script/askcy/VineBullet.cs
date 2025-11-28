@@ -69,10 +69,11 @@ public class VineBullet : MonoBehaviour
         if (IsGroundLayer(other))
         {
            CreateBlockTowardsPlayer();
+           Destroy(gameObject);
         }
         
         // 销毁子弹
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
     
 
@@ -85,43 +86,43 @@ public class VineBullet : MonoBehaviour
     
     void CreateBlockTowardsPlayer()
     {
-        if (blockPrefab == null) return;
-        
-        // 直接获取玩家位置
-        Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
-        Vector3 blockDirection = (playerPosition - transform.position).normalized;
-        
-        // 在子弹位置向玩家方向偏移创建方块
-        Vector3 blockPosition = transform.position + blockDirection * blockOffset;
-        GameObject block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
-        
-        // 设置方块大小
-        block.transform.localScale = Vector3.one * blockSize;
-        
-        // 旋转方块朝向玩家
-        float angle = Mathf.Atan2(blockDirection.y, blockDirection.x) * Mathf.Rad2Deg;
-        block.transform.rotation = Quaternion.Euler(0, 0, angle);
-        
-        // 禁用碰撞器（升起过程中没有碰撞）
-        Collider2D blockCollider = block.GetComponent<Collider2D>();
-        if (blockCollider != null)
-        {
-            blockCollider.enabled = false;
-        }
-        
-        // 立即顶飞周围的物体（在生成的那一刻）
-        LaunchObjectsAround(blockPosition, blockDirection);
-        
-        // 给方块一个朝向玩家的初始力
-        Rigidbody2D blockRb = block.GetComponent<Rigidbody2D>();
-        if (blockRb != null)
-        {
-            blockRb.AddForce((Vector2)blockDirection * launchForce, ForceMode2D.Impulse);
-        }
-        
-        // 添加方块移动行为
-        BlockRiser riser = block.AddComponent<BlockRiser>();
-        riser.Initialize(blockRiseSpeed, blockRiseHeight, launchForce, launchRadius, blockLifetime);
+    if (blockPrefab == null) return;
+    
+    // 直接获取玩家位置
+    Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+    Vector3 blockDirection = (playerPosition - transform.position).normalized;
+    
+    // 在子弹位置向玩家方向偏移创建方块
+    Vector3 blockPosition = transform.position + blockDirection * blockOffset;
+    GameObject block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+    
+    // 设置方块大小
+    block.transform.localScale = Vector3.one * blockSize;
+    
+    // 旋转方块朝向玩家
+    float angle = Mathf.Atan2(blockDirection.y, blockDirection.x) * Mathf.Rad2Deg;
+    block.transform.rotation = Quaternion.Euler(0, 0, angle);
+    
+    // 禁用碰撞器（升起过程中没有碰撞）
+    Collider2D blockCollider = block.GetComponent<Collider2D>();
+    if (blockCollider != null)
+    {
+        blockCollider.enabled = false;
+    }
+    
+    // 立即顶飞周围的物体（在生成的那一刻）
+    LaunchObjectsAround(blockPosition, blockDirection);
+    
+    // 给方块一个朝向玩家的初始力
+    Rigidbody2D blockRb = block.GetComponent<Rigidbody2D>();
+    if (blockRb != null)
+    {
+        blockRb.AddForce((Vector2)blockDirection * launchForce, ForceMode2D.Impulse);
+    }
+    
+    // 添加方块移动行为，传入朝向玩家的方向
+    BlockRiser riser = block.AddComponent<BlockRiser>();
+    riser.Initialize(blockRiseSpeed, blockRiseHeight, launchForce, launchRadius, blockLifetime, blockDirection);
  
     }
 // 新增方法：立即顶飞周围的物体

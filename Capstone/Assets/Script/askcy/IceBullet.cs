@@ -78,14 +78,19 @@ public class IceBullet : MonoBehaviour
         Gizmos.DrawWireCube(trackPos, size);
     }
 
+     bool IsGroundLayer(Collider2D collider)
+    {
+        // 检查是否是Ground层（包括地面和墙壁）
+        return collider.gameObject.layer == LayerMask.NameToLayer("Ground");
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) return;
 
 
-
-        Destroy(gameObject);
+        if(IsGroundLayer(other) == true)
+       { Debug.Log("OnTriggerEnter2D");
+        Destroy(this.gameObject);}
     }
-
-
 }
