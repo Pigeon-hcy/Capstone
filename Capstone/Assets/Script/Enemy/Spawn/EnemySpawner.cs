@@ -15,6 +15,7 @@ public class EnemySpawner : MessageBehavior
     void Start()
     {
         SafeRegister(EnemyMessage.Die,EnemyDieHandler);
+        SafeRegister(GameStateEnum.PlayerRespawn, ResetHandler);
         StartSpawn();
     }
 
@@ -76,5 +77,17 @@ public class EnemySpawner : MessageBehavior
     private void FightClear()
     {
         Debug.Log("You have done all the fight!");
+    }
+    
+    public void ResetHandler(MessageBox box, MonoBehaviour sender)
+    {
+        foreach (var en in recordSpawnedEn)
+        {
+            //清理现在的敌人
+            if(en!=null)
+                Destroy(en);
+        }
+        indexCount=0;
+        SpawnAWave(indexCount);
     }
 }

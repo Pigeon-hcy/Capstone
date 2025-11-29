@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcbed28bd6b84e658545e08bc9f5ab38, type: 3}
   m_Name: ReportBoxFact
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 1714773047558669916, guid: bd64740fe93504f36bad76f554da32a8, type: 3}

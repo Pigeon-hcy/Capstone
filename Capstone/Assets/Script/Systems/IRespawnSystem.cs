@@ -1,3 +1,4 @@
+using BaseUtility;
 using QFramework;
 using UnityEngine;
 
@@ -109,6 +110,7 @@ namespace SkateGame
             }
             
             Debug.Log($"RespawnSystem: 玩家重生到 {latestCheckpoint}");
+            MessageSystem.Instance.Send(GameStateEnum.PlayerRespawn,null);
         }
         
         public void ClearCheckpoints()

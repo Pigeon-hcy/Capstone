@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BoostEnWaveN2
   m_EditorClassIdentifier: 
   infos:
-  - eType: 1
+  - eType: 2
     spawnPoses:
     - {x: 5, y: -9, z: 0}
     - {x: 16, y: -9, z: 0}

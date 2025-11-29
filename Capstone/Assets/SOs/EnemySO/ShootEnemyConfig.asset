@@ -18,13 +18,14 @@ MonoBehaviour:
   maxHealth: 30
   startFacingRight: 1
   canBeKilledByQ: 1
-  gravityScale: 2
-  guardIncreaseSpeed: 1
+  gravityScale: 0
+  guardIncreaseSpeed: 2
   guardDecreaseSpeed: 0.5
-  detectRadius: 3
+  detectRadius: 20
   jumpAngleModifier: 0.7
   jumpForce: 10
   JumpAtkBoxActiveTime: 3
-  AtkTags: []
-  bSpeed: 0
-  bLifeTime: 0
+  AtkTags:
+  - Player
+  bSpeed: 7
+  bLifeTime: 5

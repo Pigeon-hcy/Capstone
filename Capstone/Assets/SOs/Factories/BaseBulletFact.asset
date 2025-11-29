@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2e7091bf6d41e6855329532c5bf7a0, type: 3}
   m_Name: BaseBulletFact
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 550507837884511860, guid: 458602e0ece0d41fc83cf73719af5677, type: 3}
