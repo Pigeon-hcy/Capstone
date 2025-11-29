@@ -17,6 +17,8 @@ namespace SkateGame
 
     [Header("各种工厂")]
     public ReportBoxFactory reportBoxFactory;
+
+    public EnemyFactory prefabRef;
     protected IEnemyModel enemyModel;
     private Rigidbody2D rb;
 
