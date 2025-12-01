@@ -53,15 +53,24 @@ Shader "Unlit/Pixel_Shader"
                 float2 uv = i.uv;
                 float3 color = 0;
 
+                // 像素完美实现
                 float aspect = _ScreenParams.x / _ScreenParams.y;
+                
+                // 像素化处理：将 UV 量化到低分辨率网格
                 uv.x *= aspect;
+                float2 pixelCoord = floor(uv * _resolution);
+                float2 quantizedUV = pixelCoord / _resolution;
                 
-                uv = floor(uv * _resolution) / _resolution;
-
+                // 像素完美关键：添加半个像素偏移，确保采样到像素中心
+                // 这样可以避免模糊，获得清晰的像素边界
+                float2 pixelSize = 1.0 / _resolution;
+                quantizedUV += pixelSize * 0.5;
+                
                 uv.x /= aspect;
+                quantizedUV.x /= aspect;
                 
-                // 采样原始颜色
-                float3 originalColor = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, uv).rgb;
+                // 采样原始颜色（已经对齐到像素中心，实现像素完美）
+                float3 originalColor = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, quantizedUV).rgb;
                 
                 // 亮度增强
                 color = originalColor * _Brightness;
