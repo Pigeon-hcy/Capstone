@@ -3,7 +3,6 @@ Shader "RogueNoodle/GBPaletteURP"
     Properties
     {
         _RenderTexture("RenderTexture", 2D) = "white" {}
-        _Palette("Palette", 2D) = "white" {}
         _Fade("Fade", Range(0, 5)) = 1
     }
 
@@ -24,9 +23,6 @@ Shader "RogueNoodle/GBPaletteURP"
 
             TEXTURE2D(_RenderTexture);
             SAMPLER(sampler_RenderTexture);
-
-            TEXTURE2D(_Palette);
-            SAMPLER(sampler_Palette);
 
             float _Fade;
 
@@ -52,17 +48,13 @@ Shader "RogueNoodle/GBPaletteURP"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                // grayscale sample
-                float gray = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, IN.uv).r;
+                // 采样原始颜色
+                half4 color = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, IN.uv);
 
-                // fade
-                float lerped = lerp(gray, 0.0, (1.0 - _Fade));
+                // fade 效果（应用到完整颜色）
+                color.rgb = lerp(color.rgb, float3(0.0, 0.0, 0.0), (1.0 - _Fade));
 
-                // palette lookup
-                float2 lookup = float2(lerped, lerped);
-                float3 color = SAMPLE_TEXTURE2D(_Palette, sampler_Palette, lookup).rgb;
-
-                return half4(color, 1.0);
+                return color;
             }
 
             ENDHLSL
