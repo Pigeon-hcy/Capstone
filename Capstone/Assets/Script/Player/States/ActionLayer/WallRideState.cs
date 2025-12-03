@@ -27,6 +27,7 @@ public class WallRideState : ActionStateBase
         {
             player.WallRideEffect.PlayFeedbacks();
         }
+        playWallRide();
     }
 
     protected override void UpdateActionState()
@@ -58,5 +59,16 @@ public class WallRideState : ActionStateBase
         {
             player.WallRideEffect.StopFeedbacks();
         }
+        pauseWallRide();
+    }
+
+    public void playWallRide()
+    {
+        AudioManager.Instance.fmodPlayWallRide();
+        AudioManager.Instance.fmodPlayLanding();
+    }
+    public void pauseWallRide()
+    {
+        AudioManager.Instance.fmodPauseWallRide();
     }
 }

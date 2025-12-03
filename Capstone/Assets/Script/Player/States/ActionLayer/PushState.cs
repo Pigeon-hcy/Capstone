@@ -26,6 +26,7 @@ public class PushState : ActionStateBase
             if(!pushEventSent){
                 player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true });
                 pushEventSent = true;
+                playPush();
             }
         }
     }
@@ -33,5 +34,10 @@ public class PushState : ActionStateBase
     protected override void ExitActionState()
     {
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = false });
+    }
+
+    public void playPush()
+    {
+        AudioManager.Instance.fmodPlayPush();
     }
 }

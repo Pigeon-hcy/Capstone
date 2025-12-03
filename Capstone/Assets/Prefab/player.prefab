@@ -24926,6 +24926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9e1f341e0aa224c9f598534306f767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetRb: {fileID: 932121231422775371}
   movingEvent:
     Guid:
       Data1: 2000430192
@@ -24947,6 +24948,20 @@ MonoBehaviour:
       Data3: 570487424
       Data4: -1692157524
     Path: event:/SFX_Landing
+  pushEvent:
+    Guid:
+      Data1: -2040177640
+      Data2: 1242644605
+      Data3: 644962693
+      Data4: 1827817983
+    Path: event:/SFX_Push
+  wallRideEvent:
+    Guid:
+      Data1: 114684520
+      Data2: 1283052727
+      Data3: -698395744
+      Data4: 1670160386
+    Path: event:/SFX_WallRide
 --- !u!1 &1954541364750357680
 GameObject:
   m_ObjectHideFlags: 0
