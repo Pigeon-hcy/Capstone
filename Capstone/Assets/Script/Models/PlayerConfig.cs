@@ -18,9 +18,11 @@ namespace SkateGame
         public bool isLoopGrind = true;
         public bool ignoringMovementLayerGrind = false;
 
-        [Header("Wall Ride State")]
-        public bool isLoopWallRide = true;
-        public bool ignoringMovementLayerWallRide = false;
+        [Header("Bg Wall Ride State")]
+        public bool isLoopBgWallRide = true;
+        public bool ignoringMovementLayerBgWallRide = false;
+        public float BgWallRideCooldown = 1.5f;
+        public float BgWallrideDuration = 0.6f;
 
         [Header("Grabbing State")]
         public bool isLoopGrab = true;
@@ -57,7 +59,6 @@ namespace SkateGame
         public bool isLoopTrickCBoost = true;
         public bool ignoringMovementLayerTrickCBoost = true;
         public float minDurationTrickCBoost = 0.5f;
-        public float stopTrickCAngle = 80f;
         public float TrickCBoostspeed = 10f;
 
         [Header("========== 基础参数 ==========")]
@@ -70,6 +71,11 @@ namespace SkateGame
         public LayerMask groundLayer;
         public float groundCheckDistance = 0.35f;
         public float groundCheckOffset = 0.3f;
+        public float groundCheckAngle = 60f;
+        public float wallCheckDistanceFar = 1f;
+        public float wallCheckDistanceNear = 0.35f;
+        public float wallCheckOffset = 0.3f;
+        public float crashVelocity = 8f;
 
         [Header("跳跃设置")]
         public float maxJumpForce = 6f;
@@ -100,9 +106,6 @@ namespace SkateGame
 
         [Header("Grind相关")]
         public float normalG = 1f;
-        [Header("Wall Ride相关")]
-        public float wallRideCooldown = 1.5f;
-        public float wallrideDuration = 0.6f;
 
         [Header("Power Grind相关")]
         public float powerGrindDeceleration = 1f;

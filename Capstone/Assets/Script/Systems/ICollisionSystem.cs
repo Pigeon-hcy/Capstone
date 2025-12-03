@@ -6,6 +6,8 @@ namespace SkateGame
     public interface ICollisionSystem : ISystem
     {
         void GroundCheck(Vector2 position);
+        (bool, float) WallCheck(Vector2 leftPosition, Vector2 rightPosition, float rayDistance);
+        void CheckCrash(Vector2 velocity, float angle);
     }
 
     public class CollisionSystem : AbstractSystem, ICollisionSystem
@@ -44,20 +46,63 @@ namespace SkateGame
                     hit = rightHit;
                 }
             }
-
+            
             bool grounded = hit.collider != null;
-            playerModel.WasGrounded.Value = playerModel.IsGrounded.Value;
-            playerModel.IsGrounded.Value = grounded;
+            float angle = 0f;
             if (grounded)
             {
-                float angle = Vector2.Angle(Vector2.up, hit.normal);
-                float sign = Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z);
-                playerModel.TargetRotationDeg.Value = angle * sign;
+                angle = Vector2.Angle(Vector2.up, hit.normal);
+                if (angle > playerModel.Config.Value.groundCheckAngle) grounded = false;
             }
-            else
-            {
-                playerModel.TargetRotationDeg.Value = 0f;
-            }
+
+            // rotate if grounded
+            playerModel.TargetRotationDeg.Value = grounded && angle > 0f 
+                ? angle * Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z)
+                : 0f;
+            playerModel.WasGrounded.Value = playerModel.IsGrounded.Value;
+            playerModel.IsGrounded.Value = grounded;
         }
-    }
+        public (bool, float) WallCheck(Vector2 leftPosition, Vector2 rightPosition, float rayDistance)
+        {
+            Vector2 rayStart = playerModel.IsFacingRight.Value ? rightPosition : leftPosition;
+            Vector2 rayDirection = Vector2.right * (playerModel.IsFacingRight.Value ? 1 : -1);
+            // 主射线检测
+            RaycastHit2D hit = Physics2D.Raycast(rayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
+
+            // 如果主射线没检测到，尝试向上偏移的射线
+            if (hit.collider == null)
+            {
+                Vector2 upRayStart = rayStart + Vector2.up * playerModel.Config.Value.wallCheckOffset;
+
+                RaycastHit2D upHit = Physics2D.Raycast(upRayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
+                
+                if (upHit.collider != null)
+                {
+                    hit = upHit;
+                }
+            }
+            bool isNearWall = hit.collider != null;
+            float angle = 0f;
+            if (isNearWall)
+            {
+                float sign = Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z);
+                angle = Vector2.Angle(Vector2.up, hit.normal) * sign;
+                if (Mathf.Abs(angle) < playerModel.Config.Value.groundCheckAngle) isNearWall = false;
+            }
+            return (isNearWall, angle);
+        }
+         public void CheckCrash(Vector2 velocity, float angle)
+         {
+            Vector2 normal = Quaternion.Euler(0f, 0f, angle) * Vector2.up;
+            float relativeVelocity = Vector2.Dot(velocity, -normal);
+            if (relativeVelocity > playerModel.Config.Value.crashVelocity)
+            {
+                /*
+                 need to add crash effect
+                */
+                var respawnSystem = this.GetSystem<IRespawnSystem>();
+                respawnSystem.RespawnPlayer();
+            }
+         }
+    }   
 }

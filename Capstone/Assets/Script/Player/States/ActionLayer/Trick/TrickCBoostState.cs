@@ -1,10 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using SkateGame;
 using QFramework;
 
 public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
 {
+    private bool hasLanded = false;
     public TrickCBoostState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickCBoost;
@@ -18,14 +18,15 @@ public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
         if (playerModel.IsGrounded.Value)
         {
             rb.linearVelocity = playerModel.Config.Value.TrickCBoostspeed * (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
-            if(Mathf.Abs(playerModel.CurrentRotationDeg.Value) > playerModel.Config.Value.stopTrickCAngle)
-            {
-                player.stateMachine.SwitchState(StateLayer.Action, "None");
-            }
+            hasLanded = true;
         }
         else
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCBoostspeed);
+            if(hasLanded)
+            {
+                player.stateMachine.SwitchState(StateLayer.Action, "None");
+            }
         }
         
         if(!inputModel.TrickC.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)

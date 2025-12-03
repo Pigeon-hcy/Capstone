@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Controls;
 using QFramework;
-using System.Linq;
 
 namespace SkateGame
 {

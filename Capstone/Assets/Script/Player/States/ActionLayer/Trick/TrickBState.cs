@@ -17,7 +17,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void EnterTrickState()
     {
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
-        player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = true, Direction = playerModel.IsFacingRight.Value ? 1f : -1f });
+        player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = true, Direction = inputModel.Move.Value.x > 0 ? 1f : -1f });
         
     }
     protected override void UpdateActionState()

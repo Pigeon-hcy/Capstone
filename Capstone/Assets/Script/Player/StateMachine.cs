@@ -7,7 +7,6 @@ public class E
 {
     // 当前状态
     private StateBase currentState;
-    private bool switchedDuringUpdate = false;
     
     // 状态字典，用于存储所有状态
     private Dictionary<string, StateBase> states = new Dictionary<string, StateBase>();
@@ -20,8 +19,9 @@ public class E
     }
     
     // 添加状态
-    public void AddState(string stateName, StateBase state)
+    public void AddState( StateBase state)
     {
+        string stateName = state.GetStateName();
         if (!states.ContainsKey(stateName))
         {
             states.Add(stateName, state);
@@ -40,7 +40,6 @@ public class E
             currentState.Exit();
             EnterState(stateName, oldState);
         }
-        switchedDuringUpdate = true;
     }
     
     // 获取当前状态
@@ -76,14 +75,7 @@ public class E
     {
         if (currentState != null)
         {
-            switchedDuringUpdate = false;
             currentState.Update();
-            // If switch happened during this update, do just one extra update
-            if (switchedDuringUpdate && currentState != null)
-            {
-                switchedDuringUpdate = false;
-                currentState.Update();
-            }
         }
     }
     

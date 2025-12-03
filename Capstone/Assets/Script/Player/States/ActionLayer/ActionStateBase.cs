@@ -89,7 +89,7 @@ public abstract class ActionStateBase : StateBase
         // 其次滑墙
         else if (!playerModel.IsGrounded.Value)
         {
-            if(playerModel.WallRideCooldownTimer.Value <= 0f && playerModel.IsNearWall.Value)
+            if(playerModel.WallRideCooldownTimer.Value <= 0f && playerModel.IsNearBgWall.Value)
             {
                 player.stateMachine.SwitchState(StateLayer.Action, "WallRide");
             }

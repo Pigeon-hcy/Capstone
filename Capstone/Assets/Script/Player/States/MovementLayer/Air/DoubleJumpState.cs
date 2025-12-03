@@ -31,6 +31,7 @@ public class DoubleJumpState : AirborneMovementState
     {   
         UpdateGrindJumpTimer();
         UpdateJumpTimer();
+        StateChange();
     }
 
     public override void Exit()
@@ -59,6 +60,14 @@ public class DoubleJumpState : AirborneMovementState
         else
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "Air");
+        }
+    }
+    // state change
+    private void StateChange()
+    {
+        if (inputModel.JumpStart.Value && playerModel.IsNearFgWall.Value)
+        {
+            player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
         }
     }
 } 

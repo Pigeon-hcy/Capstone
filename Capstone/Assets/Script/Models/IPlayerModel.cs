@@ -12,12 +12,14 @@ namespace SkateGame
         BindableProperty<ActionStates> CurrentActionState { get; }
         BindableProperty<bool> IsGrounded { get; }
         BindableProperty<bool> IsNearTrack { get; }
-        BindableProperty<bool> IsNearWall { get; }
+        BindableProperty<bool> IsNearBgWall { get; }
+        BindableProperty<bool> IsNearFgWall { get; }
+        BindableProperty<float> FgWallAngle { get; }
         
         /// <summary>
         /// Wall相关
         /// </summary>
-        BindableProperty<Wall> CurrentWall { get; }
+        BindableProperty<Wall> CurrentBgWall { get; }
 
         /// <summary>
         /// air相关
@@ -92,10 +94,11 @@ namespace SkateGame
         public BindableProperty<ActionStates> CurrentActionState { get; } = new BindableProperty<ActionStates>(ActionStates.None);
         public BindableProperty<bool> IsGrounded { get; } = new BindableProperty<bool>(true);
         public BindableProperty<bool> IsNearTrack { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<bool> IsNearWall { get; } = new BindableProperty<bool>(false);
-
+        public BindableProperty<bool> IsNearBgWall { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<bool> IsNearFgWall { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<float> FgWallAngle { get; } = new BindableProperty<float>(0f);
         // Wall相关
-        public BindableProperty<Wall> CurrentWall { get; } = new BindableProperty<Wall>(null);
+        public BindableProperty<Wall> CurrentBgWall { get; } = new BindableProperty<Wall>(null);
         
         // air相关
         public BindableProperty<bool> CanDoubleJump { get; } = new BindableProperty<bool>(true);

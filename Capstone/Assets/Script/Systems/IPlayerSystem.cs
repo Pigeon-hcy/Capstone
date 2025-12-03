@@ -1,4 +1,3 @@
-using FunkyCode.Utilities;
 using QFramework;
 using UnityEngine;
 
@@ -16,6 +15,7 @@ namespace SkateGame
         private Rigidbody2D rb;
         private float cachedMoveInput;
         private bool jumpQueued;
+        private bool wallJumpQueued;
         private bool pushing;
         private bool powerGrinding;
         private bool grinding;
@@ -38,6 +38,7 @@ namespace SkateGame
             // 监听输入事件
             this.RegisterEvent<MoveInputEvent>(OnMoveInput);
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
+            this.RegisterEvent<WallJumpExecuteEvent>(OnWallJumpInput);
             this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
             this.RegisterEvent<TrickBRewardEvent>(OnTrickBReward);
             this.RegisterEvent<TrickCRewardEvent>(OnTrickCReward);
@@ -90,6 +91,10 @@ namespace SkateGame
         private void OnJumpInput(JumpExecuteEvent evt)
         {
             jumpQueued = true;
+        }
+        private void OnWallJumpInput(WallJumpExecuteEvent evt)
+        {
+            wallJumpQueued = true;
         }
         private void OnStateChanged(StateChangedEvent evt)
         {
@@ -157,6 +162,7 @@ namespace SkateGame
             ApplyHorizontalSpeed(cachedMoveInput, isGrounded);
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
+            if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
             if (trickARewardQueued){ ApplyTrickAReward(); trickARewardQueued = false; }
             if (trickCRewardQueued){ ApplyTrickCReward(); trickCRewardQueued = false; }
             if (pushing){ ApplyPushSpeed();}
@@ -230,6 +236,15 @@ namespace SkateGame
             rb.AddForce(up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
         }
 
+        private void ApplyWallJumpImpulse()
+        {
+            if (!playerModel.IsNearFgWall.Value) return;
+            Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
+            Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, 0.5f).normalized;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+            rb.AddForce(jumpDir * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+        }
+
         private void ApplyPushSpeed()
         {
             float dir = playerModel.IsFacingRight.Value ? 1f : -1f;
@@ -279,9 +294,7 @@ namespace SkateGame
         {
             Vector2 targetRight = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
             Vector2 vHorizontal = new Vector2(rb.linearVelocity.x, 0);
-            Debug.Log("vHorizontal: " + vHorizontal);
             float targetVRight = Vector2.Dot(vHorizontal, targetRight);
-            Debug.Log("targetVRight: " + targetVRight);
             Vector2 targetUp = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized; 
             rb.linearVelocity = targetVRight*targetRight + 
                 playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia * targetUp;

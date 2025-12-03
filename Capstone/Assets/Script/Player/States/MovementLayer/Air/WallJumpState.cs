@@ -2,16 +2,16 @@ using UnityEngine;
 using SkateGame;
 using QFramework;
 
-public class JumpState : AirborneMovementState
+public class WallJumpState : AirborneMovementState
 {
     private float jumpTimer;
-    public JumpState(PlayerController player, Rigidbody2D rb)
+    public WallJumpState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Jump";
+    public override string GetStateName() => "WallJump";
 
     public override void Enter()
     {
@@ -19,7 +19,7 @@ public class JumpState : AirborneMovementState
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
         // 立即发送跳跃执行事件
-        player.SendEvent<JumpExecuteEvent>();
+        player.SendEvent<WallJumpExecuteEvent>();
 
        // 播放MMF效果
         if (player.JumpEffect != null)
@@ -70,16 +70,9 @@ public class JumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (inputModel.JumpStart.Value)
+        if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
         {
-            if (playerModel.IsNearFgWall.Value)
-            {
-                player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
-            }
-            else if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && !playerModel.IsIgnoringMovementLayer.Value)
-            {
-                player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
-            }
+            player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
         }
     }
 

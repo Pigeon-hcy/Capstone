@@ -38,9 +38,16 @@ public class AirState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (playerModel.CanDoubleJump.Value && inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
+        if (inputModel.JumpStart.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
+            if (playerModel.IsNearFgWall.Value)
+            {
+                player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
+            }
+            else if (playerModel.CanDoubleJump.Value && !playerModel.IsIgnoringMovementLayer.Value)
+            {
+                player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
+            }
         }
     }
 } 

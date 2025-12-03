@@ -71,7 +71,9 @@ namespace SkateGame
     public struct JumpExecuteEvent
     {
     }
-    
+    public struct WallJumpExecuteEvent
+    {
+    }
     // 移动输入事件
     public struct MoveInputEvent
     {

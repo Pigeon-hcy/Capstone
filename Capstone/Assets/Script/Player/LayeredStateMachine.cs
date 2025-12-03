@@ -22,8 +22,9 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
     {
         playerModel = this.GetModel<IPlayerModel>();
     }
-    public void AddState(string stateName, StateBase state, StateLayer layer)
+    public void AddState(StateBase state, StateLayer layer)
     {
+        string stateName = state.GetStateName();
         if (!mStateToLayer.ContainsKey(stateName))
         {
             mStateToLayer.Add(stateName, layer);
@@ -35,11 +36,11 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
 
         if (layer == StateLayer.Movement)
         {
-            mMovement.AddState(stateName, state);
+            mMovement.AddState(state);
         }
         else
         {
-            mAction.AddState(stateName, state);
+            mAction.AddState(state);
         }
     }
 

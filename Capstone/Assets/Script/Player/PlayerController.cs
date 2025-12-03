@@ -19,6 +19,9 @@ namespace SkateGame
         private IInputModel inputModel;
         private IPlayerSystem playerSystem;
         private ICollisionSystem collisionSystem;
+        [Header("Collision")]
+        public Transform bottomLeft;
+        public Transform bottomRight;
         [Header("状态机")]
         public LayeredStateMachine stateMachine;
         private Rigidbody2D rb;
@@ -82,26 +85,27 @@ namespace SkateGame
             playerModel.PushDuration.Value = AnimationDuratioSetter.GetClipLength(animator, "oPlayer@Push");
 
             // Movement Layer
-            stateMachine.AddState("Idle", new IdleState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("Jump", new JumpState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("Move", new MoveState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("Air", new AirState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("DoubleJump", new DoubleJumpState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("PowerGrind", new PowerGrindState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("Reverse", new ReverseState(this, rb), StateLayer.Movement);
-            stateMachine.AddState("Land", new LandState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new IdleState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new JumpState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new MoveState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new AirState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new PowerGrindState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
             // Action Layer
-            stateMachine.AddState("None", new NoActionState(this, rb), StateLayer.Action);
-            stateMachine.AddState("TrickA", new TrickAState(this, rb), StateLayer.Action);
-            stateMachine.AddState("TrickB", new TrickBState(this, rb), StateLayer.Action);
-            stateMachine.AddState("TrickBBoost", new TrickBBoostState(this, rb), StateLayer.Action);
-            stateMachine.AddState("TrickC", new TrickCState(this, rb), StateLayer.Action);
-            stateMachine.AddState("TrickCBoost", new TrickCBoostState(this, rb), StateLayer.Action);
-            stateMachine.AddState("Grind", new GrindState(this, rb), StateLayer.Action);
-            stateMachine.AddState("Grab", new GrabbingState(this, rb), StateLayer.Action);
-            stateMachine.AddState("WallRide", new WallRideState(this, rb), StateLayer.Action);
-            stateMachine.AddState("Push", new PushState(this, rb), StateLayer.Action);
-            stateMachine.AddState("Recovery", new RecoveryState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new NoActionState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickAState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickBState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickBBoostState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickCState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickCBoostState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new GrindState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new GrabbingState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new WallRideState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new PushState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new RecoveryState(this, rb), StateLayer.Action);
             // 初始各层状态
             stateMachine.SwitchState(StateLayer.Movement, "Idle");
             stateMachine.SwitchState(StateLayer.Action, "None");
@@ -122,6 +126,14 @@ namespace SkateGame
             // 更新着地状态
             collisionSystem.GroundCheck(transform.position);
 
+            // 检测前方墙壁(远距离)
+            var (isNearWall, angle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceFar);
+            playerModel.IsNearFgWall.Value = isNearWall;
+            playerModel.FgWallAngle.Value = angle;
+
+            // 检测前方墙壁(近距离)
+            var (isNearWallNear, angleNear) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
+            if (isNearWallNear) collisionSystem.CheckCrash(rb.linearVelocity, angleNear);
             // 更新冷却计时器
             UpdateCooldownTimers();
 
@@ -220,8 +232,8 @@ namespace SkateGame
                 if (wall != null)
                 {
                     Debug.Log($"检测到墙壁: {wall.name}");
-                    playerModel.CurrentWall.Value = wall;
-                    playerModel.IsNearWall.Value = true;
+                    playerModel.CurrentBgWall.Value = wall;
+                    playerModel.IsNearBgWall.Value = true;
                 }
             }
         }
@@ -242,8 +254,8 @@ namespace SkateGame
                 if (wall != null)
                 {
                     Debug.Log($"离开墙壁: {wall.name}");
-                    playerModel.CurrentWall.Value = null;
-                    playerModel.IsNearWall.Value = false;
+                    playerModel.CurrentBgWall.Value = null;
+                    playerModel.IsNearBgWall.Value = false;
                 }
             }
         }
