@@ -61,6 +61,7 @@ public class GrindState : ActionStateBase
         {
             player.GrindEffect.PlayFeedbacks();
         }
+        playRailGrind();
     }
 
     protected override void UpdateActionState()
@@ -135,5 +136,16 @@ public class GrindState : ActionStateBase
             player.GrindEffect.StopFeedbacks();
 
         }
+        pauseRailGrind();
+    }
+
+    public void playRailGrind()
+    {
+        AudioManager.Instance.fmodPlayRailGrind();
+        AudioManager.Instance.fmodPlayLanding();
+    }
+    public void pauseRailGrind()
+    {
+        AudioManager.Instance.fmodPauseRailGrind();
     }
 }

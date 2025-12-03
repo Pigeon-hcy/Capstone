@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
     {
         float playerSpeed = Mathf.Abs(targetRb.linearVelocityX);
         //currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 2);
-        currentSpeed = targetSpeed;
+        currentSpeed = playerSpeed;
         movingEventInstance.setParameterByID(movingParameter, currentSpeed);
         wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
     }
@@ -138,7 +138,6 @@ public class AudioManager : MonoBehaviour
         if (wallRideEventInstance.isValid())
         {
             wallRideEventInstance.start();
-            landEventInstance.start();
         }
     }
     public void fmodPauseWallRide()
@@ -155,7 +154,6 @@ public class AudioManager : MonoBehaviour
         if (wallRideEventInstance.isValid())
         {
             wallRideEventInstance.start();
-            landEventInstance.start();
         }
     }
     public void fmodPauseRailGrind()
