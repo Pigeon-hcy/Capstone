@@ -9,27 +9,30 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/beboq Background Temp.unity
+    guid: 32cca2363e81b45fdbbfcc62e1765de2
+  - enabled: 0
     path: Assets/Scenes/playerhub.unity
     guid: 7b720acbd0de22146badfa011d78ca09
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_EZ_Level0.unity
     guid: bb8f841a2abb9924ca7129800a3bf73e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_EZ_Level1.unity
     guid: 69d3bebfddc4f4548ae5df3335f9478c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_EZ_Level2.unity
     guid: 17a3f919ea53b8d4b82fd52453ff9940
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_EZ_Level3.unity
     guid: a6b06b185910f2b44a7ee5396efd5b74
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_Level0.unity
     guid: 36e45b12ec26fd04faa18d844cdf0e98
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_Level1.unity
     guid: 8a3a41ee8f8c7444398863179ad89925
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_0/CY_Level2.unity
     guid: 64d85e6a66e119f4bb12e9e7c77053aa
   m_configObjects:

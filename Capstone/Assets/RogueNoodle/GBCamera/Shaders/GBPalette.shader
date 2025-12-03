@@ -3,6 +3,7 @@ Shader "RogueNoodle/GBPaletteURP"
     Properties
     {
         _RenderTexture("RenderTexture", 2D) = "white" {}
+        _Palette("Palette", 2D) = "white" {}
         _Fade("Fade", Range(0, 5)) = 1
     }
 
@@ -24,41 +25,55 @@ Shader "RogueNoodle/GBPaletteURP"
             TEXTURE2D(_RenderTexture);
             SAMPLER(sampler_RenderTexture);
 
+            TEXTURE2D(_Palette);
+            SAMPLER(sampler_Palette);
+
             float _Fade;
 
             struct Attributes
             {
                 float4 positionOS : POSITION;
-                float2 uv : TEXCOORD0;
             };
 
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
+                float4 screenPos  : TEXCOORD0;   // <-- proper screen position
             };
 
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
+
+                // normal object → clip transform
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS.xyz);
-                OUT.uv = IN.uv;
+
+                // Unity macro that handles projection flips
+                OUT.screenPos = ComputeScreenPos(OUT.positionCS);
+
                 return OUT;
             }
 
             half4 frag(Varyings IN) : SV_Target
             {
-                // 采样原始颜色
-                half4 color = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, IN.uv);
+                // proper screen UV (handles Metal / Vulkan flip)
+                float2 uv = IN.screenPos.xy / IN.screenPos.w;
 
-                // fade 效果（应用到完整颜色）
-                color.rgb = lerp(color.rgb, float3(0.0, 0.0, 0.0), (1.0 - _Fade));
+                // grayscale sample
+                float gray = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, uv).r;
 
-                return color;
+                // fade
+                float lerped = lerp(gray, 0.0, (1.0 - _Fade));
+
+                // palette lookup
+                float3 color = SAMPLE_TEXTURE2D(_Palette, sampler_Palette, float2(lerped, lerped)).rgb;
+
+                return half4(color, 1.0);
             }
 
             ENDHLSL
         }
     }
 }
+
 
