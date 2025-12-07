@@ -9,6 +9,7 @@ namespace SkateGame
     {
         private float bulletSpeed = 7f;
         private float bulletLifeTime = 5f;
+        public GameObject lineObject;
         protected override void Start()
         {
             base.Start();
@@ -25,6 +26,23 @@ namespace SkateGame
             DirectionMoveCompoInitData initData = new DirectionMoveCompoInitData(dir, bulletSpeed, bulletLifeTime);
             BaseBullet bullet = bulletFactory.CreateBulletWithDir(transform.position, initData);
             bullet.StartShoot(new HitBoxInitValue(enemyModel.AtkTags.Value, new EffectPackage(0), new Vector2(1f, 1f)));
+        }
+
+        protected override void Guard(Transform pTrans)
+        {
+            base.Guard(pTrans);
+            lineObject.SetActive(true);
+            Vector2 dir = ((Vector2)pTrans.position - (Vector2)transform.position).normalized;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            
+            lineObject.transform.rotation = Quaternion.Euler(0, 0, angle);
+            
+        }
+
+        protected override void UnGuard()
+        {
+            base.UnGuard();
+            lineObject.SetActive(false);
         }
     }
 

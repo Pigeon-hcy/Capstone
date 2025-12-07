@@ -86,6 +86,7 @@ namespace SkateGame
             if(IsPlayerNearWrapper(out Transform trans))
             {
                 enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value+enemyModel.GuardIncreaseSpeed.Value/10*Time.deltaTime);   
+                Guard(trans);
                 //到达1执行跳跃，要可以覆写
                 if(enemyModel.GuardProcess.Value == 1)
                 {
@@ -95,7 +96,9 @@ namespace SkateGame
             }else
             {
                 //警戒降低还要加
-                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value-enemyModel.GuardDecreaseSpeed.Value/10*Time.deltaTime);   
+                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value-enemyModel.GuardDecreaseSpeed.Value/10*Time.deltaTime);  
+                
+               UnGuard();
             }
 
             //Debug.Log(enemyModel.GuardProcess.Value);
@@ -195,6 +198,14 @@ namespace SkateGame
             dmgBox.OpenBox(enemyModel.AtkTags.Value, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
             
 
+        }
+
+        protected virtual void Guard(Transform pTrans)
+        {
+        }
+        
+        protected virtual void UnGuard()
+        {
         }
 
         public virtual void AtkHandler(GameObject gameObject)
