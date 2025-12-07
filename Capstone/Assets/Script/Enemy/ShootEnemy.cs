@@ -10,6 +10,13 @@ namespace SkateGame
         private float bulletSpeed = 7f;
         private float bulletLifeTime = 5f;
         public GameObject lineObject;
+        public GameObject headObject;
+        public SpriteRenderer headRenderer;
+        public Sprite shootSprite;
+        public Sprite closeSprite;
+        public Transform shootPos;
+
+        public ParticleSystem effect;
         protected override void Start()
         {
             base.Start();
@@ -22,9 +29,9 @@ namespace SkateGame
         {
             //TODO: 让so包含子弹生存时间，速度，还有大小
             //base.AtkTowardsPlayer(pTrans);
-            Vector2 dir = ((Vector2)pTrans.position - (Vector2)transform.position).normalized;
+            Vector2 dir = ((Vector2)pTrans.position - (Vector2)shootPos.position).normalized;
             DirectionMoveCompoInitData initData = new DirectionMoveCompoInitData(dir, bulletSpeed, bulletLifeTime);
-            BaseBullet bullet = bulletFactory.CreateBulletWithDir(transform.position, initData);
+            BaseBullet bullet = bulletFactory.CreateBulletWithDir(shootPos.position, initData);
             bullet.StartShoot(new HitBoxInitValue(enemyModel.AtkTags.Value, new EffectPackage(0), new Vector2(1f, 1f)));
         }
 
@@ -32,17 +39,41 @@ namespace SkateGame
         {
             base.Guard(pTrans);
             lineObject.SetActive(true);
-            Vector2 dir = ((Vector2)pTrans.position - (Vector2)transform.position).normalized;
+            Vector2 dir = ((Vector2)pTrans.position - (Vector2)shootPos.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             
-            lineObject.transform.rotation = Quaternion.Euler(0, 0, angle);
-            
+            headObject.transform.rotation = Quaternion.Euler(0, 0, angle+((displayTrans.localScale.x>0)?180:0));
+            headRenderer.sprite = shootSprite;
+            if(!effect.isPlaying)effect.Play();
+
         }
 
         protected override void UnGuard()
         {
             base.UnGuard();
             lineObject.SetActive(false);
+            headRenderer.sprite = closeSprite;
+            headObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            effect.Stop();
+        }
+
+        protected override void Flip(FlipInfoRecorder recorder)
+        {
+            if(!recorder.inGuard)
+                base.Flip(recorder);
+            else
+            {
+                Vector3 scale = displayTrans.localScale;
+
+                bool playerIsOnLeft = recorder.playerPos.x < transform.position.x;
+
+                if (playerIsOnLeft)
+                    scale.x = Mathf.Abs(scale.x);       // 玩家在左 → 正
+                else
+                    scale.x = -Mathf.Abs(scale.x);      // 玩家在右 → 负
+
+                displayTrans.localScale = scale;
+            }
         }
     }
 

@@ -21,6 +21,7 @@ namespace SkateGame
     public EnemyFactory prefabRef;
     protected IEnemyModel enemyModel;
     private Rigidbody2D rb;
+    public Transform displayTrans;
 
     // 基于时间的巡逻
     [Header("Time Patrol")]
@@ -71,6 +72,14 @@ namespace SkateGame
         moveTimer = enemyModel.Config.Value.moveDuration; 
     }
 
+    protected struct FlipInfoRecorder
+    {
+        public bool inGuard;
+        public bool moving;
+        public bool movingRight;
+        public Vector3 playerPos;
+    }
+
     void Update()
         {
             //测试伤害代码
@@ -83,6 +92,7 @@ namespace SkateGame
             return;
         }
 
+        FlipInfoRecorder recorder = new FlipInfoRecorder();
             if(IsPlayerNearWrapper(out Transform trans))
             {
                 enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value+enemyModel.GuardIncreaseSpeed.Value/10*Time.deltaTime);   
@@ -93,17 +103,21 @@ namespace SkateGame
                     enemyModel.GuardProcess.Value = -0.5f;
                     AtkTowardsPlayer(trans);
                 }
+
+                recorder.inGuard = true;
+                recorder.playerPos = trans.position;
             }else
             {
                 //警戒降低还要加
                 enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value-enemyModel.GuardDecreaseSpeed.Value/10*Time.deltaTime);  
-                
+                recorder.inGuard = false;
                UnGuard();
             }
 
             //Debug.Log(enemyModel.GuardProcess.Value);
             if(!movePaused)
             {
+                recorder.moving = true;
                 if (waiting )
                 {
                     // 等待阶段：原地不动，倒计时
@@ -121,6 +135,7 @@ namespace SkateGame
                 // 移动阶段：按方向和速度行进
                 float speed = enemyModel.Config.Value.moveSpeed * (movingRight ? 1f : -1f);
                 if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+                recorder.movingRight = movingRight;
 
                 moveTimer -= Time.deltaTime;
                 if (moveTimer <= 0f)
@@ -142,6 +157,8 @@ namespace SkateGame
                 }
                    
             }
+            
+            Flip(recorder);
         
     }
 
@@ -206,6 +223,18 @@ namespace SkateGame
         
         protected virtual void UnGuard()
         {
+        }
+
+        protected virtual void Flip(FlipInfoRecorder recorder)
+        {
+            if (!recorder.moving)
+                return;
+
+            Vector3 scale = displayTrans.localScale;
+            
+            scale.x = !recorder.movingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+
+            displayTrans.localScale = scale;
         }
 
         public virtual void AtkHandler(GameObject gameObject)

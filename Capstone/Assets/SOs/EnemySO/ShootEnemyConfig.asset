@@ -20,7 +20,7 @@ MonoBehaviour:
   canBeKilledByQ: 1
   gravityScale: 0
   guardIncreaseSpeed: 2
-  guardDecreaseSpeed: 0.5
+  guardDecreaseSpeed: 1000
   detectRadius: 20
   jumpAngleModifier: 0.7
   jumpForce: 10
