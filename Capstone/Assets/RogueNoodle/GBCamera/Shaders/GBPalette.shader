@@ -13,6 +13,8 @@ Shader "RogueNoodle/GBPaletteURP"
         {
             "RenderPipeline" = "UniversalPipeline"
             "RenderType" = "Opaque"
+            "Queue" = "Overlay"       // Draw last, on top of everything
+            "IsEmissive" = "true"     // URP lighting ignore
         }
 
         Pass
@@ -20,9 +22,9 @@ Shader "RogueNoodle/GBPaletteURP"
             Name "Forward"
             Tags { "LightMode" = "UniversalForward" }
 
-            Cull Back
-            ZWrite Off
-            ZTest Always
+            Cull Off                     // Render both sides
+            ZWrite Off                    // Don't write depth
+            ZTest Always                  // Ignore depth buffer
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -54,7 +56,7 @@ Shader "RogueNoodle/GBPaletteURP"
             {
                 Varyings OUT;
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS.xyz);
-                OUT.uv = IN.uv;   // Same as surface shader's i.uv_texcoord
+                OUT.uv = IN.uv;
                 return OUT;
             }
 
@@ -63,12 +65,11 @@ Shader "RogueNoodle/GBPaletteURP"
                 // Sample grayscale from RenderTexture
                 float gray = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, IN.uv).r;
 
-                // Fade to black (same logic)
+                // Fade to black
                 float lerped = lerp(gray, 0.0, 1.0 - _Fade);
 
-                // Palette lookup using grayscale for both axes
+                // Palette lookup
                 float2 paletteUV = float2(lerped, lerped);
-
                 float3 col = SAMPLE_TEXTURE2D(_Palette, sampler_Palette, paletteUV).rgb;
 
                 return half4(col, 1.0);
@@ -78,3 +79,4 @@ Shader "RogueNoodle/GBPaletteURP"
         }
     }
 }
+

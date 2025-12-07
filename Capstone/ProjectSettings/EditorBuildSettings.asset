@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/beboq/beboq Background Temp.unity
+    guid: 32cca2363e81b45fdbbfcc62e1765de2
+  - enabled: 1
     path: Assets/RogueNoodle/GBCamera/Scenes/GBCamera_RenderTexture.unity
     guid: 18aaefbf76dfa1b43a0cc5ab552b07f5
-  - enabled: 1
-    path: Assets/Scenes/beboq Background Temp.unity
-    guid: 32cca2363e81b45fdbbfcc62e1765de2
   - enabled: 0
     path: Assets/Scenes/playerhub.unity
     guid: 7b720acbd0de22146badfa011d78ca09
