@@ -9,12 +9,20 @@ Shader "RogueNoodle/GBPaletteURP"
 
     SubShader
     {
-        Tags { "RenderPipeline"="UniversalRenderPipeline" "RenderType"="Opaque" }
+        Tags
+        {
+            "RenderPipeline" = "UniversalPipeline"
+            "RenderType" = "Opaque"
+        }
 
         Pass
         {
-            Name "UniversalForward"
-            Tags { "LightMode"="UniversalForward" }
+            Name "Forward"
+            Tags { "LightMode" = "UniversalForward" }
+
+            Cull Back
+            ZWrite Off
+            ZTest Always
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -33,47 +41,40 @@ Shader "RogueNoodle/GBPaletteURP"
             struct Attributes
             {
                 float4 positionOS : POSITION;
+                float2 uv         : TEXCOORD0;
             };
 
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
-                float4 screenPos  : TEXCOORD0;   // <-- proper screen position
+                float2 uv         : TEXCOORD0;
             };
 
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-
-                // normal object → clip transform
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS.xyz);
-
-                // Unity macro that handles projection flips
-                OUT.screenPos = ComputeScreenPos(OUT.positionCS);
-
+                OUT.uv = IN.uv;   // Same as surface shader's i.uv_texcoord
                 return OUT;
             }
 
             half4 frag(Varyings IN) : SV_Target
             {
-                // proper screen UV (handles Metal / Vulkan flip)
-                float2 uv = IN.screenPos.xy / IN.screenPos.w;
+                // Sample grayscale from RenderTexture
+                float gray = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, IN.uv).r;
 
-                // grayscale sample
-                float gray = SAMPLE_TEXTURE2D(_RenderTexture, sampler_RenderTexture, uv).r;
+                // Fade to black (same logic)
+                float lerped = lerp(gray, 0.0, 1.0 - _Fade);
 
-                // fade
-                float lerped = lerp(gray, 0.0, (1.0 - _Fade));
+                // Palette lookup using grayscale for both axes
+                float2 paletteUV = float2(lerped, lerped);
 
-                // palette lookup
-                float3 color = SAMPLE_TEXTURE2D(_Palette, sampler_Palette, float2(lerped, lerped)).rgb;
+                float3 col = SAMPLE_TEXTURE2D(_Palette, sampler_Palette, paletteUV).rgb;
 
-                return half4(color, 1.0);
+                return half4(col, 1.0);
             }
 
             ENDHLSL
         }
     }
 }
-
-
