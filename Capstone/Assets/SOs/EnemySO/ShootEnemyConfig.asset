@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShootEnemyConfig
   m_EditorClassIdentifier: 
   moveDuration: 2
-  moveSpeed: 2
+  moveSpeed: 0
   waitTime: 1
   maxHealth: 30
   startFacingRight: 1

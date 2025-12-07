@@ -348,6 +348,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 673569730974591407, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 673569730974591407, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7332202050746077290, guid: c3c131a7ca6fd4c4889b3125d3458b85, type: 3}
@@ -362,6 +366,18 @@ PrefabInstance:
     - target: {fileID: 673569730974591407, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3387971781588154359, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3387971781588154359, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086577813888579393, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7260997533893408423, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
       propertyPath: m_Name
