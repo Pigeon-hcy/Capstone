@@ -23,10 +23,7 @@ public class LandState : GroundMovementState
         isDoubleJumpLand = playerModel.CanDoubleJump.Value;
         playerModel.CanDoubleJump.Value = true;
         landTimer = 0f;
-
-        #region FMOD
         playLanding();
-        #endregion
     }
 
     protected override void UpdateGroundMovement()
@@ -57,5 +54,9 @@ public class LandState : GroundMovementState
                 
             }
         }
+    }
+    public void playLanding()
+    {
+        AudioManager.Instance.fmodPlayLanding();
     }
 } 

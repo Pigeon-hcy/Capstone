@@ -106,7 +106,7 @@ public class AudioManager : MonoBehaviour
         float playerSpeed = Mathf.Abs(targetRb.linearVelocityX);
         //currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 2);
         currentSpeed = playerSpeed/12;
-        Debug.Log(currentSpeed);
+        //Debug.Log(currentSpeed);
         movingEventInstance.setParameterByID(movingParameter, currentSpeed);
         wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
         railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
@@ -152,6 +152,7 @@ public class AudioManager : MonoBehaviour
         if (landEventInstance.isValid())
         {
             landEventInstance.start();
+            Debug.Log("land");
         }
     }
 
