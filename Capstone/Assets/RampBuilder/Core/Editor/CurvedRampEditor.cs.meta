@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 93191e1af192e4b76b6f14102da0504c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249663
+  packageName: Ramp Jump Designer - Procedural Created Ramps
+  packageVersion: 1.0.0
+  assetPath: Assets/RampBuilder/Core/Editor/CurvedRampEditor.cs
+  uploadId: 571476
