@@ -117,7 +117,13 @@ public class AudioManager : MonoBehaviour
     {
         if (movingEventInstance.isValid())
         {
+            //FMOD.Studio.PLAYBACK_STATE playbackState;
+            //movingEventInstance.getPlaybackState(out playbackState);
+            //if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            //{
             movingEventInstance.start();
+            //}
+            Debug.Log("move");
         }
     }
     public void fmodPauseMove()
@@ -125,6 +131,7 @@ public class AudioManager : MonoBehaviour
         if (movingEventInstance.isValid())
         {
             movingEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            Debug.Log("stop move");
         }
     }
 
