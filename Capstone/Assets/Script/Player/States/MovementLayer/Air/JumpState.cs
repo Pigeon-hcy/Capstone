@@ -86,6 +86,5 @@ public class JumpState : AirborneMovementState
     public void playOllie()
     {
         AudioManager.Instance.fmodPlayOllie();
-        AudioManager.Instance.fmodPauseMove();
     }
 } 

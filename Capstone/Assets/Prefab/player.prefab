@@ -24974,6 +24974,13 @@ MonoBehaviour:
       Data3: 1245311138
       Data4: -155131600
     Path: event:/SFX_Ollie
+  kickflipEvent:
+    Guid:
+      Data1: 2092964506
+      Data2: 1338876996
+      Data3: -1638640976
+      Data4: -1933009746
+    Path: event:/SFX_Kickflip
   landEvent:
     Guid:
       Data1: -330941867
@@ -24995,6 +25002,13 @@ MonoBehaviour:
       Data3: -698395744
       Data4: 1670160386
     Path: event:/SFX_WallRide
+  railGrindEvent:
+    Guid:
+      Data1: -1128422467
+      Data2: 1168875929
+      Data3: 1327959990
+      Data4: 1785657753
+    Path: event:/SFX_RailGrind
 --- !u!1 &1954541364750357680
 GameObject:
   m_ObjectHideFlags: 0

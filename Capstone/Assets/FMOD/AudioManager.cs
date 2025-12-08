@@ -22,6 +22,10 @@ public class AudioManager : MonoBehaviour
     public EventReference ollieEvent;
     private EventInstance ollieEventInstance;
 
+    //Kickflip
+    public EventReference kickflipEvent;
+    private EventInstance kickflipEventInstance;
+
     //Landing
     public EventReference landEvent;
     private EventInstance landEventInstance;
@@ -34,6 +38,11 @@ public class AudioManager : MonoBehaviour
     public EventReference wallRideEvent;
     private EventInstance wallRideEventInstance;
     FMOD.Studio.PARAMETER_ID wallRideParameter;
+
+    //RailGrind
+    public EventReference railGrindEvent;
+    private EventInstance railGrindEventInstance;
+    FMOD.Studio.PARAMETER_ID railGrindParameter;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -62,6 +71,9 @@ public class AudioManager : MonoBehaviour
         //Ollie
         ollieEventInstance = RuntimeManager.CreateInstance(ollieEvent);
 
+        //Kickflip
+        kickflipEventInstance = RuntimeManager.CreateInstance(kickflipEvent);
+
         //Landing
         landEventInstance = RuntimeManager.CreateInstance(landEvent);
 
@@ -76,6 +88,15 @@ public class AudioManager : MonoBehaviour
         FMOD.Studio.PARAMETER_DESCRIPTION wallRideEventParameterDescription;
         wallRideEventDescription.getParameterDescriptionByName("Speed", out wallRideEventParameterDescription);
         wallRideParameter = wallRideEventParameterDescription.id;
+
+        //Rail Grind
+        railGrindEventInstance = RuntimeManager.CreateInstance(railGrindEvent);
+
+        FMOD.Studio.EventDescription railGrindEventDescription;
+        railGrindEventInstance.getDescription(out railGrindEventDescription);
+        FMOD.Studio.PARAMETER_DESCRIPTION railGrindEventParameterDescription;
+        railGrindEventDescription.getParameterDescriptionByName("Speed", out railGrindEventParameterDescription);
+        railGrindParameter = railGrindEventParameterDescription.id;
         #endregion
     }
 
@@ -84,9 +105,11 @@ public class AudioManager : MonoBehaviour
     {
         float playerSpeed = Mathf.Abs(targetRb.linearVelocityX);
         //currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 2);
-        currentSpeed = playerSpeed;
+        currentSpeed = playerSpeed/12;
+        Debug.Log(currentSpeed);
         movingEventInstance.setParameterByID(movingParameter, currentSpeed);
         wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
+        railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
     }
 
     //Moving
@@ -111,6 +134,15 @@ public class AudioManager : MonoBehaviour
         if (ollieEventInstance.isValid())
         {
             ollieEventInstance.start();
+        }
+    }
+
+    //Kickflip
+    public void fmodPlayKickflip()
+    {
+        if (kickflipEventInstance.isValid())
+        {
+            kickflipEventInstance.start();
         }
     }
 
@@ -151,16 +183,16 @@ public class AudioManager : MonoBehaviour
     //Rail Grind
     public void fmodPlayRailGrind()
     {
-        if (wallRideEventInstance.isValid())
+        if (railGrindEventInstance.isValid())
         {
-            wallRideEventInstance.start();
+            railGrindEventInstance.start();
         }
     }
     public void fmodPauseRailGrind()
     {
-        if (wallRideEventInstance.isValid())
+        if (railGrindEventInstance.isValid())
         {
-            wallRideEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            railGrindEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 }

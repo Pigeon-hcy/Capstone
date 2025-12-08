@@ -25,6 +25,7 @@ public class DoubleJumpState : AirborneMovementState
         {
             player.DoubleJumpEffect.PlayFeedbacks();
         }
+        playKickflip();
     }
 
     protected override void UpdateAirMovement()
@@ -69,5 +70,10 @@ public class DoubleJumpState : AirborneMovementState
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
         }
+    }
+
+    public void playKickflip()
+    {
+        AudioManager.Instance.fmodPlayKickflip();
     }
 } 

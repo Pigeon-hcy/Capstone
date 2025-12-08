@@ -19,11 +19,13 @@ public abstract class GroundMovementState : StateBase
     public sealed override void Enter()
     {
         EnterGroundMovement();
+        playLanding();
     }
 
     public sealed override void Exit()
     {
         ExitGroundMovement();
+        pauseLanding();
     }
 
     private void switchAirborneMovement()
@@ -43,5 +45,15 @@ public abstract class GroundMovementState : StateBase
         {
             player.stateMachine.SwitchState(StateLayer.Movement, "Air");
         }
+    }
+
+    public void playLanding()
+    {
+        AudioManager.Instance.fmodPlayLanding();
+        AudioManager.Instance.fmodPlayMove();
+    }
+    public void pauseLanding()
+    {
+        AudioManager.Instance.fmodPauseMove();
     }
 }

@@ -58,10 +58,4 @@ public class LandState : GroundMovementState
             }
         }
     }
-
-    public void playLanding()
-    {
-        AudioManager.Instance.fmodPlayLanding();
-        AudioManager.Instance.fmodPlayMove();
-    }
 } 
