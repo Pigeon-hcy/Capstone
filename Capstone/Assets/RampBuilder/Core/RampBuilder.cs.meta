@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d4372fbf1d11247bf967012a7b466908
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249663
+  packageName: Ramp Jump Designer - Procedural Created Ramps
+  packageVersion: 1.0.0
+  assetPath: Assets/RampBuilder/Core/RampBuilder.cs
+  uploadId: 571476
