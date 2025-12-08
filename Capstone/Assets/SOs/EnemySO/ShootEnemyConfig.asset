@@ -27,5 +27,5 @@ MonoBehaviour:
   JumpAtkBoxActiveTime: 3
   AtkTags:
   - Player
-  bSpeed: 7
+  bSpeed: 20
   bLifeTime: 5

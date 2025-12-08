@@ -27,4 +27,10 @@ namespace BulletToolKit
             return go.GetComponent<BaseBullet>();
         }
     }
+    
+    public abstract class BulletFactory : ScriptableObject
+    {
+        public abstract BaseBullet CreateBulletWithTarget(Vector3 pos, TargetMoveCompInitData initData);
+        public abstract BaseBullet CreateBulletWithDir(Vector3 pos, DirectionMoveCompoInitData initData);
+    }
 }

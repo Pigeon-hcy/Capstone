@@ -65,6 +65,17 @@ namespace SkateGame
         movingRight = enemyModel.Config.Value.startFacingRight;
         rb.gravityScale = enemyModel.Config.Value.gravityScale;
         rb.linearVelocity = Vector2.zero;
+        enemyModel.GuardProcess.Register(x =>
+        {
+            try
+            {
+                Debug.Log($"{transform.name} 被修改成 {x}");
+            }
+            catch
+            {
+            }
+        }
+        );
         
 
         // 初始化为移动阶段
@@ -81,11 +92,11 @@ namespace SkateGame
     }
 
     void Update()
-        {
-            //测试伤害代码
-            //if (Input.GetKeyDown(KeyCode.U))
-                //TakeDamage(10, DamageType.Physical, null);
-            
+    {
+        // 测试伤害代码
+        // if (Input.GetKeyDown(KeyCode.U))
+        //     TakeDamage(10, DamageType.Physical, null);
+
         if (!enemyModel.IsAlive.Value)
         {
             if (rb) rb.linearVelocity = Vector2.zero;
@@ -93,73 +104,114 @@ namespace SkateGame
         }
 
         FlipInfoRecorder recorder = new FlipInfoRecorder();
-            if(IsPlayerNearWrapper(out Transform trans))
-            {
-                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value+enemyModel.GuardIncreaseSpeed.Value/10*Time.deltaTime);   
-                Guard(trans);
-                //到达1执行跳跃，要可以覆写
-                if(enemyModel.GuardProcess.Value == 1)
-                {
-                    enemyModel.GuardProcess.Value = -0.5f;
-                    AtkTowardsPlayer(trans);
-                }
 
-                recorder.inGuard = true;
-                recorder.playerPos = trans.position;
-            }else
+        // --- 警戒逻辑 -------------------------------------------------------
+        if (IsPlayerNearWrapper(out Transform trans))
+        {
+            // 警戒值提升
+            enemyModel.GuardProcess.Value =
+                Mathf.Clamp01(enemyModel.GuardProcess.Value +
+                              enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime);
+
+            Guard(trans);
+
+            Debug.Log($"{transform.name} 警戒中，当前警戒值 {enemyModel.GuardProcess.Value}，提升速度 {enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime}");
+
+            // 到达满值 → 跳跃攻击（可覆写）
+            if (enemyModel.GuardProcess.Value == 1f)
             {
-                //警戒降低还要加
-                enemyModel.GuardProcess.Value= Mathf.Clamp01(enemyModel.GuardProcess.Value-enemyModel.GuardDecreaseSpeed.Value/10*Time.deltaTime);  
-                recorder.inGuard = false;
-               UnGuard();
+                enemyModel.GuardProcess.Value = -0.5f;
+                AtkTowardsPlayer(trans);
             }
 
-            //Debug.Log(enemyModel.GuardProcess.Value);
-            if(!movePaused)
-            {
-                recorder.moving = true;
-                if (waiting )
-                {
-                    // 等待阶段：原地不动，倒计时
-                    if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-                    waitTimer -= Time.deltaTime;
-                    if (waitTimer <= 0f)
-                    {
-                        waiting   = false;
-                        movingRight = !movingRight;                    // 等完换方向
-                        moveTimer = Mathf.Max(0.01f, moveDuration);    // 开始下一段移动
-                    }
-                    return;
-                }
+            recorder.inGuard   = true;
+            recorder.playerPos = trans.position;
+        }
+        else
+        {
+            /*
+            Transform p = null;
+            if (player == null)
+                player = FindFirstObjectByType<PlayerController>()?.transform;
 
-                // 移动阶段：按方向和速度行进
-                float speed = enemyModel.Config.Value.moveSpeed * (movingRight ? 1f : -1f);
-                if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
-                recorder.movingRight = movingRight;
-
-                moveTimer -= Time.deltaTime;
-                if (moveTimer <= 0f)
-                {
-                    // 本段移动结束 → 进入等待阶段
-                    waiting   = true;
-                    waitTimer = Mathf.Max(0f, enemyModel.Config.Value.waitTime);
-                    if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-                }
-            }else
+            if (player != null)
             {
-                timeCount  -= Time.deltaTime;
-                if(timeCount<=0)
-                {
-                    movePaused = false;
-                    if(dmgBox!=null)
-                        dmgBox.CloseBox();
-                    dmgBox = null;
-                }
-                   
+                p = player;
+                float dist = Vector2.Distance(transform.position, p.position);
+                Debug.Log($"{transform.name} 警戒下降中，与玩家距离 = {dist}");
             }
-            
-            Flip(recorder);
+            else
+            {
+                Debug.Log($"{transform.name} 发现玩家为null ");
+            }*/
+
+            // 警戒值下降
+            enemyModel.GuardProcess.Value =
+                Mathf.Clamp01(enemyModel.GuardProcess.Value -
+                              enemyModel.GuardDecreaseSpeed.Value / 10f * Time.deltaTime);
+
+            recorder.inGuard = false;
+            UnGuard();
+        }
         
+        // --------------------------------------------------------------------
+
+        // --- 移动逻辑 -------------------------------------------------------
+        if (!movePaused)
+        {
+            recorder.moving = true;
+
+            // 等待阶段
+            if (waiting)
+            {
+                if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+                waitTimer -= Time.deltaTime;
+                if (waitTimer <= 0f)
+                {
+                    waiting       = false;
+                    movingRight   = !movingRight;                       // 等完换方向
+                    moveTimer     = Mathf.Max(0.01f, moveDuration);      // 开始下一段移动
+                }
+                return; // 等待中，不进入移动
+            }
+
+            // 移动阶段
+            float speed = enemyModel.Config.Value.moveSpeed *
+                          (movingRight ? 1f : -1f);
+
+            if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
+
+            recorder.movingRight = movingRight;
+
+            moveTimer -= Time.deltaTime;
+            if (moveTimer <= 0f)
+            {
+                // 本段移动结束 → 进入等待阶段
+                waiting   = true;
+                waitTimer = Mathf.Max(0f, enemyModel.Config.Value.waitTime);
+
+                if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            }
+        }
+        else
+        {
+            // 暂停移动（受伤或其它效果）
+            timeCount -= Time.deltaTime;
+            if (timeCount <= 0f)
+            {
+                movePaused = false;
+
+                if (dmgBox != null)
+                    dmgBox.CloseBox();
+
+                dmgBox = null;
+            }
+        }
+        // --------------------------------------------------------------------
+
+        // 最后更新翻面信息
+        Flip(recorder);
     }
 
         /// <summary>
@@ -264,7 +316,7 @@ namespace SkateGame
             if(IfDrawRange)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, config.detectRadius);
+                Gizmos.DrawWireSphere(transform.position,enemyModel.DetectRadius.Value);
             }
                
         }
@@ -302,7 +354,7 @@ namespace SkateGame
 
             if (player == null)
                 return false;
-
+            
             trans = player;
             return IsPlayerNear2D(transform, player, enemyModel.DetectRadius.Value);
         }
