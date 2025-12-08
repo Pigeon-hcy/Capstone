@@ -2192,6 +2192,7 @@ MonoBehaviour:
   - {fileID: 6955283148007141071}
   mmfPlayersFadeIn: {fileID: 4182270196053369453}
   mmfPlayersFadeOut: {fileID: 2322606895270474189}
+  current: 0
 --- !u!1 &1617325432008820711
 GameObject:
   m_ObjectHideFlags: 0
