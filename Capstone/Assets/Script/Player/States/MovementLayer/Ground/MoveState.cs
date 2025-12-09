@@ -20,6 +20,7 @@ public class MoveState : GroundMovementState
         {
             player.moveEffect.PlayFeedbacks();
         }
+        playMoving();
     }
 
     protected override void UpdateGroundMovement()
@@ -44,6 +45,11 @@ public class MoveState : GroundMovementState
         {
             player.moveEffect.StopFeedbacks();
         }
+    }
+
+    public void playMoving()
+    {
+        AudioManager.Instance.fmodPlayMove();
     }
 
     public void pauseMove()
