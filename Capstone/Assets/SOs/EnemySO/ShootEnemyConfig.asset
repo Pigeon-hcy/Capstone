@@ -19,7 +19,7 @@ MonoBehaviour:
   startFacingRight: 1
   canBeKilledByQ: 1
   gravityScale: 0
-  guardIncreaseSpeed: 4
+  guardIncreaseSpeed: 10
   guardDecreaseSpeed: 1000
   detectRadius: 20
   jumpAngleModifier: 0.7

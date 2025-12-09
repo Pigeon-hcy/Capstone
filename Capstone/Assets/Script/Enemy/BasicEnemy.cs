@@ -69,7 +69,7 @@ namespace SkateGame
         {
             try
             {
-                Debug.Log($"{transform.name} 被修改成 {x}");
+                //Debug.Log($"{transform.name} 被修改成 {x}");
             }
             catch
             {
@@ -104,7 +104,7 @@ namespace SkateGame
         }
 
         FlipInfoRecorder recorder = new FlipInfoRecorder();
-
+        Debug.Log("一次测试开始");
         // --- 警戒逻辑 -------------------------------------------------------
         if (IsPlayerNearWrapper(out Transform trans))
         {
@@ -113,14 +113,14 @@ namespace SkateGame
                 Mathf.Clamp01(enemyModel.GuardProcess.Value +
                               enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime);
 
-            Guard(trans);
+            Guard(trans, enemyModel.GuardProcess.Value);
 
             Debug.Log($"{transform.name} 警戒中，当前警戒值 {enemyModel.GuardProcess.Value}，提升速度 {enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime}");
 
             // 到达满值 → 跳跃攻击（可覆写）
-            if (enemyModel.GuardProcess.Value == 1f)
+            if (enemyModel.GuardProcess.Value >= 1f)
             {
-                enemyModel.GuardProcess.Value = -0.5f;
+                enemyModel.GuardProcess.Value = 0f;
                 AtkTowardsPlayer(trans);
             }
 
@@ -144,7 +144,7 @@ namespace SkateGame
             {
                 Debug.Log($"{transform.name} 发现玩家为null ");
             }*/
-
+            Debug.Log("降低警戒值");
             // 警戒值下降
             enemyModel.GuardProcess.Value =
                 Mathf.Clamp01(enemyModel.GuardProcess.Value -
@@ -153,6 +153,7 @@ namespace SkateGame
             recorder.inGuard = false;
             UnGuard();
         }
+        Debug.Log("一次测试结束");
         
         // --------------------------------------------------------------------
 
@@ -269,7 +270,7 @@ namespace SkateGame
 
         }
 
-        protected virtual void Guard(Transform pTrans)
+        protected virtual void Guard(Transform pTrans, float guard)
         {
         }
         

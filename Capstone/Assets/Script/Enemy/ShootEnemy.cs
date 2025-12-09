@@ -17,16 +17,20 @@ namespace SkateGame
         public Transform shootPos;
 
         public ParticleSystem effect;
+
+        private LineRenderer lRenderer;
         protected override void Start()
         {
             base.Start();
             bulletSpeed = (config as ShootEnemyConfig).bSpeed;
             bulletLifeTime = (config  as ShootEnemyConfig).bLifeTime;
+            lRenderer = lineObject.GetComponent<LineRenderer>();
         }
 
         public BulletFactory bulletFactory;
         protected override void AtkTowardsPlayer(Transform pTrans)
         {
+            Debug.LogError("发出子弹");
             //base.AtkTowardsPlayer(pTrans);
             Vector2 dir = ((Vector2)pTrans.position - (Vector2)shootPos.position).normalized;
             DirectionMoveCompoInitData initData = new DirectionMoveCompoInitData(dir, bulletSpeed, bulletLifeTime);
@@ -34,10 +38,21 @@ namespace SkateGame
             bullet.StartShoot(new HitBoxInitValue(enemyModel.AtkTags.Value, new EffectPackage(0), new Vector2(1f, 1f)));
         }
 
-        protected override void Guard(Transform pTrans)
+        protected override void Guard(Transform pTrans, float guard)
         {
-            base.Guard(pTrans);
+            base.Guard(pTrans, guard);
             lineObject.SetActive(true);
+            var start = lRenderer.startColor;
+            var end   = lRenderer.endColor;
+
+            float a = Mathf.Clamp01(guard);
+
+            start.a = a;
+            end.a   = a;
+
+            lRenderer.startColor = start;
+            lRenderer.endColor   = end;
+            
             Vector2 dir = ((Vector2)pTrans.position - (Vector2)shootPos.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             
