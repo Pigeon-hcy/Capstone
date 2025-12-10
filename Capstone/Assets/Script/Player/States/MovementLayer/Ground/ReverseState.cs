@@ -24,6 +24,7 @@ public class ReverseState : GroundMovementState
             player.ReverseEffect.PlayFeedbacks();
 
         }
+        playReverse();
     }
 
     protected override void UpdateGroundMovement()
@@ -34,5 +35,10 @@ public class ReverseState : GroundMovementState
     protected override void ExitGroundMovement()
     {
 
+    }
+
+    public void playReverse()
+    {
+        AudioManager.Instance.fmodPlayReverse();
     }
 }

@@ -24,6 +24,7 @@ public class PowerGrindState : GroundMovementState
         {
             player.powerGrindEffect.PlayFeedbacks();
         }
+        playPowerGrind();
     }
 
     protected override void UpdateGroundMovement()
@@ -52,6 +53,7 @@ public class PowerGrindState : GroundMovementState
 
         }
         player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = false });
+        pausePowerGrind();
     }
 
     private void CheckReverse()
@@ -84,5 +86,14 @@ public class PowerGrindState : GroundMovementState
     {
         playerModel.IsCheckingReverseWindow.Value = true;
         playerModel.ReverseTimer.Value = 0f;
+    }
+
+    public void playPowerGrind()
+    {
+        AudioManager.Instance.fmodPlayPowerGrind();
+    }
+    public void pausePowerGrind()
+    {
+        AudioManager.Instance.fmodPausePowerGrind();
     }
 }
