@@ -46,6 +46,7 @@ public class fireBullet : MonoBehaviour
         // 检查撞击Ice - 大爆炸
         if (other.gameObject.tag == "Ice")
         {
+            //Audio 大爆炸
             if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
                 iceExplodeWithoutDestroy(other.gameObject);
@@ -67,6 +68,7 @@ public class fireBullet : MonoBehaviour
         // 检查撞击Vine - 升起上升气流
         if (other.gameObject.tag == "Vine")
         {
+             //Audio 上升气流
             CreateAirCurrent();
             Destroy(other.gameObject);
             explode();
@@ -76,6 +78,7 @@ public class fireBullet : MonoBehaviour
         // 检查是否撞击到Ground层（包括地面和墙壁）
         if (IsGroundLayer(other))
         {
+            //Audio 小爆炸
             explode();
         }
     }
