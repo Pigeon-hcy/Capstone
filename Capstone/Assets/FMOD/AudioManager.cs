@@ -172,6 +172,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    //Reverse
+    public void fmodPlayReverse()
+    {
+        if (kickflipEventInstance.isValid())
+        {
+            kickflipEventInstance.start();
+        }
+    }
+
     //Wall Ride
     public void fmodPlayWallRide()
     {
@@ -201,6 +210,22 @@ public class AudioManager : MonoBehaviour
         if (railGrindEventInstance.isValid())
         {
             railGrindEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+    }
+
+    //PowerGrind
+    public void fmodPlayPowerGrind()
+    {
+        if (wallRideEventInstance.isValid())
+        {
+            wallRideEventInstance.start();
+        }
+    }
+    public void fmodPausePowerGrind()
+    {
+        if (wallRideEventInstance.isValid())
+        {
+            wallRideEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 }

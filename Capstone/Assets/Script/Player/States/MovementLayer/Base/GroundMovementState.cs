@@ -19,6 +19,7 @@ public abstract class GroundMovementState : StateBase
     public sealed override void Enter()
     {
         EnterGroundMovement();
+        playMoving();
     }
 
     public sealed override void Exit()

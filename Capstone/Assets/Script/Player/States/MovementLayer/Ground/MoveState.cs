@@ -20,7 +20,7 @@ public class MoveState : GroundMovementState
         {
             player.moveEffect.PlayFeedbacks();
         }
-        playMoving();
+        //playMoving();
     }
 
     protected override void UpdateGroundMovement()
