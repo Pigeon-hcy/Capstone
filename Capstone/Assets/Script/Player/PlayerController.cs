@@ -33,6 +33,9 @@ namespace SkateGame
         [Header("瞄准与射击设置")]
         public LineRenderer aimLine;      // 瞄准线 temp
         public float aimLineLength = 10f; // 瞄准线长度
+        [Header("Trigger 控制")]
+        public bool disableInput = false;
+
 
         [Header("MMF效果")]
         public MMF_Player moveEffect;
@@ -263,6 +266,7 @@ namespace SkateGame
         #region Aim and Shoot
         private void HandleAimAndShoot()
         {
+            if (disableInput) return;
             // 按住R键进入瞄准
             if (inputModel.ShootStart.Value)
             {

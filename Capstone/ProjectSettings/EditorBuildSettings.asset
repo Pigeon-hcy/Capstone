@@ -9,17 +9,50 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/Level_1/3D/3D1-1.unity
+    guid: 82c7d8afd14076440b65de91a364baab
+  - enabled: 0
     path: Assets/Scenes/beboq/beboq Background Temp 1.unity
     guid: d5901d5f69ed8cf45bbdc904076dab75
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/beboq/beboq Background Temp.unity
     guid: 32cca2363e81b45fdbbfcc62e1765de2
-  - enabled: 1
+  - enabled: 0
     path: Assets/RogueNoodle/GBCamera/Scenes/GBCamera_RenderTexture.unity
     guid: 18aaefbf76dfa1b43a0cc5ab552b07f5
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/playerhub.unity
     guid: 7b720acbd0de22146badfa011d78ca09
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-2.unity
+    guid: 81545ebe73dcaa046a3b6705e1ada40f
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-3Leol.unity
+    guid: b1c1c782b010c48a5b83b369c9feecc3
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-4 Leon.unity
+    guid: 0584cbdbf6b4d774ab0aa0b597aca3ad
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-5YL v6 MODIFY THIS.unity
+    guid: f0ec76df440912c409f68685c77a3e5d
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-6.unity
+    guid: 378ff7a23a1cbb8409ce21d2d5ee9eab
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-7.unity
+    guid: e70415accfa45f94e8c7343ecf4b9c5e
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-8.unity
+    guid: 12f24ff93eb361c42b017464dcff50a2
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-9.unity
+    guid: fe0406af7b470ea45a0e37bb833f1441
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-10YLNeilWork.unity
+    guid: 1ffcdce10d10b4d10860c5fea7fd6f4b
+  - enabled: 1
+    path: Assets/Scenes/Level_1/1-11.unity
+    guid: d4452d91975e4284bb07af52f61c87b1
   - enabled: 0
     path: Assets/Scenes/Level_0/CY_EZ_Level0.unity
     guid: bb8f841a2abb9924ca7129800a3bf73e
