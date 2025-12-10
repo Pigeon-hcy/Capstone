@@ -3,6 +3,7 @@ using QFramework;
 using System.Net.Security;
 using BaseUtility;
 using Hitbox;
+using System.Collections.Generic;
 
 namespace SkateGame
 {
@@ -32,7 +33,7 @@ namespace SkateGame
     float moveTimer;
     float waitTimer;
 
-    public bool IsAlive => enemyModel.IsAlive.Value;
+    //public bool IsAlive => enemyModel.IsAlive.Value;
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
      public bool IfDrawRange = false;
@@ -43,6 +44,31 @@ namespace SkateGame
     private float timeCount = 0;
 
     protected IHitBox dmgBox;
+    
+    
+    public int Health { get; set; }
+    public int MaxHealth { get; set; }
+    public bool IsAlive { get; set; }
+
+    public bool MovingRight { get; set; }
+    public float MoveSpeed { get; set; }
+    public float WaitTime { get; set; }
+    public float PatrolLeftX { get; set; }
+    public float PatrolRightX { get; set; }
+
+    public Vector2 Position { get; set; }
+
+    public float GuardProcess { get; set; }
+    public float DetectRadius { get; set; }
+    public float GuardIncreaseSpeed { get; set; }
+    public float GuardDecreaseSpeed { get; set; }
+    public float JumpAngleModifier { get; set; }
+
+    public float JumpForce { get; set; }
+    public float JumpAtkBoxActiveTime { get; set; }
+    public List<string> AtkTags { get; set; }
+    public bool CanBeKilledByQ { get; set; }
+    
     protected virtual void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
@@ -50,37 +76,28 @@ namespace SkateGame
 
         rb = GetComponent<Rigidbody2D>();
 
-        enemyModel.Health.Value    = enemyModel.Config.Value.maxHealth;
-        enemyModel.MaxHealth.Value = enemyModel.Config.Value.maxHealth;
-        enemyModel.IsAlive.Value   = true;
-        enemyModel.GuardProcess.Value = 0;
-        enemyModel.DetectRadius.Value = enemyModel.Config.Value.detectRadius;
-        enemyModel.GuardIncreaseSpeed.Value = enemyModel.Config.Value.guardIncreaseSpeed;
-        enemyModel.JumpForce.Value = enemyModel.Config.Value.jumpForce;
-        enemyModel.JumpAngleModifier.Value = enemyModel.Config.Value.jumpAngleModifier;
-        enemyModel.JumpAtkBoxActiveTime.Value = enemyModel.Config.Value.JumpAtkBoxActiveTime;
-        enemyModel.AtkTags.Value  = enemyModel.Config.Value.AtkTags;
-        enemyModel.CanBeKilledByQ.Value = enemyModel.Config.Value.canBeKilledByQ;
+        Health              = config.maxHealth;
+        MaxHealth           = config.maxHealth;
+        IsAlive             = true;
+        GuardProcess        = 0f;
+        DetectRadius        = config.detectRadius;
+        GuardIncreaseSpeed  = config.guardIncreaseSpeed;
+        JumpForce           = config.jumpForce;
+        JumpAngleModifier   = config.jumpAngleModifier;
+        JumpAtkBoxActiveTime = config.JumpAtkBoxActiveTime;
+        AtkTags             = config.AtkTags;
+        CanBeKilledByQ      = config.canBeKilledByQ;
 
-        movingRight = enemyModel.Config.Value.startFacingRight;
-        rb.gravityScale = enemyModel.Config.Value.gravityScale;
+
+        movingRight = config.startFacingRight;
+        rb.gravityScale = config.gravityScale;
         rb.linearVelocity = Vector2.zero;
-        enemyModel.GuardProcess.Register(x =>
-        {
-            try
-            {
-                //Debug.Log($"{transform.name} 被修改成 {x}");
-            }
-            catch
-            {
-            }
-        }
-        );
+        
         
 
         // 初始化为移动阶段
         waiting   = false;
-        moveTimer = enemyModel.Config.Value.moveDuration; 
+        moveTimer = config.moveDuration; 
     }
 
     protected struct FlipInfoRecorder
@@ -97,7 +114,7 @@ namespace SkateGame
         // if (Input.GetKeyDown(KeyCode.U))
         //     TakeDamage(10, DamageType.Physical, null);
 
-        if (!enemyModel.IsAlive.Value)
+        if (!IsAlive)
         {
             if (rb) rb.linearVelocity = Vector2.zero;
             return;
@@ -109,18 +126,18 @@ namespace SkateGame
         if (IsPlayerNearWrapper(out Transform trans))
         {
             // 警戒值提升
-            enemyModel.GuardProcess.Value =
-                Mathf.Clamp01(enemyModel.GuardProcess.Value +
-                              enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime);
+            GuardProcess =
+                Mathf.Clamp01(GuardProcess +
+                              GuardIncreaseSpeed/ 10f * Time.deltaTime);
 
-            Guard(trans, enemyModel.GuardProcess.Value);
+            Guard(trans, GuardProcess);
 
-            Debug.Log($"{transform.name} 警戒中，当前警戒值 {enemyModel.GuardProcess.Value}，提升速度 {enemyModel.GuardIncreaseSpeed.Value / 10f * Time.deltaTime}");
+            //Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
 
             // 到达满值 → 跳跃攻击（可覆写）
-            if (enemyModel.GuardProcess.Value >= 1f)
+            if (GuardProcess >= 1f)
             {
-                enemyModel.GuardProcess.Value = 0f;
+                GuardProcess = 0f;
                 AtkTowardsPlayer(trans);
             }
 
@@ -146,9 +163,9 @@ namespace SkateGame
             }*/
             Debug.Log("降低警戒值");
             // 警戒值下降
-            enemyModel.GuardProcess.Value =
-                Mathf.Clamp01(enemyModel.GuardProcess.Value -
-                              enemyModel.GuardDecreaseSpeed.Value / 10f * Time.deltaTime);
+            GuardProcess =
+                Mathf.Clamp01(GuardProcess -
+                              GuardDecreaseSpeed / 10f * Time.deltaTime);
 
             recorder.inGuard = false;
             UnGuard();
@@ -178,7 +195,7 @@ namespace SkateGame
             }
 
             // 移动阶段
-            float speed = enemyModel.Config.Value.moveSpeed *
+            float speed = config.moveSpeed *
                           (movingRight ? 1f : -1f);
 
             if (rb) rb.linearVelocity = new Vector2(speed, rb.linearVelocity.y);
@@ -190,7 +207,7 @@ namespace SkateGame
             {
                 // 本段移动结束 → 进入等待阶段
                 waiting   = true;
-                waitTimer = Mathf.Max(0f, enemyModel.Config.Value.waitTime);
+                waitTimer = Mathf.Max(0f, config.waitTime);
 
                 if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             }
@@ -221,7 +238,7 @@ namespace SkateGame
         protected void PauseMove()
         {
             movePaused = true;
-            timeCount = enemyModel.JumpAtkBoxActiveTime.Value;
+            timeCount = JumpAtkBoxActiveTime;
             
         }
 
@@ -244,7 +261,7 @@ namespace SkateGame
 
              float offsetFromUp = rawAngle - 90f;
 
-             float result = offsetFromUp * enemyModel.JumpAngleModifier.Value;
+             float result = offsetFromUp * JumpAngleModifier;
 
             float realResult = result+90f;
             //Debug.LogError(" Jump Result:"+ realResult);
@@ -257,7 +274,7 @@ namespace SkateGame
             Debug.Log(jumpDir);
             
 
-            float jumpForce = enemyModel.JumpForce.Value*1000;
+            float jumpForce = JumpForce*1000;
 
             rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
             BoxCollider2D cld = GetComponent<BoxCollider2D>();
@@ -265,7 +282,7 @@ namespace SkateGame
             {
                 dmgBox = reportBoxFactory.CreateHitbox(transform);
             }
-            dmgBox.OpenBox(enemyModel.AtkTags.Value, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
+            dmgBox.OpenBox(AtkTags, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
             
 
         }
@@ -302,7 +319,7 @@ namespace SkateGame
 
         public void DoInteraction()
         {
-            if(enemyModel.CanBeKilledByQ.Value)
+            if(CanBeKilledByQ)
             {
                  MessageBox box = new MessageBox();
                 box.gmo = this.gameObject;
@@ -317,7 +334,7 @@ namespace SkateGame
             if(IfDrawRange)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position,enemyModel.DetectRadius.Value);
+                Gizmos.DrawWireSphere(transform.position,DetectRadius);
             }
                
         }
@@ -325,16 +342,16 @@ namespace SkateGame
         // ===== IAttackable =====
         public bool TakeDamage(int amount, DamageType type, Vector2? hitPoint)
     {
-        if (!enemyModel.IsAlive.Value) return false;
+        if (!IsAlive) return false;
 
-        enemyModel.Health.Value -= amount;
-        if (enemyModel.Health.Value <= 0)
+        Health -= amount;
+        if (Health <= 0)
         {
-            enemyModel.Health.Value = 0;
-            enemyModel.IsAlive.Value = false;
+            Health = 0;
+            IsAlive= false;
             Die();
         }
-        return enemyModel.IsAlive.Value;
+        return IsAlive;
     }
 
     void Die()
@@ -357,7 +374,7 @@ namespace SkateGame
                 return false;
             
             trans = player;
-            return IsPlayerNear2D(transform, player, enemyModel.DetectRadius.Value);
+            return IsPlayerNear2D(transform, player, DetectRadius);
         }
 
         bool IsPlayerNear2D(Transform self, Transform player, float radius)

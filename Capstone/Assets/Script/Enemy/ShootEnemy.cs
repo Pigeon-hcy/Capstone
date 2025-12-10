@@ -30,7 +30,7 @@ namespace SkateGame
         public BulletFactory bulletFactory;
         protected override void AtkTowardsPlayer(Transform pTrans)
         {
-            Debug.LogError("发出子弹");
+            //Debug.LogError("发出子弹");
             //base.AtkTowardsPlayer(pTrans);
             Vector2 dir = ((Vector2)pTrans.position - (Vector2)shootPos.position).normalized;
             DirectionMoveCompoInitData initData = new DirectionMoveCompoInitData(dir, bulletSpeed, bulletLifeTime);
