@@ -135,6 +135,7 @@ namespace SkateGame
             //Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
 
             // 到达满值 → 跳跃攻击（可覆写）
+            //【攻击音效】
             if (GuardProcess >= 1f)
             {
                 GuardProcess = 0f;
@@ -356,6 +357,7 @@ namespace SkateGame
 
     void Die()
     {
+        //【死亡音效】
         if (rb) rb.linearVelocity = Vector2.zero;
         if(dmgBox!= null)
             dmgBox.CloseBox();

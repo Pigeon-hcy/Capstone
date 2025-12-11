@@ -1,6 +1,8 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using QFramework;
+using Unity.VisualScripting;
 
 public class AudioManager : MonoBehaviour
 {
@@ -12,6 +14,10 @@ public class AudioManager : MonoBehaviour
     float targetSpeed;
 
     #region FMOD
+
+    //Moving
+    public EventReference testEvent;
+    private EventInstance testEventInstance;
 
     //Moving
     public EventReference movingEvent;
@@ -46,9 +52,18 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         Instance = this;
+        if (GameObject.FindGameObjectsWithTag("AudioManager").Length <= 1)
+        {
+            Debug.Log("Instance set");
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            Debug.Log("Duplicate destroyed");
+        }
 
         if (targetRb != null)
         {
@@ -58,6 +73,9 @@ public class AudioManager : MonoBehaviour
         targetSpeed = 0f;
 
         #region FMOD
+
+        //Test
+        testEventInstance = RuntimeManager.CreateInstance(testEvent);
 
         //Moving
         movingEventInstance = RuntimeManager.CreateInstance(movingEvent);
@@ -110,6 +128,29 @@ public class AudioManager : MonoBehaviour
         movingEventInstance.setParameterByID(movingParameter, currentSpeed);
         wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
         railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
+    }
+
+    //Test
+    public void fmodPlayTest()
+    {
+        if (testEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            testEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                testEventInstance.start();
+                Debug.Log("play audio test");
+            }
+            else
+            {
+                Debug.Log("audio not stopped");
+            }
+        }
+        else
+        {
+            Debug.Log("audio not valid");
+        }
     }
 
     //Moving

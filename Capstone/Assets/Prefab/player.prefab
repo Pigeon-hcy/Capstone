@@ -24960,6 +24960,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRb: {fileID: 932121231422775371}
+  testEvent:
+    Guid:
+      Data1: 390076598
+      Data2: 1146158273
+      Data3: 237030290
+      Data4: 2054913725
+    Path: event:/SFX_Test
   movingEvent:
     Guid:
       Data1: 2000430192
@@ -35516,6 +35523,7 @@ MonoBehaviour:
   animator: {fileID: 5511330455926906929}
   aimLine: {fileID: 2937414650203447882}
   aimLineLength: 10
+  disableInput: 0
   moveEffect: {fileID: 3094636857853154639}
   powerGrindEffect: {fileID: 2789118437522320286}
   ReverseEffect: {fileID: 8263935006921767780}
