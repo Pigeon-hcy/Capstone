@@ -59,7 +59,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 78.3
+    FieldOfView: 20
     OrthographicSize: 8.87
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraDistance: 10
+  CameraDistance: 50
   DeadZoneDepth: 0
   Composition:
     ScreenPosition: {x: 0, y: 0}
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 8388496975728705655}
   positionComposer: {fileID: 8410419242289208352}
+  lockZAxis: 1
+  lockedZ: -10
   followSpeed: 3
   maxOffset: 10
   speedMultiplier: 1
@@ -159,8 +161,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   raycastDistance: 50
-  stopFOV: 80
-  playerMovingFOV: 100
+  stopFOV: 20
+  playerMovingFOV: 25
   FOVChangeSpeed: 3
   FOVThreshold: 3
   slowSpeedDuration: 3
