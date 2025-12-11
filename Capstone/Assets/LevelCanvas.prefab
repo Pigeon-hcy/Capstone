@@ -788,10 +788,6 @@ MonoBehaviour:
     Name: playerhub
     Index: 0
     button: {fileID: 1621995670564110986}
-  - SceneName: 1-2
-    Name: 1-2
-    Index: 1
-    button: {fileID: 6718818516373182277}
   - SceneName: 1-3Leol
     Name: 1-3Leol
     Index: 2
@@ -823,10 +819,6 @@ MonoBehaviour:
   - SceneName: 1-10YLNeilWork
     Name: 1-10YLNeilWork
     Index: 9
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-11
-    Name: 1-11
-    Index: 10
     button: {fileID: 6718818516373182277}
 --- !u!1 &2410310759118849995
 GameObject:
