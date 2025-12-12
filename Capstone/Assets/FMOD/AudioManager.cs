@@ -19,6 +19,14 @@ public class AudioManager : MonoBehaviour
     public EventReference testEvent;
     private EventInstance testEventInstance;
 
+    //MX1
+    public EventReference levelMusic1Event;
+    private EventInstance levelMusic1EventInstance;
+
+    //BMX1
+    public EventReference bossMusic1Event;
+    private EventInstance bossMusic1EventInstance;
+
     //Moving
     public EventReference movingEvent;
     private EventInstance movingEventInstance;
@@ -76,6 +84,12 @@ public class AudioManager : MonoBehaviour
 
         //Test
         testEventInstance = RuntimeManager.CreateInstance(testEvent);
+
+        //MX1
+        levelMusic1EventInstance = RuntimeManager.CreateInstance(levelMusic1Event);
+
+        //BMX1
+        bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
 
         //Moving
         movingEventInstance = RuntimeManager.CreateInstance(movingEvent);
@@ -150,6 +164,58 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.Log("audio not valid");
+        }
+    }
+
+    //LevelMusic1
+    public void fmodPlayLM1()
+    {
+        if (levelMusic1EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic1EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                levelMusic1EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM1()
+    {
+        if (levelMusic1EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic1EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic1EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
+    //BossMusic1
+    public void fmodPlayBM1()
+    {
+        if (bossMusic1EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            bossMusic1EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                bossMusic1EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseBM1()
+    {
+        if (bossMusic1EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            bossMusic1EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                bossMusic1EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
         }
     }
 

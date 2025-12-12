@@ -27,6 +27,10 @@ namespace SkateGame
 
         protected override void OnRealTimeUpdate()
         {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                ShowCanvas();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)

@@ -6,7 +6,11 @@ using QFramework;
 
 public class AudioPlayer : MonoBehaviour
 {
-    public bool playOnLoad;
+ public bool playOnLoad;
+
+    public bool pause;
+
+    public bool LM;
 
     void Start()
     {
@@ -17,7 +21,14 @@ public class AudioPlayer : MonoBehaviour
             //eventInstance.start();
             Debug.Log("playOnLoad is true");
             Debug.Log(AudioManager.Instance);
-            playTest();
+            if (pause)
+            {
+                pauseAudio();
+            }
+            else
+            {
+                playAudio();
+            }
             Debug.Log("audio play on load");
         }
         else
@@ -30,9 +41,42 @@ public class AudioPlayer : MonoBehaviour
     {
 
     }
-    
-    public void playTest()
+
+    void OnTriggerEnter2D (Collider2D collision)
     {
-        AudioManager.Instance.fmodPlayTest();
+        if (collision.CompareTag("player"))
+        {
+            if (pause)
+            {
+                pauseAudio();
+            }
+            else if (!playOnLoad)
+            {
+                playAudio();
+            }
+        }
+    }
+
+    public void playAudio()
+    {
+        if (LM)
+        {
+            AudioManager.Instance.fmodPlayLM1();
+        }
+        else
+        {
+            AudioManager.Instance.fmodPlayBM1();
+        }
+    }
+    public void pauseAudio()
+    {
+        if (LM)
+        {
+            AudioManager.Instance.fmodPauseLM1();
+        }
+        else
+        {
+            AudioManager.Instance.fmodPauseBM1();
+        }
     }
 }
