@@ -1,8 +1,10 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections;
+using QFramework;
+using SkateGame;
 
-public class ChaseEnemy : MonoBehaviour
+public class ChaseEnemy : MonoBehaviour,  IController
 {
 
     public Transform player;
@@ -19,6 +21,8 @@ public class ChaseEnemy : MonoBehaviour
     public CinemachineCamera originalCamera;
     public CinemachineCamera chaseCamera;
 
+    public IArchitecture GetArchitecture() => GameApp.Interface;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -105,5 +109,17 @@ public class ChaseEnemy : MonoBehaviour
         chaseCamera.Priority = 0;
         yield return new WaitForSeconds(1f);
         
+    }
+    
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            var respawnSystem = this.GetSystem<IRespawnSystem>();
+            if (respawnSystem != null)
+            {
+                respawnSystem.RespawnPlayer();
+            }
+        }
     }
 }
