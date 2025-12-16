@@ -54,6 +54,9 @@ namespace SkateGame
         public MMF_Player IdleEffect;
         public MMF_Player powerGrindEffectPlayer;
 
+        public MMF_Player landEffectPlayer;
+
+
         [Header("粒子特效容器")]
         public Transform particleEffectContainer; // 粒子特效容器
         protected override void InitializeController()

@@ -24,6 +24,10 @@ public class LandState : GroundMovementState
         playerModel.CanDoubleJump.Value = true;
         landTimer = 0f;
         playLanding();
+        if (player.landEffectPlayer != null)
+        {
+            player.landEffectPlayer.PlayFeedbacks();
+        }
     }
 
     protected override void UpdateGroundMovement()
