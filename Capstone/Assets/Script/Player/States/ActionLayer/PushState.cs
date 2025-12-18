@@ -39,5 +39,9 @@ public class PushState : ActionStateBase
     public void playPush()
     {
         AudioManager.Instance.fmodPlayPush();
+        if (player.pushEffectPlayer != null)
+        {
+            player.pushEffectPlayer.PlayFeedbacks();
+        }
     }
 }

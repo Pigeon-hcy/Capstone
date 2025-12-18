@@ -56,6 +56,8 @@ namespace SkateGame
 
         public MMF_Player landEffectPlayer;
 
+        public MMF_Player pushEffectPlayer;
+
 
         [Header("粒子特效容器")]
         public Transform particleEffectContainer; // 粒子特效容器
