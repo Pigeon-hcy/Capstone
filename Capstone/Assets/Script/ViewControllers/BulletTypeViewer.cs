@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
+using MoreMountains.Feedbacks;
 
 namespace SkateGame
 {
@@ -38,6 +39,47 @@ namespace SkateGame
         // 动画状态
         private bool isAnimating = false;
         private float delayTimer = 0f;
+
+        [Header("MMF效果")]
+        public MMF_Player onFireSelectedEffect;
+        public MMF_Player onFireActiveEffect;
+
+        public MMF_Player onIceSelectedEffect;
+        public MMF_Player onIceActiveEffect;
+
+        public MMF_Player onVineSelectedEffect;
+        public MMF_Player onVineActiveEffect;
+
+        /// <summary>
+        /// 获取当前选择的子弹索引（0-3）
+        /// </summary>
+        public int GetCurrentBulletIndex()
+        {
+            if (playerModel == null || playerModel.Config.Value == null) return -1;
+            int bulletCount = playerModel.Config.Value.bulletPrefabs.Length;
+            return Mathf.Clamp(playerModel.CurrentBulletIndex.Value, 0, bulletCount - 1);
+        }
+
+        /// <summary>
+        /// 获取当前选择的子弹Prefab
+        /// </summary>
+        public GameObject GetCurrentBulletPrefab()
+        {
+            int index = GetCurrentBulletIndex();
+            if (index < 0 || playerModel == null || playerModel.Config.Value == null) return null;
+            if (index >= playerModel.Config.Value.bulletPrefabs.Length) return null;
+            return playerModel.Config.Value.bulletPrefabs[index];
+        }
+
+        /// <summary>
+        /// 获取当前选择的UI槽位
+        /// </summary>
+        public BulletSlotUI GetCurrentBulletSlot()
+        {
+            int index = GetCurrentBulletIndex();
+            if (index < 0 || index >= bulletSlots.Length) return null;
+            return bulletSlots[index];
+        }
 
         protected override void InitializeController()
         {
@@ -98,7 +140,15 @@ namespace SkateGame
             {
                 delayTimer -= Time.deltaTime;
                 if (delayTimer <= 0f)
+                {
                     isAnimating = true;
+                    
+                    // 播放确认选择特效（延迟结束后，动画开始时）
+                    if (onFireActiveEffect != null && GetCurrentBulletIndex() == 0 && playerModel.CurrentBulletIndex.Value == 0)
+                    {
+                        onFireActiveEffect.PlayFeedbacks();
+                    }
+                }
                 return;
             }
 
@@ -123,6 +173,18 @@ namespace SkateGame
             // ★ 刚切换完，先显示 4 个在原位置，等 1 秒后才开始动画
             delayTimer = animationDelay;
             isAnimating = false;
+
+            // 播放选择特效（玩家刚选择到的时候）
+            if (onFireSelectedEffect != null && GetCurrentBulletIndex() == 0 && playerModel.CurrentBulletIndex.Value == 0)
+            {
+                onFireSelectedEffect.PlayFeedbacks();
+            }else if (onIceSelectedEffect != null && GetCurrentBulletIndex() == 1 && playerModel.CurrentBulletIndex.Value == 1)
+            {
+                onIceSelectedEffect.PlayFeedbacks();
+            }else if (onVineSelectedEffect != null && GetCurrentBulletIndex() == 2 && playerModel.CurrentBulletIndex.Value == 2)
+            {
+                onVineSelectedEffect.PlayFeedbacks();
+            }
 
             lastIndex = now;
         }
