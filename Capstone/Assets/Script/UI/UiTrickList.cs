@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
+using MoreMountains.Feedbacks;
 using TMPro;
 
 namespace SkateGame
@@ -39,6 +40,8 @@ namespace SkateGame
         private const float animDuration = 0.15f;
         private Vector3 baseScale = Vector3.one;
         private const float popScale = 1.3f;
+        public MMF_Player levelUpEffect;
+        public MMF_Player gainScoreEffect;
 
         protected override void InitializeController()
         {
@@ -115,6 +118,7 @@ namespace SkateGame
 
                 UpdateAllSprites();
                 TriggerPopAnimation();
+                gainScoreEffect.PlayFeedbacks();
             }
 
             trickSystem.RemoveAllTricks();
@@ -144,6 +148,7 @@ namespace SkateGame
         // -----------------------------
         private void TriggerPopAnimation()
         {
+            levelUpEffect.PlayFeedbacks();
             playPopAnim = true;
             animTime = 0f;
         }
