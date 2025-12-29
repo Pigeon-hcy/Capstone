@@ -16,6 +16,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
 
     protected override void EnterTrickState()
     {
+        player.TrickBEffect.PlayFeedbacks();
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
         player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = true, Direction = inputModel.Move.Value.x > 0 ? 1f : -1f });
         
@@ -26,7 +27,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
             //尝试对第一个进行交互
             IInteractable interact = colliders[0].GetComponent<IInteractable>();
             interact?.DoInteraction();
-            player.TrickABoostEffect.PlayFeedbacks();
+            player.TrickBBoostEffect.PlayFeedbacks();
             player.stateMachine.SwitchState(StateLayer.Action, "TrickBBoost");
         }
     }

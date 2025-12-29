@@ -46,6 +46,7 @@ namespace SkateGame
         public MMF_Player TrickAEffect;
         public MMF_Player TrickBEffect;
         public MMF_Player TrickABoostEffect;
+        public MMF_Player TrickBBoostEffect;
         public MMF_Player AirEffect;
         public MMF_Player JumpEffect;
         public MMF_Player GJumpEffect;
