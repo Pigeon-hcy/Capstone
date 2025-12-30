@@ -25,6 +25,7 @@ namespace SkateGame
             this.RegisterSystem<ILevelSystem>(new LevelSystem());
             this.RegisterSystem<IRespawnSystem>(new RespawnSystem());
             this.RegisterSystem<IDialogueSystem>(new DialogueSystem());
+            this.RegisterSystem<IInputGateSystem>(new InputGateSystem());
         }
     }
 }

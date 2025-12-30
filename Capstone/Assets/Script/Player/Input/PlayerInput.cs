@@ -5,10 +5,12 @@ using QFramework;
 
 namespace SkateGame
 {
-    public class PlayerInputs : MonoBehaviour, ICanGetModel, IBelongToArchitecture
+    public class PlayerInputs : MonoBehaviour, ICanGetModel, IBelongToArchitecture, ICanGetSystem, ICanSendEvent
     {
         public PlayerInput _playerInput;
         InputDevice _currentDevice;
+
+        // Player action map
         InputAction _moveAction;
         InputAction _jumpAction;
         InputAction _grindAction;
@@ -20,12 +22,22 @@ namespace SkateGame
         InputAction _shootStartAction;
         InputAction _shootEndAction;
         InputAction _aimDirectionAction;
+        InputAction _pauseAction;
+
+        // UI action map
+        InputAction _uiCancelAction;
         private bool _isShootLocked = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
+
+        bool _lastPlayerEnabled = true;
+        bool _lastUiEnabled = false;
         
         void Awake()
         {
-            var _actions = GetComponent<PlayerInput>().actions;
+            if (_playerInput == null) _playerInput = GetComponent<PlayerInput>();
+            var _actions = _playerInput.actions;
+
+            // Player action map
             _moveAction = _actions.FindAction("Player/Move");
             _jumpAction = _actions.FindAction("Player/Jump");
             _grindAction = _actions.FindAction("Player/Grind");
@@ -37,7 +49,10 @@ namespace SkateGame
             _shootStartAction = _actions.FindAction("Player/Shoot");
             _shootEndAction = _actions.FindAction("Player/Shoot");
             _aimDirectionAction = _actions.FindAction("Player/AimDirection");
-            
+            _pauseAction = _actions.FindAction("Player/Pause");
+
+            // UI action map
+            _uiCancelAction = _actions.FindAction("UI/Cancel");
         }
 
     
@@ -52,6 +67,36 @@ namespace SkateGame
 		} 
         void Update()
         {
+            // switch action maps
+            var gate = this.GetSystem<IInputGateSystem>();
+            bool playerEnabled = !gate.PlayerInputBlocked;
+            bool uiEnabled = gate.UiInputEnabled;
+            if (_playerInput != null && (playerEnabled != _lastPlayerEnabled || uiEnabled != _lastUiEnabled))
+            {
+                var asset = _playerInput.actions;
+                if (asset != null)
+                {
+                    var playerMap = asset.FindActionMap("Player", true);
+                    var uiMap = asset.FindActionMap("UI", true);
+                    if (playerMap.enabled != playerEnabled)
+                    {
+                        if (playerEnabled) playerMap.Enable(); else playerMap.Disable();
+                    }
+                    if (uiMap.enabled != uiEnabled)
+                    {
+                        if (uiEnabled) uiMap.Enable(); else uiMap.Disable();
+                    }
+                }
+                _lastPlayerEnabled = playerEnabled;
+                _lastUiEnabled = uiEnabled;
+            }
+
+            // toggle pause
+            if (_pauseAction.WasPressedThisFrame()|| _uiCancelAction.WasPressedThisFrame())
+            {
+                this.SendEvent<TogglePauseEvent>();
+            }
+            // read player input
             var inputModel = this.GetModel<IInputModel>();
             inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
             inputModel.JumpStart.Value = _jumpAction.WasPressedThisFrame();

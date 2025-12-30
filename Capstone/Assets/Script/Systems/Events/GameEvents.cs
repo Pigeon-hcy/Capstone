@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace SkateGame
 {
+    // 切换暂停/继续游戏事件
+    public struct TogglePauseEvent
+    {
+    }
     // 玩家落地事件
     public struct PlayerLandedEvent
     {
