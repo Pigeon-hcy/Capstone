@@ -64,7 +64,7 @@ namespace SkateGame
         private void UpdatePlayerController()
         {
             playerController = Object.FindFirstObjectByType<PlayerController>();
-            rb = playerController.GetComponent<Rigidbody2D>();
+            rb = playerController?.GetComponent<Rigidbody2D>();
             if (playerController != null)
             {
                 Debug.Log("PlayerSystem: 找到 PlayerController");
