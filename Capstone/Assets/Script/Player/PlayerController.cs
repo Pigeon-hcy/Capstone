@@ -122,7 +122,8 @@ namespace SkateGame
 
         private void FixedUpdate()
         {
-            playerSystem?.FixedUpdate();
+            playerSystem?.ApplyMovement();
+            playerSystem?.ApplyRotation();
         }
 
         protected override void OnRealTimeUpdate()

@@ -5,7 +5,8 @@ namespace SkateGame
 {
     public interface IPlayerSystem : ISystem
     {
-        void FixedUpdate();
+        void ApplyMovement();
+        void ApplyRotation();
     }
 
     public class PlayerSystem : AbstractSystem, IPlayerSystem, ICanSendCommand
@@ -73,12 +74,6 @@ namespace SkateGame
             {
                 Debug.LogWarning("PlayerSystem: 场景中没有找到 PlayerController");
             }
-        }
-
-        public void FixedUpdate()
-        {
-            ApplyMovement();
-            ApplyRotation();
         }
 
         // 输入事件处理
