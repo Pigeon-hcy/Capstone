@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Cinemachine;
 
 public class OrthSync : MonoBehaviour
 {
@@ -10,11 +11,16 @@ public class OrthSync : MonoBehaviour
     public Camera orthographicCamera;
     
     [Header("Sync Settings")]
-    [Tooltip("同步距离（正交相机应该模拟的深度）")]
+    [Tooltip("同步距离（正交相机应该模拟的深度）。如果启用Cinemachine同步，将从激活的Cinemachine相机读取CameraDistance")]
     public float syncDistance = 10f;
+    
+    [Tooltip("是否从Cinemachine读取CameraDistance并同步")]
+    public bool syncFromCinemachine = true;
     
     [Tooltip("是否每帧同步（如果父相机FOV会动态改变则开启）")]
     public bool continuousSync = true;
+    
+    private CinemachineBrain cinemachineBrain;
 
     void Start()
     {
@@ -50,6 +56,16 @@ public class OrthSync : MonoBehaviour
             orthographicCamera.orthographic = true;
         }
         
+        // 如果启用Cinemachine同步，查找CinemachineBrain
+        if (syncFromCinemachine)
+        {
+            cinemachineBrain = FindFirstObjectByType<CinemachineBrain>();
+            if (cinemachineBrain == null)
+            {
+                Debug.LogWarning("OrthSync: 未找到CinemachineBrain，将使用默认的syncDistance值");
+            }
+        }
+        
         // 初始同步
         SyncCameras();
     }
@@ -69,6 +85,20 @@ public class OrthSync : MonoBehaviour
     {
         if (perspectiveCamera == null || orthographicCamera == null)
             return;
+        
+        // 如果启用Cinemachine同步，尝试从当前激活的Cinemachine相机读取CameraDistance
+        if (syncFromCinemachine && cinemachineBrain != null)
+        {
+            CinemachineCamera activeCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineCamera;
+            if (activeCamera != null)
+            {
+                CinemachinePositionComposer positionComposer = activeCamera.GetComponent<CinemachinePositionComposer>();
+                if (positionComposer != null)
+                {
+                    syncDistance = positionComposer.CameraDistance;
+                }
+            }
+        }
         
         // 根据透视相机的FOV计算正交相机的大小
         // 公式: orthographicSize = distance * tan(FOV/2)
