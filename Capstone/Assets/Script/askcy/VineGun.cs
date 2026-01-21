@@ -14,12 +14,14 @@ public class VineGun : MonoBehaviour
 
 
     [Header("Physics Ref:")]
-    public SpringJoint2D m_springJoint2D;
     public Rigidbody2D m_rigidbody;
 
     [Header("Rotation:")]
     [SerializeField] private bool rotateOverTime = true;
     [Range(0, 60)] [SerializeField] private float rotationSpeed = 4;
+
+    [Header("Shoot Angle:")]
+    [SerializeField] private float shootAngleDegrees = 0f; // 世界角度（度），0为向右，90为向上
 
     [Header("Distance:")]
     [SerializeField] private bool hasMaxDistance = false;
@@ -50,15 +52,6 @@ public class VineGun : MonoBehaviour
     private void Start()
     {
         grappleRope.enabled = false;
-        if (m_springJoint2D == null)
-        {
-            m_springJoint2D = GetComponent<SpringJoint2D>();
-            if (m_springJoint2D == null)
-            {
-                m_springJoint2D = gameObject.AddComponent<SpringJoint2D>();
-            }
-        }
-        m_springJoint2D.enabled = false;
 
         // 保存原始重力值
         if (m_rigidbody != null)
@@ -72,17 +65,12 @@ public class VineGun : MonoBehaviour
         Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         RotateGun(mousePos, true);
 
-        // 左键点击：如果未抓取则发射，否则释放
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+
+
+        // 空格：如果未抓取则发射，否则释放（按设定角度发射）
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (grappleRope.enabled || (m_springJoint2D != null && m_springJoint2D.enabled))
-            {
-                ReleaseGrapple();
-            }
-            else
-            {
-                SetGrapplePoint();
-            }
+            fireGrabbingHook(shootAngleDegrees);
         }
 
         // 绳子生命周期计时
@@ -125,14 +113,26 @@ public class VineGun : MonoBehaviour
         }
     }
 
-    void SetGrapplePoint()
+    public void fireGrabbingHook(float Angle)
     {
-        Vector2 mouseWorldPos = (Vector2)m_camera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 distanceVector = mouseWorldPos - (Vector2)transform.position;
+        shootAngleDegrees = Angle;
+
+        if (grappleRope != null && grappleRope.enabled)
+        {
+            ReleaseGrapple();
+            return;
+        }
+
+        SetGrapplePointByAngle();
+    }
+
+    void SetGrapplePointByAngle()
+    {
+        Vector2 direction = GetShootDirectionFromAngle();
         
         // 合并两个LayerMask进行射线检测
         LayerMask combinedLayers = grappableLayers | pullableObjectLayers;
-        RaycastHit2D _hit = Physics2D.Raycast(transform.position, distanceVector.normalized, 
+        RaycastHit2D _hit = Physics2D.Raycast(transform.position, direction, 
             hasMaxDistance ? maxDistnace : Mathf.Infinity, combinedLayers);
         
         if (_hit.collider != null)
@@ -143,29 +143,23 @@ public class VineGun : MonoBehaviour
                 grapplePoint = _hit.point;
                 grappleDistanceVector = grapplePoint - (Vector2)transform.position;
                 
-                // 检查是否是双向拉动的layer
-                int hitLayer = 1 << _hit.transform.gameObject.layer;
-                isMutualPull = (pullableObjectLayers.value & hitLayer) != 0;
-                grabbedObjectRb = null;
+                // 尝试获取目标刚体，用于双向拉动
+                grabbedObjectRb = _hit.rigidbody;
+                if (grabbedObjectRb == null)
+                {
+                    grabbedObjectRb = _hit.transform.GetComponentInParent<Rigidbody2D>();
+                    if (grabbedObjectRb == null)
+                    {
+                        grabbedObjectRb = _hit.transform.GetComponentInChildren<Rigidbody2D>();
+                    }
+                }
+
+                isMutualPull = grabbedObjectRb != null;
                 
                 if (isMutualPull)
                 {
-                    // 双向拉动模式：直接把玩家拉到物体位置，不使用SpringJoint2D
-                    Transform targetObject = _hit.transform;
-                    
-                    // 找到物体的Rigidbody2D（如果有，用于绳索显示）
-                    grabbedObjectRb = _hit.rigidbody;
-                    if (grabbedObjectRb == null)
-                    {
-                        grabbedObjectRb = targetObject.GetComponentInParent<Rigidbody2D>();
-                        if (grabbedObjectRb == null)
-                        {
-                            grabbedObjectRb = targetObject.GetComponentInChildren<Rigidbody2D>();
-                        }
-                    }
-                    
-                    // 计算目标位置（物体的位置）
-                    Vector2 targetPosition = targetObject.position;
+                    // 双向拉动模式：按发射角度方向拉动，不使用SpringJoint2D
+                    Vector2 targetPosition = _hit.point;
                     
                     // 保存原始重力值并关闭重力
                     if (m_rigidbody != null)
@@ -177,21 +171,22 @@ public class VineGun : MonoBehaviour
                     // 重置双向拉动计时器
                     mutualPullTimer = 0f;
                     
-                    // 给玩家施加朝向物体的强力，直接把玩家拉过去
-                    if (m_rigidbody != null && mutualPullForce > 0f)
+                    // 双向拉动：玩家与物体互相拉向对方
+                    if (mutualPullForce > 0f)
                     {
-                        Vector2 toObject = (targetPosition - (Vector2)transform.position).normalized;
-                        m_rigidbody.AddForce(toObject * mutualPullForce, ForceMode2D.Impulse);
+                        Vector2 toObject = direction.normalized;
+                        if (m_rigidbody != null)
+                        {
+                            m_rigidbody.linearVelocity = Vector2.zero;
+                            m_rigidbody.AddForce(toObject * mutualPullForce, ForceMode2D.Impulse);
+                        }
+                        if (grabbedObjectRb != null)
+                        {
+                            grabbedObjectRb.AddForce(-toObject * mutualPullForce, ForceMode2D.Impulse);
+                        }
                     }
                     
-                    // 双向拉动模式下不使用SpringJoint2D，只通过力来拉动
-                    // 不启用SpringJoint2D，让玩家可以自由移动到物体位置
-                    if (m_springJoint2D != null)
-                    {
-                        m_springJoint2D.enabled = false;
-                    }
-                    
-                    // 更新grapplePoint为物体位置，用于绳索显示
+                    // 更新grapplePoint为命中点，用于绳索显示
                     grapplePoint = targetPosition;
                 }
                 else
@@ -205,7 +200,33 @@ public class VineGun : MonoBehaviour
                 isGrappling = true;
                 ropeTimer = 0f; // 重置寿命计时
             }
+            else
+            {
+                PlayFailedRope(direction);
+            }
         }
+        else
+        {
+            PlayFailedRope(direction);
+        }
+    }
+
+    private void PlayFailedRope(Vector2 direction)
+    {
+        if (grappleRope == null)
+        {
+            return;
+        }
+
+        float distance = hasMaxDistance ? maxDistnace : maxDistnace;
+        grappleRope.PlayFailedShot(direction, distance);
+    }
+
+    private Vector2 GetShootDirectionFromAngle()
+    {
+        float angle = shootAngleDegrees;
+        Vector2 direction = Quaternion.Euler(0f, 0f, angle) * Vector2.right;
+        return direction.normalized;
     }
     
     // 设置普通抓钩模式（玩家被拉向固定点）
@@ -215,44 +236,20 @@ public class VineGun : MonoBehaviour
         if (m_rigidbody != null && pullForce > 0f)
         {
             Vector2 pullDirection = (grapplePoint - (Vector2)transform.position).normalized;
+            m_rigidbody.linearVelocity = Vector2.zero;
             m_rigidbody.AddForce(pullDirection * pullForce, ForceMode2D.Impulse);
         }
-        
-        // 然后确定并固定绳子长度
-        float ropeLength = Vector2.Distance(transform.position, grapplePoint);
-        
-        // 配置SpringJoint2D
-        if (m_springJoint2D == null)
-        {
-            m_springJoint2D = gameObject.AddComponent<SpringJoint2D>();
-        }
-        m_springJoint2D.autoConfigureDistance = false;
-        m_springJoint2D.connectedBody = null; // 连接到固定点
-        m_springJoint2D.connectedAnchor = grapplePoint;
-        m_springJoint2D.distance = ropeLength; // 在点击时确定绳子长度
-        m_springJoint2D.frequency = 1f; // 轻微弹性用于摆荡
-        m_springJoint2D.dampingRatio = 0.2f;
-        m_springJoint2D.enabled = true; // 立即启用，固定玩家
     }
 
     public void Grapple()
     {
-        // Grapple()保留兼容，如果SpringJoint2D被关闭则重新启用
-        if (m_springJoint2D != null && !m_springJoint2D.enabled)
-        {
-            m_springJoint2D.enabled = true;
-            isGrappling = true;
-        }
+        // Grapple()保留兼容，当前无需SpringJoint2D
+        isGrappling = true;
     }
 
     public void ReleaseGrapple()
     {
         if (grappleRope != null) grappleRope.enabled = false;
-        if (m_springJoint2D != null) 
-        {
-            m_springJoint2D.connectedBody = null; // 清除连接
-            m_springJoint2D.enabled = false;
-        }
         // 恢复重力
         if (m_rigidbody != null) 
         {

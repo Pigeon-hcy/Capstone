@@ -19,15 +19,30 @@ public class VineRope : MonoBehaviour
     public AnimationCurve ropeProgressionCurve;
     [SerializeField] [Range(1, 50)] private float ropeProgressionSpeed = 1;
 
+    [Header("Fail Animation:")]
+    [SerializeField] private float failExtendSpeed = 25f;
+    [SerializeField] private float failRetractSpeed = 35f;
+
     float moveTime = 0;
 
     [HideInInspector] public bool isGrappling = true;
 
     bool strightLine = true;
+    private bool isFailing = false;
+    private bool isFailRetracting = false;
+    private float failCurrentDistance = 0f;
+    private float failMaxDistance = 0f;
+    private Vector2 failDirection = Vector2.right;
 
     private void OnEnable()
     {
         moveTime = 0;
+        if (isFailing)
+        {
+            SetupFailLine();
+            return;
+        }
+
         m_lineRenderer.positionCount = percision;
         waveSize = StartWaveSize;
         strightLine = false;
@@ -41,6 +56,8 @@ public class VineRope : MonoBehaviour
     {
         m_lineRenderer.enabled = false;
         isGrappling = false;
+        isFailing = false;
+        isFailRetracting = false;
     }
 
     private void LinePointsToFirePoint()
@@ -53,6 +70,12 @@ public class VineRope : MonoBehaviour
 
     private void Update()
     {
+        if (isFailing)
+        {
+            UpdateFailRope();
+            return;
+        }
+
         moveTime += Time.deltaTime;
         DrawRope();
     }
@@ -110,5 +133,85 @@ public class VineRope : MonoBehaviour
     {
         m_lineRenderer.SetPosition(0, grapplingGun.transform.position);
         m_lineRenderer.SetPosition(1, grapplingGun.grapplePoint);
+    }
+
+    public void PlayFailedShot(Vector2 direction, float maxDistance)
+    {
+        if (direction.sqrMagnitude <= 0.0001f || m_lineRenderer == null || grapplingGun == null)
+        {
+            return;
+        }
+
+        isFailing = true;
+        isFailRetracting = false;
+        failCurrentDistance = 0f;
+        failMaxDistance = Mathf.Max(0f, maxDistance);
+        failDirection = direction.normalized;
+
+        SetupFailLine();
+        enabled = true;
+    }
+
+    private void SetupFailLine()
+    {
+        if (m_lineRenderer == null || grapplingGun == null)
+        {
+            return;
+        }
+
+        m_lineRenderer.positionCount = percision;
+        m_lineRenderer.enabled = true;
+        DrawFailWaves();
+    }
+
+    private void UpdateFailRope()
+    {
+        if (failMaxDistance <= 0f)
+        {
+            EndFailRope();
+            return;
+        }
+
+        float speed = isFailRetracting ? failRetractSpeed : failExtendSpeed;
+        float delta = speed * Time.deltaTime;
+        failCurrentDistance += isFailRetracting ? -delta : delta;
+
+        if (!isFailRetracting && failCurrentDistance >= failMaxDistance)
+        {
+            failCurrentDistance = failMaxDistance;
+            isFailRetracting = true;
+        }
+        else if (isFailRetracting && failCurrentDistance <= 0f)
+        {
+            failCurrentDistance = 0f;
+            EndFailRope();
+            return;
+        }
+
+        DrawFailWaves();
+    }
+
+    private void DrawFailWaves()
+    {
+        Vector2 start = grapplingGun.transform.position;
+        Vector2 end = start + failDirection * failCurrentDistance;
+        Vector2 travel = end - start;
+        Vector2 perpendicular = Vector2.Perpendicular(failDirection).normalized;
+
+        for (int i = 0; i < percision; i++)
+        {
+            float delta = (float)i / ((float)percision - 1f);
+            Vector2 offset = perpendicular * ropeAnimationCurve.Evaluate(delta) * StartWaveSize;
+            Vector2 targetPosition = start + travel * delta + offset;
+            m_lineRenderer.SetPosition(i, targetPosition);
+        }
+    }
+
+    private void EndFailRope()
+    {
+        isFailing = false;
+        isFailRetracting = false;
+        m_lineRenderer.enabled = false;
+        enabled = false;
     }
 }
