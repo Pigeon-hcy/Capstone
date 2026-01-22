@@ -50,10 +50,10 @@ public class VineGun : MonoBehaviour
 
 
         // 空格：如果未抓取则发射，否则释放（按设定角度发射）
-        if (Input.GetKeyDown(KeyCode.Space))
-       {
-          fireGrabbingHook(shootAngleDegrees);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+       // {
+          //fireGrabbingHook(shootAngleDegrees);
+        //}
 
         // 绳子生命周期计时
         if (isGrappling && ropeLifeTime > 0f)
