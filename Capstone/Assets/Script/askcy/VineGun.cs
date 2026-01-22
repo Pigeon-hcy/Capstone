@@ -2,23 +2,14 @@ using UnityEngine;
 
 public class VineGun : MonoBehaviour
 {
-     [Header("Scripts Ref:")]
+    [Header("Scripts Ref:")]
     public VineRope grappleRope;
 
     [Header("Layers Settings:")]
     [SerializeField] private LayerMask grappableLayers; // 可抓钩的Layer遮罩，在Inspector中选择
-    [SerializeField] private LayerMask pullableObjectLayers; // 双向拉动物体的Layer遮罩，玩家和物体会互相拉向对方
-
-    [Header("Main Camera:")]
-    public Camera m_camera;
-
 
     [Header("Physics Ref:")]
     public Rigidbody2D m_rigidbody;
-
-    [Header("Rotation:")]
-    [SerializeField] private bool rotateOverTime = true;
-    [Range(0, 60)] [SerializeField] private float rotationSpeed = 4;
 
     [Header("Shoot Angle:")]
     [SerializeField] private float shootAngleDegrees = 0f; // 世界角度（度），0为向右，90为向上
@@ -29,13 +20,6 @@ public class VineGun : MonoBehaviour
 
     [Header("Rope Lifetime")]
     [SerializeField] private float ropeLifeTime = 5f; // 绳子存在时间，超时后自动断开，0或负值表示不限制
-
-    [Header("Swing Settings")]
-    [SerializeField] private float swingFrequency = 2f; // 摆荡频率，控制距离关节弹性
-    [Range(0f, 1f)] [SerializeField] private float dampingRatio = 0.3f; // 阻尼比，控制摆荡衰减
-
-    [Header("Pull Force")]
-    [SerializeField] private float pullForce = 10f; // 朝向抓钩点的拉力
     [SerializeField] private float mutualPullForce = 10f; // 双向拉动时，玩家和物体互相拉动的力
     [SerializeField] private float mutualPullGravityOffTime = 0.5f; // 双向拉动时，重力关闭的持续时间
 
@@ -62,16 +46,14 @@ public class VineGun : MonoBehaviour
 
     private void Update()
     {
-        Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
-        RotateGun(mousePos, true);
 
 
 
         // 空格：如果未抓取则发射，否则释放（按设定角度发射）
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-            fireGrabbingHook(shootAngleDegrees);
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+       {
+          fireGrabbingHook(shootAngleDegrees);
+        }
 
         // 绳子生命周期计时
         if (isGrappling && ropeLifeTime > 0f)
@@ -98,21 +80,6 @@ public class VineGun : MonoBehaviour
         }
     }
 
-    void RotateGun(Vector3 lookPoint, bool allowRotationOverTime)
-    {
-        Vector3 distanceVector = lookPoint - transform.position;
-
-        float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
-        if (rotateOverTime && allowRotationOverTime)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
-        }
-        else
-        {
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
-    }
-
     public void fireGrabbingHook(float Angle)
     {
         shootAngleDegrees = Angle;
@@ -130,10 +97,8 @@ public class VineGun : MonoBehaviour
     {
         Vector2 direction = GetShootDirectionFromAngle();
         
-        // 合并两个LayerMask进行射线检测
-        LayerMask combinedLayers = grappableLayers | pullableObjectLayers;
         RaycastHit2D _hit = Physics2D.Raycast(transform.position, direction, 
-            hasMaxDistance ? maxDistnace : Mathf.Infinity, combinedLayers);
+            hasMaxDistance ? maxDistnace : Mathf.Infinity, grappableLayers);
         
         if (_hit.collider != null)
         {
@@ -156,11 +121,9 @@ public class VineGun : MonoBehaviour
 
                 isMutualPull = grabbedObjectRb != null;
                 
+                // 只有双向拉动模式才执行（需要刚体）
                 if (isMutualPull)
                 {
-                    // 双向拉动模式：按发射角度方向拉动，不使用SpringJoint2D
-                    Vector2 targetPosition = _hit.point;
-                    
                     // 保存原始重力值并关闭重力
                     if (m_rigidbody != null)
                     {
@@ -185,14 +148,12 @@ public class VineGun : MonoBehaviour
                             grabbedObjectRb.AddForce(-toObject * mutualPullForce, ForceMode2D.Impulse);
                         }
                     }
-                    
-                    // 更新grapplePoint为命中点，用于绳索显示
-                    grapplePoint = targetPosition;
                 }
                 else
                 {
-                    // 普通模式：玩家被拉向固定点
-                    SetupNormalGrapple();
+                    // 没有刚体，无法抓取
+                    PlayFailedRope(direction);
+                    return;
                 }
                 
                 // 启用绳索视觉效果
@@ -218,7 +179,7 @@ public class VineGun : MonoBehaviour
             return;
         }
 
-        float distance = hasMaxDistance ? maxDistnace : maxDistnace;
+        float distance = maxDistnace;
         grappleRope.PlayFailedShot(direction, distance);
     }
 
@@ -227,18 +188,6 @@ public class VineGun : MonoBehaviour
         float angle = shootAngleDegrees;
         Vector2 direction = Quaternion.Euler(0f, 0f, angle) * Vector2.right;
         return direction.normalized;
-    }
-    
-    // 设置普通抓钩模式（玩家被拉向固定点）
-    private void SetupNormalGrapple()
-    {
-        // 先添加朝向抓钩点的拉力，让玩家开始移动
-        if (m_rigidbody != null && pullForce > 0f)
-        {
-            Vector2 pullDirection = (grapplePoint - (Vector2)transform.position).normalized;
-            m_rigidbody.linearVelocity = Vector2.zero;
-            m_rigidbody.AddForce(pullDirection * pullForce, ForceMode2D.Impulse);
-        }
     }
 
     public void Grapple()
@@ -260,14 +209,5 @@ public class VineGun : MonoBehaviour
         grabbedObjectRb = null;
         ropeTimer = 0f;
         mutualPullTimer = 0f;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (hasMaxDistance)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, maxDistnace);
-        }
     }
 }
