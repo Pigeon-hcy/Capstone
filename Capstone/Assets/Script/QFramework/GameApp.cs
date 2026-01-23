@@ -15,6 +15,7 @@ namespace SkateGame
             this.RegisterModel<IEnemyModel>(new EnemyModel());
             this.RegisterModel<IRespawnModel>(new RespawnModel());
             this.RegisterModel<IDialogueModel>(new DialogueModel());
+            this.RegisterModel<ILevelProgressModel>(new LevelProgressModel());
 
             // 注册业务系统（PlayerAssetSystem 最先初始化，确保配置优先加载）
             this.RegisterSystem<IPlayerAssetSystem>(new PlayerAssetSystem());
@@ -26,6 +27,7 @@ namespace SkateGame
             this.RegisterSystem<IRespawnSystem>(new RespawnSystem());
             this.RegisterSystem<IDialogueSystem>(new DialogueSystem());
             this.RegisterSystem<IInputGateSystem>(new InputGateSystem());
+            this.RegisterSystem<ILevelProgressSystem>(new LevelProgressSystem());
         }
     }
 }
