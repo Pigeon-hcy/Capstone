@@ -9,9 +9,13 @@ namespace SkateGame
         public string playerTag = "Player";
 
         private PlayerController playerController;   // 玩家控制器引用
+        private ILevelProgressSystem levelProgressSystem;  // 关卡进度系统
         
         protected override void InitializeController()
         {
+            // 获取关卡进度系统
+            levelProgressSystem = this.GetSystem<ILevelProgressSystem>();
+            
             // 查找关卡 UI 画布
             GameObject canvasObject = GameObject.Find("LevelCanvas");
             if (canvasObject != null)
@@ -38,6 +42,15 @@ namespace SkateGame
             if (other.CompareTag(playerTag))
             {
                 Debug.Log("玩家进入 Level Trigger");
+
+                // ----------------------------
+                // 保存当前关卡进度（到达终点时保存）
+                // ----------------------------
+                if (levelProgressSystem != null)
+                {
+                    levelProgressSystem.SaveLevel();
+                    Debug.Log("LevelSelectArea: 已保存关卡进度");
+                }
 
                 // 显示 UI
                 ShowCanvas();
