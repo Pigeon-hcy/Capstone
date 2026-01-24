@@ -14,8 +14,6 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
     {
     }
 
-    public override string GetStateName() => trickName;
-
     protected sealed override void EnterActionState()
     {
         var trickSystem = this.GetSystem<ITrickSystem>();

@@ -10,13 +10,16 @@ namespace SkateGame
 		BindableProperty<bool> Grind { get; }
 		BindableProperty<bool> GrindStart { get; }
 		BindableProperty<bool> SwitchItem { get; }
-		BindableProperty<bool> TrickA { get; }
-		BindableProperty<bool> TrickAStart { get; }
-		BindableProperty<bool> TrickB { get; }
-		BindableProperty<bool> TrickBStart { get; }
-		BindableProperty<bool> TrickC { get; }
-		BindableProperty<bool> TrickCStart { get; }
+		BindableProperty<bool> Grab { get; }
+		BindableProperty<bool> GrabStart { get; }
+		BindableProperty<bool> Dash { get; }
+		BindableProperty<bool> DashStart { get; }
+		BindableProperty<bool> Slam { get; }
+		BindableProperty<bool> SlamStart { get; }
 		BindableProperty<bool> Push { get; }
+		BindableProperty<bool> PushStart { get; }
+		BindableProperty<bool> Brake { get; }
+		BindableProperty<bool> BrakeStart { get; }
 		BindableProperty<bool> ShootStart { get; }
 		BindableProperty<bool> ShootEnd { get; }
 		BindableProperty<Vector2> AimDirection { get; }
@@ -29,13 +32,16 @@ namespace SkateGame
 		public BindableProperty<bool> Grind { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> GrindStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> SwitchItem { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickA { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickAStart { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickB { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickBStart { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickC { get; } = new BindableProperty<bool>(false);
-		public BindableProperty<bool> TrickCStart { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> Grab { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> GrabStart { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> Dash { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> DashStart { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> Slam { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> SlamStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> Push { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> PushStart { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> Brake { get; } = new BindableProperty<bool>(false);
+		public BindableProperty<bool> BrakeStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> ShootStart { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<bool> ShootEnd { get; } = new BindableProperty<bool>(false);
 		public BindableProperty<Vector2> AimDirection { get; } = new BindableProperty<Vector2>(Vector2.right);

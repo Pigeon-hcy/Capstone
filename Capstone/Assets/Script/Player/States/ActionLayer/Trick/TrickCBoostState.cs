@@ -25,13 +25,13 @@ public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCBoostspeed);
             if(hasLanded)
             {
-                player.stateMachine.SwitchState(StateLayer.Action, "None");
+                player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
             }
         }
         
-        if(!inputModel.TrickC.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)
+        if(!inputModel.Slam.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
     }
     protected override void ExitActionState()

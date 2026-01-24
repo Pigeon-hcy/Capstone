@@ -12,8 +12,6 @@ public class PushState : ActionStateBase
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerPush;
     }
 
-    public override string GetStateName() => "Push";
-
     protected override void EnterActionState()
     {   
         pushEventSent = false;

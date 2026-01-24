@@ -10,13 +10,11 @@ public class ReverseState : GroundMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Reverse";
-
     protected override void EnterGroundMovement()
     {
         Vector2 velocity = rb.linearVelocity;
         rb.linearVelocity = new Vector2(-velocity.x, velocity.y);
-        player.stateMachine.SwitchState(StateLayer.Movement, "Move");
+        player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
 
 
         if (player.ReverseEffect != null)

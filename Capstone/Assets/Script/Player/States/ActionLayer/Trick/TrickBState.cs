@@ -18,7 +18,10 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     {
         player.TrickBEffect.PlayFeedbacks();
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
-        player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = true, Direction = inputModel.Move.Value.x > 0 ? 1f : -1f });
+
+        // TODO: fix direction calculation
+        player.SendEvent<TrickBInputEvent>(new TrickBInputEvent 
+            { IsTrickingB = true, Direction = inputModel.Move.Value.x < 0f ? -1f : 1f });
         
     }
     protected override void UpdateActionState()
@@ -28,7 +31,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
             IInteractable interact = colliders[0].GetComponent<IInteractable>();
             interact?.DoInteraction();
             player.TrickBBoostEffect.PlayFeedbacks();
-            player.stateMachine.SwitchState(StateLayer.Action, "TrickBBoost");
+            player.stateMachine.SwitchState<TrickBBoostState>(StateLayer.Action);
         }
     }
     protected override void ExitActionState()

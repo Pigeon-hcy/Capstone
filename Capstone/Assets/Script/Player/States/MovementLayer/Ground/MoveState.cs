@@ -11,8 +11,6 @@ public class MoveState : GroundMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Move";
-
     protected override void EnterGroundMovement()
     {
         // player.animator.Play("oPlayer@Push", 0);
@@ -29,13 +27,13 @@ public class MoveState : GroundMovementState
         // 停止移动
         if (rb.linearVelocity.x == 0)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
+            player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             pauseMove();
         }
         // PowerGrind
-        if (inputModel.TrickAStart.Value)
+        if (inputModel.BrakeStart.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "PowerGrind");
+            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Movement);
         }
     }
 

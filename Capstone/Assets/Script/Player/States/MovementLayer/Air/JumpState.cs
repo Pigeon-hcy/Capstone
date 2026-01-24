@@ -11,8 +11,6 @@ public class JumpState : AirborneMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Jump";
-
     public override void Enter()
     {
         // player.animator.Play("oPlayer@Ollie", 0);
@@ -64,7 +62,7 @@ public class JumpState : AirborneMovementState
         }
         else
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Air");
+            player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
         }
     }
     // state change
@@ -74,11 +72,11 @@ public class JumpState : AirborneMovementState
         {
             if (playerModel.IsNearFgWall.Value)
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
+                player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
             }
             else if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && !playerModel.IsIgnoringMovementLayer.Value)
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
+                player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
             }
         }
     }

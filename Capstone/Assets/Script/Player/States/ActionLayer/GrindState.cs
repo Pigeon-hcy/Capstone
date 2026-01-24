@@ -21,8 +21,6 @@ public class GrindState : ActionStateBase
         trackRef = null;
     }
 
-    public override string GetStateName() => "Grind";
-
     protected override void EnterActionState()
     {
         playerModel.CanDoubleJump.Value = true;
@@ -30,7 +28,7 @@ public class GrindState : ActionStateBase
         if (playerModel.CurrentTrack.Value == null)
         {
             Debug.LogError("GrindState.Enter: currentTrack为null，无法进入滑轨状态");
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
             return;
         }
         
@@ -69,23 +67,23 @@ public class GrindState : ActionStateBase
         // 首先检查E键是否按住，如果没有按住立即退出
         if (!inputModel.Grind.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
             return;
         }
         
         // 如果按下跳跃键，直接跳跃
         if (inputModel.JumpStart.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
             return;
         }
         // 然后检查currentTrack是否为null
         if (playerModel.CurrentTrack.Value == null)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
             return;
         }
 

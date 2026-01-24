@@ -15,8 +15,6 @@ public class LandState : GroundMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Land";
-
     protected override void EnterGroundMovement()
     {
         playerModel.CurrentBulletCount.Value = playerModel.Config.Value.bulletMaxCount;
@@ -50,11 +48,11 @@ public class LandState : GroundMovementState
         {
             if(rb.linearVelocity.x == 0)
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "Idle");
+                player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             }
             else
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "Move");
+                player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
                 
             }
         }

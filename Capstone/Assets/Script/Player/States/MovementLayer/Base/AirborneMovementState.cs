@@ -16,7 +16,7 @@ public abstract class AirborneMovementState : StateBase
     {
         if (!playerModel.WasGrounded.Value && playerModel.IsGrounded.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Land");
+            player.stateMachine.SwitchState<LandState>(StateLayer.Movement);
         }
     }
 }

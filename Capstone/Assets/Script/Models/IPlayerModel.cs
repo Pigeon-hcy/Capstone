@@ -90,8 +90,8 @@ namespace SkateGame
     public class PlayerModel : AbstractModel, IPlayerModel
     {
         public BindableProperty<PlayerConfig> Config { get; } = new BindableProperty<PlayerConfig>(null);
-        public BindableProperty<MovementStates> CurrentMovementState { get; } = new BindableProperty<MovementStates>(MovementStates.Idle);
-        public BindableProperty<ActionStates> CurrentActionState { get; } = new BindableProperty<ActionStates>(ActionStates.None);
+        public BindableProperty<MovementStates> CurrentMovementState { get; } = new BindableProperty<MovementStates>(MovementStates.IdleState);
+        public BindableProperty<ActionStates> CurrentActionState { get; } = new BindableProperty<ActionStates>(ActionStates.NoActionState);
         public BindableProperty<bool> IsGrounded { get; } = new BindableProperty<bool>(true);
         public BindableProperty<bool> IsNearTrack { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsNearBgWall { get; } = new BindableProperty<bool>(false);

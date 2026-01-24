@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class RecoveryState : ActionStateBase
 {
-    public override string GetStateName() => "Recovery";
     public RecoveryState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
@@ -15,16 +14,16 @@ public class RecoveryState : ActionStateBase
     {
         var prev = playerModel.LastActionStateName.Value;
         stateDuration = 0f;
-        if (prev == "TrickA") stateDuration = playerModel.Config.Value.recoveryDurationTrickA;
-        else if (prev == "TrickB") stateDuration = playerModel.Config.Value.recoveryDurationTrickB;
-        else if (prev == "TrickC") stateDuration = playerModel.Config.Value.recoveryDurationTrickC;
-        else if (prev == "Push") stateDuration = playerModel.Config.Value.recoveryDurationPush;
+        if (prev == "TrickAState") stateDuration = playerModel.Config.Value.recoveryDurationTrickA;
+        else if (prev == "TrickBState") stateDuration = playerModel.Config.Value.recoveryDurationTrickB;
+        else if (prev == "TrickCState") stateDuration = playerModel.Config.Value.recoveryDurationTrickC;
+        else if (prev == "PushState") stateDuration = playerModel.Config.Value.recoveryDurationPush;
     }
     protected override void UpdateActionState()
     {
         if(stateTimer > stateDuration)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
 
         if (inputModel.Grind.Value)

@@ -15,14 +15,15 @@ namespace SkateGame
         InputAction _jumpAction;
         InputAction _grindAction;
         InputAction _switchItemAction;
-        InputAction _trickAAction;
-        InputAction _trickBAction;
-        InputAction _trickCAction;
+        InputAction _grabAction;
+        InputAction _dashAction;
+        InputAction _slamAction;
         InputAction _pushAction;
         InputAction _shootStartAction;
         InputAction _shootEndAction;
         InputAction _aimDirectionAction;
         InputAction _pauseAction;
+        InputAction _brakeAction;
 
         // UI action map
         InputAction _uiCancelAction;
@@ -42,15 +43,15 @@ namespace SkateGame
             _jumpAction = _actions.FindAction("Player/Jump");
             _grindAction = _actions.FindAction("Player/Grind");
             _switchItemAction = _actions.FindAction("Player/SwitchItem");
-            _trickAAction = _actions.FindAction("Player/TrickA");
-            _trickBAction = _actions.FindAction("Player/TrickB");
-            _trickCAction = _actions.FindAction("Player/TrickC");
+            _grabAction = _actions.FindAction("Player/Grab");
+            _dashAction = _actions.FindAction("Player/Dash");
+            _slamAction = _actions.FindAction("Player/Slam");
             _pushAction = _actions.FindAction("Player/Push");
             _shootStartAction = _actions.FindAction("Player/Shoot");
             _shootEndAction = _actions.FindAction("Player/Shoot");
             _aimDirectionAction = _actions.FindAction("Player/AimDirection");
             _pauseAction = _actions.FindAction("Player/Pause");
-
+            _brakeAction = _actions.FindAction("Player/Brake");
             // UI action map
             _uiCancelAction = _actions.FindAction("UI/Cancel");
         }
@@ -103,14 +104,16 @@ namespace SkateGame
             inputModel.Grind.Value = _grindAction.IsPressed();
             inputModel.GrindStart.Value = _grindAction.WasPressedThisFrame();
             inputModel.SwitchItem.Value = _switchItemAction.WasPressedThisFrame();
-            inputModel.TrickA.Value = _trickAAction.IsPressed();
-            inputModel.TrickAStart.Value = _trickAAction.WasPressedThisFrame();
-            inputModel.TrickB.Value = _trickBAction.IsPressed();
-            inputModel.TrickBStart.Value = _trickBAction.WasPressedThisFrame();
-            inputModel.TrickC.Value = _trickCAction.IsPressed();
-            inputModel.TrickCStart.Value = _trickCAction.WasPressedThisFrame();
-            inputModel.Push.Value = _pushAction.WasPressedThisFrame();
-
+            inputModel.Grab.Value = _grabAction.IsPressed();
+            inputModel.GrabStart.Value = _grabAction.WasPressedThisFrame();
+            inputModel.Dash.Value = _dashAction.IsPressed();
+            inputModel.DashStart.Value = _dashAction.WasPressedThisFrame();
+            inputModel.Slam.Value = _slamAction.IsPressed();
+            inputModel.SlamStart.Value = _slamAction.WasPressedThisFrame();
+            inputModel.Push.Value = _pushAction.IsPressed();
+            inputModel.PushStart.Value = _pushAction.WasPressedThisFrame();
+            inputModel.Brake.Value = _brakeAction.IsPressed();
+            inputModel.BrakeStart.Value = _brakeAction.WasPressedThisFrame();
             bool shootStart = _shootStartAction.WasPressedThisFrame();
             bool shootEnd = _shootEndAction.WasReleasedThisFrame();
 

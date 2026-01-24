@@ -64,7 +64,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TrickA"",
+                    ""name"": ""Grab"",
                     ""type"": ""Button"",
                     ""id"": ""e41bd53a-ee34-439a-b8ee-60d6d1471fbd"",
                     ""expectedControlType"": """",
@@ -73,7 +73,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TrickB"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""33c740eb-c1bb-40b8-91b4-904d77b2dae9"",
                     ""expectedControlType"": """",
@@ -82,7 +82,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TrickC"",
+                    ""name"": ""Slam"",
                     ""type"": ""Button"",
                     ""id"": ""ea9d28fb-a6d9-42cc-b376-b16c56c99dd3"",
                     ""expectedControlType"": """",
@@ -112,6 +112,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Push"",
                     ""type"": ""Button"",
                     ""id"": ""bd7aa23f-9157-4b60-9595-eb0fae348e41"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""41481560-6f59-4902-8488-64692d4a8e99"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -322,7 +331,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""TrickA"",
+                    ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -333,7 +342,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""TrickA"",
+                    ""action"": ""Grab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -384,7 +393,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f4cf186c-06ff-4ea5-a0e7-e6a3adf780a1"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -410,7 +419,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""TrickB"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -421,7 +430,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""TrickB"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -432,7 +441,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""TrickC"",
+                    ""action"": ""Slam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -443,7 +452,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""TrickC"",
+                    ""action"": ""Slam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -466,6 +475,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61bbf265-a0b7-47b3-a3c9-c9ba2713cb25"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""949aa99b-78d3-4aab-92d9-cf980beddb1b"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1057,12 +1088,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Grind = m_Player.FindAction("Grind", throwIfNotFound: true);
         m_Player_SwitchItem = m_Player.FindAction("SwitchItem", throwIfNotFound: true);
-        m_Player_TrickA = m_Player.FindAction("TrickA", throwIfNotFound: true);
-        m_Player_TrickB = m_Player.FindAction("TrickB", throwIfNotFound: true);
-        m_Player_TrickC = m_Player.FindAction("TrickC", throwIfNotFound: true);
+        m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Slam = m_Player.FindAction("Slam", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_AimDirection = m_Player.FindAction("AimDirection", throwIfNotFound: true);
         m_Player_Push = m_Player.FindAction("Push", throwIfNotFound: true);
+        m_Player_Brake = m_Player.FindAction("Brake", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1147,12 +1179,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Grind;
     private readonly InputAction m_Player_SwitchItem;
-    private readonly InputAction m_Player_TrickA;
-    private readonly InputAction m_Player_TrickB;
-    private readonly InputAction m_Player_TrickC;
+    private readonly InputAction m_Player_Grab;
+    private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Slam;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_AimDirection;
     private readonly InputAction m_Player_Push;
+    private readonly InputAction m_Player_Brake;
     private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
@@ -1162,12 +1195,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Grind => m_Wrapper.m_Player_Grind;
         public InputAction @SwitchItem => m_Wrapper.m_Player_SwitchItem;
-        public InputAction @TrickA => m_Wrapper.m_Player_TrickA;
-        public InputAction @TrickB => m_Wrapper.m_Player_TrickB;
-        public InputAction @TrickC => m_Wrapper.m_Player_TrickC;
+        public InputAction @Grab => m_Wrapper.m_Player_Grab;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @Slam => m_Wrapper.m_Player_Slam;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @AimDirection => m_Wrapper.m_Player_AimDirection;
         public InputAction @Push => m_Wrapper.m_Player_Push;
+        public InputAction @Brake => m_Wrapper.m_Player_Brake;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1190,15 +1224,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchItem.started += instance.OnSwitchItem;
             @SwitchItem.performed += instance.OnSwitchItem;
             @SwitchItem.canceled += instance.OnSwitchItem;
-            @TrickA.started += instance.OnTrickA;
-            @TrickA.performed += instance.OnTrickA;
-            @TrickA.canceled += instance.OnTrickA;
-            @TrickB.started += instance.OnTrickB;
-            @TrickB.performed += instance.OnTrickB;
-            @TrickB.canceled += instance.OnTrickB;
-            @TrickC.started += instance.OnTrickC;
-            @TrickC.performed += instance.OnTrickC;
-            @TrickC.canceled += instance.OnTrickC;
+            @Grab.started += instance.OnGrab;
+            @Grab.performed += instance.OnGrab;
+            @Grab.canceled += instance.OnGrab;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @Slam.started += instance.OnSlam;
+            @Slam.performed += instance.OnSlam;
+            @Slam.canceled += instance.OnSlam;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
@@ -1208,6 +1242,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Push.started += instance.OnPush;
             @Push.performed += instance.OnPush;
             @Push.canceled += instance.OnPush;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -1227,15 +1264,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchItem.started -= instance.OnSwitchItem;
             @SwitchItem.performed -= instance.OnSwitchItem;
             @SwitchItem.canceled -= instance.OnSwitchItem;
-            @TrickA.started -= instance.OnTrickA;
-            @TrickA.performed -= instance.OnTrickA;
-            @TrickA.canceled -= instance.OnTrickA;
-            @TrickB.started -= instance.OnTrickB;
-            @TrickB.performed -= instance.OnTrickB;
-            @TrickB.canceled -= instance.OnTrickB;
-            @TrickC.started -= instance.OnTrickC;
-            @TrickC.performed -= instance.OnTrickC;
-            @TrickC.canceled -= instance.OnTrickC;
+            @Grab.started -= instance.OnGrab;
+            @Grab.performed -= instance.OnGrab;
+            @Grab.canceled -= instance.OnGrab;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @Slam.started -= instance.OnSlam;
+            @Slam.performed -= instance.OnSlam;
+            @Slam.canceled -= instance.OnSlam;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
@@ -1245,6 +1282,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Push.started -= instance.OnPush;
             @Push.performed -= instance.OnPush;
             @Push.canceled -= instance.OnPush;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -1434,12 +1474,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnGrind(InputAction.CallbackContext context);
         void OnSwitchItem(InputAction.CallbackContext context);
-        void OnTrickA(InputAction.CallbackContext context);
-        void OnTrickB(InputAction.CallbackContext context);
-        void OnTrickC(InputAction.CallbackContext context);
+        void OnGrab(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnSlam(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAimDirection(InputAction.CallbackContext context);
         void OnPush(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions

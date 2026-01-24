@@ -14,8 +14,6 @@ public class WallRideState : ActionStateBase
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerBgWallRide;
     }
 
-    public override string GetStateName() => "WallRide";
-
     protected override void EnterActionState()
     {
 
@@ -46,8 +44,8 @@ public class WallRideState : ActionStateBase
         {   
             rb.gravityScale = normalGravity;
             stateTimer = 0f;
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
         }
     }
 

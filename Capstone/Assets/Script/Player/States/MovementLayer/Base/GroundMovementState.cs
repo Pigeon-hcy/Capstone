@@ -32,7 +32,7 @@ public abstract class GroundMovementState : StateBase
     {
         if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Jump");
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
         }
         else
         {
@@ -43,7 +43,7 @@ public abstract class GroundMovementState : StateBase
     {
         if (WasGrounded && !IsGrounded)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Air");
+            player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
         }
     }
 

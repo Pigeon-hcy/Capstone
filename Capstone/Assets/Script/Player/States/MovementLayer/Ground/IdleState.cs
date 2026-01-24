@@ -10,8 +10,6 @@ public class IdleState : GroundMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Idle";
-
     protected override void EnterGroundMovement()
     {
         // player.animator.Play("oPlayer@Idle", 0);
@@ -30,7 +28,7 @@ public class IdleState : GroundMovementState
         // 移动 
         if (Mathf.Abs(rb.linearVelocity.x) > 0.01f)
         {
-            player.stateMachine.SwitchState(StateLayer.Movement, "Move");
+            player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
         }
     }
 

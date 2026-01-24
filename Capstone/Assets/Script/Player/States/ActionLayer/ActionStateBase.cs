@@ -26,7 +26,7 @@ public abstract class ActionStateBase : StateBase
         /* 
         设置动画层权重 
         */
-        if(GetStateName() != "None")
+        if(!(this is NoActionState))
         {
             player.animator.SetLayerWeight(0, 0);
             player.animator.SetLayerWeight(1, 1);
@@ -44,9 +44,9 @@ public abstract class ActionStateBase : StateBase
         UpdateActionState();
         
         // 非循环状态到期，切换到Recovery状态
-        if(!isLoop && stateTimer > stateDuration && GetStateName() != "Recovery")
+        if(!isLoop && stateTimer > stateDuration && !(this is RecoveryState))
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
+            player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
         }
     }
     public sealed override void Exit()
@@ -57,21 +57,22 @@ public abstract class ActionStateBase : StateBase
     protected void CheckSwitchAction()
     {
         // 优先Trick
-        if(inputModel.TrickAStart.Value && !playerModel.IsGrounded.Value)
+        if(inputModel.GrabStart.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "TrickA");
+            player.stateMachine.SwitchState<TrickDState>(StateLayer.Action);
         }
-        else if(inputModel.TrickBStart.Value && !playerModel.IsGrounded.Value)
+        else if(inputModel.DashStart.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "TrickB");
+            player.stateMachine.SwitchState<TrickBState>(StateLayer.Action);
         }
-        else if(inputModel.TrickCStart.Value && !playerModel.IsGrounded.Value)
+        // TODO: Design Slam On ground
+        else if(inputModel.SlamStart.Value && !playerModel.IsGrounded.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "TrickC");
+            player.stateMachine.SwitchState<TrickCState>(StateLayer.Action);
         }
-        else if (inputModel.Push.Value && playerModel.IsGrounded.Value)
+        else if (inputModel.PushStart.Value && playerModel.IsGrounded.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "Push");
+            player.stateMachine.SwitchState<PushState>(StateLayer.Action);
         }
         // 其次Grind
         else if (inputModel.Grind.Value)
@@ -84,14 +85,14 @@ public abstract class ActionStateBase : StateBase
         // 优先滑轨
         if (playerModel.GrindJumpTimer.Value <= 0f && playerModel.IsNearTrack.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "Grind");
+            player.stateMachine.SwitchState<GrindState>(StateLayer.Action);
         }
         // 其次滑墙
         else if (!playerModel.IsGrounded.Value)
         {
             if(playerModel.WallRideCooldownTimer.Value <= 0f && playerModel.IsNearBgWall.Value)
             {
-                player.stateMachine.SwitchState(StateLayer.Action, "WallRide");
+                player.stateMachine.SwitchState<WallRideState>(StateLayer.Action);
             }
         }   
     }

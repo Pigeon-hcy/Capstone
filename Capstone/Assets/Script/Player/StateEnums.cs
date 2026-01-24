@@ -3,24 +3,24 @@ namespace SkateGame
 
     public enum MovementStates
     {
-        Idle = 0    ,
-        Land = 1,
-        Move = 2,
-        Air = 3,
-        Jump = 4,
-        DoubleJump = 5,
-        PowerGrind = 6,
-        Reverse = 7,
+        IdleState = 0    ,
+        LandState = 1,
+        MoveState = 2,
+        AirState = 3,
+        JumpState = 4,
+        DoubleJumpState = 5,
+        PowerGrindState = 6,
+        ReverseState = 7,
     }
 
     public enum ActionStates
     {
-        None = 0,
-        Grind = 1,
-        Grab = 2,
-        WallRide = 3,
-        TrickA = 4,
-        Push = 5,
+        NoActionState = 0,
+        GrindState = 1,
+        GrabbingState = 2,
+        WallRideState = 3,
+        TrickAState = 4,
+        PushState = 5,
     }
 }
 

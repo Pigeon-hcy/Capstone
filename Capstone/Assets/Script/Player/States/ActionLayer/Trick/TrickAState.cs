@@ -17,6 +17,7 @@ public class TrickAState : TrickState
 
     protected override void EnterTrickState()
     {
+        player.SendEvent<TrickAInputEvent>();
         player.TrickAEffect.PlayFeedbacks();
         
     }
@@ -28,7 +29,7 @@ public class TrickAState : TrickState
             interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
             player.SendEvent<TrickARewardEvent>();
-            player.stateMachine.SwitchState(StateLayer.Action, "None");
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
     }
 }

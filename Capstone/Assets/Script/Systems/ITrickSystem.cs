@@ -89,7 +89,7 @@ namespace SkateGame
         {
             foreach (TrickState trick in trickListModel.TrickList.Value)
             {
-                Debug.Log("System print trick list: " + trick.GetStateName());
+                Debug.Log("System print trick list: " + trick.GetType().Name);
             }
         }
         

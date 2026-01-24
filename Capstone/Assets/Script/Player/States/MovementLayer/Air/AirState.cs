@@ -11,8 +11,6 @@ public class AirState : AirborneMovementState
         this.rb = rb;
     }
 
-    public override string GetStateName() => "Air";
-
     public override void Enter()
     {
         if (playerModel.CanDoubleJump.Value)
@@ -42,11 +40,11 @@ public class AirState : AirborneMovementState
         {
             if (playerModel.IsNearFgWall.Value)
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "WallJump");
+                player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
             }
             else if (playerModel.CanDoubleJump.Value && !playerModel.IsIgnoringMovementLayer.Value)
             {
-                player.stateMachine.SwitchState(StateLayer.Movement, "DoubleJump");
+                player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
             }
         }
     }

@@ -9,7 +9,7 @@ public class E
     private StateBase currentState;
     
     // 状态字典，用于存储所有状态
-    private Dictionary<string, StateBase> states = new Dictionary<string, StateBase>();
+    private Dictionary<Type, StateBase> states = new Dictionary<Type, StateBase>();
     
     
     // 构造函数
@@ -21,24 +21,25 @@ public class E
     // 添加状态
     public void AddState( StateBase state)
     {
-        string stateName = state.GetStateName();
-        if (!states.ContainsKey(stateName))
+        var key = state.GetType();
+        if (!states.ContainsKey(key))
         {
-            states.Add(stateName, state);
+            states.Add(key, state);
         }
     }
     
-    public void SwitchState(string stateName)
+    public void SwitchState<T>() where T : StateBase
     {   
+        var targetType = typeof(T);
         if (currentState == null)
         {
-            EnterState(stateName);
+            EnterState(targetType);
         }
-        else if (currentState.GetStateName() != stateName)
+        else if (currentState.GetType() != targetType)
         {
             StateBase oldState = currentState;
             currentState.Exit();
-            EnterState(stateName, oldState);
+            EnterState(targetType);
         }
     }
     
@@ -53,21 +54,22 @@ public class E
     {
         if (currentState != null)
         {
-            return currentState.GetStateName();
+            return currentState.GetType().Name;
         }
         return "Unknown";
     }
     
     // 检查当前状态是否为指定状态
-    public bool IsCurrentState(string stateName)
+    public bool IsCurrentState<T>() where T : StateBase
     {
-        return states.ContainsKey(stateName) && states[stateName] == currentState;
+        var t = typeof(T);
+        return states.ContainsKey(t) && states[t] == currentState;
     }
     
     // 获取所有状态名称
     public string[] GetAllStateNames()
     {
-        return states.Keys.ToArray();
+        return states.Keys.Select(k => k.Name).ToArray();
     }
     
     // 更新当前状态
@@ -88,17 +90,17 @@ public class E
 
 
     // 进入新状态
-    public void EnterState(string stateName,StateBase oldState = null)
+    public void EnterState(Type stateType)
     {
-        currentState = states[stateName];
+        currentState = states[stateType];
         currentState.Enter();
-        Debug.Log("EnterState: " + stateName);
+        Debug.Log("EnterState: " + stateType.Name);
     }
-    public StateBase TryGetState(string stateName)
+    public StateBase TryGetState(Type stateType)
     {
-        if (states.ContainsKey(stateName))
+        if (states.ContainsKey(stateType))
         {
-            return states[stateName];
+            return states[stateType];
         }
         return null;
     }

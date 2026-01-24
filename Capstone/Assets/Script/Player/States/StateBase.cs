@@ -24,9 +24,6 @@ public abstract class StateBase : ICanGetModel, IBelongToArchitecture
     // 退出状态时调用
     public virtual void Exit() { }
     
-    // 获取状态名称
-    public abstract string GetStateName();
-
     public IArchitecture GetArchitecture() => SkateGame.GameApp.Interface;
     
 } 

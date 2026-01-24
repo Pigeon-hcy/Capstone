@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TrickA",
+                    "name": "Grab",
                     "type": "Button",
                     "id": "e41bd53a-ee34-439a-b8ee-60d6d1471fbd",
                     "expectedControlType": "",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TrickB",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "33c740eb-c1bb-40b8-91b4-904d77b2dae9",
                     "expectedControlType": "",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TrickC",
+                    "name": "Slam",
                     "type": "Button",
                     "id": "ea9d28fb-a6d9-42cc-b376-b16c56c99dd3",
                     "expectedControlType": "",
@@ -90,6 +90,15 @@
                     "name": "Push",
                     "type": "Button",
                     "id": "bd7aa23f-9157-4b60-9595-eb0fae348e41",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "41481560-6f59-4902-8488-64692d4a8e99",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -300,7 +309,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "TrickA",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -311,7 +320,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "TrickA",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -362,7 +371,7 @@
                 {
                     "name": "",
                     "id": "f4cf186c-06ff-4ea5-a0e7-e6a3adf780a1",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -388,7 +397,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "TrickB",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -399,7 +408,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "TrickB",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -410,7 +419,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "TrickC",
+                    "action": "Slam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -421,7 +430,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "TrickC",
+                    "action": "Slam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -444,6 +453,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61bbf265-a0b7-47b3-a3c9-c9ba2713cb25",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "949aa99b-78d3-4aab-92d9-cf980beddb1b",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

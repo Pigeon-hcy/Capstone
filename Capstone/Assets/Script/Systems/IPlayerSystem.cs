@@ -351,7 +351,7 @@ namespace SkateGame
             {
                 return result;
             }
-                return MovementStates.Idle;
+                return MovementStates.IdleState;
         }
 
         private ActionStates ToActionEnum(string stateName)
@@ -360,7 +360,7 @@ namespace SkateGame
             {
                 return result;
             }
-            return ActionStates.None;
+            return ActionStates.NoActionState;
         }
         #endregion
     }

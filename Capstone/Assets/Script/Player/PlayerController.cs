@@ -5,6 +5,27 @@ using MoreMountains.Feedbacks;
 using System;
 using Unity.VisualScripting;
 
+/*
+/                       _oo0oo_
+/                      o8888888o
+/                      88" . "88
+/                      (| -_- |)
+/                      0\  =  /0
+/                    ___/`---'\___
+/                  .' \\|     |// '.
+/                 / \\|||  :  |||// \
+/                / _||||| -:- |||||- \
+/               |   | \\\  -  /// |   |
+/               | \_|  ''\---/''  |_/ |
+/               \  .-\__  '-'  ___/-. /
+/             ___'. .'  /--.--\  `. .'___
+/          ."" '<  `.___\_<|>_/___.' >' "".
+/         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+/         \  \ `_.   \_ __\ /__ _/   .-` /  /
+/     =====`-.____`.___ \_____/___.-`___.-'=====
+/                       `=---='
+*/
+/******************************************************/
 namespace SkateGame
 {
     /// <summary>
@@ -16,12 +37,16 @@ namespace SkateGame
     {
         public PlayerConfig playerConfig;
         private IPlayerModel playerModel;
-        private IInputModel inputModel;
         private IPlayerSystem playerSystem;
         private ICollisionSystem collisionSystem;
+
         [Header("Collision")]
         public Transform bottomLeft;
         public Transform bottomRight;
+
+        [Header("Grappling Vine Gun")]
+        public VineGun vineGun;
+
         [Header("状态机")]
         public LayeredStateMachine stateMachine;
         private Rigidbody2D rb;
@@ -33,9 +58,9 @@ namespace SkateGame
         [Header("瞄准与射击设置")]
         public LineRenderer aimLine;      // 瞄准线 temp
         public float aimLineLength = 10f; // 瞄准线长度
+
         [Header("Trigger 控制")]
         public bool disableInput = false;
-
 
         [Header("MMF效果")]
         public MMF_Player moveEffect;
@@ -54,9 +79,7 @@ namespace SkateGame
         public MMF_Player GrabEffect;
         public MMF_Player IdleEffect;
         public MMF_Player powerGrindEffectPlayer;
-
         public MMF_Player landEffectPlayer;
-
         public MMF_Player pushEffectPlayer;
 
 
@@ -66,7 +89,6 @@ namespace SkateGame
         {
             // 获取玩家参数
             playerModel = this.GetModel<IPlayerModel>();
-            inputModel = this.GetModel<IInputModel>();
             playerSystem = this.GetSystem<IPlayerSystem>();
             collisionSystem = this.GetSystem<ICollisionSystem>();
             this.GetSystem<IPlayerAssetSystem>().SetPlayerConfig(playerConfig);
@@ -99,7 +121,7 @@ namespace SkateGame
             stateMachine.AddState(new MoveState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new AirState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
-            stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
+            // stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new PowerGrindState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
@@ -110,14 +132,14 @@ namespace SkateGame
             stateMachine.AddState(new TrickBBoostState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickCState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickCBoostState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new TrickDState(this, rb), StateLayer.Action);
             stateMachine.AddState(new GrindState(this, rb), StateLayer.Action);
-            stateMachine.AddState(new GrabbingState(this, rb), StateLayer.Action);
             stateMachine.AddState(new WallRideState(this, rb), StateLayer.Action);
             stateMachine.AddState(new PushState(this, rb), StateLayer.Action);
             stateMachine.AddState(new RecoveryState(this, rb), StateLayer.Action);
             // 初始各层状态
-            stateMachine.SwitchState(StateLayer.Movement, "Idle");
-            stateMachine.SwitchState(StateLayer.Action, "None");
+            stateMachine.SwitchState<IdleState>(StateLayer.Movement);
+            stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
 
         private void FixedUpdate()
@@ -128,10 +150,10 @@ namespace SkateGame
 
         protected override void OnRealTimeUpdate()
         {
-            // 检测输入并发送事件
-            DetectInput();
+            /// 删除射击相关代码
+            // DetectInput();
 
-            HandleAimAndShoot();
+            // HandleAimAndShoot();
             
             // 更新着地状态
             collisionSystem.GroundCheck(transform.position);
@@ -197,18 +219,10 @@ namespace SkateGame
         }
 
         // 提供给状态机使用的方法
-        public void DetectInput()
-        {
-            SwitchItem();
-            Trick();
-        }
-        private void Trick()
-        {
-            if (inputModel.TrickAStart.Value && stateMachine.GetMovementStateName() == "Air")
-            {
-                this.SendEvent<TrickAInputEvent>();
-            }
-        }
+        // public void DetectInput()
+        // {
+        //     SwitchItem();
+        // }
 
         public Rigidbody2D GetRigidbody()
         {
@@ -216,10 +230,10 @@ namespace SkateGame
         }
 
         // 延迟切换状态的协程
-        public IEnumerator SwitchToStateDelayed(string stateName)
+        public IEnumerator SwitchToStateDelayed<T>() where T : StateBase
         {
             yield return new WaitForSeconds(0.1f);
-            stateMachine.SwitchState(StateLayer.Action, stateName);
+            stateMachine.SwitchState<T>(StateLayer.Action);
         }
 
         // 碰撞检测
@@ -271,137 +285,130 @@ namespace SkateGame
         }
 
         #region Aim and Shoot
-        private void HandleAimAndShoot()
-        {
-            if (disableInput) return;
-            // 按住R键进入瞄准
-            if (inputModel.ShootStart.Value)
-            {
-                playerModel.IsAiming.Value = true;
-                playerModel.AimTimer.Value = 0f; // 重置计时器
-                Time.timeScale = 0.2f;
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                if (aimLine != null) aimLine.enabled = true;
-            }
+        // private void HandleAimAndShoot()
+        // {
+        //     if (disableInput) return;
+        //     // 按住R键进入瞄准
+        //     if (inputModel.ShootStart.Value)
+        //     {
+        //         playerModel.IsAiming.Value = true;
+        //         playerModel.AimTimer.Value = 0f; // 重置计时器
+        //         Time.timeScale = 0.2f;
+        //         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        //         if (aimLine != null) aimLine.enabled = true;
+        //     }
 
-            // 松开R键发射子弹
-            if (inputModel.ShootEnd.Value)
-            {
-                if (playerModel.IsAiming.Value)
-                {
-                    FireBullet();
-                }
-                StopAiming();
-            }
+        //     // 松开R键发射子弹
+        //     if (inputModel.ShootEnd.Value)
+        //     {
+        //         if (playerModel.IsAiming.Value)
+        //         {
+        //             FireBullet();
+        //         }
+        //         StopAiming();
+        //     }
 
-            if (playerModel.IsAiming.Value)
-            {
-                // 更新瞄准计时器
-                playerModel.AimTimer.Value += Time.unscaledDeltaTime; // 使用unscaledDeltaTime因为时间被放慢了
+        //     if (playerModel.IsAiming.Value)
+        //     {
+        //         // 更新瞄准计时器
+        //         playerModel.AimTimer.Value += Time.unscaledDeltaTime; // 使用unscaledDeltaTime因为时间被放慢了
 
-                // 检查是否超过最大瞄准时间
-                if (playerModel.AimTimer.Value >= playerModel.MaxAimTime.Value)
-                {
-                    StopAiming();
-                    return;
-                }
+        //         // 检查是否超过最大瞄准时间
+        //         if (playerModel.AimTimer.Value >= playerModel.MaxAimTime.Value)
+        //         {
+        //             StopAiming();
+        //             return;
+        //         }
 
-                Vector2 direction = inputModel.AimDirection.Value;
+        //         Vector2 direction = inputModel.AimDirection.Value;
 
-                // 更新瞄准线
-                if (aimLine != null)
-                {
-                    aimLine.SetPosition(0, transform.position);
-                    aimLine.SetPosition(1, (Vector2)transform.position + direction * aimLineLength);
-                }
-            }
-        }
+        //         // 更新瞄准线
+        //         if (aimLine != null)
+        //         {
+        //             aimLine.SetPosition(0, transform.position);
+        //             aimLine.SetPosition(1, (Vector2)transform.position + direction * aimLineLength);
+        //         }
+        //     }
+        // }
 
-        private void StopAiming()
-        {
-            playerModel.IsAiming.Value = false;
-            playerModel.AimTimer.Value = 0f;
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            if (aimLine != null) aimLine.enabled = false;
-        }
+        // private void StopAiming()
+        // {
+        //     playerModel.IsAiming.Value = false;
+        //     playerModel.AimTimer.Value = 0f;
+        //     Time.timeScale = 1f;
+        //     Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        //     if (aimLine != null) aimLine.enabled = false;
+        // }
 
-        private void FireBullet()
-        {
-            if (playerModel.Config.Value.bulletPrefabs.Length == 0) return;
+        // private void FireBullet()
+        // {
+        //     if (playerModel.Config.Value.bulletPrefabs.Length == 0) return;
 
-            if(playerModel.CurrentBulletCount.Value <= 0) return;
+        //     if(playerModel.CurrentBulletCount.Value <= 0) return;
 
-            GameObject bulletPrefab = playerModel.Config.Value.bulletPrefabs[playerModel.CurrentBulletIndex.Value];
-            if (bulletPrefab == null) return;
+        //     GameObject bulletPrefab = playerModel.Config.Value.bulletPrefabs[playerModel.CurrentBulletIndex.Value];
+        //     if (bulletPrefab == null) return;
 
-            Vector2 direction = inputModel.AimDirection.Value.normalized;
+        //     Vector2 direction = inputModel.AimDirection.Value.normalized;
 
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            var ice = bullet.GetComponent<IceBullet>();
-            if (ice != null)
-            {
-                ice.SetDirection(direction);
-            }
-            else
-            {
-                Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-                if (bulletRb != null)
-                {
-                    bulletRb.linearVelocity = direction * playerModel.Config.Value.bulletSpeed;
-                }
-            }
-            playerModel.CurrentBulletCount.Value--;
+        //     GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        //     var ice = bullet.GetComponent<IceBullet>();
+        //     if (ice != null)
+        //     {
+        //         ice.SetDirection(direction);
+        //     }
+        //     else
+        //     {
+        //         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        //         if (bulletRb != null)
+        //         {
+        //             bulletRb.linearVelocity = direction * playerModel.Config.Value.bulletSpeed;
+        //         }
+        //     }
+        //     playerModel.CurrentBulletCount.Value--;
 
-        }
+        // }
 
-        // 获取当前瞄准计时器值（供UI使用）
-        public float GetAimTimer()
-        {
-            return playerModel.AimTimer.Value;
-        }
-
-        // 标记已执行trick（由TrickState调用）
-        public void MarkTrickPerformed()
-        {
-            playerModel.HasPerformedTrickInAir.Value = true;
-            Debug.Log("InputController: 标记已执行trick");
-        }
+        // // 获取当前瞄准计时器值（供UI使用）
+        // public float GetAimTimer()
+        // {
+        //     return playerModel.AimTimer.Value;
+        // }
         
-        // 重置瞄准时间上限到基础值
-        public void ResetAimTimeToBase()
-        {
-            playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;
-            Debug.Log($"InputController: 重置瞄准时间上限到基础值: {playerModel.MaxAimTime.Value}秒");
-        }
+        // // 重置瞄准时间上限到基础值
+        // public void ResetAimTimeToBase()
+        // {
+        //     playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;
+        //     Debug.Log($"InputController: 重置瞄准时间上限到基础值: {playerModel.MaxAimTime.Value}秒");
+        // }
         
-        private void SwitchItem()
-        {
-            if (inputModel.SwitchItem.Value)
-            {
-                playerModel.CurrentBulletIndex.Value =
-                (playerModel.CurrentBulletIndex.Value + 1) % playerModel.Config.Value.bulletPrefabs.Length;
-                Debug.Log("当前子弹类型: " + playerModel.CurrentBulletIndex.Value);
-            }
-        }
+        // private void SwitchItem()
+        // {
+        //     if (inputModel.SwitchItem.Value)
+        //     {
+        //         playerModel.CurrentBulletIndex.Value =
+        //         (playerModel.CurrentBulletIndex.Value + 1) % playerModel.Config.Value.bulletPrefabs.Length;
+        //         Debug.Log("当前子弹类型: " + playerModel.CurrentBulletIndex.Value);
+        //     }
+        // }
 
-        // 处理落地时的瞄准时间奖励
-        public void HandleLandingAimTimeBonus()
-        {
-            if (playerModel.HasPerformedTrickInAir.Value)
-            {
-                // 增加瞄准时间上限1秒
-                playerModel.MaxAimTime.Value += 1f;
-                Debug.Log($"InputController: 落地奖励！瞄准时间上限增加1秒，当前上限: {playerModel.MaxAimTime.Value}秒");
+        // // 处理落地时的瞄准时间奖励
+        // public void HandleLandingAimTimeBonus()
+        // {
+        //     if (playerModel.HasPerformedTrickInAir.Value)
+        //     {
+        //         // 增加瞄准时间上限1秒
+        //         playerModel.MaxAimTime.Value += 1f;
+        //         Debug.Log($"InputController: 落地奖励！瞄准时间上限增加1秒，当前上限: {playerModel.MaxAimTime.Value}秒");
 
-                // 重置标志
-                playerModel.HasPerformedTrickInAir.Value = false;
-            }
-        }
+        //         // 重置标志
+        //         playerModel.HasPerformedTrickInAir.Value = false;
+        //     }
+        // }
 
 
-        // 获取基础瞄准时间上限（供UI使用）
-        public float baseMaxAimTime => playerModel.Config.Value.baseMaxAimTime;
+        // // 获取基础瞄准时间上限（供UI使用）
+        // public float baseMaxAimTime => playerModel.Config.Value.baseMaxAimTime;
 
         #endregion
 
@@ -447,6 +454,14 @@ namespace SkateGame
              }
 
             return null;
+        }
+        
+
+        // // 标记已执行trick（由TrickState调用）
+        public void MarkTrickPerformed()
+        {
+            playerModel.HasPerformedTrickInAir.Value = true;
+            Debug.Log("InputController: 标记已执行trick");
         }
         #endregion
     }

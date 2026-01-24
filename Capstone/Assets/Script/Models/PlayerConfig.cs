@@ -24,10 +24,6 @@ namespace SkateGame
         public float BgWallRideCooldown = 1.5f;
         public float BgWallrideDuration = 0.6f;
 
-        [Header("Grabbing State")]
-        public bool isLoopGrab = true;
-        public bool ignoringMovementLayerGrab = false;
-
         [Header("Push State")]
         public bool isLoopPush = false;
         public bool ignoringMovementLayerPush = false;
@@ -60,6 +56,11 @@ namespace SkateGame
         public bool ignoringMovementLayerTrickCBoost = true;
         public float minDurationTrickCBoost = 0.5f;
         public float TrickCBoostspeed = 10f;
+        [Header("Trick D State")]
+        public bool isLoopTrickD = false;
+        public float durationTrickD = 0.5f;
+        public bool ignoringMovementLayerTrickD = true;
+        public float recoveryDurationTrickD = 1f;
 
         [Header("========== 基础参数 ==========")]
         

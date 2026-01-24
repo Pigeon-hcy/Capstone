@@ -16,7 +16,7 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
     /// <summary>
     /// 判断状态属于哪一层
     /// </summary>
-    private readonly Dictionary<string, StateLayer> mStateToLayer = new Dictionary<string, StateLayer>();
+    private readonly Dictionary<System.Type, StateLayer> mStateToLayer = new Dictionary<System.Type, StateLayer>();
     public IArchitecture GetArchitecture() => SkateGame.GameApp.Interface;
     public LayeredStateMachine()
     {
@@ -24,14 +24,14 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
     }
     public void AddState(StateBase state, StateLayer layer)
     {
-        string stateName = state.GetStateName();
-        if (!mStateToLayer.ContainsKey(stateName))
+        var key = state.GetType();
+        if (!mStateToLayer.ContainsKey(key))
         {
-            mStateToLayer.Add(stateName, layer);
+            mStateToLayer.Add(key, layer);
         }
         else
         {
-            mStateToLayer[stateName] = layer;
+            mStateToLayer[key] = layer;
         }
 
         if (layer == StateLayer.Movement)
@@ -44,21 +44,21 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
         }
     }
 
-    public void SwitchState(StateLayer layer, string stateName)
+    public void SwitchState<T>(StateLayer layer) where T : StateBase
     {
         if (layer == StateLayer.Movement)
         {
-            mMovement.SwitchState(stateName);
+            mMovement.SwitchState<T>();
             this.SendEvent<StateChangedEvent>(new StateChangedEvent { Layer = StateLayer.Movement, 
-                FromState = mMovement.GetCurrentStateName(), ToState = stateName });
+                FromState = mMovement.GetCurrentStateName(), ToState = typeof(T).Name });
         }
         else
         {
             var from = mAction.GetCurrentStateName();
             playerModel.LastActionStateName.Value = from;
-            mAction.SwitchState(stateName);
+            mAction.SwitchState<T>();
             this.SendEvent<StateChangedEvent>(new StateChangedEvent { Layer = StateLayer.Action, 
-                FromState = from, ToState = stateName });
+                FromState = from, ToState = typeof(T).Name });
         }
     }
 
@@ -79,15 +79,15 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
         return mAction.GetCurrentStateName();
     }
 
-    public StateBase TryGetState(string stateName, StateLayer layer )
+    public StateBase TryGetState<T>(StateLayer layer ) where T : StateBase
     {
         if (layer == StateLayer.Movement)
         {
-            return mMovement.TryGetState(stateName);
+            return mMovement.TryGetState(typeof(T));
         }
         else
         {
-            return mAction.TryGetState(stateName);
+            return mAction.TryGetState(typeof(T));
         }
     }
 }

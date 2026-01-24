@@ -19,19 +19,19 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
-        if(!inputModel.TrickC.Value)
+        if(!inputModel.Slam.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
+            player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
         }
         if(playerModel.IsGrounded.Value)
         {
-            player.stateMachine.SwitchState(StateLayer.Action, "Recovery");
+            player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
         }
         if(DetectInteractiveObjects(out Collider2D[] colliders))
         {
             IInteractable interact = colliders[0].GetComponent<IInteractable>();
             interact?.DoInteraction();
-            player.stateMachine.SwitchState(StateLayer.Action, "TrickCBoost");
+            player.stateMachine.SwitchState<TrickCBoostState>(StateLayer.Action);
         }
     }
 
