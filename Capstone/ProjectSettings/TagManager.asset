@@ -9,6 +9,7 @@ TagManager:
   - Vine
   - PlayerHitBox
   - AudioManager
+  - MusicManager
   layers:
   - Default
   - TransparentFX

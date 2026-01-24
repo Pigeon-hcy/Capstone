@@ -144,6 +144,7 @@ public class AudioManager : MonoBehaviour
         railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
     }
 
+    #region Music
     //Test
     public void fmodPlayTest()
     {
@@ -218,7 +219,9 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Player SFX
     //Moving
     public void fmodPlayMove()
     {
@@ -335,4 +338,5 @@ public class AudioManager : MonoBehaviour
             wallRideEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
+    #endregion
 }

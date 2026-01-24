@@ -12,9 +12,17 @@ public class AudioPlayer : MonoBehaviour
 
     public bool LM;
 
+    public GameObject speaker;
+
     void Start()
     {
         Debug.Log("audio player loaded");
+
+        if (speaker == null)
+        {
+            speaker = GameObject.FindGameObjectWithTag("MusicManager");
+            Debug.Log("audio player found");
+        }
 
         if (playOnLoad)
         {
@@ -61,22 +69,22 @@ public class AudioPlayer : MonoBehaviour
     {
         if (LM)
         {
-            AudioManager.Instance.fmodPlayLM1();
+            speaker.GetComponent<MusicManager>().fmodPlayLM1();
         }
         else
         {
-            AudioManager.Instance.fmodPlayBM1();
+            speaker.GetComponent<MusicManager>().fmodPlayBM1();
         }
     }
     public void pauseAudio()
     {
         if (LM)
         {
-            AudioManager.Instance.fmodPauseLM1();
+            speaker.GetComponent<MusicManager>().fmodPauseLM1();
         }
         else
         {
-            AudioManager.Instance.fmodPauseBM1();
+            speaker.GetComponent<MusicManager>().fmodPauseBM1();
         }
     }
 }
