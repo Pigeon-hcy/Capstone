@@ -28,6 +28,7 @@ namespace SkateGame
         // UI action map
         InputAction _uiCancelAction;
         private bool _isShootLocked = false;
+        private bool _isPaused = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
 
         bool _lastPlayerEnabled = true;
@@ -92,10 +93,11 @@ namespace SkateGame
                 _lastUiEnabled = uiEnabled;
             }
 
-            // toggle pause
-            if (_pauseAction.WasPressedThisFrame()|| _uiCancelAction.WasPressedThisFrame())
+            
+            if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame())
             {
-                this.SendEvent<TogglePauseEvent>();
+                _isPaused = !_isPaused;
+                Time.timeScale = _isPaused ? 0f : 1f;
             }
             // read player input
             var inputModel = this.GetModel<IInputModel>();

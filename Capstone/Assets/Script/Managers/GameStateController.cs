@@ -23,15 +23,15 @@ namespace SkateGame
 		[SerializeField] private GameObject pauseUI;
 		[SerializeField] private GameObject firstSelected;
 
-        void OnEnable()
-        {
-            this.RegisterEvent<TogglePauseEvent>(OnTogglePause);
-        }
+        // void OnEnable()
+        // {
+        //     this.RegisterEvent<TogglePauseEvent>(OnTogglePause);
+        // }
 
-        void OnDisable()
-        {
-            this.UnRegisterEvent<TogglePauseEvent>(OnTogglePause);
-        }
+        // void OnDisable()
+        // {
+        //     this.UnRegisterEvent<TogglePauseEvent>(OnTogglePause);
+        // }
         private void Awake()
         {
             if (_instance != null)
@@ -96,12 +96,13 @@ namespace SkateGame
                     break;
             }
         }
-        private void OnTogglePause(TogglePauseEvent evt)
-        {
-			if (_current == GameState.Menu) return;
-            if (_current == GameState.InGame) EnterPause();
-            else EnterInGame();
-        }
+       //discarded: toggle pause is handled by PlayerInput
+        // public void TogglePause()
+        // {
+        //     if (_current == GameState.Menu) return;
+        //     if (_current == GameState.InGame) EnterPause();
+        //     else EnterInGame();
+        // }
 
 		private void SetPauseUI(bool show)
 		{
