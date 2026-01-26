@@ -98,6 +98,12 @@ namespace SkateGame
             {
                 _isPaused = !_isPaused;
                 Time.timeScale = _isPaused ? 0f : 1f;
+                var pauseCanvas = GameObject.Find("PauseCanvas");
+                if (pauseCanvas != null)
+                {
+                    var pausePopup = pauseCanvas.transform.Find("pausePopup");
+                    if (pausePopup != null) pausePopup.gameObject.SetActive(_isPaused);
+                }
             }
             // read player input
             var inputModel = this.GetModel<IInputModel>();
