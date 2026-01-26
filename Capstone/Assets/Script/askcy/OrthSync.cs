@@ -20,7 +20,22 @@ public class OrthSync : MonoBehaviour
     [Tooltip("是否每帧同步（如果父相机FOV会动态改变则开启）")]
     public bool continuousSync = true;
     
+    [Header("Size Smoothing")]
+    [Tooltip("是否启用大小平滑过渡")]
+    public bool smoothSizeTransition = true;
+    
+    [Tooltip("平滑过渡速度（每秒）")]
+    public float smoothSpeed = 5f;
+    
+    [Tooltip("大小过渡曲线（X轴：时间0-1，Y轴：插值0-1）")]
+    public AnimationCurve sizeTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    
     private CinemachineBrain cinemachineBrain;
+    private float targetOrthographicSize;
+    private float currentOrthographicSize;
+    private float transitionStartTime;
+    private float transitionStartSize;
+    private float transitionDuration = 1f;
 
     void Start()
     {
@@ -66,6 +81,10 @@ public class OrthSync : MonoBehaviour
             }
         }
         
+        // 初始化当前大小
+        currentOrthographicSize = orthographicCamera.orthographicSize;
+        targetOrthographicSize = currentOrthographicSize;
+        
         // 初始同步
         SyncCameras();
     }
@@ -75,6 +94,18 @@ public class OrthSync : MonoBehaviour
         if (continuousSync)
         {
             SyncCameras();
+        }
+        
+        // 平滑过渡大小
+        if (smoothSizeTransition)
+        {
+            UpdateSizeSmoothly();
+        }
+        else
+        {
+            // 如果不使用平滑，直接设置
+            orthographicCamera.orthographicSize = targetOrthographicSize;
+            currentOrthographicSize = targetOrthographicSize;
         }
     }
 
@@ -112,7 +143,25 @@ public class OrthSync : MonoBehaviour
         // 根据透视相机的FOV计算正交相机的大小
         // 公式: orthographicSize = distance * tan(FOV/2)
         float halfFOV = perspectiveCamera.fieldOfView * 0.5f * Mathf.Deg2Rad;
-        orthographicCamera.orthographicSize = syncDistance * Mathf.Tan(halfFOV);
+        float newTargetSize = syncDistance * Mathf.Tan(halfFOV);
+        
+        // 如果目标大小发生变化，开始新的过渡
+        if (Mathf.Abs(newTargetSize - targetOrthographicSize) > 0.001f)
+        {
+            if (smoothSizeTransition)
+            {
+                transitionStartSize = currentOrthographicSize;
+                transitionStartTime = Time.time;
+            }
+            targetOrthographicSize = newTargetSize;
+        }
+        
+        // 如果不使用平滑，直接设置
+        if (!smoothSizeTransition)
+        {
+            orthographicCamera.orthographicSize = targetOrthographicSize;
+            currentOrthographicSize = targetOrthographicSize;
+        }
         
         // 同步其他参数
         orthographicCamera.nearClipPlane = perspectiveCamera.nearClipPlane;
@@ -121,6 +170,30 @@ public class OrthSync : MonoBehaviour
         // 同步位置和旋转（如果需要的话）
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+    }
+    
+    /// <summary>
+    /// 平滑更新大小
+    /// </summary>
+    void UpdateSizeSmoothly()
+    {
+        if (Mathf.Abs(currentOrthographicSize - targetOrthographicSize) < 0.001f)
+        {
+            currentOrthographicSize = targetOrthographicSize;
+            orthographicCamera.orthographicSize = currentOrthographicSize;
+            return;
+        }
+        
+        // 计算过渡进度（基于时间）
+        float elapsedTime = Time.time - transitionStartTime;
+        float normalizedTime = Mathf.Clamp01(elapsedTime * smoothSpeed);
+        
+        // 使用曲线评估插值
+        float curveValue = sizeTransitionCurve.Evaluate(normalizedTime);
+        
+        // 插值大小
+        currentOrthographicSize = Mathf.Lerp(transitionStartSize, targetOrthographicSize, curveValue);
+        orthographicCamera.orthographicSize = currentOrthographicSize;
     }
     
     /// <summary>

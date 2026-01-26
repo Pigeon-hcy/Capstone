@@ -144,7 +144,34 @@ MonoBehaviour:
   perspectiveCamera: {fileID: 346549987922258106}
   orthographicCamera: {fileID: 452438923954232089}
   syncDistance: 10
+  syncFromCinemachine: 1
   continuousSync: 1
+  smoothSizeTransition: 1
+  smoothSpeed: 5
+  sizeTransitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5502164885350424635
 GameObject:
   m_ObjectHideFlags: 0
