@@ -34909,8 +34909,8 @@ MonoBehaviour:
   shootAngleDegrees: 70
   hasMaxDistance: 1
   maxDistnace: 20
-  ropeLifeTime: 1
-  mutualPullForce: 10
+  ropeLifeTime: 0.5
+  mutualPullForce: 20
   mutualPullGravityOffTime: 0.5
   grapplePoint: {x: 0, y: 0}
   grappleDistanceVector: {x: 0, y: 0}
