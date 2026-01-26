@@ -36,15 +36,16 @@ public class CM_Control : MonoBehaviour
     private float currentGroundLevel; // 当前检测到的地面高度
     private float lastValidGroundLevel; // 最后有效的地面高度（备用）
 
-    [Header("FOV动态调整设置")]
-    public float stopFOV = 60f; // 停止时的FOV
-    public float playerMovingFOV = 70f; // 移动时的FOV
-    public float FOVChangeSpeed = 5f; // FOV变化速度
-    public float FOVThreshold = 5f; // 速度阈值，超过此速度时切换FOV
-    public float slowSpeedDuration = 1.5f; // 速度过慢持续多久后才缩小FOV（秒）
+    [Header("CameraDistance动态调整设置")]
+    public float stopCameraDistance = 10f; // 停止时的CameraDistance
+    public float playerMovingCameraDistance = 15f; // 移动时的CameraDistance
+    public float cameraDistanceChangeSpeed = 5f; // CameraDistance变化速度
+    public float speedThreshold = 5f; // 速度阈值，超过此速度时切换CameraDistance
+    public float slowSpeedDuration = 1.5f; // 速度过慢持续多久后才缩小CameraDistance（秒）
     
-    private float targetFOV; // 目标FOV
-    private float currentFOV; // 当前FOV
+    private float targetCameraDistance; // 目标CameraDistance
+    private float currentCameraDistance; // 当前CameraDistance
+    private float originalCameraDistance; // 原始CameraDistance
     private float slowSpeedTimer = 0f; // 速度过慢的计时器
 
 
@@ -59,10 +60,11 @@ public class CM_Control : MonoBehaviour
             playerRb = playerObj.GetComponent<Rigidbody2D>();
         }
         
-        // 记录原始的target offset
+        // 记录原始的target offset和CameraDistance
         if (positionComposer != null)
         {
             originalTargetOffset = positionComposer.TargetOffset;
+            originalCameraDistance = positionComposer.CameraDistance;
         }
         
         // 初始化地面高度参考点
@@ -73,12 +75,12 @@ public class CM_Control : MonoBehaviour
             lastValidGroundLevel = currentGroundLevel;
         }
         
-        // 初始化FOV
-        if (virtualCamera != null)
+        // 初始化CameraDistance
+        if (positionComposer != null)
         {
-            currentFOV = stopFOV;
-            targetFOV = stopFOV;
-            virtualCamera.Lens.FieldOfView = currentFOV;
+            currentCameraDistance = stopCameraDistance;
+            targetCameraDistance = stopCameraDistance;
+            positionComposer.CameraDistance = currentCameraDistance;
         }
     }
 
@@ -95,8 +97,8 @@ public class CM_Control : MonoBehaviour
         // 应用镜头偏移
         ApplyCameraOffset();
         
-        // 调整FOV
-        UpdateFOV();
+        // 调整CameraDistance
+        UpdateCameraDistance();
     }
     
     void LateUpdate()
@@ -152,18 +154,18 @@ public class CM_Control : MonoBehaviour
         positionComposer.TargetOffset = new Vector2(newX, newY);
     }
     
-    void UpdateFOV()
+    void UpdateCameraDistance()
     {
-        if (virtualCamera == null || playerRb == null) return;
+        if (positionComposer == null || playerRb == null) return;
         
         // 获取玩家速度大小（综合考虑水平和垂直速度）
         float playerSpeed = playerRb.linearVelocity.magnitude;
         
-        // 根据速度决定目标FOV
-        if (playerSpeed > FOVThreshold)
+        // 根据速度决定目标CameraDistance
+        if (playerSpeed > speedThreshold)
         {
-            // 速度超过阈值，立即使用移动FOV
-            targetFOV = playerMovingFOV;
+            // 速度超过阈值，立即使用移动CameraDistance
+            targetCameraDistance = playerMovingCameraDistance;
             // 重置计时器
             slowSpeedTimer = 0f;
         }
@@ -172,19 +174,19 @@ public class CM_Control : MonoBehaviour
             // 速度低于阈值，开始计时
             slowSpeedTimer += Time.deltaTime;
             
-            // 只有当速度持续过慢超过指定时间后，才缩小FOV
+            // 只有当速度持续过慢超过指定时间后，才缩小CameraDistance
             if (slowSpeedTimer >= slowSpeedDuration)
             {
-                targetFOV = stopFOV;
+                targetCameraDistance = stopCameraDistance;
             }
-            // 否则保持移动FOV
+            // 否则保持移动CameraDistance
         }
         
-        // 使用Lerp平滑过渡到目标FOV
-        currentFOV = Mathf.Lerp(currentFOV, targetFOV, Time.deltaTime * FOVChangeSpeed);
+        // 使用Lerp平滑过渡到目标CameraDistance
+        currentCameraDistance = Mathf.Lerp(currentCameraDistance, targetCameraDistance, Time.deltaTime * cameraDistanceChangeSpeed);
         
-        // 应用到虚拟相机
-        virtualCamera.Lens.FieldOfView = currentFOV;
+        // 应用到PositionComposer
+        positionComposer.CameraDistance = currentCameraDistance;
     }
     
     void DetectGroundLevel()

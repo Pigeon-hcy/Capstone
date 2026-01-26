@@ -22,8 +22,6 @@ MonoBehaviour:
   ignoringMovementLayerBgWallRide: 0
   BgWallRideCooldown: 1.5
   BgWallrideDuration: 0.6
-  isLoopGrab: 0
-  ignoringMovementLayerGrab: 0
   isLoopPush: 0
   ignoringMovementLayerPush: 0
   recoveryDurationPush: 0
@@ -32,23 +30,27 @@ MonoBehaviour:
   ignoringMovementLayerTrickA: 1
   recoveryDurationTrickA: 0.5
   isLoopTrickB: 0
-  durationTrickB: 0.2
+  durationTrickB: 0.15
   ignoringMovementLayerTrickB: 1
-  recoveryDurationTrickB: 0.5
+  recoveryDurationTrickB: 0.25
   TrickBinertia: 0.3
-  TrickBspeed: 20
+  TrickBspeed: 30
   isLoopTrickBBoost: 0
   durationTrickBBoost: 0.3
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 15
+  TrickCspeed: 30
   TrickCinertia: 0.25
-  recoveryDurationTrickC: 0.5
+  recoveryDurationTrickC: 0.1
   isLoopTrickCBoost: 1
   ignoringMovementLayerTrickCBoost: 1
   minDurationTrickCBoost: 0.5
   TrickCBoostspeed: 15
+  isLoopTrickD: 0
+  durationTrickD: 0.25
+  ignoringMovementLayerTrickD: 1
+  recoveryDurationTrickD: 1
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:

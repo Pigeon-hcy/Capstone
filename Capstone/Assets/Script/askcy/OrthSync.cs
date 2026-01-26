@@ -92,10 +92,19 @@ public class OrthSync : MonoBehaviour
             CinemachineCamera activeCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineCamera;
             if (activeCamera != null)
             {
+                // 获取CinemachinePositionComposer组件并读取CameraDistance
                 CinemachinePositionComposer positionComposer = activeCamera.GetComponent<CinemachinePositionComposer>();
                 if (positionComposer != null)
                 {
                     syncDistance = positionComposer.CameraDistance;
+                }
+                else
+                {
+                    // 如果找不到PositionComposer，尝试从Lens的PhysicalProperties.FocusDistance获取（作为备选）
+                    if (activeCamera.Lens.PhysicalProperties.FocusDistance > 0)
+                    {
+                        syncDistance = activeCamera.Lens.PhysicalProperties.FocusDistance;
+                    }
                 }
             }
         }
