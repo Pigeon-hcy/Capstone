@@ -43,6 +43,9 @@ namespace SkateGame
         [Header("Collision")]
         public Transform bottomLeft;
         public Transform bottomRight;
+        [Header("Hitbox")]
+        public Collider2D slamHitbox;
+        Coroutine _slamHitboxRoutine;
 
         [Header("Grappling Vine Gun")]
         public VineGun vineGun;
@@ -228,16 +231,29 @@ namespace SkateGame
         {
             return rb;
         }
-
-        // 延迟切换状态的协程
-        public IEnumerator SwitchToStateDelayed<T>() where T : StateBase
+        
+        #region Hitbox
+        public void OpenSlamHitbox(float duration)
         {
-            yield return new WaitForSeconds(0.1f);
-            stateMachine.SwitchState<T>(StateLayer.Action);
+            if (slamHitbox == null) return;
+            if (_slamHitboxRoutine != null) StopCoroutine(_slamHitboxRoutine);
+            slamHitbox.enabled = true;
+            _slamHitboxRoutine = StartCoroutine(SlamHitboxRoutine(duration));
         }
 
-        // 碰撞检测
+        IEnumerator SlamHitboxRoutine(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            if (slamHitbox != null) slamHitbox.enabled = false;
+            _slamHitboxRoutine = null;
+        }
+        #endregion
 
+
+        /// <summary>
+        /// 检测玩家是否进入滑轨或墙壁
+        /// </summary>
+        #region Collision
         void OnTriggerEnter2D(Collider2D other)
         {
             Debug.Log($"OnTriggerEnter2D: {other.name} (isTrigger: {other.isTrigger})");
@@ -283,6 +299,7 @@ namespace SkateGame
                 }
             }
         }
+        #endregion
 
         #region Aim and Shoot
         // private void HandleAimAndShoot()

@@ -8,6 +8,7 @@ namespace SkateGame
     public class PlayerInputs : MonoBehaviour, ICanGetModel, IBelongToArchitecture, ICanGetSystem, ICanSendEvent
     {
         public PlayerInput _playerInput;
+        private IInputGateSystem gate;
         InputDevice _currentDevice;
 
         // Player action map
@@ -53,6 +54,10 @@ namespace SkateGame
             // UI action map
             _uiCancelAction = _actions.FindAction("UI/Cancel");
         }
+        void Start()
+        {
+            gate = this.GetSystem<IInputGateSystem>();
+        }
 
     
 		private void OnEnable()
@@ -66,8 +71,7 @@ namespace SkateGame
 		} 
         void Update()
         {
-            // switch action maps
-            var gate = this.GetSystem<IInputGateSystem>();
+
             bool playerEnabled = !gate.PlayerInputBlocked;
             bool uiEnabled = gate.UiInputEnabled;
             if (_playerInput != null && (playerEnabled != _lastPlayerEnabled || uiEnabled != _lastUiEnabled))
