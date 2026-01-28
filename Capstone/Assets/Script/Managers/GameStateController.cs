@@ -21,7 +21,8 @@ namespace SkateGame
         [SerializeField] private GameState _current = GameState.Menu;
         public GameState Current => _current;
 		[SerializeField] private GameObject pauseUI;
-		[SerializeField] private GameObject firstSelected;
+		[SerializeField] private GameObject pauseFirstSelected;
+		[SerializeField] private GameObject playerUI;
 
         void OnEnable()
         {
@@ -68,6 +69,7 @@ namespace SkateGame
 					Time.timeScale = 0f;
 					Time.fixedDeltaTime = 0.02f * Time.timeScale;
 					SetPauseUI(false);
+                    SetPlayerUI(false);
 					Debug.Log("Enter Menu");
 					break;
                 case GameState.InGame:
@@ -76,6 +78,7 @@ namespace SkateGame
 					Time.timeScale = 1f;
 					Time.fixedDeltaTime = 0.02f * Time.timeScale;
 					SetPauseUI(false);
+                    SetPlayerUI(true);
                     Debug.Log("Enter InGame");
                     break;
                 case GameState.Dialogue:
@@ -84,6 +87,7 @@ namespace SkateGame
 					Time.timeScale = 1f;
 					Time.fixedDeltaTime = 0.02f * Time.timeScale;
 					SetPauseUI(false);
+                    SetPlayerUI(false);
                     Debug.Log("Enter Dialogue");
                     break;
                 case GameState.Pause:
@@ -92,6 +96,7 @@ namespace SkateGame
 					Time.timeScale = 0f;
 					Time.fixedDeltaTime = 0.02f * Time.timeScale;
 					SetPauseUI(true);
+                    SetPlayerUI(true);
                     Debug.Log("Enter Pause");
                     break;
             }
@@ -106,9 +111,13 @@ namespace SkateGame
 		private void SetPauseUI(bool show)
 		{
 			if (pauseUI != null) pauseUI.SetActive(show);
-			if (show) EventSystem.current?.SetSelectedGameObject(firstSelected);
+			if (show) EventSystem.current?.SetSelectedGameObject(pauseFirstSelected);
 			else if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
 		}
+        private void SetPlayerUI(bool show)
+        {
+            if (playerUI != null) playerUI.SetActive(show);
+        }
     }
 }
 

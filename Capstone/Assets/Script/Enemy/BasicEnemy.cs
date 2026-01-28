@@ -67,7 +67,7 @@ namespace SkateGame
     public float JumpForce { get; set; }
     public float JumpAtkBoxActiveTime { get; set; }
     public List<string> AtkTags { get; set; }
-    public bool CanBeKilledByQ { get; set; }
+    public bool CanBeKilled { get; set; }
     
     protected virtual void Start()
     {
@@ -86,7 +86,7 @@ namespace SkateGame
         JumpAngleModifier   = config.jumpAngleModifier;
         JumpAtkBoxActiveTime = config.JumpAtkBoxActiveTime;
         AtkTags             = config.AtkTags;
-        CanBeKilledByQ      = config.canBeKilledByQ;
+        CanBeKilled      = config.canBeKilledByQ;
 
 
         movingRight = config.startFacingRight;
@@ -320,10 +320,12 @@ namespace SkateGame
 
         public void DoInteraction()
         {
-            if(CanBeKilledByQ)
+            if(CanBeKilled)
             {
                  MessageBox box = new MessageBox();
                 box.gmo = this.gameObject;
+                var energySystem = this.GetSystem<IEnergySystem>();
+                energySystem.AddEnergy(1);
                 MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
                 Die();
             }

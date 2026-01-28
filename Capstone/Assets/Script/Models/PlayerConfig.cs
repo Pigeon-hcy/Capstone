@@ -51,6 +51,7 @@ namespace SkateGame
         public float TrickCspeed = 10f;
         [Range(0f, 1f)] public float TrickCinertia = 0.67f;
         public float recoveryDurationTrickC = 0.5f;
+        public float slamHitboxDurationTrickC = 0.25f;
         [Header("Trick C Boost State")]
         public bool isLoopTrickCBoost = true;
         public bool ignoringMovementLayerTrickCBoost = true;
