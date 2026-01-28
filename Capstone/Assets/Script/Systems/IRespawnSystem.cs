@@ -112,8 +112,13 @@ namespace SkateGame
         private void PlayDeathMMFEffects()
         {
             GameObject deathTrans = GameObject.Find("death trans");
-            deathTrans.transform.Find("MMF_StartTrans").GetComponent<MMF_Player>().PlayFeedbacks();
-            deathTrans.transform.Find("MMF_EndTrans").GetComponent<MMF_Player>().PlayFeedbacks();
+            MMF_Player startPlayer = deathTrans.transform.Find("MMF_StartTrans").GetComponent<MMF_Player>();
+            MMF_Player endPlayer = deathTrans.transform.Find("MMF_EndTrans").GetComponent<MMF_Player>();
+            // 播放速度调成原来一半（DurationMultiplier=2 使时长加倍）
+            startPlayer.DurationMultiplier = 2f;
+            endPlayer.DurationMultiplier = 2f;
+            startPlayer.PlayFeedbacks();
+            endPlayer.PlayFeedbacks();
         }
         
         private void PlayDeathParticle()
