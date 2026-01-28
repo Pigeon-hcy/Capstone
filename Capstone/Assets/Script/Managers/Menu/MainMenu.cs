@@ -7,6 +7,6 @@ public class MainMenu : MonoBehaviour
     public void OnClickStart()
     {
         GameStateController.Instance.EnterInGame();
-        SceneManager.LoadScene("1-1");
+        SceneManager.LoadScene("New_1-1");
     }
 }
