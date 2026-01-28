@@ -99,6 +99,13 @@ namespace SkateGame
             {
                 this.SendEvent<TogglePauseEvent>();
             }
+
+            // Press R to respawn
+            if (playerEnabled && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            {
+                var respawn = this.GetSystem<IRespawnSystem>();
+                if (respawn != null) respawn.RespawnPlayer();
+            }
             // read player input
             var inputModel = this.GetModel<IInputModel>();
             inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
