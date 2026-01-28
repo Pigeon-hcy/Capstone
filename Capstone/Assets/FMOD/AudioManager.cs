@@ -13,6 +13,13 @@ public class AudioManager : MonoBehaviour
     float currentSpeed;
     float targetSpeed;
 
+    // 音量控制
+    private float musicVolume = 1f;
+    private float sfxVolume = 1f;
+    
+    public float MusicVolume => musicVolume;
+    public float SFXVolume => sfxVolume;
+
     #region FMOD
 
     //Moving
@@ -337,6 +344,65 @@ public class AudioManager : MonoBehaviour
         {
             wallRideEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
+    }
+    #endregion
+
+    #region Volume Control
+    /// <summary>
+    /// 设置音乐音量 (0-1)
+    /// </summary>
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = Mathf.Clamp01(volume);
+        
+        // 应用到所有音乐实例
+        if (testEventInstance.isValid())
+            testEventInstance.setVolume(musicVolume);
+        if (levelMusic1EventInstance.isValid())
+            levelMusic1EventInstance.setVolume(musicVolume);
+        if (bossMusic1EventInstance.isValid())
+            bossMusic1EventInstance.setVolume(musicVolume);
+        
+        // 保存设置
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+    }
+
+    /// <summary>
+    /// 设置音效音量 (0-1)
+    /// </summary>
+    public void SetSFXVolume(float volume)
+    {
+        sfxVolume = Mathf.Clamp01(volume);
+        
+        // 应用到所有音效实例
+        if (movingEventInstance.isValid())
+            movingEventInstance.setVolume(sfxVolume);
+        if (ollieEventInstance.isValid())
+            ollieEventInstance.setVolume(sfxVolume);
+        if (kickflipEventInstance.isValid())
+            kickflipEventInstance.setVolume(sfxVolume);
+        if (landEventInstance.isValid())
+            landEventInstance.setVolume(sfxVolume);
+        if (pushEventInstance.isValid())
+            pushEventInstance.setVolume(sfxVolume);
+        if (wallRideEventInstance.isValid())
+            wallRideEventInstance.setVolume(sfxVolume);
+        if (railGrindEventInstance.isValid())
+            railGrindEventInstance.setVolume(sfxVolume);
+        
+        // 保存设置
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+    }
+
+    /// <summary>
+    /// 加载保存的音量设置
+    /// </summary>
+    public void LoadVolumeSettings()
+    {
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        SetMusicVolume(musicVolume);
+        SetSFXVolume(sfxVolume);
     }
     #endregion
 }
