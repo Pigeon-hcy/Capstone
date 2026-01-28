@@ -1,9 +1,9 @@
-using Unity.VisualScripting;
+using QFramework;
 using UnityEngine;
 using SkateGame;
 
 // Base class for action-layer states that may suppress movement
-public abstract class ActionStateBase : StateBase
+public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchitecture
 {
     protected float stateTimer;
     protected float stateDuration = -1f;
@@ -56,18 +56,22 @@ public abstract class ActionStateBase : StateBase
 
     protected void CheckSwitchAction()
     {
+        var energySystem = this.GetSystem<IEnergySystem>();
         // 优先Trick
-        if(inputModel.GrabStart.Value)
+        if(inputModel.GrabStart.Value && energySystem.HasEnoughEnergy(1))
         {
+            energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickDState>(StateLayer.Action);
         }
-        else if(inputModel.DashStart.Value)
+        else if(inputModel.DashStart.Value && energySystem.HasEnoughEnergy(1))
         {
+            energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickBState>(StateLayer.Action);
         }
         // TODO: Design Slam On ground
-        else if(inputModel.SlamStart.Value && !playerModel.IsGrounded.Value)
+        else if(inputModel.SlamStart.Value && !playerModel.IsGrounded.Value && energySystem.HasEnoughEnergy(1))
         {
+            energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickCState>(StateLayer.Action);
         }
         else if (inputModel.PushStart.Value && playerModel.IsGrounded.Value)

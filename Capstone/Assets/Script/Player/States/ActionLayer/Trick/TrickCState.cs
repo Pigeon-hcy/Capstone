@@ -19,10 +19,6 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
-        if(!inputModel.Slam.Value)
-        {
-            player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
-        }
         if(playerModel.IsGrounded.Value)
         {
             player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
@@ -38,6 +34,5 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void ExitActionState()
     {
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = false });
-        player.SendEvent<TrickCResetSpeedEvent>();
-    } 
+    }
 }

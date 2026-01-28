@@ -17,7 +17,6 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
     protected sealed override void EnterActionState()
     {
         var trickSystem = this.GetSystem<ITrickSystem>();
-        
         if (trickSystem != null)
         {
             trickSystem.AddTrick(this);

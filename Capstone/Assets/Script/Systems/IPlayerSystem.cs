@@ -23,11 +23,9 @@ namespace SkateGame
         private bool trickingB;
         private float trickBdirection;
         private bool trickingC;
-        private bool TrickBResetSpeedQueued;
-        private bool TrickCResetSpeedQueued;
+        private bool trickBResetSpeedQueued;
+        private bool trickCResetSpeedQueued;
         private bool trickARewardQueued;
-        private bool trickBRewarding;
-        private bool trickCRewardQueued;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -41,8 +39,6 @@ namespace SkateGame
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
             this.RegisterEvent<WallJumpExecuteEvent>(OnWallJumpInput);
             this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
-            this.RegisterEvent<TrickBRewardEvent>(OnTrickBReward);
-            this.RegisterEvent<TrickCRewardEvent>(OnTrickCReward);
             this.RegisterEvent<PushInputEvent>(OnPushInput);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
@@ -120,25 +116,17 @@ namespace SkateGame
         {
             trickingC = evt.IsTrickingC;
         }
-        private void OnTrickAReward(TrickARewardEvent evt)
-        {
-            trickARewardQueued = true;
-        }
-        private void OnTrickBReward(TrickBRewardEvent evt)
-        {
-            trickBRewarding = evt.IsTrickBRewarding;
-        }
-        private void OnTrickCReward(TrickCRewardEvent evt)
-        {
-            trickCRewardQueued = true;
-        }
         private void OnTrickBResetSpeed(TrickBResetSpeedEvent evt)
         {
-            TrickBResetSpeedQueued = true;
+            trickBResetSpeedQueued = true;
         }
         private void OnTrickCResetSpeed(TrickCResetSpeedEvent evt)
         {
-            TrickCResetSpeedQueued = true;
+            trickCResetSpeedQueued = true;
+        }
+        private void OnTrickAReward(TrickARewardEvent evt)
+        {
+            trickARewardQueued = true;
         }
         #endregion
 
@@ -159,14 +147,12 @@ namespace SkateGame
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
             if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
             if (trickARewardQueued){ ApplyTrickAReward(); trickARewardQueued = false; }
-            if (trickCRewardQueued){ ApplyTrickCReward(); trickCRewardQueued = false; }
             if (pushing){ ApplyPushSpeed();}
             if (powerGrinding){ ApplyPowerGrind();}
             if (grinding){ ApplyGrind();}
-            if (trickingB){ ApplyTrickB(trickBdirection);}
+            if (trickingB){ ApplyTrickB();}
             if (trickingC){ ApplyTrickC();}
-            if (TrickBResetSpeedQueued){ ResetSpeedAfterTrickB(); TrickBResetSpeedQueued = false; }
-            if (TrickCResetSpeedQueued){ ResetSpeedAfterTrickC(); TrickCResetSpeedQueued = false; }
+            if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
         }
         public void ApplyRotation()
         {
@@ -271,38 +257,29 @@ namespace SkateGame
         {
         }
         
-        private void ApplyTrickB(float direction)
-        {
-            float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
-            rb.linearVelocity = new Vector2(direction * speed, 0);
-        }
-        private void ResetSpeedAfterTrickB()
+        private void ApplyTrickB()
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
-            rb.linearVelocity = new Vector2(speed * trickBdirection * playerModel.Config.Value.TrickBinertia, 0);
+            rb.linearVelocity = new Vector2(trickBdirection * speed, 0);
+        }
+        private void ApplyTrickBResetSpeed()
+        {
+            float speed = Mathf.Max(playerModel.Config.Value.maxMoveSpeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
+            rb.linearVelocity = new Vector2(speed * trickBdirection, 0);
         }
         private void ApplyTrickC()
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCspeed);
         }
-        private void ResetSpeedAfterTrickC()
+        private void ApplyTrickCResetSpeed()
         {
-            Vector2 targetRight = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
-            Vector2 vHorizontal = new Vector2(rb.linearVelocity.x, 0);
-            float targetVRight = Vector2.Dot(vHorizontal, targetRight);
-            Vector2 targetUp = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized; 
-            rb.linearVelocity = targetVRight*targetRight + 
-                playerModel.Config.Value.TrickCspeed * playerModel.Config.Value.TrickCinertia * targetUp;
+            rb.linearVelocity = new Vector2(playerModel.Config.Value.maxMoveSpeed, 0);
         }
 
         private void ApplyTrickAReward()
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
-        }
-
-        private void ApplyTrickCReward()
-        {
         }
 
         // 将玩家稍微吸向地面

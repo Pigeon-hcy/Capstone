@@ -21,14 +21,12 @@ namespace SkateGame
         InputAction _pushAction;
         InputAction _shootStartAction;
         InputAction _shootEndAction;
-        InputAction _aimDirectionAction;
         InputAction _pauseAction;
         InputAction _brakeAction;
 
         // UI action map
         InputAction _uiCancelAction;
         private bool _isShootLocked = false;
-        private bool _isPaused = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
 
         bool _lastPlayerEnabled = true;
@@ -50,7 +48,6 @@ namespace SkateGame
             _pushAction = _actions.FindAction("Player/Push");
             _shootStartAction = _actions.FindAction("Player/Shoot");
             _shootEndAction = _actions.FindAction("Player/Shoot");
-            _aimDirectionAction = _actions.FindAction("Player/AimDirection");
             _pauseAction = _actions.FindAction("Player/Pause");
             _brakeAction = _actions.FindAction("Player/Brake");
             // UI action map
@@ -93,17 +90,10 @@ namespace SkateGame
                 _lastUiEnabled = uiEnabled;
             }
 
-            
+            // toggle pause
             if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame())
             {
-                _isPaused = !_isPaused;
-                Time.timeScale = _isPaused ? 0f : 1f;
-                var pauseCanvas = GameObject.Find("PauseCanvas");
-                if (pauseCanvas != null)
-                {
-                    var pausePopup = pauseCanvas.transform.Find("pausePopup");
-                    if (pausePopup != null) pausePopup.gameObject.SetActive(_isPaused);
-                }
+                this.SendEvent<TogglePauseEvent>();
             }
             // read player input
             var inputModel = this.GetModel<IInputModel>();
@@ -133,8 +123,6 @@ namespace SkateGame
 
             inputModel.ShootStart.Value = shootStart;
             inputModel.ShootEnd.Value = shootEnd;
-            Vector2 aimDirection = _aimDirectionAction.ReadValue<Vector2>();
-			inputModel.AimDirection.Value = GetAimDirection(aimDirection);
         }
 
 		private Vector2 GetAimDirection(Vector2 aimDirection)

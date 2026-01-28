@@ -46,6 +46,10 @@ namespace SkateGame
         public float Direction;
         public bool IsTrickingB;
     }
+
+    public struct TrickBResetSpeedEvent
+    {
+    }
     
     // 技巧C输入事件
     public struct TrickCInputEvent
@@ -53,9 +57,6 @@ namespace SkateGame
         public bool IsTrickingC;
     }
 
-    public struct TrickBResetSpeedEvent
-    {
-    }
     public struct TrickCResetSpeedEvent
     {
     }
@@ -97,13 +98,6 @@ namespace SkateGame
     }
     // 奖励跳跃事件
     public struct TrickARewardEvent
-    {
-    }
-    public struct TrickBRewardEvent
-    {
-        public bool IsTrickBRewarding;
-    }
-    public struct TrickCRewardEvent
     {
     }
     // 通过重生检查点事件

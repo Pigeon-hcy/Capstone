@@ -40,7 +40,7 @@ MonoBehaviour:
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 30
+  TrickCspeed: 35
   TrickCinertia: 0.25
   recoveryDurationTrickC: 0.1
   isLoopTrickCBoost: 1
@@ -62,7 +62,7 @@ MonoBehaviour:
   wallCheckDistanceFar: 1
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
-  crashVelocity: 200
+  crashVelocity: 2
   maxJumpForce: 8
   minJumpForce: 0
   doubleJumpForce: 6
