@@ -79,6 +79,8 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
         return mAction.GetCurrentStateName();
     }
 
+    public bool IsActionState<T>() where T : StateBase => mAction.IsCurrentState<T>();
+
     public StateBase TryGetState<T>(StateLayer layer ) where T : StateBase
     {
         if (layer == StateLayer.Movement)

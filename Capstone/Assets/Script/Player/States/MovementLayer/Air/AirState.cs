@@ -42,7 +42,8 @@ public class AirState : AirborneMovementState
             {
                 player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
             }
-            else if (playerModel.CanDoubleJump.Value && !playerModel.IsIgnoringMovementLayer.Value)
+            else if (playerModel.CanDoubleJump.Value && !playerModel.IsIgnoringMovementLayer.Value 
+                && player.stateMachine.IsActionState<NoActionState>())
             {
                 player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
             }
