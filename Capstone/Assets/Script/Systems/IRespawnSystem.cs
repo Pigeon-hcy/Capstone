@@ -13,11 +13,13 @@ namespace SkateGame
         void ClearCheckpoints();
     }
 
-    public class RespawnSystem : AbstractSystem, IRespawnSystem, ICanSendEvent
+    public class RespawnSystem : AbstractSystem, IRespawnSystem, ICanSendEvent, ICanGetSystem
     {
         private IRespawnModel respawnModel;
         private PlayerController playerController;
         private static MonoBehaviour coroutineRunner;
+
+        public IArchitecture GetArchitecture() => GameApp.Interface;
 
         protected override void OnInit()
         {
@@ -66,7 +68,8 @@ namespace SkateGame
         {
             if (coroutineRunner == null)
                 InitializeCoroutineRunner();
-
+            var energySystem = this.GetSystem<IEnergySystem>();
+            energySystem.ResetEnergy();
             coroutineRunner.StartCoroutine(DeathRoutine());
         }
 

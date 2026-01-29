@@ -1,6 +1,7 @@
 using UnityEngine;
-
-public class VineGun : MonoBehaviour
+using SkateGame;
+using QFramework;
+public class VineGun : MonoBehaviour, ICanGetSystem
 {
     [Header("Scripts Ref:")]
     public VineRope grappleRope;
@@ -32,6 +33,8 @@ public class VineGun : MonoBehaviour
     private bool isMutualPull = false; // 是否是双向拉动模式
     private float mutualPullTimer = 0f; // 双向拉动计时器
     private float originalGravityScale = 1f; // 保存原始重力值
+
+    public IArchitecture GetArchitecture() => GameApp.Interface;
 
     private void Start()
     {
@@ -124,6 +127,8 @@ public class VineGun : MonoBehaviour
                 // 只有双向拉动模式才执行（需要刚体）
                 if (isMutualPull)
                 {
+                    var energySystem = this.GetSystem<IEnergySystem>();
+                    energySystem.ConsumeEnergy(1);
                     // 保存原始重力值并关闭重力
                     if (m_rigidbody != null)
                     {
