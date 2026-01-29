@@ -50460,6 +50460,7 @@ MonoBehaviour:
   playerConfig: {fileID: 11400000, guid: b5cbb05eab090864cb59d2c09ff51b4e, type: 2}
   bottomLeft: {fileID: 5770009860846134919}
   bottomRight: {fileID: 8471675605899274312}
+  slamHitbox: {fileID: 0}
   vineGun: {fileID: 6980180234252946943}
   animator: {fileID: 5511330455926906929}
   aimLine: {fileID: 2937414650203447882}
@@ -50766,7 +50767,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

@@ -8,19 +8,8 @@ namespace SkateGame
 {
     public interface IRespawnSystem : ISystem
     {
-        /// <summary>
-        /// 添加检查点
-        /// </summary>
         void AddCheckpoint(Vector2 checkpointPosition);
-        
-        /// <summary>
-        /// 重生玩家
-        /// </summary>
         void RespawnPlayer();
-        
-        /// <summary>
-        /// 清除所有检查点
-        /// </summary>
         void ClearCheckpoints();
     }
 
@@ -29,28 +18,17 @@ namespace SkateGame
         private IRespawnModel respawnModel;
         private PlayerController playerController;
         private static MonoBehaviour coroutineRunner;
-        
+
         protected override void OnInit()
         {
-            // 获取模型
             respawnModel = this.GetModel<IRespawnModel>();
-            
-            // 更新 PlayerController 引用
             UpdatePlayerController();
-            
-            // 初始化协程运行器
             InitializeCoroutineRunner();
-            
-            // 监听检查点经过事件
+
             this.RegisterEvent<PassRespawnPointEvent>(OnPassRespawnPoint);
-            
-            // 监听场景加载
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        
-        /// <summary>
-        /// 初始化协程运行器（用于在玩家被隐藏时也能运行协程）
-        /// </summary>
+
         private void InitializeCoroutineRunner()
         {
             if (coroutineRunner == null)
@@ -60,72 +38,96 @@ namespace SkateGame
                 Object.DontDestroyOnLoad(runnerObj);
             }
         }
-        
+
         private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            // 场景加载后重新查找 PlayerController 并清空检查点
             UpdatePlayerController();
             ClearCheckpoints();
         }
-        
+
         private void UpdatePlayerController()
         {
             playerController = Object.FindFirstObjectByType<PlayerController>();
         }
-        
+
         private void OnPassRespawnPoint(PassRespawnPointEvent evt)
         {
             AddCheckpoint(evt.CheckpointPosition);
         }
-        
+
         public void AddCheckpoint(Vector2 checkpointPosition)
         {
             respawnModel.CheckpointList.Value.Add(checkpointPosition);
             respawnModel.LatestCheckpoint.Value = checkpointPosition;
             respawnModel.HasCheckpoint.Value = true;
         }
-        
+
         public void RespawnPlayer()
         {
-            PlayDeathParticle();
-           
             if (coroutineRunner == null)
                 InitializeCoroutineRunner();
-           
-            PlayDeathMMFEffects();
-            
-            
-            playerController.transform.position = respawnModel.LatestCheckpoint.Value;
-            playerController.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            playerController.gameObject.SetActive(false);
-            
-            MessageSystem.Instance.Send(GameStateEnum.PlayerRespawn, null);
-            coroutineRunner.StartCoroutine(ShowPlayerAfterDelay(0.5f));
+
+            coroutineRunner.StartCoroutine(DeathRoutine());
         }
-        
-        private System.Collections.IEnumerator ShowPlayerAfterDelay(float delay)
+
+        private IEnumerator DeathRoutine()
         {
-            yield return new WaitForSeconds(delay);
+            if (playerController == null)
+                UpdatePlayerController();
+
+            Transform player = playerController.transform;
+            Rigidbody2D rb = playerController.GetComponent<Rigidbody2D>();
+            Vector2 deathPos = player.position;
+
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+
+            PlayDeathParticleAt(deathPos);
+
+            playerController.gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(1f);
+
+            PlayDeathMMFEffects();
+
+            yield return new WaitForSeconds(1f);
+
+            player.position = respawnModel.LatestCheckpoint.Value;
+
+            rb.simulated = true;
+
             playerController.gameObject.SetActive(true);
+
+            MessageSystem.Instance.Send(GameStateEnum.PlayerRespawn, null);
         }
-        
+
         private void PlayDeathMMFEffects()
         {
             GameObject deathTrans = GameObject.Find("death trans");
             MMF_Player startPlayer = deathTrans.transform.Find("MMF_StartTrans").GetComponent<MMF_Player>();
             MMF_Player endPlayer = deathTrans.transform.Find("MMF_EndTrans").GetComponent<MMF_Player>();
-            // 播放速度调成原来一半（DurationMultiplier=2 使时长加倍）
+
             startPlayer.DurationMultiplier = 2f;
             endPlayer.DurationMultiplier = 2f;
+
             startPlayer.PlayFeedbacks();
             endPlayer.PlayFeedbacks();
         }
-        
-        private void PlayDeathParticle()
+
+        private void PlayDeathParticleAt(Vector2 pos)
         {
-            playerController.transform.Find("Particle Holder").Find("DeathP").GetComponent<ParticleSystem>().Play();
+            var particlePrefab = playerController.transform
+                .Find("Particle Holder")
+                .Find("DeathP")
+                .GetComponent<ParticleSystem>();
+
+            ParticleSystem ps = Object.Instantiate(particlePrefab, pos, Quaternion.identity);
+            ps.transform.parent = null;
+            ps.Play();
+
+            Object.Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
         }
-        
+
         public void ClearCheckpoints()
         {
             respawnModel.CheckpointList.Value.Clear();
@@ -133,12 +135,6 @@ namespace SkateGame
             respawnModel.HasCheckpoint.Value = false;
         }
     }
-    
-    /// <summary>
-    /// 协程运行器辅助类
-    /// </summary>
-    public class CoroutineRunner : MonoBehaviour
-    {
-        // 这个类只用于运行协程，不需要其他功能
-    }
+
+    public class CoroutineRunner : MonoBehaviour { }
 }
