@@ -43,6 +43,10 @@ namespace SkateGame
         public MMF_Player levelUpEffect;
         public MMF_Player gainScoreEffect;
 
+        public MMF_Player startScreenEffect;
+        public bool isGameStarted = false;
+
+
         protected override void InitializeController()
         {
             trickModel = this.GetModel<ITrickListModel>();
@@ -65,6 +69,12 @@ namespace SkateGame
 
             // 处理升级动画
             UpdatePopAnimation(Time.deltaTime);
+
+            if (!isGameStarted && Input.anyKeyDown)
+            {
+                isGameStarted = true;
+                startScreenEffect.PlayFeedbacks();
+            }
         }
 
         private void HandleLandingDetection()
