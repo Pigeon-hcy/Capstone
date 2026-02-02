@@ -215,4 +215,9 @@ public class VineGun : MonoBehaviour, ICanGetSystem
         ropeTimer = 0f;
         mutualPullTimer = 0f;
     }
+
+    public void turnOffRopeVisually()
+    {
+        if (grappleRope != null) grappleRope.enabled = false;
+    }
 }

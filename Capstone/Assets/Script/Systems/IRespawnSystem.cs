@@ -99,7 +99,15 @@ namespace SkateGame
 
             rb.simulated = true;
 
+             if (playerController.vineGun != null)
+                playerController.vineGun.ReleaseGrapple();
+
             playerController.gameObject.SetActive(true);
+
+            playRespawnParticleAt(player.position);
+
+            
+            
 
             MessageSystem.Instance.Send(GameStateEnum.PlayerRespawn, null);
         }
@@ -119,6 +127,7 @@ namespace SkateGame
 
         private void PlayDeathParticleAt(Vector2 pos)
         {
+            
             var particlePrefab = playerController.transform
                 .Find("Particle Holder")
                 .Find("DeathP")
@@ -130,6 +139,16 @@ namespace SkateGame
 
             Object.Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
         }
+
+        private void playRespawnParticleAt(Vector2 pos)
+        {
+            var particlePrefab = playerController.transform
+                .Find("Particle Holder")
+                .Find("Spawn")
+                .GetComponent<ParticleSystem>();
+            particlePrefab.Play();
+        }
+
 
         public void ClearCheckpoints()
         {
