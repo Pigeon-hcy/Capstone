@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3363203314601159602}
+  - component: {fileID: 3231519187696536107}
   m_Layer: 0
   m_Name: MusicManager
-  m_TagString: Untagged
+  m_TagString: MusicManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,3 +32,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3231519187696536107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6828580593751735109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8b0c04911fdf5489aa179588786e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testEvent:
+    Guid:
+      Data1: 390076598
+      Data2: 1146158273
+      Data3: 237030290
+      Data4: 2054913725
+    Path: event:/SFX_Test
+  levelMusic1Event:
+    Guid:
+      Data1: 648682146
+      Data2: 1261685103
+      Data3: 1668285353
+      Data4: 1889763285
+    Path: event:/SFX_1-1Bgm
+  bossMusic1Event:
+    Guid:
+      Data1: 1826733611
+      Data2: 1115775214
+      Data3: -1145184069
+      Data4: 1598164377
+    Path: event:/SFX_1-5Bgm

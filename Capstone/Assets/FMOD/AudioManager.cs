@@ -69,6 +69,8 @@ public class AudioManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         Instance = this;
         if (GameObject.FindGameObjectsWithTag("AudioManager").Length <= 1)
         {
@@ -78,11 +80,6 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(this.gameObject);
             Debug.Log("Duplicate destroyed");
-        }
-
-        if (targetRb != null)
-        {
-            targetRb = targetRb.GetComponent<Rigidbody2D>();
         }
         currentSpeed = 0f;
         targetSpeed = 0f;
@@ -142,13 +139,23 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float playerSpeed = Mathf.Abs(targetRb.linearVelocityX);
-        //currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 2);
-        currentSpeed = playerSpeed/12;
-        //Debug.Log(currentSpeed);
-        movingEventInstance.setParameterByID(movingParameter, currentSpeed);
-        wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
-        railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
+        if (targetRb == null)
+        {
+            if (GameObject.FindGameObjectWithTag("Player") != null)
+            {
+                targetRb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+            }
+        }
+        else
+        {
+            float playerSpeed = Mathf.Abs(targetRb.linearVelocityX);
+            //currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 2);
+            currentSpeed = playerSpeed / 12;
+            //Debug.Log(currentSpeed);
+            movingEventInstance.setParameterByID(movingParameter, currentSpeed);
+            wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
+            railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
+        }
     }
 
     #region Music

@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4826824185622734400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6380687272864905640}
+  - component: {fileID: 6880424494503409157}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: AudioManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6380687272864905640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826824185622734400}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.1946664, y: 4.79193, z: 1.4611733}
+  m_LocalScale: {x: 0.8333333, y: 0.8333333, z: 0.8333333}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6880424494503409157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4826824185622734400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9e1f341e0aa224c9f598534306f767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRb: {fileID: 0}
+  testEvent:
+    Guid:
+      Data1: 390076598
+      Data2: 1146158273
+      Data3: 237030290
+      Data4: 2054913725
+    Path: event:/SFX_Test
+  levelMusic1Event:
+    Guid:
+      Data1: 648682146
+      Data2: 1261685103
+      Data3: 1668285353
+      Data4: 1889763285
+    Path: event:/SFX_1-1Bgm
+  bossMusic1Event:
+    Guid:
+      Data1: 1826733611
+      Data2: 1115775214
+      Data3: -1145184069
+      Data4: 1598164377
+    Path: event:/SFX_1-5Bgm
+  movingEvent:
+    Guid:
+      Data1: 2000430192
+      Data2: 1279672148
+      Data3: 1368712354
+      Data4: -671982234
+    Path: event:/SFX_Move
+  ollieEvent:
+    Guid:
+      Data1: 941918991
+      Data2: 1131233158
+      Data3: 1245311138
+      Data4: -155131600
+    Path: event:/SFX_Ollie
+  kickflipEvent:
+    Guid:
+      Data1: 2092964506
+      Data2: 1338876996
+      Data3: -1638640976
+      Data4: -1933009746
+    Path: event:/SFX_Kickflip
+  landEvent:
+    Guid:
+      Data1: -330941867
+      Data2: 1252244889
+      Data3: 570487424
+      Data4: -1692157524
+    Path: event:/SFX_Landing
+  pushEvent:
+    Guid:
+      Data1: -2040177640
+      Data2: 1242644605
+      Data3: 644962693
+      Data4: 1827817983
+    Path: event:/SFX_Push
+  wallRideEvent:
+    Guid:
+      Data1: 114684520
+      Data2: 1283052727
+      Data3: -698395744
+      Data4: 1670160386
+    Path: event:/SFX_WallRide
+  railGrindEvent:
+    Guid:
+      Data1: -1128422467
+      Data2: 1168875929
+      Data3: 1327959990
+      Data4: 1785657753
+    Path: event:/SFX_RailGrind
