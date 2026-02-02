@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6166772588283356013}
   - component: {fileID: 3136565910796964828}
   - component: {fileID: 3240232042932876952}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: LevelTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

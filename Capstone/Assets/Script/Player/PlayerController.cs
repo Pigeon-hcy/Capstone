@@ -52,7 +52,7 @@ namespace SkateGame
 
         [Header("状态机")]
         public LayeredStateMachine stateMachine;
-        private Rigidbody2D rb;
+        public Rigidbody2D rb;
 
         [Header("Animation")]
         public Animator animator;
