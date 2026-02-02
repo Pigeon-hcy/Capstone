@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "Paper_Pin\u0303ata_01_normal_0": -2477060822702083146
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

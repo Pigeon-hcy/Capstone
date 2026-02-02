@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Cardboard_04_glossiness_0: -4427491852614729057
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

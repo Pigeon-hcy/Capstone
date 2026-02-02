@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_HandmadePaper_01_ambientocclusion_0: -9048409989838475783
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

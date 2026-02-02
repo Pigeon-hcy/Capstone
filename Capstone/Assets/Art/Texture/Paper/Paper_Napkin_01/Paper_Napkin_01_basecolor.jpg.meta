@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Napkin_01_basecolor_0: 2100264194632641312
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

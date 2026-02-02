@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Bookshelf_01_roughness_0: 8637607910409480542
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

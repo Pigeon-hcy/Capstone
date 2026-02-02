@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Bookshelf_01_ambientocclusion_0: 1509755101177157367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

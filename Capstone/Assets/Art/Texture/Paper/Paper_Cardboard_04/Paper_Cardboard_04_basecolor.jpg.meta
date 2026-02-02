@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Cardboard_04_basecolor_0: 1660803076001589853
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

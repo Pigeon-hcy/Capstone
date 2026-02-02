@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "Paper_Pin\u0303ata_01_roughness_0": 1604733314027386047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

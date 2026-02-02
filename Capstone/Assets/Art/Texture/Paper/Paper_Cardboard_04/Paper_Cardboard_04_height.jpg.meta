@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Cardboard_04_height_0: 3842891230158700980
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

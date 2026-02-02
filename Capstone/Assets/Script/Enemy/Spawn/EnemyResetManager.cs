@@ -15,6 +15,7 @@ namespace SkateGame
         }
 
         public List<BasicEnemyController> enemyToReset;
+        public Transform inLevelEnemyParent;
         
         private List<EnemyInitData> _initialData = new List<EnemyInitData>();
 
@@ -25,6 +26,14 @@ namespace SkateGame
 
             // 记录每个敌人的初始状态
             _initialData.Clear();
+            foreach (Transform child in inLevelEnemyParent)
+            {
+                BasicEnemyController enemy = child.GetComponent<BasicEnemyController>();
+                if (enemy != null)
+                {
+                    enemyToReset.Add(enemy);
+                }
+            }
             foreach (var en in enemyToReset)
             {
                 if (en == null) continue;

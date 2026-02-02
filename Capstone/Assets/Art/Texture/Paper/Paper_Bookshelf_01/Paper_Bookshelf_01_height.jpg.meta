@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Bookshelf_01_height_0: -1644041463338405989
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

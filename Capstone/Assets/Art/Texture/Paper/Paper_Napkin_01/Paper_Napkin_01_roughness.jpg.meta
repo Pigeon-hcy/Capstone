@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Napkin_01_roughness_0: -1145804707022346115
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
