@@ -1,5 +1,6 @@
 using UnityEngine;
 using QFramework;
+using MoreMountains.Feedbacks;
 
 namespace SkateGame
 {
@@ -14,6 +15,8 @@ namespace SkateGame
         
         
         private bool isActivated = false;
+
+        public MMF_Player playerFeedback;
         
         protected override void InitializeController()
         {
@@ -36,6 +39,7 @@ namespace SkateGame
                 
                 // 标记为已激活
                 isActivated = true;
+                playerFeedback.PlayFeedbacks();
                 
                 // 发送事件，传递检查点位置
                 this.SendEvent(new PassRespawnPointEvent
