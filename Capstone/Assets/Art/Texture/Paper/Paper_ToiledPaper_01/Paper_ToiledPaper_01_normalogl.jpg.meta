@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_ToiledPaper_01_normalogl_0: -498217798416710160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

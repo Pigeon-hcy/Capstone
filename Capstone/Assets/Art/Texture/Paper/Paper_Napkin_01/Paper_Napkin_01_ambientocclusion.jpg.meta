@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Napkin_01_ambientocclusion_0: -5581587971703750150
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

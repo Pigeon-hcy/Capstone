@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Napkin_01_height_0: 4332786788651474922
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

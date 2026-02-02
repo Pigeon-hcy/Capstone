@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Paper_Cardboard_01_ambientocclusion_0: -3146716439387629599
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

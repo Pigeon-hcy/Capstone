@@ -74,6 +74,10 @@ namespace SkateGame
                 {
                     playerController.disableInput = true;
                 }
+                /////////////////////////////////////////////////Pause/////////////////////////////////////////////////////////////
+                playerController.rb.linearVelocity = Vector2.zero;
+                Time.timeScale = 0f;
+				Time.fixedDeltaTime = 0.02f * Time.timeScale;
             }
         }
 
