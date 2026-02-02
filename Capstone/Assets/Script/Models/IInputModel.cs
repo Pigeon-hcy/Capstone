@@ -14,8 +14,6 @@ namespace SkateGame
 		BindableProperty<bool> GrabStart { get; }
 		BindableProperty<bool> Dash { get; }
 		BindableProperty<bool> DashStart { get; }
-		BindableProperty<bool> Slam { get; }
-		BindableProperty<bool> SlamStart { get; }
 		BindableProperty<bool> Push { get; }
 		BindableProperty<bool> PushStart { get; }
 		BindableProperty<bool> Brake { get; }

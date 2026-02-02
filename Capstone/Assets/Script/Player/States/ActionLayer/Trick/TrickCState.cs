@@ -19,6 +19,10 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
+        if(!inputModel.Brake.Value)
+        {
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        }
         if(playerModel.IsGrounded.Value)
         {
             player.OpenSlamHitbox(playerModel.Config.Value.slamHitboxDurationTrickC);
@@ -35,5 +39,6 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void ExitActionState()
     {
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = false });
+        player.SendEvent<TrickCResetSpeedEvent>();
     }
 }

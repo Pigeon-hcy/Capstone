@@ -136,23 +136,24 @@ namespace SkateGame
             bool isGrounded = playerModel.IsGrounded.Value;
     
             rb.linearDamping = isGrounded ? playerModel.Config.Value.groundLinearDamping : playerModel.Config.Value.airLinearDamping;
+
+            ApplyHorizontalSpeed(cachedMoveInput, isGrounded, pushing);
             if (isGrounded)
             { 
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
+                ClampGroundSpeed();
             }
-
-            ApplyHorizontalSpeed(cachedMoveInput, isGrounded);
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
             if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
             if (trickARewardQueued){ ApplyTrickAReward(); trickARewardQueued = false; }
-            if (pushing){ ApplyPushSpeed();}
             if (powerGrinding){ ApplyPowerGrind();}
             if (grinding){ ApplyGrind();}
             if (trickingB){ ApplyTrickB();}
             if (trickingC){ ApplyTrickC();}
             if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
+            if (trickCResetSpeedQueued){ ApplyTrickCResetSpeed(); trickCResetSpeedQueued = false; }
         }
         public void ApplyRotation()
         {
@@ -180,11 +181,13 @@ namespace SkateGame
             }
         }
 
-        private void ApplyHorizontalSpeed(float horizontalInput, bool isGrounded)
+        private void ApplyHorizontalSpeed(float horizontalInput, bool isGrounded, bool pushing)
         {
-            float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
-
-            if (Mathf.Abs(horizontalInput) > 0.01f)
+            if(pushing)
+            {
+                rb.linearVelocity += right * (playerModel.IsFacingRight.Value ? 1 : -1) * playerModel.Config.Value.pushAccel * Time.fixedDeltaTime;
+            }
+            else if (Mathf.Abs(horizontalInput) > 0.01f)
             {
                 // 如果当前速度和输入方向相反，且速度大于0.1f，则减速
                 if (Mathf.Sign(vRight) != Mathf.Sign(horizontalInput) && Mathf.Abs(vRight) > 0.1f)
@@ -200,9 +203,8 @@ namespace SkateGame
                 // 如果当前速度和输入方向相同，且速度小于最大速度，则加速
                 else if (Mathf.Abs(vRight) < playerModel.Config.Value.maxMoveSpeed)
                 {
-                    rb.linearVelocity += right * (horizontalInput * accel * Time.fixedDeltaTime);
-                    float newVRight = Mathf.Clamp(vRight, -playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxMoveSpeed);
-                    rb.linearVelocity = newVRight*right + vUp*up;
+                    float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
+                    rb.linearVelocity += right * horizontalInput * accel * Time.fixedDeltaTime;
                 }
             }
         }
@@ -224,18 +226,6 @@ namespace SkateGame
             Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, 0.5f).normalized;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(jumpDir * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
-        }
-
-        private void ApplyPushSpeed()
-        {
-            float dir = playerModel.IsFacingRight.Value ? 1f : -1f;
-            float pushAccel = playerModel.Config.Value.pushAccel;
-            if (Mathf.Abs(vRight) < playerModel.Config.Value.maxMoveSpeed)
-            {
-                rb.linearVelocity += right * (dir * pushAccel * Time.fixedDeltaTime);
-                float newVRight = Mathf.Clamp(vRight, -playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxMoveSpeed);
-                rb.linearVelocity = newVRight*right + vUp*up;
-            }
         }
 
         private void ApplyPowerGrind()
@@ -273,7 +263,7 @@ namespace SkateGame
         }
         private void ApplyTrickCResetSpeed()
         {
-            rb.linearVelocity = new Vector2(playerModel.Config.Value.maxMoveSpeed, 0);
+            rb.linearVelocity = new Vector2(playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxFallSpeed);
         }
 
         private void ApplyTrickAReward()
@@ -295,6 +285,11 @@ namespace SkateGame
 			Vector2 g = Physics2D.gravity;
 			Vector2 gTangent = Vector2.Dot(g, right) * right * Mathf.Sign(vRight);
 			rb.linearVelocity += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
+        }
+        private void ClampGroundSpeed()
+        {
+            float newVRight = Mathf.Clamp(vRight, -playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxMoveSpeed);
+            rb.linearVelocity = newVRight*right + vUp*up;
         }
 
         #endregion

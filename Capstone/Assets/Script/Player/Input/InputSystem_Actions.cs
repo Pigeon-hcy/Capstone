@@ -82,15 +82,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Slam"",
-                    ""type"": ""Button"",
-                    ""id"": ""ea9d28fb-a6d9-42cc-b376-b16c56c99dd3"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""cccbf2e2-2935-4806-b82b-104b614a1ab2"",
@@ -283,7 +274,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2f1d6927-8c3d-4db6-b131-a185b89a19dd"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -327,7 +318,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b64836b2-49ee-49d9-b883-b1d56bb4cdf5"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -338,7 +329,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1748c05e-5a61-42f9-a3a1-48037e0165b1"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -415,10 +406,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1960405a-e4ae-47ab-a23b-6e7275021aee"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": "";Keyboard&Mouse;Gamepad"",
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -431,28 +422,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cc217488-e4c8-4701-8f9f-9624a9a93af7"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Slam"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c144c7b0-3ed6-4de0-9908-3ade5b1d34b3"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Slam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -481,7 +450,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""61bbf265-a0b7-47b3-a3c9-c9ba2713cb25"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -1090,7 +1059,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_SwitchItem = m_Player.FindAction("SwitchItem", throwIfNotFound: true);
         m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
-        m_Player_Slam = m_Player.FindAction("Slam", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_AimDirection = m_Player.FindAction("AimDirection", throwIfNotFound: true);
         m_Player_Push = m_Player.FindAction("Push", throwIfNotFound: true);
@@ -1181,7 +1149,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchItem;
     private readonly InputAction m_Player_Grab;
     private readonly InputAction m_Player_Dash;
-    private readonly InputAction m_Player_Slam;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_AimDirection;
     private readonly InputAction m_Player_Push;
@@ -1197,7 +1164,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @SwitchItem => m_Wrapper.m_Player_SwitchItem;
         public InputAction @Grab => m_Wrapper.m_Player_Grab;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
-        public InputAction @Slam => m_Wrapper.m_Player_Slam;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @AimDirection => m_Wrapper.m_Player_AimDirection;
         public InputAction @Push => m_Wrapper.m_Player_Push;
@@ -1230,9 +1196,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
-            @Slam.started += instance.OnSlam;
-            @Slam.performed += instance.OnSlam;
-            @Slam.canceled += instance.OnSlam;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
@@ -1270,9 +1233,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
-            @Slam.started -= instance.OnSlam;
-            @Slam.performed -= instance.OnSlam;
-            @Slam.canceled -= instance.OnSlam;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
@@ -1476,7 +1436,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnSwitchItem(InputAction.CallbackContext context);
         void OnGrab(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnSlam(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAimDirection(InputAction.CallbackContext context);
         void OnPush(InputAction.CallbackContext context);

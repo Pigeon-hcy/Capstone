@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Slam",
-                    "type": "Button",
-                    "id": "ea9d28fb-a6d9-42cc-b376-b16c56c99dd3",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "cccbf2e2-2935-4806-b82b-104b614a1ab2",
@@ -261,7 +252,7 @@
                 {
                     "name": "",
                     "id": "2f1d6927-8c3d-4db6-b131-a185b89a19dd",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -305,7 +296,7 @@
                 {
                     "name": "",
                     "id": "b64836b2-49ee-49d9-b883-b1d56bb4cdf5",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -316,7 +307,7 @@
                 {
                     "name": "",
                     "id": "1748c05e-5a61-42f9-a3a1-48037e0165b1",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -393,10 +384,10 @@
                 {
                     "name": "",
                     "id": "1960405a-e4ae-47ab-a23b-6e7275021aee",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse;Gamepad",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -409,28 +400,6 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cc217488-e4c8-4701-8f9f-9624a9a93af7",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Slam",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c144c7b0-3ed6-4de0-9908-3ade5b1d34b3",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Slam",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -459,7 +428,7 @@
                 {
                     "name": "",
                     "id": "61bbf265-a0b7-47b3-a3c9-c9ba2713cb25",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

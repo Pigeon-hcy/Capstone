@@ -15,7 +15,7 @@ public class GrindState : ActionStateBase
     {
         speed = playerModel.Speed.Value;
         direction = playerModel.GrindDirection.Value;
-        normalG = playerModel.NormalG.Value;
+        normalG = playerModel.Config.Value.normalG;
         isLoop = playerModel.Config.Value.isLoopGrind;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerGrind;
         trackRef = null;
@@ -34,7 +34,6 @@ public class GrindState : ActionStateBase
         
         Vector2 velocity = rb.linearVelocity;
         speed = velocity.magnitude;
-        normalG = rb.gravityScale;
         if (speed < 0.1f)
         {
             Vector2 trackDir = playerModel.CurrentTrack.Value.GetTrackDirection();

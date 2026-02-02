@@ -29,7 +29,7 @@ public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
             }
         }
         
-        if(!inputModel.Slam.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)
+        if(!inputModel.Brake.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)
         {
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }

@@ -24,11 +24,6 @@ namespace SkateGame
         public float BgWallRideCooldown = 1.5f;
         public float BgWallrideDuration = 0.6f;
 
-        [Header("Push State")]
-        public bool isLoopPush = false;
-        public bool ignoringMovementLayerPush = false;
-        public float recoveryDurationPush = 0;
-
         [Header("Trick A State")]
         public bool isLoopTrickA = false;
         public float durationTrickA = 0.2f;
@@ -91,6 +86,7 @@ namespace SkateGame
         
         [Tooltip("坡度补偿力"), Range(0f, 1f)] public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
+        public float maxFallSpeed = -10f;
         public float maxAirHorizontalSpeed = 10f;
         public float airAccel = 20f;
         public float groundAccel = 20f;

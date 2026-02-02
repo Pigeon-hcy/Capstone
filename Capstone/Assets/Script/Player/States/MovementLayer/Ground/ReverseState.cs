@@ -16,7 +16,6 @@ public class ReverseState : GroundMovementState
         rb.linearVelocity = new Vector2(-velocity.x, velocity.y);
         player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
 
-
         if (player.ReverseEffect != null)
         {
             player.ReverseEffect.PlayFeedbacks();

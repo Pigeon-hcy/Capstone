@@ -22,11 +22,15 @@ public class IdleState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        float moveInput = inputModel.Move.Value.x;
 
         /* 状态切换 */
-        // 移动 
-        if (Mathf.Abs(rb.linearVelocity.x) > 0.01f)
+        // Push
+        if(inputModel.Push.Value)
+        {
+            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
+        }
+        // Move
+        else if (Mathf.Abs(rb.linearVelocity.x) > 0.01f)
         {
             player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
         }

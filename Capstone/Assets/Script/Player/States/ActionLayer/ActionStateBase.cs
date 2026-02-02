@@ -67,15 +67,9 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickBState>(StateLayer.Action);
         }
-        // TODO: Design Slam On ground
-        else if(inputModel.SlamStart.Value && !playerModel.IsGrounded.Value && energySystem.HasEnoughEnergy(1))
+        else if(inputModel.BrakeStart.Value && !playerModel.IsGrounded.Value)
         {
-            energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickCState>(StateLayer.Action);
-        }
-        else if (inputModel.PushStart.Value && playerModel.IsGrounded.Value)
-        {
-            player.stateMachine.SwitchState<PushState>(StateLayer.Action);
         }
         // 其次Grind
         else if (inputModel.Grind.Value)

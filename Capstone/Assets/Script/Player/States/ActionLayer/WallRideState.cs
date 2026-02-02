@@ -4,7 +4,7 @@ using QFramework;
 
 public class WallRideState : ActionStateBase
 {
-    private float normalGravity;
+    private float normalG;
     private float onWallGravity = 0.1f;
     private Wall lastWall;  // 记录上一个墙体
     
@@ -12,12 +12,12 @@ public class WallRideState : ActionStateBase
     {
         isLoop = playerModel.Config.Value.isLoopBgWallRide;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerBgWallRide;
+        normalG = playerModel.Config.Value.normalG;
     }
 
     protected override void EnterActionState()
     {
 
-        normalGravity = rb.gravityScale;
         rb.gravityScale = onWallGravity;
         lastWall = playerModel.CurrentBgWall.Value;  // 记录当前墙体
 
@@ -39,10 +39,10 @@ public class WallRideState : ActionStateBase
             rb.gravityScale = onWallGravity;  // 重置重力
         }
         
-        rb.gravityScale = Mathf.Lerp(onWallGravity, normalGravity, stateTimer / playerModel.Config.Value.BgWallrideDuration);
+        rb.gravityScale = Mathf.Lerp(onWallGravity, normalG, stateTimer / playerModel.Config.Value.BgWallrideDuration);
         if (playerModel.CurrentBgWall.Value == null || !inputModel.Grind.Value)
         {   
-            rb.gravityScale = normalGravity;
+            rb.gravityScale = normalG;
             stateTimer = 0f;
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
             player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
@@ -51,7 +51,7 @@ public class WallRideState : ActionStateBase
 
     protected override void ExitActionState()
     {   
-        rb.gravityScale = normalGravity;
+        rb.gravityScale = normalG;
         playerModel.WallRideCooldownTimer.Value = playerModel.Config.Value.BgWallRideCooldown;
         if (player.WallRideEffect != null)
         {

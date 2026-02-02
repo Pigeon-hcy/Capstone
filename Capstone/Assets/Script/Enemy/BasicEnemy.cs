@@ -322,6 +322,7 @@ namespace SkateGame
         {
             if(CanBeKilled)
             {
+                CanBeKilled = false;
                  MessageBox box = new MessageBox();
                 box.gmo = this.gameObject;
                 var energySystem = this.GetSystem<IEnergySystem>();

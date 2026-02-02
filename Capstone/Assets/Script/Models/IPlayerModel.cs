@@ -31,7 +31,6 @@ namespace SkateGame
         /// </summary>
         BindableProperty<float> Speed { get; }
         BindableProperty<Vector2> GrindDirection { get; }
-        BindableProperty<float> NormalG { get; }
 
         /// <summary>
         /// jump相关
@@ -106,7 +105,6 @@ namespace SkateGame
         // grind相关
         public BindableProperty<float> Speed { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> GrindDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);
-        public BindableProperty<float> NormalG { get; } = new BindableProperty<float>(1f);
         
         // jump相关
         public BindableProperty<float> JumpDuration { get; } = new BindableProperty<float>(0f);

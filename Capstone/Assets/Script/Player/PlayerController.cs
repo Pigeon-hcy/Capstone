@@ -98,6 +98,7 @@ namespace SkateGame
 
             // 获取组件
             rb = GetComponent<Rigidbody2D>();
+            rb.gravityScale = playerModel.Config.Value.normalG;
 
             // 初始化瞄准时间
             playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;
@@ -125,6 +126,7 @@ namespace SkateGame
             stateMachine.AddState(new AirState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
             // stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new PushState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new PowerGrindState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
@@ -138,7 +140,6 @@ namespace SkateGame
             stateMachine.AddState(new TrickDState(this, rb), StateLayer.Action);
             stateMachine.AddState(new GrindState(this, rb), StateLayer.Action);
             stateMachine.AddState(new WallRideState(this, rb), StateLayer.Action);
-            stateMachine.AddState(new PushState(this, rb), StateLayer.Action);
             stateMachine.AddState(new RecoveryState(this, rb), StateLayer.Action);
             // 初始各层状态
             stateMachine.SwitchState<IdleState>(StateLayer.Movement);

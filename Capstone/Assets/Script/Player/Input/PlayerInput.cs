@@ -18,7 +18,6 @@ namespace SkateGame
         InputAction _switchItemAction;
         InputAction _grabAction;
         InputAction _dashAction;
-        InputAction _slamAction;
         InputAction _pushAction;
         InputAction _shootStartAction;
         InputAction _shootEndAction;
@@ -45,7 +44,6 @@ namespace SkateGame
             _switchItemAction = _actions.FindAction("Player/SwitchItem");
             _grabAction = _actions.FindAction("Player/Grab");
             _dashAction = _actions.FindAction("Player/Dash");
-            _slamAction = _actions.FindAction("Player/Slam");
             _pushAction = _actions.FindAction("Player/Push");
             _shootStartAction = _actions.FindAction("Player/Shoot");
             _shootEndAction = _actions.FindAction("Player/Shoot");
@@ -101,6 +99,7 @@ namespace SkateGame
             }
 
             // Press R to respawn
+            // TODO: change to input system
             if (playerEnabled && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
             {
                 var respawn = this.GetSystem<IRespawnSystem>();
@@ -117,8 +116,6 @@ namespace SkateGame
             inputModel.GrabStart.Value = _grabAction.WasPressedThisFrame();
             inputModel.Dash.Value = _dashAction.IsPressed();
             inputModel.DashStart.Value = _dashAction.WasPressedThisFrame();
-            inputModel.Slam.Value = _slamAction.IsPressed();
-            inputModel.SlamStart.Value = _slamAction.WasPressedThisFrame();
             inputModel.Push.Value = _pushAction.IsPressed();
             inputModel.PushStart.Value = _pushAction.WasPressedThisFrame();
             inputModel.Brake.Value = _brakeAction.IsPressed();

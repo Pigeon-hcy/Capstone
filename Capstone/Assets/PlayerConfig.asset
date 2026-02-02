@@ -22,9 +22,6 @@ MonoBehaviour:
   ignoringMovementLayerBgWallRide: 0
   BgWallRideCooldown: 1.5
   BgWallrideDuration: 0.6
-  isLoopPush: 0
-  ignoringMovementLayerPush: 0
-  recoveryDurationPush: 0
   isLoopTrickA: 0
   durationTrickA: 0.2
   ignoringMovementLayerTrickA: 1
@@ -40,9 +37,10 @@ MonoBehaviour:
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 35
+  TrickCspeed: 15
   TrickCinertia: 0.25
   recoveryDurationTrickC: 0.1
+  slamHitboxDurationTrickC: 0.25
   isLoopTrickCBoost: 1
   ignoringMovementLayerTrickCBoost: 1
   minDurationTrickCBoost: 0.5
@@ -63,25 +61,26 @@ MonoBehaviour:
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
   crashVelocity: 2
-  maxJumpForce: 8
+  maxJumpForce: 12
   minJumpForce: 0
   doubleJumpForce: 6
   maxChargeTime: 2
   groundForce: 10
   slopeCompensationForce: 0.25
-  maxMoveSpeed: 12
-  maxAirHorizontalSpeed: 12
+  maxMoveSpeed: 15
+  maxFallSpeed: -10
+  maxAirHorizontalSpeed: 15
   airAccel: 1
   groundAccel: 1
   stopDecelIncrement: -1
   turnDecel: 1
   airTurnDecel: 10
   pushAccel: 25
-  groundLinearDamping: 0.02
-  airLinearDamping: 0.02
+  groundLinearDamping: 0.05
+  airLinearDamping: 0.05
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
-  normalG: 1
+  normalG: 2
   powerGrindDeceleration: 8
   reverseInputWindow: 2
   grindJumpIgnoreTime: 0.2
