@@ -1,7 +1,7 @@
 using UnityEngine;
 using SkateGame;
 using QFramework;
-public class VineGun : MonoBehaviour, ICanGetSystem
+public class VineGun : MonoBehaviour, ICanGetSystem, ICanGetModel
 {
     [Header("Scripts Ref:")]
     public VineRope grappleRope;
@@ -26,25 +26,19 @@ public class VineGun : MonoBehaviour, ICanGetSystem
 
     [HideInInspector] public Vector2 grapplePoint;
     [HideInInspector] public Vector2 grappleDistanceVector;
-
+    private IPlayerModel playerModel;
     private bool isGrappling = false;
     private float ropeTimer = 0f;
     private Rigidbody2D grabbedObjectRb = null; // 被抓住的物体的Rigidbody2D（用于双向拉动）
     private bool isMutualPull = false; // 是否是双向拉动模式
     private float mutualPullTimer = 0f; // 双向拉动计时器
-    private float originalGravityScale = 1f; // 保存原始重力值
 
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
     private void Start()
     {
         grappleRope.enabled = false;
-
-        // 保存原始重力值
-        if (m_rigidbody != null)
-        {
-            originalGravityScale = m_rigidbody.gravityScale;
-        }
+        playerModel = this.GetModel<IPlayerModel>();
     }
 
     private void Update()
@@ -77,7 +71,7 @@ public class VineGun : MonoBehaviour, ICanGetSystem
                 // 恢复重力
                 if (m_rigidbody != null)
                 {
-                    m_rigidbody.gravityScale = originalGravityScale;
+                    m_rigidbody.gravityScale = playerModel.Config.Value.normalG;
                 }
             }
         }
@@ -132,7 +126,6 @@ public class VineGun : MonoBehaviour, ICanGetSystem
                     // 保存原始重力值并关闭重力
                     if (m_rigidbody != null)
                     {
-                        originalGravityScale = m_rigidbody.gravityScale;
                         m_rigidbody.gravityScale = 0f;
                     }
                     
@@ -207,7 +200,7 @@ public class VineGun : MonoBehaviour, ICanGetSystem
         // 恢复重力
         if (m_rigidbody != null) 
         {
-            m_rigidbody.gravityScale = originalGravityScale;
+            m_rigidbody.gravityScale = playerModel.Config.Value.normalG;
         }
         isGrappling = false;
         isMutualPull = false;
