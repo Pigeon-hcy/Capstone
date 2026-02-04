@@ -70,6 +70,10 @@ public class AudioManager : MonoBehaviour
     public EventReference railGrindEvent;
     private EventInstance railGrindEventInstance;
     FMOD.Studio.PARAMETER_ID railGrindParameter;
+
+    //Slam
+    public EventReference slamEvent;
+    private EventInstance slamEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -139,6 +143,9 @@ public class AudioManager : MonoBehaviour
         FMOD.Studio.PARAMETER_DESCRIPTION railGrindEventParameterDescription;
         railGrindEventDescription.getParameterDescriptionByName("Speed", out railGrindEventParameterDescription);
         railGrindParameter = railGrindEventParameterDescription.id;
+
+        //Slam
+        slamEventInstance = RuntimeManager.CreateInstance(slamEvent);
         #endregion
     }
 
@@ -369,6 +376,15 @@ public class AudioManager : MonoBehaviour
         if (wallRideEventInstance.isValid())
         {
             wallRideEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+    }
+
+    //Slam
+    public void fmodPlaySlam()
+    {
+        if (slamEventInstance.isValid())
+        {
+            slamEventInstance.start();
         }
     }
     #endregion
