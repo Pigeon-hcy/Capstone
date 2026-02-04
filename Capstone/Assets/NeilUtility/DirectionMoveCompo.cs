@@ -19,7 +19,7 @@ namespace BulletToolKit
     }
     public class DirectionMoveCompo : MonoBehaviour, IMoveCompo
     {
-        bool canMove = true;
+        protected bool canMove = true;
         protected float speed;
         protected float lifeTime;
         protected Vector3 moveDir;
@@ -40,7 +40,7 @@ namespace BulletToolKit
             this.lifeTime = lifeTime;
         }
 
-        void Update()
+        protected virtual void Update()
         {
             if (canMove)
             {

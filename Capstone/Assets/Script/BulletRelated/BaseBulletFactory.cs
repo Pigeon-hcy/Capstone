@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace BulletToolKit
@@ -17,10 +18,11 @@ namespace BulletToolKit
             return go.GetComponent<BaseBullet>();
         }
 
-        public override BaseBullet CreateBulletWithDir(Vector3 pos, DirectionMoveCompoInitData initData)
+        [CanBeNull]
+        public override BaseBullet CreateBulletWithDir<T>(Vector3 pos, DirectionMoveCompoInitData initData)
         {
             GameObject go = Instantiate(prefab, pos, Quaternion.identity);
-            DirectionMoveCompo comp = go.AddComponent<DirectionMoveCompo>();
+            DirectionMoveCompo comp = go.AddComponent<T>();
             comp.Init(initData.dir, initData.speed, initData.lifeTime);
             comp.BanMove();
             go.GetComponent<BaseBullet>().RecordMoveCompo(comp);
@@ -31,6 +33,6 @@ namespace BulletToolKit
     public abstract class BulletFactory : ScriptableObject
     {
         public abstract BaseBullet CreateBulletWithTarget(Vector3 pos, TargetMoveCompInitData initData);
-        public abstract BaseBullet CreateBulletWithDir(Vector3 pos, DirectionMoveCompoInitData initData);
+        public abstract BaseBullet CreateBulletWithDir<T>(Vector3 pos, DirectionMoveCompoInitData initData)where T:DirectionMoveCompo;
     }
 }
