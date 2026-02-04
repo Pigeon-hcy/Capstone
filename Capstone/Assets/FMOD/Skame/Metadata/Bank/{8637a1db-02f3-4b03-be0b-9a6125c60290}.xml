@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="Bank" id="{8bc7e82b-8ee0-433e-935e-1d1563c0d404}">
+	<object class="Bank" id="{8637a1db-02f3-4b03-be0b-9a6125c60290}">
 		<property name="name">
 			<value>MX</value>
 		</property>
