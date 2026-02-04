@@ -7,6 +7,12 @@ using Unity.VisualScripting;
 public class AudioManager : MonoBehaviour
 {
 
+    public FMOD.Studio.Bus MX;
+    public FMOD.Studio.Bus SFX;
+    public FMOD.Studio.Bus Master;
+
+    public float MasterVolume = 1f;
+
     public static AudioManager Instance;
 
     public Rigidbody2D targetRb;
@@ -136,9 +142,22 @@ public class AudioManager : MonoBehaviour
         #endregion
     }
 
+    void Start()
+    {
+        //Buses
+        Master = FMODUnity.RuntimeManager.GetBus("bus:/Master");
+        MX = FMODUnity.RuntimeManager.GetBus("bus:/Master/MX");
+        SFX = FMODUnity.RuntimeManager.GetBus("bus:/Master/SFX");
+    }
+
     // Update is called once per frame
     void Update()
     {
+        //Affect audio changes here
+        MX.setVolume(MusicVolume);
+        SFX.setVolume(SFXVolume);
+
+        //Find Player Gameobject
         if (targetRb == null)
         {
             if (GameObject.FindGameObjectWithTag("Player") != null)
@@ -361,17 +380,6 @@ public class AudioManager : MonoBehaviour
     public void SetMusicVolume(float volume)
     {
         musicVolume = Mathf.Clamp01(volume);
-        
-        // 应用到所有音乐实例
-        if (testEventInstance.isValid())
-            testEventInstance.setVolume(musicVolume);
-        if (levelMusic1EventInstance.isValid())
-            levelMusic1EventInstance.setVolume(musicVolume);
-        if (bossMusic1EventInstance.isValid())
-            bossMusic1EventInstance.setVolume(musicVolume);
-        
-        // 保存设置
-        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
     }
 
     /// <summary>
@@ -380,36 +388,17 @@ public class AudioManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
-        
-        // 应用到所有音效实例
-        if (movingEventInstance.isValid())
-            movingEventInstance.setVolume(sfxVolume);
-        if (ollieEventInstance.isValid())
-            ollieEventInstance.setVolume(sfxVolume);
-        if (kickflipEventInstance.isValid())
-            kickflipEventInstance.setVolume(sfxVolume);
-        if (landEventInstance.isValid())
-            landEventInstance.setVolume(sfxVolume);
-        if (pushEventInstance.isValid())
-            pushEventInstance.setVolume(sfxVolume);
-        if (wallRideEventInstance.isValid())
-            wallRideEventInstance.setVolume(sfxVolume);
-        if (railGrindEventInstance.isValid())
-            railGrindEventInstance.setVolume(sfxVolume);
-        
-        // 保存设置
-        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
 
-    /// <summary>
-    /// 加载保存的音量设置
-    /// </summary>
-    public void LoadVolumeSettings()
-    {
-        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        SetMusicVolume(musicVolume);
-        SetSFXVolume(sfxVolume);
-    }
+    ///// <summary>
+    ///// 加载保存的音量设置
+    ///// </summary>
+    //public void LoadVolumeSettings()
+    //{
+    //    musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+    //    sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+    //    SetMusicVolume(musicVolume);
+    //    SetSFXVolume(sfxVolume);
+    //}
     #endregion
 }

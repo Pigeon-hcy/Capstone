@@ -96,7 +96,7 @@ namespace SkateGame
             yield return new WaitForSeconds(1f);
 
             player.position = respawnModel.LatestCheckpoint.Value;
-
+            playerController.UpdatePlayerDirection(true);
             rb.simulated = true;
 
              if (playerController.vineGun != null)

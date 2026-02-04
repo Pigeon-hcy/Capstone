@@ -430,7 +430,7 @@ namespace SkateGame
 
         #endregion
 
-
+        #region Player Direction
         // 检测玩家方向并更新例子特效容器
         private void CheckPlayerDirectionChange()
         {
@@ -446,13 +446,20 @@ namespace SkateGame
                     {
                         Vector3 currentRotation = particleEffectContainer.localEulerAngles;
                         particleEffectContainer.localEulerAngles = new Vector3(currentRotation.x, currentRotation.y + 180f, currentRotation.z);
-                        playerModel.IsFacingRight.Value = shouldFaceRight;
+                        UpdatePlayerDirection(shouldFaceRight);
                     }
                 }
             }
             // 更新Sprite方向
             sprite.transform.localScale = new Vector3(playerModel.IsFacingRight.Value ? 1 : -1, 1, 1);
         }
+
+        public void UpdatePlayerDirection(bool isFacingRight)
+        {
+            playerModel.IsFacingRight.Value = isFacingRight;
+            sprite.transform.localScale = new Vector3(isFacingRight ? 1 : -1, 1, 1);
+        }
+        #endregion
 
         #region Helper Methods
         public T SafeGetComponent<T>(GameObject obj) where T : MonoBehaviour

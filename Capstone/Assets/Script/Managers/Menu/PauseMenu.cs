@@ -53,10 +53,10 @@ public class PauseMenu : MonoBehaviour
         }
 
         // 应用已保存的音量设置到AudioManager
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.LoadVolumeSettings();
-        }
+        //if (AudioManager.Instance != null)
+        //{
+        //    AudioManager.Instance.LoadVolumeSettings();
+        //}
     }
 
     /// <summary>
