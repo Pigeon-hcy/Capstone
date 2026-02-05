@@ -787,38 +787,11 @@ MonoBehaviour:
   - SceneName: playerhub
     Name: playerhub
     button: {fileID: 1621995670564110986}
-  - SceneName: 3D1-1
-    Name: 3D1-1
+  - SceneName: New_1-2
+    Name: New_1-2
     button: {fileID: 6718818516373182277}
-  - SceneName: 1-2
-    Name: 1-2
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-3Leol
-    Name: 1-3Leol
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-4 3D
-    Name: 1-4 3D
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-5YL v6 MODIFY THIS
-    Name: 1-5YL v6 MODIFY THIS
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-6
-    Name: 1-6
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-7
-    Name: 1-7
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-8
-    Name: 1-8
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-9
-    Name: 1-9
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-10YLNeilWork
-    Name: 1-10YLNeilWork
-    button: {fileID: 6718818516373182277}
-  - SceneName: 1-11
-    Name: 1-11
+  - SceneName: New_1-3
+    Name: New_1-3
     button: {fileID: 6718818516373182277}
 --- !u!1 &2410310759118849995
 GameObject:
