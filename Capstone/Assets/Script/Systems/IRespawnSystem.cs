@@ -99,9 +99,6 @@ namespace SkateGame
             playerController.UpdatePlayerDirection(true);
             rb.simulated = true;
 
-             if (playerController.vineGun != null)
-                playerController.vineGun.ReleaseGrapple();
-
             playerController.gameObject.SetActive(true);
 
             playRespawnParticleAt(player.position);

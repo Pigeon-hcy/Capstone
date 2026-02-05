@@ -57,6 +57,12 @@ namespace SkateGame
         public float durationTrickD = 0.5f;
         public bool ignoringMovementLayerTrickD = true;
         public float recoveryDurationTrickD = 1f;
+        public float extendSpeed = 50f;
+        public float retractSpeed = 35f;
+        public float maxDistance = 20f;
+        public float grappleForce = 20f;
+        public float grappleDuration = 0.5f;
+        public float grappleImpulse = 10f;
 
         [Header("========== 基础参数 ==========")]
         

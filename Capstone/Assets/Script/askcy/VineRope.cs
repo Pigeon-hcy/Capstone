@@ -1,217 +1,217 @@
 using UnityEngine;
+using QFramework;
+using SkateGame;
 
-public class VineRope : MonoBehaviour
+public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEvent
 {
-    [Header("General Refernces:")]
-    public VineGun grapplingGun;
+    #region Settings
+    [Header("General References:")]
     public LineRenderer m_lineRenderer;
 
-    [Header("General Settings:")]
+    [Header("Rope Animation Settings:")]
     [SerializeField] private int percision = 40;
     [Range(0, 20)] [SerializeField] private float straightenLineSpeed = 5;
-
-    [Header("Rope Animation Settings:")]
     public AnimationCurve ropeAnimationCurve;
     [Range(0.01f, 4)] [SerializeField] private float StartWaveSize = 2;
-    float waveSize = 0;
-
-    [Header("Rope Progression:")]
     public AnimationCurve ropeProgressionCurve;
     [SerializeField] [Range(1, 50)] private float ropeProgressionSpeed = 1;
 
-    [Header("Fail Animation:")]
-    [SerializeField] private float failExtendSpeed = 25f;
-    [SerializeField] private float failRetractSpeed = 35f;
+    [Header("Detection Settings:")]
+    [SerializeField] private LayerMask grappableLayers;
+    [SerializeField] private float detectionDistance = 1f;
+    #endregion
 
-    float moveTime = 0;
-
-    [HideInInspector] public bool isGrappling = true;
-
-    bool strightLine = true;
-    private bool isFailing = false;
-    private bool isFailRetracting = false;
-    private float failCurrentDistance = 0f;
-    private float failMaxDistance = 0f;
-    private Vector2 failDirection = Vector2.right;
-
-    private void OnEnable()
+    #region State Machine
+    private enum RopeState
     {
-        moveTime = 0;
-        if (isFailing)
-        {
-            SetupFailLine();
-            return;
-        }
-
-        m_lineRenderer.positionCount = percision;
-        waveSize = StartWaveSize;
-        strightLine = false;
-
-        LinePointsToFirePoint();
-
-        m_lineRenderer.enabled = true;
+        None,
+        Extending,
+        Grappling,
+        Retraction
     }
 
-    private void OnDisable()
-    {
-        m_lineRenderer.enabled = false;
-        isGrappling = false;
-        isFailing = false;
-        isFailRetracting = false;
-    }
+    private RopeState currentState = RopeState.None;
+    #endregion
 
-    private void LinePointsToFirePoint()
-    {
-        for (int i = 0; i < percision; i++)
-        {
-            m_lineRenderer.SetPosition(i, grapplingGun.transform.position);
-        }
-    }
+    #region Private Variables
 
+    private float grappleTime = 0f;
+    private Vector2 extendDirection;
+    private float currentDistance;
+    private Vector2 grapplePoint;
+    private IPlayerModel playerModel;
+    #endregion
+
+    #region QFramework
+    public IArchitecture GetArchitecture() => GameApp.Interface;
+    #endregion
+
+    private void Start()
+    {
+        playerModel = this.GetModel<IPlayerModel>();
+    }
     private void Update()
     {
-        if (isFailing)
+        switch (currentState)
         {
-            UpdateFailRope();
-            return;
-        }
-
-        moveTime += Time.deltaTime;
-        DrawRope();
-    }
-
-    void DrawRope()
-    {
-        if (!strightLine)
-        {
-            if (m_lineRenderer.GetPosition(percision - 1).x == grapplingGun.grapplePoint.x)
-            {
-                strightLine = true;
-            }
-            else
-            {
-                DrawRopeWaves();
-            }
-        }
-        else
-        {
-            if (!isGrappling)
-            {
-                grapplingGun.Grapple();
-                isGrappling = true;
-            }
-            if (waveSize > 0)
-            {
-                waveSize -= Time.deltaTime * straightenLineSpeed;
-                DrawRopeWaves();
-            }
-            else
-            {
-                waveSize = 0;
-
-                if (m_lineRenderer.positionCount != 2) { m_lineRenderer.positionCount = 2; }
-
-                DrawRopeNoWaves();
-            }
+            case RopeState.Extending:
+                UpdateExtending();
+                UpdateRopeEndPoint();
+                break;
+            case RopeState.Grappling:
+                UpdateGrappling();
+                UpdateRopeEndPoint();
+                break;
+            case RopeState.Retraction:
+                UpdateRetraction();
+                UpdateRopeEndPoint();
+                break;
+            default:
+                enabled = false;
+                break;
         }
     }
 
-    void DrawRopeWaves()
+    #region States
+    
+    /// <summary>
+    /// 开始延伸绳子, 由VineGun调用
+    /// </summary>
+    /// <param name="direction">延伸方向</param>
+    public void StartExtending(Vector2 direction)
     {
-        for (int i = 0; i < percision; i++)
-        {
-            float delta = (float)i / ((float)percision - 1f);
-            Vector2 offset = Vector2.Perpendicular(grapplingGun.grappleDistanceVector).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
-            Vector2 targetPosition = Vector2.Lerp(grapplingGun.transform.position, grapplingGun.grapplePoint, delta) + offset;
-            Vector2 currentPosition = Vector2.Lerp(grapplingGun.transform.position, targetPosition, ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed);
-
-            m_lineRenderer.SetPosition(i, currentPosition);
-        }
-    }
-
-    void DrawRopeNoWaves()
-    {
-        m_lineRenderer.SetPosition(0, grapplingGun.transform.position);
-        m_lineRenderer.SetPosition(1, grapplingGun.grapplePoint);
-    }
-
-    public void PlayFailedShot(Vector2 direction, float maxDistance)
-    {
-        if (direction.sqrMagnitude <= 0.0001f || m_lineRenderer == null || grapplingGun == null)
+        if (direction.sqrMagnitude <= 0.0001f || m_lineRenderer == null)
         {
             return;
         }
 
-        isFailing = true;
-        isFailRetracting = false;
-        failCurrentDistance = 0f;
-        failMaxDistance = Mathf.Max(0f, maxDistance);
-        failDirection = direction.normalized;
-
-        SetupFailLine();
+        currentState = RopeState.Extending;
+        extendDirection = direction.normalized;
+        currentDistance = 0f;
+        m_lineRenderer.positionCount = 2;
+        m_lineRenderer.enabled = true;
         enabled = true;
     }
 
-    private void SetupFailLine()
+    /// <summary>
+    /// 更新延伸状态，检测是否钩住物体
+    /// </summary>
+    private void UpdateExtending()
     {
-        if (m_lineRenderer == null || grapplingGun == null)
+        currentDistance += playerModel.Config.Value.extendSpeed * Time.deltaTime;
+
+        if (currentDistance >= playerModel.Config.Value.maxDistance)
         {
+            StartRetraction();
             return;
         }
 
-        m_lineRenderer.positionCount = percision;
-        m_lineRenderer.enabled = true;
-        DrawFailWaves();
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, extendDirection, 
+            currentDistance + detectionDistance, grappableLayers);
+
+        if (hit.collider != null)
+        {
+            StartGrappling(hit);
+            return;
+        }
+    }
+    
+    /// <summary>
+    /// 钩住物体
+    /// </summary>
+    /// <param name="hit">钩住物体的信息</param>
+    private void StartGrappling(RaycastHit2D hit)
+    {
+        grapplePoint = hit.point;
+
+        this.SendEvent<GrappleEvent>(new GrappleEvent { 
+            pullDirection = extendDirection.normalized, 
+            IsGrappling = true 
+        });
+        grappleTime = 0f;
+        currentState = RopeState.Grappling;
     }
 
-    private void UpdateFailRope()
-    {
-        if (failMaxDistance <= 0f)
+    /// <summary>
+    /// 更新钩住状态，绘制绳子
+    /// </summary>
+    private void UpdateGrappling()
+    {   
+        grappleTime += Time.deltaTime;
+        if (grappleTime >= playerModel.Config.Value.grappleDuration)
         {
-            EndFailRope();
+            StartRetraction();
+            return;
+        }
+    }
+
+    /// <summary>
+    /// 开始收回绳子
+    /// </summary>
+    private void StartRetraction()
+    {
+        if (extendDirection.sqrMagnitude <= 0.0001f || m_lineRenderer == null)
+        {
+            enabled = false;
+            return;
+        }
+        this.SendEvent<GrappleEvent>(new GrappleEvent { 
+            pullDirection = extendDirection.normalized, 
+            IsGrappling = false 
+        });
+        currentState = RopeState.Retraction;
+    }
+
+    /// <summary>
+    /// 更新收回状态，绘制绳子
+    /// </summary>
+    private void UpdateRetraction()
+    {
+        if (currentDistance <= 0f)
+        {
+            EndRetraction();
             return;
         }
 
-        float speed = isFailRetracting ? failRetractSpeed : failExtendSpeed;
-        float delta = speed * Time.deltaTime;
-        failCurrentDistance += isFailRetracting ? -delta : delta;
+        float delta = playerModel.Config.Value.retractSpeed * Time.deltaTime;
+        currentDistance -= delta;
 
-        if (!isFailRetracting && failCurrentDistance >= failMaxDistance)
+        if (currentDistance <= 0f)
         {
-            failCurrentDistance = failMaxDistance;
-            isFailRetracting = true;
-        }
-        else if (isFailRetracting && failCurrentDistance <= 0f)
-        {
-            failCurrentDistance = 0f;
-            EndFailRope();
+            currentDistance = 0f;
+            EndRetraction();
             return;
         }
-
-        DrawFailWaves();
     }
 
-    private void DrawFailWaves()
+    /// <summary>
+    /// 结束收回绳子
+    /// </summary>
+    private void EndRetraction()
     {
-        Vector2 start = grapplingGun.transform.position;
-        Vector2 end = start + failDirection * failCurrentDistance;
-        Vector2 travel = end - start;
-        Vector2 perpendicular = Vector2.Perpendicular(failDirection).normalized;
-
-        for (int i = 0; i < percision; i++)
+        currentState = RopeState.None;
+        if (m_lineRenderer != null)
         {
-            float delta = (float)i / ((float)percision - 1f);
-            Vector2 offset = perpendicular * ropeAnimationCurve.Evaluate(delta) * StartWaveSize;
-            Vector2 targetPosition = start + travel * delta + offset;
-            m_lineRenderer.SetPosition(i, targetPosition);
+            m_lineRenderer.enabled = false;
         }
-    }
-
-    private void EndFailRope()
-    {
-        isFailing = false;
-        isFailRetracting = false;
-        m_lineRenderer.enabled = false;
         enabled = false;
     }
+    #endregion
+
+    #region Visualization
+
+    /// <summary>
+    /// 更新绳子端点位置
+    /// </summary>
+    private void UpdateRopeEndPoint()
+    {
+        if (m_lineRenderer == null) return;
+
+        Vector2 start = transform.position;
+        Vector2 end = currentState == RopeState.Grappling ? 
+            grapplePoint : start + extendDirection * currentDistance;
+        m_lineRenderer.SetPosition(0, start);
+        m_lineRenderer.SetPosition(1, end);
+    }
+    #endregion
 }

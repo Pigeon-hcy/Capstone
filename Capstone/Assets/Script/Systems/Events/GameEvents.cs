@@ -60,7 +60,12 @@ namespace SkateGame
     public struct TrickCResetSpeedEvent
     {
     }
-
+    public struct GrappleEvent
+    {
+        public Vector2 pullDirection;
+        public bool IsGrappling;
+    }
+    
     // 强力轨道输入事件
     public struct PowerGrindInputEvent
     {

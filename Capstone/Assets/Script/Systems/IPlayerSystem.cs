@@ -26,6 +26,9 @@ namespace SkateGame
         private bool trickBResetSpeedQueued;
         private bool trickCResetSpeedQueued;
         private bool trickARewardQueued;
+        private bool grappling;
+
+        private Vector2 grappleDirection;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -47,6 +50,7 @@ namespace SkateGame
             this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
             this.RegisterEvent<TrickBResetSpeedEvent>(OnTrickBResetSpeed);
             this.RegisterEvent<TrickCResetSpeedEvent>(OnTrickCResetSpeed);
+            this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
@@ -128,6 +132,15 @@ namespace SkateGame
         {
             trickARewardQueued = true;
         }
+        private void OnGrapple(GrappleEvent evt)
+        {
+            grappling = evt.IsGrappling;
+            grappleDirection = evt.pullDirection;
+            if (evt.IsGrappling)
+            {
+                rb.AddForce(grappleDirection * playerModel.Config.Value.grappleImpulse * rb.mass, ForceMode2D.Impulse);
+            }
+        }
         #endregion
 
         #region Method
@@ -154,6 +167,7 @@ namespace SkateGame
             if (trickingC){ ApplyTrickC();}
             if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
             if (trickCResetSpeedQueued){ ApplyTrickCResetSpeed(); trickCResetSpeedQueued = false; }
+            if (grappling){ ApplyGrapple();}
         }
         public void ApplyRotation()
         {
@@ -270,6 +284,11 @@ namespace SkateGame
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
             rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+        }
+
+        private void ApplyGrapple()
+        {
+            rb.AddForce(grappleDirection * playerModel.Config.Value.grappleForce * rb.mass, ForceMode2D.Force);
         }
 
         // 将玩家稍微吸向地面

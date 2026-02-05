@@ -34902,18 +34902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grappleRope: {fileID: 4107899637866893962}
-  grappableLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  m_rigidbody: {fileID: 932121231422775371}
   shootAngleDegrees: 70
-  hasMaxDistance: 1
-  maxDistnace: 20
-  ropeLifeTime: 0.5
-  mutualPullForce: 20
-  mutualPullGravityOffTime: 0.5
-  grapplePoint: {x: 0, y: 0}
-  grappleDistanceVector: {x: 0, y: 0}
 --- !u!1 &1504462762939981115
 GameObject:
   m_ObjectHideFlags: 0
@@ -76495,10 +76484,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86f9bbaf91719d4180da7fd94bd0471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grapplingGun: {fileID: 6980180234252946943}
   m_lineRenderer: {fileID: 394407832795320627}
   percision: 40
   straightenLineSpeed: 10
+  grappableLayers:
+    serializedVersion: 2
+    m_Bits: 64
   ropeAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -76594,9 +76585,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   ropeProgressionSpeed: 41
-  failExtendSpeed: 100
+  extendSpeed: 35
   failRetractSpeed: 140
-  isGrappling: 1
+  maxDistance: 20
+  pullForce: 20
+  detectionDistance: 1
 --- !u!1 &5678919932209511959
 GameObject:
   m_ObjectHideFlags: 0

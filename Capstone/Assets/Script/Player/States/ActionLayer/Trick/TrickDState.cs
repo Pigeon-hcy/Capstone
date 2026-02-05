@@ -17,7 +17,7 @@ public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void EnterTrickState()
     {
         /// TODO：自瞄敌人 
-        player.vineGun.fireGrabbingHook(45f);
+        player.vineGun.FireGrabbingHook(45f);
     }
     protected override void UpdateActionState()
     {
