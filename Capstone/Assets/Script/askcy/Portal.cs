@@ -1,4 +1,5 @@
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 public class Portal : MonoBehaviour
 {
@@ -11,6 +12,15 @@ public class Portal : MonoBehaviour
     private bool isCoolingDown = false;
 
     public bool coverPlayerAngle = false;
+
+    public GameObject particleHolder;
+    public float travelTime = 0.1f;
+    public bool isTraveling = false;
+    public MMF_Player EndTravelEffect;
+
+    private float travelProgress = 0;
+
+    
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -25,6 +35,8 @@ public class Portal : MonoBehaviour
                 other.transform.position = targetPosition;
                 isCoolingDown = true;
                 otherPortal.isCoolingDown = true;
+                isTraveling = true;
+
             }
             else
             {
@@ -34,6 +46,7 @@ public class Portal : MonoBehaviour
                 other.transform.position = targetPosition;
                 isCoolingDown = true;
                 otherPortal.isCoolingDown = true;
+                isTraveling = true;
             }
 
         }
@@ -42,6 +55,10 @@ public class Portal : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(particleHolder != null)
+        {
+            particleHolder.GetComponent<ParticleSystem>().Stop();
+        }
         
     }
 
@@ -55,6 +72,26 @@ public class Portal : MonoBehaviour
             {
                 isCoolingDown = false;
                 protalCoolDownTimer = 0;
+            }
+        }
+
+        if(particleHolder != null)
+        {
+            if(isTraveling)
+            {
+                
+                particleHolder.GetComponent<ParticleSystem>().Play();
+                travelProgress += Time.deltaTime / travelTime;
+                particleHolder.transform.position = Vector3.Lerp(this.transform.position, targetPortal.position, travelProgress);
+                if(travelProgress >= 1)
+                {
+                    isTraveling = false;
+                    travelProgress = 0;
+                }
+            }
+            else
+            {
+                particleHolder.GetComponent<ParticleSystem>().Stop();
             }
         }
     }
