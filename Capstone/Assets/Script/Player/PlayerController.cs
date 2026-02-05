@@ -65,6 +65,8 @@ namespace SkateGame
         [Header("Trigger 控制")]
         public bool disableInput = false;
 
+        private Vector2 _velocityLastFrame;
+
         [Header("MMF效果")]
         public MMF_Player moveEffect;
         public MMF_Player powerGrindEffect;
@@ -167,9 +169,11 @@ namespace SkateGame
             playerModel.IsNearFgWall.Value = isNearWall;
             playerModel.FgWallAngle.Value = angle;
 
-            // 检测前方墙壁(近距离)
-            var (isNearWallNear, angleNear) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
-            if (isNearWallNear) collisionSystem.CheckCrash(rb.linearVelocity, angleNear);
+            // 检测前方墙壁(近距离), 用上一帧速度以防取到碰撞后速度
+            var (touchingWall, wallAngle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
+            if (touchingWall) collisionSystem.CheckCrash(_velocityLastFrame, wallAngle);
+
+            _velocityLastFrame = rb.linearVelocity;
             // 更新冷却计时器
             UpdateCooldownTimers();
 

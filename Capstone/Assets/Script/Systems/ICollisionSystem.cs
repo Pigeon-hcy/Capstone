@@ -91,11 +91,21 @@ namespace SkateGame
             }
             return (isNearWall, angle);
         }
-         public void CheckCrash(Vector2 velocity, float angle)
-         {
+
+        /// <summary>
+        /// 检查玩家是否撞墙，检测玩家速度与墙法线方向的夹角，
+        /// 如果夹角大于一定角度并且速度大于一定值，则认为玩家撞墙
+        /// </summary>
+        /// <param name="velocity">玩家速度</param>
+        /// <param name="angle">墙角度</param>
+        public void CheckCrash(Vector2 velocity, float angle)
+        {
+            var velocityangle = Vector2.Angle(-velocity, Quaternion.Euler(0f, 0f, angle) * Vector2.up);
+            Debug.Log("CheckCrash: " + velocityangle+" "+angle);
             Vector2 normal = Quaternion.Euler(0f, 0f, angle) * Vector2.up;
-            float relativeVelocity = Vector2.Dot(velocity, -normal);
-            if (relativeVelocity > playerModel.Config.Value.crashVelocity)
+            // 计算玩家速度在墙法线方向上的分量
+            float VelocityTowardWall = Vector2.Dot(velocity, -normal);
+            if (VelocityTowardWall > playerModel.Config.Value.crashVelocity)
             {
                 /*
                  need to add crash effect
@@ -103,6 +113,6 @@ namespace SkateGame
                 var respawnSystem = this.GetSystem<IRespawnSystem>();
                 respawnSystem.RespawnPlayer();
             }
-         }
-    }   
+        }
+    }
 }
