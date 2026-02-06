@@ -49,6 +49,12 @@ MonoBehaviour:
   durationTrickD: 0.25
   ignoringMovementLayerTrickD: 1
   recoveryDurationTrickD: 1
+  extendSpeed: 50
+  retractSpeed: 35
+  maxDistance: 20
+  grappleForce: 20
+  grappleDuration: 0.5
+  grappleImpulse: 10
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
@@ -57,12 +63,17 @@ MonoBehaviour:
   groundCheckDistance: 0.35
   groundCheckOffset: 0.3
   groundCheckAngle: 60
-  wallCheckDistanceFar: 1
+  wallCheckDistanceFarFast: 3
+  wallCheckDistanceFarSlow: 1
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
   crashVelocity: 2
+  crashAngle: 60
+  crashAngleDiff: 45
   maxJumpForce: 12
   minJumpForce: 0
+  wallJumpUpMultiplier: 0.6
+  wallJumpForceMultiplier: 1.5
   doubleJumpForce: 6
   maxChargeTime: 2
   groundForce: 10

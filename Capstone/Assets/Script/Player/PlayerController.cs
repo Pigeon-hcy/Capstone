@@ -165,13 +165,19 @@ namespace SkateGame
             collisionSystem.GroundCheck(transform.position);
 
             // 检测前方墙壁(远距离)
-            var (isNearWall, angle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceFar);
+            float wallCheckDistance = Mathf.Lerp(playerModel.Config.Value.wallCheckDistanceFarSlow,playerModel.Config.Value.wallCheckDistanceFarFast, 
+                Mathf.Abs(rb.linearVelocity.x) / playerModel.Config.Value.maxMoveSpeed);
+            var (isNearWall, angle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, wallCheckDistance);
             playerModel.IsNearFgWall.Value = isNearWall;
             playerModel.FgWallAngle.Value = angle;
 
             // 检测前方墙壁(近距离), 用上一帧速度以防取到碰撞后速度
             var (touchingWall, wallAngle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
-            if (touchingWall) collisionSystem.CheckCrash(_velocityLastFrame, wallAngle);
+            // wall jump时免疫碰撞
+            if (touchingWall && stateMachine.GetMovementStateName() != "WallJumpState")
+            {
+                collisionSystem.CheckCrash(_velocityLastFrame, wallAngle);
+            }
 
             _velocityLastFrame = rb.linearVelocity;
             // 更新冷却计时器

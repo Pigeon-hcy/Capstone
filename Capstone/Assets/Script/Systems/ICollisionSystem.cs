@@ -100,12 +100,13 @@ namespace SkateGame
         /// <param name="angle">墙角度</param>
         public void CheckCrash(Vector2 velocity, float angle)
         {
-            var velocityangle = Vector2.Angle(-velocity, Quaternion.Euler(0f, 0f, angle) * Vector2.up);
-            Debug.Log("CheckCrash: " + velocityangle+" "+angle);
             Vector2 normal = Quaternion.Euler(0f, 0f, angle) * Vector2.up;
+            float angleDifference = Mathf.Abs(playerModel.TargetRotationDeg.Value - angle);
             // 计算玩家速度在墙法线方向上的分量
             float VelocityTowardWall = Vector2.Dot(velocity, -normal);
-            if (VelocityTowardWall > playerModel.Config.Value.crashVelocity)
+            if (VelocityTowardWall > playerModel.Config.Value.crashVelocity
+                && angleDifference > playerModel.Config.Value.crashAngleDiff
+                && angle > playerModel.Config.Value.crashAngle)
             {
                 /*
                  need to add crash effect

@@ -75,14 +75,19 @@ namespace SkateGame
         public float groundCheckDistance = 0.35f;
         public float groundCheckOffset = 0.3f;
         public float groundCheckAngle = 60f;
-        public float wallCheckDistanceFar = 1f;
+        public float wallCheckDistanceFarFast = 3f;
+        public float wallCheckDistanceFarSlow = 1f;
         public float wallCheckDistanceNear = 0.35f;
         public float wallCheckOffset = 0.3f;
         public float crashVelocity = 8f;
-
+        public float crashAngle = 60f;
+        public float crashAngleDiff = 45f;
+        
         [Header("跳跃设置")]
         public float maxJumpForce = 6f;
         public float minJumpForce = 0f;
+        [Range(0f, 1f)] public float wallJumpUpMultiplier = 0.7f;
+        public float wallJumpForceMultiplier = 1.5f;
         public float doubleJumpForce = 8f;
         public float maxChargeTime = 2f;
 

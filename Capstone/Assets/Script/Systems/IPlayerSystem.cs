@@ -155,7 +155,6 @@ namespace SkateGame
             { 
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
-                ClampGroundSpeed();
             }
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
@@ -220,6 +219,7 @@ namespace SkateGame
                     float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
                     rb.linearVelocity += right * horizontalInput * accel * Time.fixedDeltaTime;
                 }
+                ClampGroundSpeed();
             }
         }
 
@@ -237,9 +237,10 @@ namespace SkateGame
         {
             if (!playerModel.IsNearFgWall.Value) return;
             Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
-            Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, 0.5f).normalized;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            rb.AddForce(jumpDir * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+            Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
+            rb.linearVelocity = new Vector2(0, 0);
+            rb.AddForce(jumpDir * playerModel.Config.Value.maxJumpForce * 
+                playerModel.Config.Value.wallJumpForceMultiplier * rb.mass, ForceMode2D.Impulse);
         }
 
         private void ApplyPowerGrind()
