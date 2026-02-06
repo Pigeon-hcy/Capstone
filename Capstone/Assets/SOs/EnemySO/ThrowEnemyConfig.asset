@@ -21,12 +21,12 @@ MonoBehaviour:
   gravityScale: 2
   guardIncreaseSpeed: 3
   guardDecreaseSpeed: 0.5
-  detectRadius: 20
+  detectRadius: 30
   jumpAngleModifier: 0.7
   jumpForce: 10
   JumpAtkBoxActiveTime: 3
   AtkTags:
   - Player
   bSpeed: 5
-  bDirection: {x: 1, y: 1}
+  bDirection: {x: 1, y: 3}
   bLifeTime: 20
