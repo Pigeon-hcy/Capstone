@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Pattern_07_normal_0: -5190644794096151460
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

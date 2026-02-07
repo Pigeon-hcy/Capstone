@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Pattern_07_metallic_0: 4289791087343358066
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

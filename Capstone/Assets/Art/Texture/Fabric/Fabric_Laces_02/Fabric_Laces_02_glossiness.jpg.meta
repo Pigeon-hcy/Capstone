@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Laces_02_glossiness_0: 1982448850301642011
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

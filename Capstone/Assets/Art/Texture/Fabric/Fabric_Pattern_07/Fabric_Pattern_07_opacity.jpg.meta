@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Pattern_07_opacity_0: -5761948100753893249
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

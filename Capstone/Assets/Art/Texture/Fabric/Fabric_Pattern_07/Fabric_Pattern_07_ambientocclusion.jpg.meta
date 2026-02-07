@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Pattern_07_ambientocclusion_0: -49669327201737851
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

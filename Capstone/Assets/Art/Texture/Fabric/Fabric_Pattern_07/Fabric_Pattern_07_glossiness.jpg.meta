@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Pattern_07_glossiness_0: 3588999420412493436
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

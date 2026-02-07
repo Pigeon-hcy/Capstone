@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fabric_Towel_01_height_0: -5073688116620545090
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
