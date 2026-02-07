@@ -12,38 +12,33 @@ namespace SkateGame
 
         private ILevelModel levelModel;
         private ILevelSystem levelSystem;
+        private ILevelProgressModel levelProgressModel;
         private bool isLoadingLevel = false; // 防止重复加载
+
+        public GameObject allLevelCanvas;
+        public GameObject basicCanvas;
 
         protected override void InitializeController()
         {
-            Debug.Log($"LevelManager.InitializeController: 开始初始化，当前场景 = {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
-            
-            // 重置加载标志
+           
             isLoadingLevel = false;
             
             levelModel = this.GetModel<ILevelModel>();
             levelSystem = this.GetSystem<ILevelSystem>();
+            levelProgressModel = this.GetModel<ILevelProgressModel>();
+            this.GetSystem<ILevelProgressSystem>(); // 确保进度已加载
 
-            // 保存当前场景名称，用于后续同步索引
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            Debug.Log($"LevelManager.InitializeController: 当前场景名称 = {currentSceneName}, 当前关卡索引 = {levelModel.CurrentLevelIndex}");
-
-            // 清空旧的 LevelList
             levelModel.LevelList.Clear();
-
-            // 添加到系统
             foreach (Level lvl in levelList)
             {
                 levelSystem.AddLevel(lvl);
             }
-            Debug.Log($"LevelManager.InitializeController: 已添加 {levelModel.LevelList.Count} 个关卡到列表");
 
             // 根据当前场景名称同步 CurrentLevelIndex
             SyncCurrentLevelIndex(currentSceneName);
 
             InitializeButtons();
-            
-            Debug.Log($"LevelManager.InitializeController: 初始化完成，当前关卡索引 = {levelModel.CurrentLevelIndex}");
         }
 
         /// <summary>
@@ -89,7 +84,47 @@ namespace SkateGame
                     lvl.button.onClick.AddListener(() => OnLevelButtonClick(index));
                 }
             }
+            UpdateButtonStates();
         }
+
+        /// <summary>
+        /// 根据 PassedLevelIndex 更新按钮状态：已通关及之前的关卡可点击，否则不可点击并变暗
+        /// </summary>
+        private void UpdateButtonStates()
+        {
+            int passedIndex = levelProgressModel?.PassedLevelIndex ?? -1;
+            for (int i = 0; i < levelList.Count; i++)
+            {
+                Level lvl = levelList[i];
+                if (lvl.button != null)
+                {
+                    bool canClick = i <= passedIndex;
+                    lvl.button.interactable = canClick;
+                   
+                }
+            }
+        }
+
+        public void ShowAllLevelCanvas()
+        {
+            basicCanvas.SetActive(false);
+            if (allLevelCanvas != null)
+            {
+                allLevelCanvas.gameObject.SetActive(true);
+            }
+            RefreshButtonStatesOnShow();
+        }
+        
+        public void HideAllLevelCanvas()
+        {
+            if (allLevelCanvas != null)
+            {
+                allLevelCanvas.gameObject.SetActive(false);
+            }
+            basicCanvas.SetActive(true);
+        }
+
+       
 
         private void OnLevelButtonClick(int index)
         {
@@ -143,10 +178,19 @@ namespace SkateGame
             LoadLevel(levelModel.CurrentLevelIndex);
         }
 
-        [ContextMenu("刷新按钮")]
+        
         public void RefreshButtons()
         {
+            this.GetSystem<ILevelProgressSystem>(); // 确保进度已加载
             InitializeButtons();
+        }
+
+        /// <summary>
+        /// 打开关卡选择时刷新按钮状态（进度可能已更新）
+        /// </summary>
+        public void RefreshButtonStatesOnShow()
+        {
+            UpdateButtonStates();
         }
     }
 }
