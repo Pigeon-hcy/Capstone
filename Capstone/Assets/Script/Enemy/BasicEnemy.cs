@@ -121,7 +121,7 @@ namespace SkateGame
         }
 
         FlipInfoRecorder recorder = new FlipInfoRecorder();
-        Debug.Log("一次测试开始");
+        //Debug.Log("一次测试开始");
         // --- 警戒逻辑 -------------------------------------------------------
         if (IsPlayerNearWrapper(out Transform trans))
         {
@@ -162,7 +162,7 @@ namespace SkateGame
             {
                 Debug.Log($"{transform.name} 发现玩家为null ");
             }*/
-            Debug.Log("降低警戒值");
+            //Debug.Log("降低警戒值");
             // 警戒值下降
             GuardProcess =
                 Mathf.Clamp01(GuardProcess -
@@ -171,7 +171,7 @@ namespace SkateGame
             recorder.inGuard = false;
             UnGuard();
         }
-        Debug.Log("一次测试结束");
+        //Debug.Log("一次测试结束");
         
         // --------------------------------------------------------------------
 

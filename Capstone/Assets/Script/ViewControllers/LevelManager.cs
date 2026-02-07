@@ -14,36 +14,28 @@ namespace SkateGame
         private ILevelSystem levelSystem;
         private bool isLoadingLevel = false; // 防止重复加载
 
+        public GameObject allLevelCanvas;
+        public GameObject basicCanvas;
+
         protected override void InitializeController()
         {
-            Debug.Log($"LevelManager.InitializeController: 开始初始化，当前场景 = {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
-            
-            // 重置加载标志
+           
             isLoadingLevel = false;
             
             levelModel = this.GetModel<ILevelModel>();
             levelSystem = this.GetSystem<ILevelSystem>();
 
-            // 保存当前场景名称，用于后续同步索引
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            Debug.Log($"LevelManager.InitializeController: 当前场景名称 = {currentSceneName}, 当前关卡索引 = {levelModel.CurrentLevelIndex}");
-
-            // 清空旧的 LevelList
             levelModel.LevelList.Clear();
-
-            // 添加到系统
             foreach (Level lvl in levelList)
             {
                 levelSystem.AddLevel(lvl);
             }
-            Debug.Log($"LevelManager.InitializeController: 已添加 {levelModel.LevelList.Count} 个关卡到列表");
 
             // 根据当前场景名称同步 CurrentLevelIndex
             SyncCurrentLevelIndex(currentSceneName);
 
             InitializeButtons();
-            
-            Debug.Log($"LevelManager.InitializeController: 初始化完成，当前关卡索引 = {levelModel.CurrentLevelIndex}");
         }
 
         /// <summary>
@@ -90,6 +82,27 @@ namespace SkateGame
                 }
             }
         }
+
+        public void ShowAllLevelCanvas()
+        {
+            
+            basicCanvas.SetActive(false);
+            if (allLevelCanvas != null)
+            {
+                allLevelCanvas.gameObject.SetActive(true);
+            }
+        }
+        
+        public void HideAllLevelCanvas()
+        {
+            if (allLevelCanvas != null)
+            {
+                allLevelCanvas.gameObject.SetActive(false);
+            }
+            basicCanvas.SetActive(true);
+        }
+
+       
 
         private void OnLevelButtonClick(int index)
         {
@@ -143,7 +156,7 @@ namespace SkateGame
             LoadLevel(levelModel.CurrentLevelIndex);
         }
 
-        [ContextMenu("刷新按钮")]
+        
         public void RefreshButtons()
         {
             InitializeButtons();
