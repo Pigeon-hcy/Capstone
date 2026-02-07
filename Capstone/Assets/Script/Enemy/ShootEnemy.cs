@@ -41,6 +41,11 @@ namespace SkateGame
         protected override void Guard(Transform pTrans, float guard)
         {
             base.Guard(pTrans, guard);
+            if (GuardProcess >= 1f && Vector2.Distance(pTrans.position, transform.position) < 5)
+            {
+                GuardProcess = 0.9f;
+            }
+
             lineObject.SetActive(true);
             var start = lRenderer.startColor;
             var end   = lRenderer.endColor;
