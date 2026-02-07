@@ -45,7 +45,7 @@ namespace SkateGame
             
             if (dialogueViewers == null || dialogueViewers.Length == 0)
             {
-                Debug.Log("DialogueSystem: 场景中没有找到DialogueViewer");
+               // Debug.Log("DialogueSystem: 场景中没有找到DialogueViewer");
                 return;
             }
             

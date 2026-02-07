@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using QFramework;
+using System.Collections.Generic;
 
 namespace SkateGame
 {
@@ -10,11 +12,15 @@ namespace SkateGame
 
         private PlayerController playerController;   // 玩家控制器引用
         private ILevelProgressSystem levelProgressSystem;  // 关卡进度系统
+        private ILevelProgressModel levelProgressModel;
+        private ILevelModel levelModel;
         
         protected override void InitializeController()
         {
             // 获取关卡进度系统
             levelProgressSystem = this.GetSystem<ILevelProgressSystem>();
+            levelProgressModel = this.GetModel<ILevelProgressModel>();
+            levelModel = this.GetModel<ILevelModel>();
             
             // 查找关卡 UI 画布
             GameObject canvasObject = GameObject.Find("LevelCanvas");
@@ -48,9 +54,20 @@ namespace SkateGame
                 // ----------------------------
                 if (levelProgressSystem != null)
                 {
+                    string sceneName = SceneManager.GetActiveScene().name;
                     levelProgressSystem.SaveLevel();
-                    Debug.Log("LevelSelectArea: 已保存关卡进度");
+                    
+                    // Debug: 输出所有已通关的关卡（save 过的）
+                    int passed = levelProgressModel.PassedLevelIndex;
+                    var passedLevels = new List<string>();
+                    for (int i = 0; i <= passed && i < levelModel.LevelList.Count; i++)
+                    {
+                        var lvl = levelModel.LevelList[i];
+                        passedLevels.Add($"[{i}] {lvl.Name}({lvl.SceneName})");
+                    }
+                    Debug.Log($"LevelSelectArea: 已保存 | 当前场景={sceneName} | PassedLevelIndex={passed} | 已通关关卡: {string.Join(", ", passedLevels)}");
                 }
+              
 
                 // 显示 UI
                 ShowCanvas();

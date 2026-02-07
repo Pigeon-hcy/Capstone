@@ -12,6 +12,7 @@ namespace SkateGame
 
         private ILevelModel levelModel;
         private ILevelSystem levelSystem;
+        private ILevelProgressModel levelProgressModel;
         private bool isLoadingLevel = false; // 防止重复加载
 
         public GameObject allLevelCanvas;
@@ -24,6 +25,8 @@ namespace SkateGame
             
             levelModel = this.GetModel<ILevelModel>();
             levelSystem = this.GetSystem<ILevelSystem>();
+            levelProgressModel = this.GetModel<ILevelProgressModel>();
+            this.GetSystem<ILevelProgressSystem>(); // 确保进度已加载
 
             string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             levelModel.LevelList.Clear();
@@ -81,16 +84,35 @@ namespace SkateGame
                     lvl.button.onClick.AddListener(() => OnLevelButtonClick(index));
                 }
             }
+            UpdateButtonStates();
+        }
+
+        /// <summary>
+        /// 根据 PassedLevelIndex 更新按钮状态：已通关及之前的关卡可点击，否则不可点击并变暗
+        /// </summary>
+        private void UpdateButtonStates()
+        {
+            int passedIndex = levelProgressModel?.PassedLevelIndex ?? -1;
+            for (int i = 0; i < levelList.Count; i++)
+            {
+                Level lvl = levelList[i];
+                if (lvl.button != null)
+                {
+                    bool canClick = i <= passedIndex;
+                    lvl.button.interactable = canClick;
+                   
+                }
+            }
         }
 
         public void ShowAllLevelCanvas()
         {
-            
             basicCanvas.SetActive(false);
             if (allLevelCanvas != null)
             {
                 allLevelCanvas.gameObject.SetActive(true);
             }
+            RefreshButtonStatesOnShow();
         }
         
         public void HideAllLevelCanvas()
@@ -159,7 +181,16 @@ namespace SkateGame
         
         public void RefreshButtons()
         {
+            this.GetSystem<ILevelProgressSystem>(); // 确保进度已加载
             InitializeButtons();
+        }
+
+        /// <summary>
+        /// 打开关卡选择时刷新按钮状态（进度可能已更新）
+        /// </summary>
+        public void RefreshButtonStatesOnShow()
+        {
+            UpdateButtonStates();
         }
     }
 }
