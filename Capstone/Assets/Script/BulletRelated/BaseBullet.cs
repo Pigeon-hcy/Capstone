@@ -4,7 +4,7 @@ using BaseUtility;
 
 namespace BulletToolKit
 {
-    public class BaseBullet : MonoBehaviour
+    public class BaseBullet : MonoBehaviour, IInteractable
     {
         public HitBoxFactory hitBoxFactory;
         protected IHitBox hitBox;
@@ -25,9 +25,17 @@ namespace BulletToolKit
         {
             this.moveCompo = moveCompo;
         }
+        
+        public virtual void DoInteraction()
+        {
+            Debug.Log("触发了");
+            Destroy(gameObject);
+        }
     }
-
     
+    
+
+
 
     public class DestroyEffectDeco : IEPDecoration
     {

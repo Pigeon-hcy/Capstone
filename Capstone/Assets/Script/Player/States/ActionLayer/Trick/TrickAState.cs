@@ -23,9 +23,10 @@ public class TrickAState : TrickState
     }
     protected override void UpdateActionState()
     {
+        //Debug.LogError("TrickC");
         if(DetectInteractiveObjects(out Collider2D[] colliders)){
             //尝试对第一个进行交互
-            IInteractable interact = colliders[0].GetComponent<IInteractable>();
+            IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
             interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
             player.SendEvent<TrickARewardEvent>();

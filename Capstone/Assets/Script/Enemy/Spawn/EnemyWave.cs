@@ -29,7 +29,8 @@ public enum EnemyType
 {
     BasicEnemy,
     BoostEnemy,
-    FlyEnemy
+    FlyEnemy,
+    ThrowEnemy
 }
 
 [Serializable]

@@ -6,7 +6,7 @@ namespace BulletToolKit
     public class GravityDirectionMoveComp : DirectionMoveCompo
     {
         [SerializeField]
-        private float gravity = -1f;
+        private float gravity = -7f;
 
         private float verticalVelocity;
 

@@ -19,6 +19,7 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
+        
         if(!inputModel.Brake.Value)
         {
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);

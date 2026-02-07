@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8578948255075231031}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 2503858861318679929}
   - component: {fileID: 2357890486241824736}
   - component: {fileID: 5342217241749374110}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThrowEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,12 +82,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: e74fa639b2512470ca1e6623e48c37b1, type: 2}
   reportBoxFactory: {fileID: 11400000, guid: ec0b14ae412bc4a52abfefb1ca04d0bf, type: 2}
-  prefabRef: {fileID: 0}
+  prefabRef: {fileID: 11400000, guid: a65bd3eca363242d88d5af8688cacfd0, type: 2}
   displayTrans: {fileID: 8578948255075231031}
   IfDrawRange: 0
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64
+  throwOffset: 2
   bulletFactory: {fileID: 11400000, guid: 38d3bc1f179274042ad34f6c5faa656b, type: 2}
 --- !u!50 &2357890486241824736
 Rigidbody2D:
@@ -172,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 911087326595848038}
   - component: {fileID: 5424591864843337713}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,9 +189,9 @@ Transform:
   m_GameObject: {fileID: 5883656560683970161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8578948255075231031}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

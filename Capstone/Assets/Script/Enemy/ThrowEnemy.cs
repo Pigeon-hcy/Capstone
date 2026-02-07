@@ -10,6 +10,9 @@ namespace SkateGame
         private float bulletSpeed = 7f;
         private float bulletLifeTime = 5f;
         private Vector2 bulletDirection;
+        
+        [Header("投掷offset")]
+        public float throwOffset;
         protected override void Start()
         {
             base.Start();
@@ -46,7 +49,7 @@ namespace SkateGame
 
            // 4️⃣ 创建子弹
            BaseBullet bullet =
-               bulletFactory.CreateBulletWithDir<GravityDirectionMoveComp>(transform.position, initData);
+               bulletFactory.CreateBulletWithDir<GravityDirectionMoveComp>(transform.position+Vector3.up*throwOffset, initData);
 
            if (bullet == null)
                return;

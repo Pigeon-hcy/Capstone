@@ -27,6 +27,6 @@ MonoBehaviour:
   JumpAtkBoxActiveTime: 3
   AtkTags:
   - Player
-  bSpeed: 5
-  bDirection: {x: 1, y: 3}
-  bLifeTime: 20
+  bSpeed: 10
+  bDirection: {x: 1, y: 2}
+  bLifeTime: 60

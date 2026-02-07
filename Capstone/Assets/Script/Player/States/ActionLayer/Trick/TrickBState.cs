@@ -16,6 +16,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
 
     protected override void EnterTrickState()
     {
+        //Debug.LogError("触发了");
         player.TrickBEffect.PlayFeedbacks();
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
         // TODO: fix direction calculation
@@ -25,9 +26,10 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     }
     protected override void UpdateActionState()
     {
+        //Debug.LogError("触发了");
         if(DetectInteractiveObjects(out Collider2D[] colliders)){
             //尝试对第一个进行交互
-            IInteractable interact = colliders[0].GetComponent<IInteractable>();
+            IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
             interact?.DoInteraction();
             player.TrickBBoostEffect.PlayFeedbacks();
             player.stateMachine.SwitchState<TrickBBoostState>(StateLayer.Action);
