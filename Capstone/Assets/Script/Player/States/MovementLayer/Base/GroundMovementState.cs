@@ -53,6 +53,9 @@ public abstract class GroundMovementState : StateBase
     }
     public void pauseMoving()
     {
-        AudioManager.Instance.fmodPauseMove();
+        if(AudioManager.Instance != null)
+        {
+            AudioManager.Instance.fmodPauseMove();
+        }
     }
 }
