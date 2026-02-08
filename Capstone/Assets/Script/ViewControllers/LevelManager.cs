@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
 using System.Collections.Generic;
+using TMPro;
 
 namespace SkateGame
 {
@@ -205,6 +206,9 @@ namespace SkateGame
                 levelItem levelItem = item.GetComponent<levelItem>();
                 levelItem.setUp(levelList[i]);
                 levelItem.button.onClick.AddListener(() => OnLevelButtonClick(index));
+                levelItem.GetComponentInChildren<Image>().sprite = levelList[i].image;
+                levelItem.button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].Name;
+                
                 
             }
         }
