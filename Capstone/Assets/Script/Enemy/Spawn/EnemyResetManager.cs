@@ -28,7 +28,7 @@ namespace SkateGame
             _initialData.Clear();
             foreach (Transform child in inLevelEnemyParent)
             {
-                BasicEnemyController enemy = child.GetComponent<BasicEnemyController>();
+                BasicEnemyController enemy = child.GetComponentInChildren<BasicEnemyController>();
                 if (enemy != null)
                 {
                     enemyToReset.Add(enemy);
@@ -73,7 +73,7 @@ namespace SkateGame
                     
 
                 // 更新数组引用为新的敌人（以便下一次 Reset 使用）
-                BasicEnemyController newController = newEnemy.GetComponent<BasicEnemyController>();
+                BasicEnemyController newController = newEnemy.GetComponentInChildren<BasicEnemyController>();
                 _initialData[i].enemy = newController;
                 enemyToReset[i] = newController;
             }

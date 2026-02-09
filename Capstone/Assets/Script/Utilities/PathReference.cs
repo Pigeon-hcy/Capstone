@@ -13,6 +13,7 @@ public static class PathReference
             EnemyType.BoostEnemy => "BoostEnemy",
             EnemyType.FlyEnemy => "FlyEnemy",
             EnemyType.ThrowEnemy => "ThrowEnemy",
+            EnemyType.DongEnemy => "DongEnemySet",
             _=>"BasicEnemy"
         };
     }
