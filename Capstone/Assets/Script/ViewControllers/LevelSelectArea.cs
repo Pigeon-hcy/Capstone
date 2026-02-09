@@ -15,6 +15,22 @@ namespace SkateGame
         private ILevelProgressModel levelProgressModel;
         private ILevelModel levelModel;
         
+        protected override void OnEnable()
+        {
+            Debug.Log("LevelSelectArea: OnEnable");
+            base.OnEnable();
+            this.RegisterEvent<TogglePauseEvent>(OnTogglePause);
+        }
+        protected override void OnDisable()
+        {
+            this.UnRegisterEvent<TogglePauseEvent>(OnTogglePause);
+            base.OnDisable();
+        }
+        void OnTogglePause(TogglePauseEvent evt)
+        {
+            HideCanvas();
+        }
+
         protected override void InitializeController()
         {
             // 获取关卡进度系统
@@ -90,11 +106,9 @@ namespace SkateGame
                 if (playerController != null)
                 {
                     playerController.disableInput = true;
+                    playerController.rb.linearVelocity = Vector2.zero;
                 }
-                /////////////////////////////////////////////////Pause/////////////////////////////////////////////////////////////
-                playerController.rb.linearVelocity = Vector2.zero;
-                Time.timeScale = 0f;
-				Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                GameStateController.Instance.EnterOverlay();
             }
         }
 
@@ -116,6 +130,7 @@ namespace SkateGame
                 }
 
                 playerController = null;
+                GameStateController.Instance.EnterInGame();
             }
         }
 

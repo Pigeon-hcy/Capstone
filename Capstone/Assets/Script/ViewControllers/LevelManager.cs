@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using QFramework;
 using System.Collections.Generic;
+using TMPro;
 
 namespace SkateGame
 {
@@ -17,10 +18,17 @@ namespace SkateGame
 
         public GameObject allLevelCanvas;
         public GameObject basicCanvas;
-
+        private GameObject levelItemPrefab;
+        private Transform groupForButton;
         protected override void InitializeController()
         {
-           
+            levelItemPrefab = Resources.Load<GameObject>("LevelItem");
+            Debug.Log(levelItemPrefab != null ? "prefab:有" : "prefab:无");
+            GameObject levelCanvas = GameObject.Find("LevelCanvas");
+            Debug.Log(levelCanvas != null ? "levelCanvas:有" : "levelCanvas:无");
+            groupForButton = levelCanvas.transform.Find("AllSelection/groupforButton");
+            Debug.Log(groupForButton != null ? "groupForButton:有" : "groupForButton:无");
+
             isLoadingLevel = false;
             
             levelModel = this.GetModel<ILevelModel>();
@@ -113,6 +121,7 @@ namespace SkateGame
                 allLevelCanvas.gameObject.SetActive(true);
             }
             RefreshButtonStatesOnShow();
+            BindingLevelInfoToPrefab();
         }
         
         public void HideAllLevelCanvas()
@@ -135,28 +144,22 @@ namespace SkateGame
         {
             if (isLoadingLevel)
             {
-                Debug.LogWarning($"LevelManager.LoadLevel: 正在加载关卡中，忽略重复调用 (索引: {index})");
                 return;
             }
-            
-            Debug.Log($"LevelManager.LoadLevel: 被调用，索引 = {index}, 当前场景 = {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
             isLoadingLevel = true;
             levelSystem.LoadLevel(index);
         }
 
         public void LoadNextLevel()
         {
-            Debug.Log($"LoadNextLevel: 当前关卡索引 = {levelModel.CurrentLevelIndex}, 总关卡数 = {levelModel.LevelList.Count}");
-            
             int next = levelModel.CurrentLevelIndex + 1;
             if (next < levelModel.LevelList.Count)
             {
-                Debug.Log($"LoadNextLevel: 准备加载下一关，索引 = {next}");
                 LoadLevel(next);
             }
             else
             {
-                Debug.Log($"LoadNextLevel: 已经是最后一关 (当前索引: {levelModel.CurrentLevelIndex}, 总关卡数: {levelModel.LevelList.Count})");
+                Debug.Log("LoadNextLevel: 已经是最后一关");
             }
         }
 
@@ -191,6 +194,23 @@ namespace SkateGame
         public void RefreshButtonStatesOnShow()
         {
             UpdateButtonStates();
+        }
+
+        public void BindingLevelInfoToPrefab(){
+            Debug.Log(levelItemPrefab != null && groupForButton != null ? "Binding:可执行" : "Binding:prefab或group缺失");
+            for (int i = 0; i < levelList.Count; i++)
+            {
+                int index = i;
+                GameObject item = Instantiate(levelItemPrefab, groupForButton);
+                item.transform.localScale = Vector3.one;
+                levelItem levelItem = item.GetComponent<levelItem>();
+                levelItem.setUp(levelList[i]);
+                levelItem.button.onClick.AddListener(() => OnLevelButtonClick(index));
+                levelItem.GetComponentInChildren<Image>().sprite = levelList[i].image;
+                levelItem.button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].Name;
+                
+                
+            }
         }
     }
 }

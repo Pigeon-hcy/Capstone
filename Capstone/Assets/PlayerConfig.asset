@@ -52,9 +52,9 @@ MonoBehaviour:
   extendSpeed: 50
   retractSpeed: 35
   maxDistance: 20
-  grappleForce: 20
+  grappleForce: 25
   grappleDuration: 0.5
-  grappleImpulse: 10
+  grappleImpulse: 15
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:

@@ -93,6 +93,7 @@ namespace SkateGame
             }
 
             // toggle pause
+            // TODO: change to input system
             if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame())
             {
                 this.SendEvent<TogglePauseEvent>();

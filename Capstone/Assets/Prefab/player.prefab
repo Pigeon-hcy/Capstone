@@ -50359,6 +50359,7 @@ MonoBehaviour:
   landEffectPlayer: {fileID: 3984980351344846065}
   pushEffectPlayer: {fileID: 3784447410742485576}
   particleEffectContainer: {fileID: 770241612130879766}
+  tracePointPrefab: {fileID: 1245450733113535259, guid: 53b69ad52f50ebf46ae9d874a4acf024, type: 3}
 --- !u!114 &2971916587710835888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76487,9 +76488,6 @@ MonoBehaviour:
   m_lineRenderer: {fileID: 394407832795320627}
   percision: 40
   straightenLineSpeed: 10
-  grappableLayers:
-    serializedVersion: 2
-    m_Bits: 64
   ropeAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -76585,10 +76583,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   ropeProgressionSpeed: 41
-  extendSpeed: 35
-  failRetractSpeed: 140
-  maxDistance: 20
-  pullForce: 20
+  grappableLayers:
+    serializedVersion: 2
+    m_Bits: 64
   detectionDistance: 1
 --- !u!1 &5678919932209511959
 GameObject:

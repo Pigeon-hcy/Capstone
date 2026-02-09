@@ -54,6 +54,7 @@ namespace SkateGame
         {
             Debug.Log($"LevelSystem: 加载场景 {sceneName}");
             SceneManager.LoadScene(sceneName);
+            this.SendEvent(new SceneChangeEvent());
         }
     }
 }
