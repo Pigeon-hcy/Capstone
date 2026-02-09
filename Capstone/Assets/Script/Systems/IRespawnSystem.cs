@@ -45,6 +45,7 @@ namespace SkateGame
         {
             UpdatePlayerController();
             ClearCheckpoints();
+            this.GetModel<ITraceModel>().DrawnPoints.Clear();
         }
 
         private void UpdatePlayerController()
@@ -84,6 +85,9 @@ namespace SkateGame
 
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
+
+            // 绘制死亡路径点（玩家禁用前）
+            this.GetSystem<ITraceSystem>().OnPlayerDeath();
 
             PlayDeathParticleAt(deathPos);
 

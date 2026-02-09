@@ -1,6 +1,7 @@
 using UnityEngine;
 using QFramework;
 using System.Collections;
+using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using System;
 using Unity.VisualScripting;
@@ -90,12 +91,22 @@ namespace SkateGame
 
         [Header("粒子特效容器")]
         public Transform particleEffectContainer; // 粒子特效容器
+
+        [Header("死亡路径追踪")]
+        [Tooltip("用于显示死亡路径的点预制体，留空则不显示轨迹")]
+        public GameObject tracePointPrefab;
+        private ITraceSystem traceSystem;
+        private float traceTimer;
+        private const float TraceInterval = 2f;
+        private readonly List<GameObject> spawnedTracePoints = new List<GameObject>();
+
         protected override void InitializeController()
         {
             // 获取玩家参数
             playerModel = this.GetModel<IPlayerModel>();
             playerSystem = this.GetSystem<IPlayerSystem>();
             collisionSystem = this.GetSystem<ICollisionSystem>();
+            traceSystem = this.GetSystem<ITraceSystem>();
             this.GetSystem<IPlayerAssetSystem>().SetPlayerConfig(playerConfig);
 
             // 获取组件
@@ -188,6 +199,17 @@ namespace SkateGame
 
             // 更新当前State
             stateMachine.UpdateCurrentState();
+
+            // 每 N 秒记录一次路径点（用于死亡后显示轨迹）
+            if (traceSystem != null && tracePointPrefab != null)
+            {
+                traceTimer += Time.deltaTime;
+                if (traceTimer >= TraceInterval)
+                {
+                    traceTimer = 0f;
+                    traceSystem.AddPoint(transform.position);
+                }
+            }
 
             // 检测玩家方向变化并更新粒子特效
             CheckPlayerDirectionChange();
@@ -468,6 +490,31 @@ namespace SkateGame
         {
             playerModel.IsFacingRight.Value = isFacingRight;
             sprite.transform.localScale = new Vector3(isFacingRight ? 1 : -1, 1, 1);
+        }
+        #endregion
+
+        #region Death Trace
+        /// <summary>
+        /// 绘制死亡路径点（由 TraceSystem 在玩家死亡时调用）
+        /// </summary>
+        public void DrawDeathTracePoints(List<Vector2> points)
+        {
+            if (tracePointPrefab == null || points.Count == 0) return;
+            ClearSpawnedTracePoints();
+            foreach (var pos in points)
+            {
+                var p = Instantiate(tracePointPrefab, pos, Quaternion.identity);
+                spawnedTracePoints.Add(p);
+            }
+        }
+
+        private void ClearSpawnedTracePoints()
+        {
+            foreach (var go in spawnedTracePoints)
+            {
+                if (go != null) Destroy(go);
+            }
+            spawnedTracePoints.Clear();
         }
         #endregion
 
