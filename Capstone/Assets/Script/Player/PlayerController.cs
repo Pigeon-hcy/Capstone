@@ -95,9 +95,11 @@ namespace SkateGame
         [Header("死亡路径追踪")]
         [Tooltip("用于显示死亡路径的点预制体，留空则不显示轨迹")]
         public GameObject tracePointPrefab;
+        [Tooltip("死亡瞬间位置用的预制体（如骷髅、叉等），留空则用路径点预制体")]
+        public GameObject traceDeathPointPrefab;
         private ITraceSystem traceSystem;
         private float traceTimer;
-        private const float TraceInterval = 2f;
+        private const float TraceInterval = 0.1f;
         private readonly List<GameObject> spawnedTracePoints = new List<GameObject>();
 
         protected override void InitializeController()
@@ -497,15 +499,32 @@ namespace SkateGame
         /// <summary>
         /// 绘制死亡路径点（由 TraceSystem 在玩家死亡时调用）
         /// </summary>
-        public void DrawDeathTracePoints(List<Vector2> points)
+        /// <param name="points">路径上的点，用 tracePointPrefab 画</param>
+        /// <param name="deathPos">死亡瞬间位置，用 traceDeathPointPrefab 画（若未设则用 tracePointPrefab）</param>
+        public void DrawDeathTracePoints(List<Vector2> points, Vector2? deathPos = null)
         {
-            if (tracePointPrefab == null || points.Count == 0) return;
+            bool hasPathPrefab = tracePointPrefab != null;
+            GameObject deathPrefab = traceDeathPointPrefab != null ? traceDeathPointPrefab : tracePointPrefab;
+            bool hasDeath = deathPos.HasValue && deathPrefab != null;
+            if (!hasPathPrefab && !hasDeath) return;
+
             ClearSpawnedTracePoints();
-            foreach (var pos in points)
+
+            if (hasPathPrefab && points != null && points.Count > 0)
             {
-                var p = Instantiate(tracePointPrefab, pos, Quaternion.identity);
-                spawnedTracePoints.Add(p);
+                foreach (var pos in points)
+                    SpawnOneTracePoint(pos, tracePointPrefab);
             }
+            if (hasDeath)
+                SpawnOneTracePoint(deathPos.Value, deathPrefab);
+        }
+
+        private void SpawnOneTracePoint(Vector2 pos, GameObject prefab)
+        {
+            var p = Instantiate(prefab, new Vector3(pos.x, pos.y, 0f), Quaternion.identity);
+            var sr = p.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = 100;
+            spawnedTracePoints.Add(p);
         }
 
         private void ClearSpawnedTracePoints()
