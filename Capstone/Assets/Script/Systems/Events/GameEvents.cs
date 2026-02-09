@@ -9,6 +9,9 @@ namespace SkateGame
     public struct TogglePauseEvent
     {
     }
+    public struct SceneChangeEvent
+    {
+    }
     // 玩家落地事件
     public struct PlayerLandedEvent
     {

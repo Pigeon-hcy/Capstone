@@ -9,7 +9,8 @@ namespace SkateGame
 		Menu,
         InGame,
         Dialogue,
-        Pause
+        Pause,
+        Overlay  //level select, etc.
     }
 
 	public class GameStateController : MonoBehaviour, IBelongToArchitecture, ICanGetSystem, ICanRegisterEvent
@@ -27,11 +28,13 @@ namespace SkateGame
         void OnEnable()
         {
             this.RegisterEvent<TogglePauseEvent>(OnTogglePause);
+            this.RegisterEvent<SceneChangeEvent>(OnSceneChange);
         }
 
         void OnDisable()
         {
             this.UnRegisterEvent<TogglePauseEvent>(OnTogglePause);
+            this.UnRegisterEvent<SceneChangeEvent>(OnSceneChange);
         }
         private void Awake()
         {
@@ -49,6 +52,7 @@ namespace SkateGame
         public void EnterInGame() => Switch(GameState.InGame);
         public void EnterDialogue() => Switch(GameState.Dialogue);
         public void EnterPause() => Switch(GameState.Pause);
+        public void EnterOverlay() => Switch(GameState.Overlay);
 
         public void Switch(GameState next)
         {
@@ -99,15 +103,27 @@ namespace SkateGame
                     SetPlayerUI(true);
                     Debug.Log("Enter Pause");
                     break;
+                case GameState.Overlay:
+                    gate.SetPlayerInputBlocked(true);
+                    gate.SetUiInputEnabled(true);
+                    Time.timeScale = 0f;
+                    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                    SetPauseUI(false);
+                    SetPlayerUI(true);
+                    Debug.Log("Enter Overlay");
+                    break;
             }
         }
-        public void OnTogglePause(TogglePauseEvent evt)
+        private void OnTogglePause(TogglePauseEvent evt)
         {
             if (_current == GameState.Menu) return;
             if (_current == GameState.InGame) EnterPause();
-            else EnterInGame();
+            else if (_current == GameState.Pause || _current == GameState.Overlay) EnterInGame();
         }
-
+        private void OnSceneChange(SceneChangeEvent evt)
+        {
+            EnterInGame();
+        }
 		private void SetPauseUI(bool show)
 		{
 			if (pauseUI != null) pauseUI.SetActive(show);
