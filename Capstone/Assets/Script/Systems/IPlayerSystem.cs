@@ -156,6 +156,7 @@ namespace SkateGame
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
             }
+            ClampGroundSpeed();
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
             if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
@@ -219,8 +220,8 @@ namespace SkateGame
                     float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
                     rb.linearVelocity += right * horizontalInput * accel * Time.fixedDeltaTime;
                 }
-                ClampGroundSpeed();
             }
+            
         }
 
         private void ApplyJumpImpulse()
