@@ -12,30 +12,15 @@ public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
         this.trickName = "TrickCBoost";
         this.scoreValue = 10; 
     }
+    protected override void EnterTrickState()
+    {
+    }
 
     protected override void UpdateActionState()
     {
-        if (playerModel.IsGrounded.Value)
-        {
-            rb.linearVelocity = playerModel.Config.Value.TrickCBoostspeed * (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
-            hasLanded = true;
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCBoostspeed);
-            if(hasLanded)
-            {
-                player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-            }
-        }
-        
-        if(!inputModel.Brake.Value && stateTimer > playerModel.Config.Value.minDurationTrickCBoost)
-        {
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-        }
+
     }
     protected override void ExitActionState()
     {
-        player.SendEvent<TrickARewardEvent>();
     }
 }

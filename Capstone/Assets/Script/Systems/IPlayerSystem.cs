@@ -24,7 +24,7 @@ namespace SkateGame
         private float trickBdirection;
         private bool trickingC;
         private bool trickBResetSpeedQueued;
-        private bool trickCResetSpeedQueued;
+        private bool trickCLandQueued;
         private bool trickARewardQueued;
         private bool grappling;
 
@@ -49,7 +49,7 @@ namespace SkateGame
             this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
             this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
             this.RegisterEvent<TrickBResetSpeedEvent>(OnTrickBResetSpeed);
-            this.RegisterEvent<TrickCResetSpeedEvent>(OnTrickCResetSpeed);
+            this.RegisterEvent<TrickCLandEvent>(OnTrickCLand);
             this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             // 每次场景更新自动获取PlayerController
@@ -124,9 +124,9 @@ namespace SkateGame
         {
             trickBResetSpeedQueued = true;
         }
-        private void OnTrickCResetSpeed(TrickCResetSpeedEvent evt)
+        private void OnTrickCLand(TrickCLandEvent evt)
         {
-            trickCResetSpeedQueued = true;
+            trickCLandQueued = true;
         }
         private void OnTrickAReward(TrickARewardEvent evt)
         {
@@ -155,8 +155,8 @@ namespace SkateGame
             { 
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
+                ClampGroundSpeed();
             }
-            ClampGroundSpeed();
 
             if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
             if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
@@ -166,7 +166,7 @@ namespace SkateGame
             if (trickingB){ ApplyTrickB();}
             if (trickingC){ ApplyTrickC();}
             if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
-            if (trickCResetSpeedQueued){ ApplyTrickCResetSpeed(); trickCResetSpeedQueued = false; }
+            if (trickCLandQueued){ ApplyTrickCLand(); trickCLandQueued = false; }
             if (grappling){ ApplyGrapple();}
         }
         public void ApplyRotation()
@@ -277,9 +277,9 @@ namespace SkateGame
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCspeed);
         }
-        private void ApplyTrickCResetSpeed()
+        private void ApplyTrickCLand()
         {
-            rb.linearVelocity = new Vector2(playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxFallSpeed);
+            rb.AddForce(Vector2.down * playerModel.Config.Value.TrickCBoostspeed * rb.mass, ForceMode2D.Impulse);
         }
 
         private void ApplyTrickAReward()
