@@ -48,6 +48,7 @@ namespace SkateGame
 
         private void ResetHandler(MessageBox box, MonoBehaviour sender)
         {
+            //Debug.LogError("ResetHandler");
             // 1. 先删除所有当前敌人
             foreach (var data in _initialData)
             {
