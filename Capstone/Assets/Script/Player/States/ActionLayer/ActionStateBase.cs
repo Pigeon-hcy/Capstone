@@ -60,6 +60,7 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
         // 优先Trick
         if(inputModel.GrabStart.Value && energySystem.HasEnoughEnergy(1))
         {
+            energySystem.ConsumeEnergy(1);
             player.stateMachine.SwitchState<TrickDState>(StateLayer.Action);
         }
         else if(inputModel.DashStart.Value && energySystem.HasEnoughEnergy(1))

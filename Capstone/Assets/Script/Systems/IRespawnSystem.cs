@@ -86,8 +86,8 @@ namespace SkateGame
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
 
-            // 绘制死亡路径点（玩家禁用前）
-            this.GetSystem<ITraceSystem>().OnPlayerDeath();
+            // 绘制死亡路径点（玩家禁用前，死亡点用专用 prefab）
+            this.GetSystem<ITraceSystem>().OnPlayerDeath(deathPos);
 
             PlayDeathParticleAt(deathPos);
 
