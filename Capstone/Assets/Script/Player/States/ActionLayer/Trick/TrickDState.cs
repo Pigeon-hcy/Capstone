@@ -5,6 +5,7 @@ using QFramework;
 
 public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
 {
+    private IEnergySystem energySystem;
     public TrickDState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickD;
@@ -12,6 +13,7 @@ public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickD;
         this.trickName = "TrickD";
         this.scoreValue = 10; 
+        energySystem = this.GetSystem<IEnergySystem>();
     }
 
     protected override void EnterTrickState()

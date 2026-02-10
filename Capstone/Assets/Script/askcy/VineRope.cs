@@ -40,6 +40,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
     private float currentDistance;
     private Vector2 grapplePoint;
     private IPlayerModel playerModel;
+    private IEnergySystem energySystem;
     #endregion
 
     #region QFramework
@@ -49,6 +50,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
     private void Start()
     {
         playerModel = this.GetModel<IPlayerModel>();
+        energySystem = this.GetSystem<IEnergySystem>();
     }
     private void Update()
     {
@@ -102,7 +104,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
 
         if (currentDistance >= playerModel.Config.Value.maxDistance)
         {
-            StartRetraction();
+            GrappleFailed();
             return;
         }
 
@@ -196,6 +198,12 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
         }
         enabled = false;
     }
+    private void GrappleFailed()
+    {
+        energySystem.AddEnergy(1);
+        StartRetraction();
+    }
+    
     #endregion
 
     #region Visualization
