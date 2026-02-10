@@ -29,7 +29,7 @@ MonoBehaviour:
   isLoopTrickB: 0
   durationTrickB: 0.15
   ignoringMovementLayerTrickB: 1
-  recoveryDurationTrickB: 0.25
+  recoveryDurationTrickB: 0
   TrickBinertia: 0.3
   TrickBspeed: 30
   isLoopTrickBBoost: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 15
+  TrickCspeed: 20
   TrickCinertia: 0.25
   recoveryDurationTrickC: 0.1
   slamHitboxDurationTrickC: 0.25
