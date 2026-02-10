@@ -84,6 +84,8 @@ namespace SkateGame
         BindableProperty<bool> IsFacingRight { get; }
         BindableProperty<float> CurrentRotationDeg { get; }
         BindableProperty<float> TargetRotationDeg { get; }
+        // 0 = no gravity 
+        BindableProperty<float> CurrentGravityScale { get; }
     }
 
     public class PlayerModel : AbstractModel, IPlayerModel
@@ -145,6 +147,7 @@ namespace SkateGame
         public BindableProperty<bool> IsFacingRight { get; } = new BindableProperty<bool>(true);
         public BindableProperty<float> CurrentRotationDeg { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> TargetRotationDeg { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> CurrentGravityScale { get; } = new BindableProperty<float>(1f);
         protected override void OnInit()
         {
             // 初始化逻辑

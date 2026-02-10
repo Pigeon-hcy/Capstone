@@ -115,6 +115,7 @@ namespace SkateGame
 
         [Header("Grind相关")]
         public float normalG = 1f;
+        public float gravityMagnitude = 9.81f;
 
         [Header("Power Grind相关")]
         public float powerGrindDeceleration = 1f;

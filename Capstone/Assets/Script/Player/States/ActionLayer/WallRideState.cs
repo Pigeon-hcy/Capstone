@@ -17,8 +17,7 @@ public class WallRideState : ActionStateBase
 
     protected override void EnterActionState()
     {
-
-        rb.gravityScale = onWallGravity;
+        playerModel.CurrentGravityScale.Value = onWallGravity;
         lastWall = playerModel.CurrentBgWall.Value;  // 记录当前墙体
 
         if (player.WallRideEffect != null)
@@ -36,22 +35,21 @@ public class WallRideState : ActionStateBase
             Debug.Log($"WallRideState: 切换到新墙体 {playerModel.CurrentBgWall.Value.name}，刷新冷却时间");
             stateTimer = 0f;  // 重置墙骑计时器
             lastWall = playerModel.CurrentBgWall.Value;  // 更新记录的墙体
-            rb.gravityScale = onWallGravity;  // 重置重力
+            playerModel.CurrentGravityScale.Value = onWallGravity;  // 重置重力
         }
-        
-        rb.gravityScale = Mathf.Lerp(onWallGravity, normalG, stateTimer / playerModel.Config.Value.BgWallrideDuration);
+        playerModel.CurrentGravityScale.Value = Mathf.Lerp(onWallGravity, normalG, stateTimer / playerModel.Config.Value.BgWallrideDuration);
         if (playerModel.CurrentBgWall.Value == null || !inputModel.Grind.Value)
-        {   
-            rb.gravityScale = normalG;
+        {
+            playerModel.CurrentGravityScale.Value = normalG;
             stateTimer = 0f;
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
             player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
         }
     }
 
-    protected override void ExitActionState()
-    {   
-        rb.gravityScale = normalG;
+        protected override void ExitActionState()
+        {
+            playerModel.CurrentGravityScale.Value = normalG;
         playerModel.WallRideCooldownTimer.Value = playerModel.Config.Value.BgWallRideCooldown;
         if (player.WallRideEffect != null)
         {

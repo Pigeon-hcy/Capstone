@@ -147,9 +147,8 @@ namespace SkateGame
         public void ApplyMovement()
         {
             bool isGrounded = playerModel.IsGrounded.Value;
-    
-            rb.linearDamping = isGrounded ? playerModel.Config.Value.groundLinearDamping : playerModel.Config.Value.airLinearDamping;
 
+            ApplyCustomGravity();
             ApplyHorizontalSpeed(cachedMoveInput, isGrounded, pushing);
             if (isGrounded)
             { 
@@ -168,6 +167,7 @@ namespace SkateGame
             if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
             if (trickCLandQueued){ ApplyTrickCLand(); trickCLandQueued = false; }
             if (grappling){ ApplyGrapple();}
+            ApplyCustomDamping(isGrounded);
         }
         public void ApplyRotation()
         {
@@ -300,12 +300,24 @@ namespace SkateGame
             rb.AddForce(down * (playerModel.Config.Value.groundForce * rb.mass), ForceMode2D.Force);
         }
 
+        private void ApplyCustomGravity()
+        {
+            float g = playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
+            rb.linearVelocity += Vector2.down * g * Time.fixedDeltaTime;
+        }
+
+        private void ApplyCustomDamping(bool isGrounded)
+        {
+            float damping = isGrounded ? playerModel.Config.Value.groundLinearDamping : playerModel.Config.Value.airLinearDamping;
+            rb.linearVelocity *= Mathf.Exp(-damping * Time.fixedDeltaTime);
+        }
+
         // 如果坡度发生变化，补偿损失的速度
         private void ApplySlopeCompensation()
         {
-			Vector2 g = Physics2D.gravity;
-			Vector2 gTangent = Vector2.Dot(g, right) * right * Mathf.Sign(vRight);
-			rb.linearVelocity += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
+            Vector2 g = Vector2.down * playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
+            Vector2 gTangent = Vector2.Dot(g, right) * right * Mathf.Sign(vRight);
+            rb.linearVelocity += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
         }
         private void ClampGroundSpeed()
         {
