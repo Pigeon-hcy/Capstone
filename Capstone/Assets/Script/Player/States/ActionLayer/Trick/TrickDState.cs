@@ -19,7 +19,8 @@ public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void EnterTrickState()
     {
         /// TODO：自瞄敌人 
-        player.vineGun.FireGrabbingHook(45f);
+        float direction = inputModel.Move.Value.x != 0f ? (inputModel.Move.Value.x < 0f ? -1f : 1f) : playerModel.IsFacingRight.Value ? 1f : -1f;
+        player.vineGun.FireGrabbingHook(90f - 45f * direction);
     }
     protected override void UpdateActionState()
     {

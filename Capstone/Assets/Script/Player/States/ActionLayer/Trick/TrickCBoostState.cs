@@ -4,7 +4,6 @@ using QFramework;
 
 public class TrickCBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
 {
-    private bool hasLanded = false;
     public TrickCBoostState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickCBoost;

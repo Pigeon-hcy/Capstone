@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SkateGame
 {
-    /// <summary>XxxQueued = one-shot, cleared each frame. HoldXxx = sustained until input sets false.</summary>
     public struct PendingActions
     {
         public bool JumpQueued;
