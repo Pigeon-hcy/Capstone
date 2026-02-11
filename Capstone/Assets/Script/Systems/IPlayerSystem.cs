@@ -14,18 +14,23 @@ namespace SkateGame
         private PlayerController playerController;
         private IPlayerModel playerModel;
         private Rigidbody2D rb;
+        private Vector2 moveVel;
+        private Vector2 bonusVel;
         private float cachedMoveInput;
         private bool jumpQueued;
         private bool wallJumpQueued;
+        private bool reverseQueued;
         private bool pushing;
         private bool powerGrinding;
         private bool grinding;
+        // Tricks
         private bool trickingB;
         private float trickBdirection;
         private bool trickingC;
         private bool trickBResetSpeedQueued;
         private bool trickCLandQueued;
         private bool trickARewardQueued;
+        private bool grappleQueued;
         private bool grappling;
 
         private Vector2 grappleDirection;
@@ -41,14 +46,15 @@ namespace SkateGame
             this.RegisterEvent<MoveInputEvent>(OnMoveInput);
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
             this.RegisterEvent<WallJumpExecuteEvent>(OnWallJumpInput);
-            this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
             this.RegisterEvent<PushInputEvent>(OnPushInput);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
+            this.RegisterEvent<ReverseInputEvent>(OnReverseInput);
             this.RegisterEvent<TrickAInputEvent>(OnTrickAInput);
+            this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
             this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
-            this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
             this.RegisterEvent<TrickBResetSpeedEvent>(OnTrickBResetSpeed);
+            this.RegisterEvent<TrickCInputEvent>(OnTrickCInput);
             this.RegisterEvent<TrickCLandEvent>(OnTrickCLand);
             this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
@@ -104,6 +110,10 @@ namespace SkateGame
         {
             powerGrinding = evt.IsPowerGrinding;
         }
+        private void OnReverseInput(ReverseInputEvent evt)
+        {
+            reverseQueued = true;
+        }
         private void OnGrindInput(GrindInputEvent evt)
         {
             grinding = evt.IsGrinding;
@@ -134,40 +144,47 @@ namespace SkateGame
         }
         private void OnGrapple(GrappleEvent evt)
         {
+            grappleQueued = true;
             grappling = evt.IsGrappling;
             grappleDirection = evt.pullDirection;
-            if (evt.IsGrappling)
-            {
-                rb.AddForce(grappleDirection * playerModel.Config.Value.grappleImpulse * rb.mass, ForceMode2D.Impulse);
-            }
         }
         #endregion
 
         #region Method
         public void ApplyMovement()
         {
+            moveVel = rb.linearVelocity - bonusVel;
             bool isGrounded = playerModel.IsGrounded.Value;
-
             ApplyCustomGravity();
             ApplyHorizontalSpeed(cachedMoveInput, isGrounded, pushing);
             if (isGrounded)
-            { 
+            {
+                // Remove velocity into ground
+                if (vUp < 0f) { moveVel -= vUp * up; }
                 ApplySlopeCompensation();
                 // ApplyGroundForce(); 
                 ClampGroundSpeed();
             }
-
-            if (jumpQueued){ ApplyJumpImpulse(); jumpQueued = false; }
-            if (wallJumpQueued){ ApplyWallJumpImpulse(); wallJumpQueued = false; }
-            if (trickARewardQueued){ ApplyTrickAReward(); trickARewardQueued = false; }
-            if (powerGrinding){ ApplyPowerGrind();}
-            if (grinding){ ApplyGrind();}
-            if (trickingB){ ApplyTrickB();}
-            if (trickingC){ ApplyTrickC();}
-            if (trickBResetSpeedQueued){ ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
-            if (trickCLandQueued){ ApplyTrickCLand(); trickCLandQueued = false; }
-            if (grappling){ ApplyGrapple();}
+            if (powerGrinding) ApplyPowerGrind();
+            if (reverseQueued) { ApplyReverse(); reverseQueued = false; }
+            if (jumpQueued) { ApplyJumpImpulse(); jumpQueued = false; }
+            if (wallJumpQueued) { ApplyWallJumpImpulse(); wallJumpQueued = false; }
+            if (trickARewardQueued) { ApplyTrickAReward(); trickARewardQueued = false; }
+            if (grinding) ApplyGrind();
+            if (trickingB) ApplyTrickB();
+            if (trickingC) ApplyTrickC();
+            if (trickBResetSpeedQueued) { ApplyTrickBResetSpeed(); trickBResetSpeedQueued = false; }
+            if (trickCLandQueued) { ApplyTrickCLand(); trickCLandQueued = false; }
+            if (grappleQueued) { ApplyGrappleImpulse(); grappleQueued = false; }
+            if (grappling) ApplyGrappleForce();
             ApplyCustomDamping(isGrounded);
+
+            rb.linearVelocity = moveVel + bonusVel;
+            bonusVel *= playerModel.Config.Value.bonusVelDecay;
+            if (Mathf.Abs(bonusVel.x) < 0.01f && Mathf.Abs(bonusVel.y) < 0.01f)
+            {
+                bonusVel = Vector2.zero;
+            }
         }
         public void ApplyRotation()
         {
@@ -197,9 +214,9 @@ namespace SkateGame
 
         private void ApplyHorizontalSpeed(float horizontalInput, bool isGrounded, bool pushing)
         {
-            if(pushing)
+            if (pushing)
             {
-                rb.linearVelocity += right * (playerModel.IsFacingRight.Value ? 1 : -1) * playerModel.Config.Value.pushAccel * Time.fixedDeltaTime;
+                moveVel += right * (playerModel.IsFacingRight.Value ? 1 : -1) * playerModel.Config.Value.pushAccel * Time.fixedDeltaTime;
             }
             else if (Mathf.Abs(horizontalInput) > 0.01f)
             {
@@ -208,20 +225,17 @@ namespace SkateGame
                 {
                     float turnDecel = isGrounded ? playerModel.Config.Value.turnDecel : playerModel.Config.Value.airTurnDecel;
                     turnDecel *= Mathf.Pow(Mathf.Abs(vRight), playerModel.Config.Value.stopDecelIncrement);
-                    rb.linearVelocity -= right * Mathf.Sign(vRight) * turnDecel * Time.fixedDeltaTime;
+                    moveVel -= right * Mathf.Sign(vRight) * turnDecel * Time.fixedDeltaTime;
+                    // 减速最多到0
                     if (Mathf.Sign(vRight) == Mathf.Sign(horizontalInput))
-                    {
-                        rb.linearVelocity = vUp*up;
-                    }
+                        moveVel = vUp * up;
                 }
-                // 如果当前速度和输入方向相同，且速度小于最大速度，则加速
                 else if (Mathf.Abs(vRight) < playerModel.Config.Value.maxMoveSpeed)
                 {
                     float accel = isGrounded ? playerModel.Config.Value.groundAccel : playerModel.Config.Value.airAccel;
-                    rb.linearVelocity += right * horizontalInput * accel * Time.fixedDeltaTime;
+                    moveVel += right * horizontalInput * accel * Time.fixedDeltaTime;
                 }
             }
-            
         }
 
         private void ApplyJumpImpulse()
@@ -229,9 +243,9 @@ namespace SkateGame
 			// Override up direction, force up when not grounded
 			Vector2 up = playerModel.IsGrounded.Value ? 
                 (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.up).normalized : Vector2.up;
-			float vUp = Vector2.Dot(rb.linearVelocity, up);
-			rb.linearVelocity -= vUp * up;
-            rb.AddForce(up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+			moveVel -= vUp * up;
+            bonusVel -= Vector2.Dot(bonusVel, up) * up;
+            moveVel += up * playerModel.Config.Value.maxJumpForce;
         }
 
         private void ApplyWallJumpImpulse()
@@ -239,24 +253,28 @@ namespace SkateGame
             if (!playerModel.IsNearFgWall.Value) return;
             Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
             Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
-            rb.linearVelocity = new Vector2(0, 0);
-            rb.AddForce(jumpDir * playerModel.Config.Value.maxJumpForce * 
-                playerModel.Config.Value.wallJumpForceMultiplier * rb.mass, ForceMode2D.Impulse);
+            moveVel = new Vector2(0, 0);
+            bonusVel = Vector2.zero;
+            moveVel += jumpDir * playerModel.Config.Value.maxJumpForce * 
+                playerModel.Config.Value.wallJumpForceMultiplier;
         }
 
         private void ApplyPowerGrind()
-        {   
+        {
             float deceleration = playerModel.Config.Value.powerGrindDeceleration;
             float direction = Mathf.Sign(vRight);
             // 逐渐减少的速度，保持方向不变
             float newVx = vRight - direction * deceleration * Time.fixedDeltaTime;
-
+            bonusVel.x -= direction * deceleration * Time.fixedDeltaTime;
             // 防止越过零点
-            if (Mathf.Sign(newVx) != direction || Mathf.Abs(newVx) < 0.01f)
-            {
-                newVx = 0f;
-            }
-            rb.linearVelocity = newVx*right + vUp*up;
+            if (Mathf.Sign(newVx) != direction || Mathf.Abs(newVx) < 0.01f) newVx = 0f;
+            moveVel = newVx * right + vUp * up;
+        }
+
+        private void ApplyReverse()
+        {
+            moveVel = new Vector2(-moveVel.x, moveVel.y);
+            bonusVel = new Vector2(-bonusVel.x, bonusVel.y);
         }
 
         private void ApplyGrind()
@@ -266,50 +284,65 @@ namespace SkateGame
         private void ApplyTrickB()
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
-            rb.linearVelocity = new Vector2(trickBdirection * speed, 0);
+            moveVel = new Vector2(trickBdirection * speed, 0);
+            bonusVel = Vector2.zero;
         }
         private void ApplyTrickBResetSpeed()
         {
             float speed = Mathf.Max(playerModel.Config.Value.maxMoveSpeed, playerModel.VelocityBeforeTrick.Value * trickBdirection);
-            rb.linearVelocity = new Vector2(speed * trickBdirection, 0);
+            moveVel = new Vector2(speed * trickBdirection, 0);
+            bonusVel = Vector2.zero;
         }
         private void ApplyTrickC()
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -playerModel.Config.Value.TrickCspeed);
+            moveVel = new Vector2(moveVel.x, -playerModel.Config.Value.TrickCspeed);
+            bonusVel = Vector2.zero;
         }
         private void ApplyTrickCLand()
         {
-            rb.AddForce(Vector2.down * playerModel.Config.Value.TrickCBoostspeed * rb.mass, ForceMode2D.Impulse);
+            bonusVel += Vector2.down * playerModel.Config.Value.TrickCBoostspeed;
         }
 
         private void ApplyTrickAReward()
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            rb.AddForce(Vector2.up * playerModel.Config.Value.maxJumpForce * rb.mass, ForceMode2D.Impulse);
+            moveVel = new Vector2(moveVel.x, 0);
+            moveVel += Vector2.up * playerModel.Config.Value.maxJumpForce;
         }
-
-        private void ApplyGrapple()
+        private void ApplyGrappleImpulse()
         {
-            rb.AddForce(grappleDirection * playerModel.Config.Value.grappleForce * rb.mass, ForceMode2D.Force);
+            moveVel += grappleDirection * playerModel.Config.Value.grappleImpulse;
+        }
+        private void ApplyGrappleForce()
+        {
+            moveVel += grappleDirection * playerModel.Config.Value.grappleForce * Time.fixedDeltaTime;
         }
 
         // 将玩家稍微吸向地面
         private void ApplyGroundForce()
         {
             Vector2 down = (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.down).normalized;
-            rb.AddForce(down * (playerModel.Config.Value.groundForce * rb.mass), ForceMode2D.Force);
+            moveVel += down * (playerModel.Config.Value.groundForce * Time.fixedDeltaTime);
         }
 
         private void ApplyCustomGravity()
         {
-            float g = playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
-            rb.linearVelocity += Vector2.down * g * Time.fixedDeltaTime;
+            Vector2 g = Vector2.down * playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
+            if (playerModel.IsGrounded.Value)
+            {
+                float intoSlope = Vector2.Dot(g, up);
+                Vector2 gravityTangent = g - intoSlope * up;
+                moveVel += gravityTangent * Time.fixedDeltaTime;
+            }
+            else
+            {
+                moveVel += g * Time.fixedDeltaTime;
+            }
         }
 
         private void ApplyCustomDamping(bool isGrounded)
         {
             float damping = isGrounded ? playerModel.Config.Value.groundLinearDamping : playerModel.Config.Value.airLinearDamping;
-            rb.linearVelocity *= Mathf.Exp(-damping * Time.fixedDeltaTime);
+            moveVel *= Mathf.Exp(-damping * Time.fixedDeltaTime);
         }
 
         // 如果坡度发生变化，补偿损失的速度
@@ -317,12 +350,13 @@ namespace SkateGame
         {
             Vector2 g = Vector2.down * playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
             Vector2 gTangent = Vector2.Dot(g, right) * right * Mathf.Sign(vRight);
-            rb.linearVelocity += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
+            moveVel += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
         }
+
         private void ClampGroundSpeed()
         {
             float newVRight = Mathf.Clamp(vRight, -playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxMoveSpeed);
-            rb.linearVelocity = newVRight*right + vUp*up;
+            moveVel = newVRight * right + vUp * up;
         }
 
         #endregion
@@ -330,16 +364,16 @@ namespace SkateGame
         #region Helper
 
         // Direction
-        private Vector2 up => (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.up).normalized;
-        private Vector2 right => (Quaternion.Euler(0f, 0f, rb.rotation) * Vector2.right).normalized;
-        private float vUp => Vector2.Dot(rb.linearVelocity, up);
-        private float vRight => Vector2.Dot(rb.linearVelocity, right);
+        private Vector2 up => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized;
+        private Vector2 right => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
+        private float vUp => Vector2.Dot(moveVel, up);
+        private float vRight => Vector2.Dot(moveVel, right);
 
 
         // Update animator on state changed
         private void UpdateAnimatorOnStateChanged(StateChangedEvent evt)
         {
-            var anim = playerController.animator;
+            var anim = playerController?.animator;
             if (evt.Layer == StateLayer.Movement)
             {
                 anim.SetInteger("MovementState", (int)playerModel.CurrentMovementState.Value);

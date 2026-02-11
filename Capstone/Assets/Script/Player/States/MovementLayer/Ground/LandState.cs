@@ -2,7 +2,7 @@ using UnityEngine;
 using SkateGame;
 using QFramework;
 
-public class LandState : GroundMovementState
+public class LandState : GroundMovementState, ICanSendEvent
 {
     private float landTimer;
     private bool isDoubleJumpLand;
@@ -21,6 +21,7 @@ public class LandState : GroundMovementState
         isDoubleJumpLand = playerModel.CanDoubleJump.Value;
         playerModel.CanDoubleJump.Value = true;
         landTimer = 0f;
+        player.SendEvent<PlayerLandedEvent>();
         playLanding();
         if (player.landEffectPlayer != null)
         {

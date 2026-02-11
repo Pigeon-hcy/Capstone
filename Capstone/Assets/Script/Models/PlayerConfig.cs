@@ -108,6 +108,7 @@ namespace SkateGame
         public float pushAccel = 20f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
+        public float bonusVelDecay = 0.98f;
 
         [Header("Air相关")]
         public float airControlForceConfig = 10f;
