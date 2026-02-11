@@ -76,9 +76,9 @@ namespace SkateGame
 
         private IEnumerator DeathRoutine()
         {
+            playDeath();
             if (playerController == null)
                 UpdatePlayerController();
-
             Transform player = playerController.transform;
             Rigidbody2D rb = playerController.GetComponent<Rigidbody2D>();
             Vector2 deathPos = player.position;
@@ -156,6 +156,10 @@ namespace SkateGame
             respawnModel.CheckpointList.Value.Clear();
             respawnModel.LatestCheckpoint.Value = Vector2.zero;
             respawnModel.HasCheckpoint.Value = false;
+        }
+        public void playDeath()
+        {
+            AudioManager.Instance.fmodPlayDeath();
         }
     }
 
