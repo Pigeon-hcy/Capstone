@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{01ff6098-63cc-45b4-81d2-5ed54aa817ba}">
+	<object class="AudioFile" id="{39a49190-4591-4109-be4b-99f120cb90e9}">
 		<property name="assetPath">
-			<value>skateboard_push_edit_2.wav</value>
+			<value>skateboard_push_edit_1.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
@@ -11,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>0.69712018140589571</value>
+			<value>1.8461678004535147</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>

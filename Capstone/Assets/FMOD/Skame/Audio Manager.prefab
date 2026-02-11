@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f9e1f341e0aa224c9f598534306f767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MasterVolume: 1
   targetRb: {fileID: 0}
   testEvent:
     Guid:
@@ -115,3 +116,17 @@ MonoBehaviour:
       Data3: 1327959990
       Data4: 1785657753
     Path: event:/SFX_RailGrind
+  slamEvent:
+    Guid:
+      Data1: -1775810931
+      Data2: 1194486022
+      Data3: 1856225935
+      Data4: -1185944845
+    Path: event:/SFX_Slam
+  deathEvent:
+    Guid:
+      Data1: 1275079630
+      Data2: 1076767835
+      Data3: 611916986
+      Data4: 770414567
+    Path: event:/SFX_Death
