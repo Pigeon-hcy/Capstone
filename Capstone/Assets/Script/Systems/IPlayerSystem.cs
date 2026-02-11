@@ -32,6 +32,22 @@ namespace SkateGame
             TrickCLandQueued = false;
             TrickARewardQueued = false;
         }
+        public void ClearAll()
+        {
+            JumpQueued = false;
+            WallJumpQueued = false;
+            ReverseQueued = false;
+            GrappleImpulseQueued = false;
+            TrickBResetSpeedQueued = false;
+            TrickCLandQueued = false;
+            TrickARewardQueued = false;
+            Dashing = false;
+            Slamming = false;
+            Grapplling = false;
+            Grinding = false;
+            PowerGrinding = false;
+            Pushing = false;
+        }
     }
 
     public interface IPlayerSystem : ISystem
@@ -82,6 +98,11 @@ namespace SkateGame
         {
             // 场景加载后重新查找 PlayerController
             UpdatePlayerController();
+            moveVel = Vector2.zero;
+            bonusVel = Vector2.zero;
+            pending.ClearAll();
+            if (rb != null)
+                rb.linearVelocity = Vector2.zero;
         }
         
         private void UpdatePlayerController()
