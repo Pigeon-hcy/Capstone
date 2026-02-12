@@ -23,13 +23,34 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
 
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
+    private void OnEnable()
+    {
+        if (timeStopEffect != null && timeStopEffect.Events != null)
+            timeStopEffect.Events.OnComplete.AddListener(OnTimeStopEffectStop);
+            timeStopEffect.Events.OnStop.AddListener(OnTimeStopEffectStop);
+    }
+
+    private void OnDisable()
+    {
+        if (timeStopEffect != null && timeStopEffect.Events != null)
+            timeStopEffect.Events.OnComplete.RemoveListener(OnTimeStopEffectStop);
+            timeStopEffect.Events.OnStop.RemoveListener(OnTimeStopEffectStop);
+    }
+
+    private void OnTimeStopEffectStop()
+    {
+        isTimeStopped = false;
+        ExitTutorial();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            isTimeStopped = true;
-            timeStopEffect.PlayFeedbacks();
-        }
+        if (other.gameObject.tag != "Player") return;
+        if (GameStateController.Instance == null || GameStateController.Instance.Current != GameState.InGame) return;
+
+        isTimeStopped = true;
+        GameStateController.Instance.EnterTutorial();
+        timeStopEffect.PlayFeedbacks();
     }
 
     private void Update()
@@ -42,6 +63,12 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
             isTimeStopped = false;
             timeStopEffect.StopFeedbacks();
         }
+    }
+
+    private void ExitTutorial()
+    {
+        if (GameStateController.Instance != null && GameStateController.Instance.Current == GameState.Tutorial)
+            GameStateController.Instance.EnterInGame();
     }
 
     private bool GetRequiredInputPressed(IInputModel inputModel)

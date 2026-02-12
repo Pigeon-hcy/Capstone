@@ -6,11 +6,11 @@ namespace SkateGame
 {
     public enum GameState
     {
-		Menu,
+        Menu,
+        Pause,
         InGame,
         Dialogue,
-        Pause,
-        Overlay  //level select, etc.
+        Tutorial
     }
 
 	public class GameStateController : MonoBehaviour, IBelongToArchitecture, ICanGetSystem, ICanRegisterEvent
@@ -21,9 +21,11 @@ namespace SkateGame
 
         [SerializeField] private GameState _current = GameState.Menu;
         public GameState Current => _current;
+        private GameState _stateBeforePause = GameState.InGame;
 		[SerializeField] private GameObject pauseUI;
 		[SerializeField] private GameObject pauseFirstSelected;
 		[SerializeField] private GameObject playerUI;
+        private IInputGateSystem gate;
 
         void OnEnable()
         {
@@ -38,6 +40,7 @@ namespace SkateGame
         }
         private void Awake()
         {
+            gate = this.GetSystem<IInputGateSystem>();
             if (_instance != null)
             {
                 Destroy(gameObject);
@@ -52,8 +55,7 @@ namespace SkateGame
         public void EnterInGame() => Switch(GameState.InGame);
         public void EnterDialogue() => Switch(GameState.Dialogue);
         public void EnterPause() => Switch(GameState.Pause);
-        public void EnterOverlay() => Switch(GameState.Overlay);
-
+        public void EnterTutorial() => Switch(GameState.Tutorial);
         public void Switch(GameState next)
         {
 			if (_current == GameState.Menu && next != GameState.InGame) return;
@@ -68,57 +70,51 @@ namespace SkateGame
             switch (s)
             {
 				case GameState.Menu:
-					gate.SetPlayerInputBlocked(true);
-					gate.SetUiInputEnabled(true);
-					Time.timeScale = 0f;
-					Time.fixedDeltaTime = 0.02f * Time.timeScale;
-					SetPauseUI(false);
+                    UseUiInput(true);
+					TimeStop(true);
                     SetPlayerUI(false);
 					Debug.Log("Enter Menu");
 					break;
                 case GameState.InGame:
-                    gate.SetPlayerInputBlocked(false);
-                    gate.SetUiInputEnabled(false);
-					Time.timeScale = 1f;
-					Time.fixedDeltaTime = 0.02f * Time.timeScale;
-					SetPauseUI(false);
+                    UseUiInput(false);
+                    TimeStop(false);
                     SetPlayerUI(true);
                     Debug.Log("Enter InGame");
                     break;
                 case GameState.Dialogue:
-                    gate.SetPlayerInputBlocked(true);
-                    gate.SetUiInputEnabled(true);
-					Time.timeScale = 1f;
-					Time.fixedDeltaTime = 0.02f * Time.timeScale;
-					SetPauseUI(false);
+                    UseUiInput(true);
+                    TimeStop(false);
                     SetPlayerUI(false);
                     Debug.Log("Enter Dialogue");
                     break;
                 case GameState.Pause:
-                    gate.SetPlayerInputBlocked(true);
-                    gate.SetUiInputEnabled(true);
-					Time.timeScale = 0f;
-					Time.fixedDeltaTime = 0.02f * Time.timeScale;
-					SetPauseUI(true);
+                    UseUiInput(true);
+                    TimeStop(true);
                     SetPlayerUI(true);
                     Debug.Log("Enter Pause");
                     break;
-                case GameState.Overlay:
-                    gate.SetPlayerInputBlocked(true);
-                    gate.SetUiInputEnabled(true);
-                    Time.timeScale = 0f;
-                    Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                    SetPauseUI(false);
+                case GameState.Tutorial:
+                    UseUiInput(false);
+                    // Timescale由TeachTimeStop控制
                     SetPlayerUI(true);
-                    Debug.Log("Enter Overlay");
+                    Debug.Log("Enter Tutorial");
                     break;
             }
         }
         private void OnTogglePause(TogglePauseEvent evt)
         {
             if (_current == GameState.Menu) return;
-            if (_current == GameState.InGame) EnterPause();
-            else if (_current == GameState.Pause || _current == GameState.Overlay) EnterInGame();
+            if (_current == GameState.InGame || _current == GameState.Dialogue || _current == GameState.Tutorial)
+            {
+                _stateBeforePause = _current;
+                EnterPause();
+                SetPauseUI(true);
+            }
+            else if (_current == GameState.Pause)
+            {
+                Switch(_stateBeforePause);
+                SetPauseUI(false);
+            }
         }
         private void OnSceneChange(SceneChangeEvent evt)
         {
@@ -133,6 +129,34 @@ namespace SkateGame
         private void SetPlayerUI(bool show)
         {
             if (playerUI != null) playerUI.SetActive(show);
+        }
+        
+        private void UseUiInput(bool use)
+        {
+            if (use)
+            {
+                gate.SetUiInputEnabled(true);
+                gate.SetPlayerInputBlocked(true);
+            }
+            else
+            {
+                gate.SetUiInputEnabled(false);
+                gate.SetPlayerInputBlocked(false);
+            }
+        }
+
+        private void TimeStop(bool stop)
+        {
+            if (stop)
+            {
+                Time.timeScale = 0f;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            }
         }
     }
 }
