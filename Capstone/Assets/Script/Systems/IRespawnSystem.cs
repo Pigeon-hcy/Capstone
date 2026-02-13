@@ -17,6 +17,7 @@ namespace SkateGame
     {
         private IRespawnModel respawnModel;
         private PlayerController playerController;
+        private IEnergySystem energySystem;
         private static MonoBehaviour coroutineRunner;
 
         public IArchitecture GetArchitecture() => GameApp.Interface;
@@ -26,7 +27,7 @@ namespace SkateGame
             respawnModel = this.GetModel<IRespawnModel>();
             UpdatePlayerController();
             InitializeCoroutineRunner();
-
+            energySystem = this.GetSystem<IEnergySystem>();
             this.RegisterEvent<PassRespawnPointEvent>(OnPassRespawnPoint);
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -68,8 +69,6 @@ namespace SkateGame
         public void RespawnPlayer()
         {
             if (coroutineRunner == null)
-                InitializeCoroutineRunner();
-            var energySystem = this.GetSystem<IEnergySystem>();
             coroutineRunner.StartCoroutine(DeathRoutine());
         }
 
