@@ -70,7 +70,6 @@ namespace SkateGame
             if (coroutineRunner == null)
                 InitializeCoroutineRunner();
             var energySystem = this.GetSystem<IEnergySystem>();
-            energySystem.ResetEnergy();
             coroutineRunner.StartCoroutine(DeathRoutine());
         }
 
@@ -104,7 +103,8 @@ namespace SkateGame
             rb.simulated = true;
 
             playerController.gameObject.SetActive(true);
-
+            
+            energySystem.ResetEnergy();
             playRespawnParticleAt(player.position);
 
             
