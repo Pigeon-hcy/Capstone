@@ -27,6 +27,7 @@ namespace SkateGame
 
         // UI action map
         InputAction _uiCancelAction;
+        InputAction _uiPauseAction;
         private bool _isShootLocked = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
 
@@ -53,6 +54,7 @@ namespace SkateGame
             _restartAction = _actions.FindAction("Player/Restart");
             // UI action map
             _uiCancelAction = _actions.FindAction("UI/Cancel");
+            _uiPauseAction = _actions.FindAction("UI/Pause");
         }
         void Start()
         {
@@ -97,7 +99,7 @@ namespace SkateGame
             }
 
             // toggle pause
-            if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame())
+            if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame()|| _uiPauseAction.WasPressedThisFrame())
             {
                 this.SendEvent<TogglePauseEvent>();
             }
