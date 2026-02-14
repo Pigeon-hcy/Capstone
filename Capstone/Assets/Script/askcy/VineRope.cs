@@ -209,44 +209,17 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
     #region Visualization
 
     /// <summary>
-    /// 更新绳子端点位置（带曲线与逐渐变直动画）
+    /// 更新绳子端点位置
     /// </summary>
     private void UpdateRopeEndPoint()
     {
         if (m_lineRenderer == null) return;
 
         Vector2 start = transform.position;
-        Vector2 end = currentState == RopeState.Grappling ?
+        Vector2 end = currentState == RopeState.Grappling ? 
             grapplePoint : start + extendDirection * currentDistance;
-
-        bool useCurve = ropeAnimationCurve != null && ropeAnimationCurve.length > 0;
-        int pointCount = useCurve ? Mathf.Max(2, percision) : 2;
-        m_lineRenderer.positionCount = pointCount;
-
-        if (pointCount == 2)
-        {
-            m_lineRenderer.SetPosition(0, start);
-            m_lineRenderer.SetPosition(1, end);
-            return;
-        }
-
-        Vector2 dir = (end - start).normalized;
-        Vector2 perpendicular = new Vector2(-dir.y, dir.x);
-
-        // 钩住后随时间逐渐变直：用 ropeProgressionCurve 控制弯曲强度 (1→0)
-        float straightenProgress = Mathf.Clamp01(grappleTime * straightenLineSpeed);
-        float curveStrength = (ropeProgressionCurve != null && ropeProgressionCurve.length > 0)
-            ? ropeProgressionCurve.Evaluate(straightenProgress)
-            : 1f;
-
-        for (int i = 0; i < pointCount; i++)
-        {
-            float t = (pointCount > 1) ? ((float)i / (pointCount - 1)) : 0f;
-            Vector2 basePoint = Vector2.Lerp(start, end, t);
-            float offset = ropeAnimationCurve.Evaluate(t) * StartWaveSize * curveStrength;
-            Vector2 point = basePoint + perpendicular * offset;
-            m_lineRenderer.SetPosition(i, point);
-        }
+        m_lineRenderer.SetPosition(0, start);
+        m_lineRenderer.SetPosition(1, end);
     }
     #endregion
 }

@@ -1,8 +1,7 @@
 using UnityEngine;
 using SkateGame;
-using QFramework;
 
-public class ReverseState : GroundMovementState, ICanSendEvent
+public class ReverseState : GroundMovementState
 {
 
     public ReverseState(PlayerController player, Rigidbody2D rb)
@@ -13,7 +12,8 @@ public class ReverseState : GroundMovementState, ICanSendEvent
 
     protected override void EnterGroundMovement()
     {
-        player.SendEvent<ReverseInputEvent>();
+        Vector2 velocity = rb.linearVelocity;
+        rb.linearVelocity = new Vector2(-velocity.x, velocity.y);
         player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
 
         if (player.ReverseEffect != null)

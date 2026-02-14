@@ -38,18 +38,12 @@ namespace SkateGame
         public bool IsGrinding;
     }
     
-    #region Tricks
-    // TrickA - 360
+    // 技巧A输入事件
     public struct TrickAInputEvent
     {
     }
-
-    // 奖励跳跃事件
-    public struct TrickARewardEvent
-    {
-    }
     
-    // TrickB - Dash
+    // 技巧B输入事件
     public struct TrickBInputEvent
     {
         public float Direction;
@@ -60,13 +54,13 @@ namespace SkateGame
     {
     }
     
-    // TrickC - Slam
+    // 技巧C输入事件
     public struct TrickCInputEvent
     {
         public bool IsTrickingC;
     }
 
-    public struct TrickCLandEvent
+    public struct TrickCResetSpeedEvent
     {
     }
     public struct GrappleEvent
@@ -74,7 +68,7 @@ namespace SkateGame
         public Vector2 pullDirection;
         public bool IsGrappling;
     }
-    #endregion
+    
     // 强力轨道输入事件
     public struct PowerGrindInputEvent
     {
@@ -109,6 +103,10 @@ namespace SkateGame
     public struct TrickListChangedEvent
     {
         public TrickState LatestTrick;
+    }
+    // 奖励跳跃事件
+    public struct TrickARewardEvent
+    {
     }
     // 通过重生检查点事件
     public struct PassRespawnPointEvent

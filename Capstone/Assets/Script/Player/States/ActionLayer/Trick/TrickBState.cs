@@ -21,10 +21,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
         // TODO: fix direction calculation
         player.SendEvent<TrickBInputEvent>(new TrickBInputEvent 
-            { 
-                IsTrickingB = true, 
-                Direction = inputModel.Move.Value.x != 0f ? (inputModel.Move.Value.x < 0f ? -1f : 1f) : playerModel.IsFacingRight.Value ? 1f : -1f
-            });
+            { IsTrickingB = true, Direction = inputModel.Move.Value.x < 0f ? -1f : 1f });
         
     }
     protected override void UpdateActionState()

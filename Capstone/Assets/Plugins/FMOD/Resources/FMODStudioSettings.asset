@@ -563,7 +563,6 @@ MonoBehaviour:
   Banks:
   - MX
   - SFX
-  - VD
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

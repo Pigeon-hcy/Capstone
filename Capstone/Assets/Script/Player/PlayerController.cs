@@ -113,9 +113,7 @@ namespace SkateGame
 
             // 获取组件
             rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = 0f;
-            rb.linearDamping = 0f;
-            playerModel.CurrentGravityScale.Value = playerModel.Config.Value.normalG;
+            rb.gravityScale = playerModel.Config.Value.normalG;
 
             // 初始化瞄准时间
             playerModel.MaxAimTime.Value = playerModel.Config.Value.baseMaxAimTime;

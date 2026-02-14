@@ -108,7 +108,6 @@ namespace SkateGame
         public float pushAccel = 20f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
-        public float bonusVelDecay = 0.98f;
 
         [Header("Air相关")]
         public float airControlForceConfig = 10f;
@@ -116,7 +115,6 @@ namespace SkateGame
 
         [Header("Grind相关")]
         public float normalG = 1f;
-        public float gravityMagnitude = 9.81f;
 
         [Header("Power Grind相关")]
         public float powerGrindDeceleration = 1f;

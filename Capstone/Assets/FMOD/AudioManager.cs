@@ -74,10 +74,6 @@ public class AudioManager : MonoBehaviour
     //Slam
     public EventReference slamEvent;
     private EventInstance slamEventInstance;
-
-    //Death
-    public EventReference deathEvent;
-    private EventInstance deathEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -150,9 +146,6 @@ public class AudioManager : MonoBehaviour
 
         //Slam
         slamEventInstance = RuntimeManager.CreateInstance(slamEvent);
-
-        //Death
-        deathEventInstance = RuntimeManager.CreateInstance(deathEvent);
         #endregion
     }
 
@@ -392,15 +385,6 @@ public class AudioManager : MonoBehaviour
         if (slamEventInstance.isValid())
         {
             slamEventInstance.start();
-        }
-    }
-
-    //Death
-    public void fmodPlayDeath()
-    {
-        if (deathEventInstance.isValid())
-        {
-            deathEventInstance.start();
         }
     }
     #endregion

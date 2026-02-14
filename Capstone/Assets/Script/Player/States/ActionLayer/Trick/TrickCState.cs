@@ -18,27 +18,28 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = true });
     }
     protected override void UpdateActionState()
-    {  
+    {
+        
         if(!inputModel.Brake.Value)
         {
-            player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
         if(playerModel.IsGrounded.Value)
         {
             player.OpenSlamHitbox(playerModel.Config.Value.slamHitboxDurationTrickC);
-            player.SendEvent<TrickCLandEvent>();
             player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
         }
         if(DetectInteractiveObjects(out Collider2D[] colliders))
         {
             IInteractable interact = colliders[0].GetComponent<IInteractable>();
             interact?.DoInteraction();
-            player.SendEvent<TrickARewardEvent>();
+            player.stateMachine.SwitchState<TrickCBoostState>(StateLayer.Action);
         }
     }
 
     protected override void ExitActionState()
     {
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = false });
+        player.SendEvent<TrickCResetSpeedEvent>();
     }
 }

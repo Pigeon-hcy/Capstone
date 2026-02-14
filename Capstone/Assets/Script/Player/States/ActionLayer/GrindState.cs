@@ -49,7 +49,7 @@ public class GrindState : ActionStateBase
             leftToRight = velocity.x > 0 ? 1 : -1;
         }
 
-        playerModel.CurrentGravityScale.Value = 0f;
+        rb.gravityScale = 0f;
         rb.linearVelocity = new Vector2(direction.x * speed, 0);
         trackRef = playerModel.CurrentTrack.Value.GetDirTool();
         SnapPlayerToTrack();
@@ -124,9 +124,9 @@ public class GrindState : ActionStateBase
         }
     }
 
-        protected override void ExitActionState()
-        {
-            playerModel.CurrentGravityScale.Value = normalG;
+    protected override void ExitActionState()
+    {
+        rb.gravityScale = normalG;
 
         if (player.GrindEffect != null)
         {
