@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 767714852372548270}
   - component: {fileID: 2587897712206628520}
   - component: {fileID: 4201265388941326593}
-  - component: {fileID: 6421608615152784526}
   m_Layer: 0
   m_Name: upperAir
   m_TagString: Untagged
@@ -31,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.09, y: 0.5929, z: 0}
-  m_LocalScale: {x: 2.8495362, y: 9.2458, z: 1}
+  m_LocalScale: {x: 11.830492, y: 3.1102872, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -179,22 +178,8 @@ AreaEffector2D:
     m_Bits: 4294967295
   m_UseGlobalAngle: 0
   m_ForceAngle: 90
-  m_ForceMagnitude: 15
+  m_ForceMagnitude: 30
   m_ForceVariation: 0
   m_ForceTarget: 0
   m_Drag: 0
   m_AngularDrag: 0
---- !u!114 &6421608615152784526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539600032204481510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fef4e5aa7f6eb5f43901eb644f958591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifetime: 10
-  OnSpawnEffect: {fileID: 0}

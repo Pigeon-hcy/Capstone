@@ -17,6 +17,7 @@ namespace SkateGame
     {
         private IRespawnModel respawnModel;
         private PlayerController playerController;
+        private IEnergySystem energySystem;
         private static MonoBehaviour coroutineRunner;
 
         public IArchitecture GetArchitecture() => GameApp.Interface;
@@ -26,7 +27,7 @@ namespace SkateGame
             respawnModel = this.GetModel<IRespawnModel>();
             UpdatePlayerController();
             InitializeCoroutineRunner();
-
+            energySystem = this.GetSystem<IEnergySystem>();
             this.RegisterEvent<PassRespawnPointEvent>(OnPassRespawnPoint);
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -69,16 +70,14 @@ namespace SkateGame
         {
             if (coroutineRunner == null)
                 InitializeCoroutineRunner();
-            var energySystem = this.GetSystem<IEnergySystem>();
-            energySystem.ResetEnergy();
             coroutineRunner.StartCoroutine(DeathRoutine());
         }
 
         private IEnumerator DeathRoutine()
         {
+            playDeath();
             if (playerController == null)
                 UpdatePlayerController();
-
             Transform player = playerController.transform;
             Rigidbody2D rb = playerController.GetComponent<Rigidbody2D>();
             Vector2 deathPos = player.position;
@@ -104,7 +103,8 @@ namespace SkateGame
             rb.simulated = true;
 
             playerController.gameObject.SetActive(true);
-
+            
+            energySystem.ResetEnergy();
             playRespawnParticleAt(player.position);
 
             
@@ -156,6 +156,10 @@ namespace SkateGame
             respawnModel.CheckpointList.Value.Clear();
             respawnModel.LatestCheckpoint.Value = Vector2.zero;
             respawnModel.HasCheckpoint.Value = false;
+        }
+        public void playDeath()
+        {
+            AudioManager.Instance.fmodPlayDeath();
         }
     }
 

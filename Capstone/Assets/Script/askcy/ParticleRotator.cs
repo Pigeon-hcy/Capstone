@@ -26,7 +26,7 @@ public class ParticleRotator : MonoBehaviour
             if(Mathf.Abs(rotationY - 180f) < 1f)
             {
                 particleRenderer.flip = new Vector3(1, 0, 0);
-                Debug.Log("Flip X: " + particleRenderer.flip + " (Rotation Y: " + rotationY + ")");
+                //Debug.Log("Flip X: " + particleRenderer.flip + " (Rotation Y: " + rotationY + ")");
             }
             else if(Mathf.Abs(rotationY) < 1f || Mathf.Abs(rotationY - 360f) < 1f)
             {

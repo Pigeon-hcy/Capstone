@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using QFramework;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 namespace SkateGame
 {
@@ -9,7 +10,6 @@ namespace SkateGame
     {
         private Canvas levelSelectCanvas;
         public string playerTag = "Player";
-
         private PlayerController playerController;   // 玩家控制器引用
         private ILevelProgressSystem levelProgressSystem;  // 关卡进度系统
         private ILevelProgressModel levelProgressModel;
@@ -108,7 +108,7 @@ namespace SkateGame
                     playerController.disableInput = true;
                     playerController.rb.linearVelocity = Vector2.zero;
                 }
-                GameStateController.Instance.EnterOverlay();
+                GameStateController.Instance.EnterPause();
             }
         }
 
@@ -139,6 +139,10 @@ namespace SkateGame
             if (levelSelectCanvas != null)
             {
                 levelSelectCanvas.gameObject.SetActive(true);
+                // 找到Canvas下第一个可被选中的Selectable 
+                // TODO: 指定Selectable
+                GameObject firstSelectable = levelSelectCanvas.GetComponentsInChildren<UnityEngine.UI.Selectable>()[0].gameObject;
+                EventSystem.current?.SetSelectedGameObject(firstSelectable);
                 Debug.Log("LevelCanvas 显示");
             }
         }
@@ -148,6 +152,7 @@ namespace SkateGame
             if (levelSelectCanvas != null)
             {
                 levelSelectCanvas.gameObject.SetActive(false);
+                EventSystem.current?.SetSelectedGameObject(null);
                 Debug.Log("LevelCanvas 隐藏");
             }
         }
