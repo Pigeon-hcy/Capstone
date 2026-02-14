@@ -69,6 +69,7 @@ namespace SkateGame
         public void RespawnPlayer()
         {
             if (coroutineRunner == null)
+                InitializeCoroutineRunner();
             coroutineRunner.StartCoroutine(DeathRoutine());
         }
 
