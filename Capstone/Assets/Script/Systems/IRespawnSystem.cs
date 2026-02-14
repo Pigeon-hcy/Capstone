@@ -78,6 +78,11 @@ namespace SkateGame
             playDeath();
             if (playerController == null)
                 UpdatePlayerController();
+            if (playerController == null)
+            {
+                Debug.LogError("[RespawnSystem] PlayerController not found, cannot respawn.");
+                yield break;
+            }
             Transform player = playerController.transform;
             Rigidbody2D rb = playerController.GetComponent<Rigidbody2D>();
             Vector2 deathPos = player.position;
@@ -99,10 +104,10 @@ namespace SkateGame
             yield return new WaitForSeconds(1f);
 
             player.position = respawnModel.LatestCheckpoint.Value;
-            playerController.UpdatePlayerDirection(true);
             rb.simulated = true;
 
             playerController.gameObject.SetActive(true);
+            playerController.UpdatePlayerDirection(true);
             
             energySystem.ResetEnergy();
             playRespawnParticleAt(player.position);
@@ -143,10 +148,12 @@ namespace SkateGame
 
         private void playRespawnParticleAt(Vector2 pos)
         {
-            var particlePrefab = playerController.transform
-                .Find("Particle Holder")
-                .Find("Spawn")
-                .GetComponent<ParticleSystem>();
+            var holder = playerController?.transform?.Find("Particle Holder");
+            if (holder == null) return;
+            var spawnObj = holder.Find("Spawn");
+            if (spawnObj == null) return;
+            var particlePrefab = spawnObj.GetComponent<ParticleSystem>();
+            if (particlePrefab == null) return;
             particlePrefab.Play();
         }
 
