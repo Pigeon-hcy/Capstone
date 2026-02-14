@@ -23,9 +23,11 @@ namespace SkateGame
         InputAction _shootEndAction;
         InputAction _pauseAction;
         InputAction _brakeAction;
+        InputAction _restartAction;
 
         // UI action map
         InputAction _uiCancelAction;
+        InputAction _uiPauseAction;
         private bool _isShootLocked = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
 
@@ -49,8 +51,10 @@ namespace SkateGame
             _shootEndAction = _actions.FindAction("Player/Shoot");
             _pauseAction = _actions.FindAction("Player/Pause");
             _brakeAction = _actions.FindAction("Player/Brake");
+            _restartAction = _actions.FindAction("Player/Restart");
             // UI action map
             _uiCancelAction = _actions.FindAction("UI/Cancel");
+            _uiPauseAction = _actions.FindAction("UI/Pause");
         }
         void Start()
         {
@@ -72,6 +76,8 @@ namespace SkateGame
 
             bool playerEnabled = !gate.PlayerInputBlocked;
             bool uiEnabled = gate.UiInputEnabled;
+
+            // update action map enabled state
             if (_playerInput != null && (playerEnabled != _lastPlayerEnabled || uiEnabled != _lastUiEnabled))
             {
                 var asset = _playerInput.actions;
@@ -93,15 +99,13 @@ namespace SkateGame
             }
 
             // toggle pause
-            // TODO: change to input system
-            if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame())
+            if (_pauseAction.WasPressedThisFrame() || _uiCancelAction.WasPressedThisFrame()|| _uiPauseAction.WasPressedThisFrame())
             {
                 this.SendEvent<TogglePauseEvent>();
             }
 
-            // Press R to respawn
-            // TODO: change to input system
-            if (playerEnabled && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            // Restart
+            if (playerEnabled && _restartAction.WasPerformedThisFrame())
             {
                 var respawn = this.GetSystem<IRespawnSystem>();
                 if (respawn != null) respawn.RespawnPlayer();
