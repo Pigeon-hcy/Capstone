@@ -68,7 +68,8 @@ namespace SkateGame
     public float JumpAtkBoxActiveTime { get; set; }
     public List<string> AtkTags { get; set; }
     public bool CanBeKilled { get; set; }
-    
+
+    protected bool firstAttackReady = false;
     protected virtual void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
@@ -87,6 +88,7 @@ namespace SkateGame
         JumpAtkBoxActiveTime = config.JumpAtkBoxActiveTime;
         AtkTags             = config.AtkTags;
         CanBeKilled      = config.canBeKilledByQ;
+        firstAttackReady = config.directAttackFirstTime;
 
 
         movingRight = config.startFacingRight;
@@ -98,6 +100,7 @@ namespace SkateGame
         // 初始化为移动阶段
         waiting   = false;
         moveTimer = config.moveDuration; 
+        
     }
 
     protected struct FlipInfoRecorder
@@ -129,7 +132,8 @@ namespace SkateGame
             GuardProcess =
                 Mathf.Clamp01(GuardProcess +
                               GuardIncreaseSpeed/ 10f * Time.deltaTime);
-
+            if (firstAttackReady)
+                GuardProcess = 1;
             Guard(trans, GuardProcess);
 
             //Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
@@ -140,6 +144,7 @@ namespace SkateGame
             {
                 GuardProcess = 0f;
                 AtkTowardsPlayer(trans);
+                firstAttackReady = false;
             }
 
             recorder.inGuard   = true;

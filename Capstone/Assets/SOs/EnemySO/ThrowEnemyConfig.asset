@@ -16,17 +16,18 @@ MonoBehaviour:
   moveSpeed: 2
   waitTime: 1
   maxHealth: 30
+  directAttackFirstTime: 0
   startFacingRight: 1
   canBeKilledByQ: 1
   gravityScale: 2
   guardIncreaseSpeed: 3
   guardDecreaseSpeed: 0.5
-  detectRadius: 30
+  detectRadius: 40
   jumpAngleModifier: 0.7
   jumpForce: 10
   JumpAtkBoxActiveTime: 3
   AtkTags:
   - Player
-  bSpeed: 10
+  bSpeed: 13
   bDirection: {x: 1, y: 2}
   bLifeTime: 60

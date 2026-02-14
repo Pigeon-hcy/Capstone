@@ -13,6 +13,7 @@ namespace SkateGame
 
         [Header("初始")]
         public int   maxHealth       = 30;
+        public bool directAttackFirstTime = false;
         public bool  startFacingRight = true;
         public bool canBeKilledByQ = true;
 
