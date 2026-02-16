@@ -31,7 +31,8 @@ public enum EnemyType
     BoostEnemy,
     FlyEnemy,
     ThrowEnemy,
-    DongEnemy
+    DongEnemy,
+    IdleEnemy
 }
 
 [Serializable]

@@ -198,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: e4e7fd87c719b3f46b52d08301efff00, type: 2}
   reportBoxFactory: {fileID: 11400000, guid: ec0b14ae412bc4a52abfefb1ca04d0bf, type: 2}
-  prefabRef: {fileID: 11400000, guid: e9af9b0e2af1a45d4960403cbb14c68f, type: 2}
+  prefabRef: {fileID: 11400000, guid: 0ba0ebd2d743040b498dab80b7022dc1, type: 2}
   displayTrans: {fileID: 6565947952973124126}
   IfDrawRange: 0
   GroundLayer:
