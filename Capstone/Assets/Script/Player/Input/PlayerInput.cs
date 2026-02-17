@@ -114,6 +114,7 @@ namespace SkateGame
             var inputModel = this.GetModel<IInputModel>();
             inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
             inputModel.JumpStart.Value = _jumpAction.WasPressedThisFrame();
+            inputModel.JumpReleased.Value = _jumpAction.WasReleasedThisFrame();
             inputModel.Grind.Value = _grindAction.IsPressed();
             inputModel.GrindStart.Value = _grindAction.WasPressedThisFrame();
             inputModel.SwitchItem.Value = _switchItemAction.WasPressedThisFrame();

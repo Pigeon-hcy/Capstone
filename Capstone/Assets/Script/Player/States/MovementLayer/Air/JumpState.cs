@@ -5,6 +5,7 @@ using QFramework;
 public class JumpState : AirborneMovementState
 {
     private float jumpTimer;
+    private bool jumpEnded;
     public JumpState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
@@ -16,8 +17,9 @@ public class JumpState : AirborneMovementState
         // player.animator.Play("oPlayer@Ollie", 0);
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
+        jumpEnded = false;
         // 立即发送跳跃执行事件
-        player.SendEvent<JumpExecuteEvent>();
+        player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = true });
 
        // 播放MMF效果
         if (player.JumpEffect != null)
@@ -31,8 +33,8 @@ public class JumpState : AirborneMovementState
     {
         StateChange();
         UpdateGrindJumpTimer();
+        CheckEndJump();
         UpdateJumpTimer();
-        
     }
 
     public override void Exit()
@@ -43,8 +45,20 @@ public class JumpState : AirborneMovementState
             player.JumpEffect.StopFeedbacks();
         }
         playerModel.GrindJumpTimer.Value = 0f;
+        // 保底：发送跳跃结束事件
+        if (!jumpEnded) player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = false });
     }
-    
+
+    private void CheckEndJump()
+    {
+        if (jumpEnded) return;
+        if (inputModel.JumpReleased.Value || jumpTimer > playerModel.Config.Value.jumpHoldMaxTime)
+        {
+            player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = false });
+            jumpEnded = true;
+        }
+    }
+
     private void UpdateGrindJumpTimer()
     {
         // 更新轨道跳计时器

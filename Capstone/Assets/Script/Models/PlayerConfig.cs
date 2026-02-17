@@ -84,12 +84,13 @@ namespace SkateGame
         public float crashAngleDiff = 45f;
         
         [Header("跳跃设置")]
-        public float maxJumpForce = 6f;
-        public float minJumpForce = 0f;
+        public float jumpForce = 2f;
+        public float jumpHoldForce = 6f;
+        public float jumpHoldMaxTime = 0.2f;
+        [Range(0f, 1f)] public float jumpCutMultiplier = 0.5f;
+        public float wallJumpForce = 6f;
         [Range(0f, 1f)] public float wallJumpUpMultiplier = 0.7f;
         public float wallJumpForceMultiplier = 1.5f;
-        public float doubleJumpForce = 8f;
-        public float maxChargeTime = 2f;
 
         [Header("移动设置")]
         

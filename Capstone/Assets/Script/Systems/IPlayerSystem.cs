@@ -6,6 +6,7 @@ namespace SkateGame
     public struct PendingActions
     {
         public bool JumpQueued;
+        public bool JumpCutQueued;
         public bool WallJumpQueued;
         public bool ReverseQueued;
         public bool GrappleImpulseQueued;
@@ -13,6 +14,7 @@ namespace SkateGame
         public bool TrickCLandQueued;
         public bool TrickARewardQueued;
 
+        public bool Jumping;
         public bool Dashing;
         public bool Slamming;
         public bool Grapplling;
@@ -25,6 +27,7 @@ namespace SkateGame
         public void Clear()
         {
             JumpQueued = false;
+            JumpCutQueued = false;
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
@@ -35,12 +38,14 @@ namespace SkateGame
         public void ClearAll()
         {
             JumpQueued = false;
+            JumpCutQueued = false;
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
             TrickBResetSpeedQueued = false;
             TrickCLandQueued = false;
             TrickARewardQueued = false;
+            Jumping = false;
             Dashing = false;
             Slamming = false;
             Grapplling = false;
@@ -125,7 +130,7 @@ namespace SkateGame
             cachedMoveInput = 0;
             cachedMoveInput = evt.HorizontalInput;
         }
-        private void OnJumpInput(JumpExecuteEvent evt) { pending.JumpQueued = true; }
+        private void OnJumpInput(JumpExecuteEvent evt) { pending.JumpQueued = evt.IsJumping; pending.Jumping = evt.IsJumping; pending.JumpCutQueued = !evt.IsJumping; }
         private void OnWallJumpInput(WallJumpExecuteEvent evt) { pending.WallJumpQueued = true; }
         private void OnStateChanged(StateChangedEvent evt)
         {
@@ -183,6 +188,8 @@ namespace SkateGame
             // Priority 2: leave ground
             if (pending.JumpQueued) ApplyJumpImpulse();
             if (pending.WallJumpQueued) ApplyWallJumpImpulse();
+            if (pending.Jumping) ApplyJumpHeld();
+            if (pending.JumpCutQueued) ApplyJumpCut();
             // Priority 3: trick one-shots
             if (pending.TrickARewardQueued) ApplyTrickAReward();
             if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(pending.TrickBDirection != 0f ? pending.TrickBDirection : lastTrickBDirection);
@@ -198,6 +205,7 @@ namespace SkateGame
 
             // Bonus velocity
             rb.linearVelocity = moveVel + bonusVel;
+            Debug.Log("moveVel: " + moveVel + " bonusVel: " + bonusVel);
             bonusVel *= playerModel.Config.Value.bonusVelDecay;
             if (Mathf.Abs(bonusVel.x) < 0.01f && Mathf.Abs(bonusVel.y) < 0.01f)
                 bonusVel = Vector2.zero;
@@ -241,6 +249,7 @@ namespace SkateGame
             else
             {
                 moveVel += g * Time.fixedDeltaTime;
+                moveVel = new Vector2(moveVel.x, Mathf.Max(moveVel.y, playerModel.Config.Value.maxFallSpeed));
             }
         }
 
@@ -289,10 +298,29 @@ namespace SkateGame
         #region Jumps
         private void ApplyJumpImpulse()
         {
-            Vector2 upDir = playerModel.IsGrounded.Value ? groundUp: Vector2.up;
+            // Vector2 upDir = playerModel.IsGrounded.Value ? groundUp : Vector2.up;
+            Vector2 upDir = Vector2.up;
             moveVel -= Vector2.Dot(moveVel, upDir) * upDir;
             bonusVel -= Vector2.Dot(bonusVel, upDir) * upDir;
-            moveVel += upDir * playerModel.Config.Value.maxJumpForce;
+            moveVel += upDir * playerModel.Config.Value.jumpForce;
+        }
+
+        private void ApplyJumpHeld()
+        {
+            // Vector2 upDir = playerModel.IsGrounded.Value ? groundUp : Vector2.up;    
+            Vector2 upDir = Vector2.up;
+            float vUp = Vector2.Dot(moveVel, upDir);
+            if (vUp < playerModel.Config.Value.jumpHoldForce)
+            {
+                moveVel -= vUp * upDir;
+                moveVel += playerModel.Config.Value.jumpHoldForce * upDir;
+            }
+        }
+
+        private void ApplyJumpCut()
+        {
+            Vector2 upDir = Vector2.up;
+            moveVel -= Vector2.Dot(moveVel, upDir) * upDir * playerModel.Config.Value.jumpCutMultiplier;
         }
 
         private void ApplyWallJumpImpulse()
@@ -302,7 +330,7 @@ namespace SkateGame
             Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
             moveVel = new Vector2(0, 0);
             bonusVel = Vector2.zero;
-            moveVel += jumpDir * playerModel.Config.Value.maxJumpForce *
+            moveVel += jumpDir * playerModel.Config.Value.wallJumpForce *
                 playerModel.Config.Value.wallJumpForceMultiplier;
         }
         #endregion
@@ -334,14 +362,14 @@ namespace SkateGame
         }
         private void ApplyTrickCLand()
         {
-            float slamIntoSlope = Vector2.Dot((Vector2.down * playerModel.Config.Value.TrickCBoostspeed), groundRight);
+            float slamIntoSlope = Vector2.Dot(Vector2.down * playerModel.Config.Value.TrickCBoostspeed, groundRight);
             bonusVel += slamIntoSlope * groundRight;
         }
 
         private void ApplyTrickAReward()
         {
             moveVel = new Vector2(moveVel.x, 0);
-            moveVel += Vector2.up * playerModel.Config.Value.maxJumpForce;
+            moveVel += Vector2.up * playerModel.Config.Value.wallJumpForce;
         }
         private void ApplyGrappleImpulse(Vector2 dir)
         {

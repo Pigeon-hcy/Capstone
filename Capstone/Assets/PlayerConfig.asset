@@ -70,16 +70,17 @@ MonoBehaviour:
   crashVelocity: 2
   crashAngle: 60
   crashAngleDiff: 45
-  maxJumpForce: 12
-  minJumpForce: 0
+  jumpForce: 16
+  jumpHoldForce: 12
+  jumpHoldMaxTime: 0.3
+  jumpCutMultiplier: 0.8
+  wallJumpForce: 12
   wallJumpUpMultiplier: 0.6
   wallJumpForceMultiplier: 1.5
-  doubleJumpForce: 6
-  maxChargeTime: 2
   groundForce: 10
-  slopeCompensationForce: 0.25
+  slopeCompensationForce: 0.5
   maxMoveSpeed: 15
-  maxFallSpeed: -10
+  maxFallSpeed: -12
   maxAirHorizontalSpeed: 15
   airAccel: 1
   groundAccel: 1
@@ -89,9 +90,11 @@ MonoBehaviour:
   pushAccel: 25
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
+  bonusVelDecay: 0.98
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
-  normalG: 2
+  normalG: 3.2
+  gravityMagnitude: 9.81
   powerGrindDeceleration: 8
   reverseInputWindow: 2
   grindJumpIgnoreTime: 0.2

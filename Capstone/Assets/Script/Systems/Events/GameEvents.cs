@@ -89,6 +89,7 @@ namespace SkateGame
     // 跳跃执行事件
     public struct JumpExecuteEvent
     {
+        public bool IsJumping;
     }
     public struct WallJumpExecuteEvent
     {
