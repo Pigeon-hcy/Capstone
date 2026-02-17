@@ -25,9 +25,6 @@ public class RecoveryState : ActionStateBase
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
 
-        if (inputModel.Grind.Value)
-        {
-            GrindInput();   
-        }
+        CheckSwitchAction();
     }
 }

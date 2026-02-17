@@ -31,6 +31,14 @@ public class LandState : GroundMovementState, ICanSendEvent
 
     protected override void UpdateGroundMovement()
     {
+        if(inputModel.Push.Value)
+        {
+            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
+        }
+        else
+        {
+            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Movement);
+        }
         UpdateLandTimer();
     }
 
@@ -40,10 +48,6 @@ public class LandState : GroundMovementState, ICanSendEvent
 
     private void UpdateLandTimer()
     {
-        if(inputModel.Push.Value)
-        {
-            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
-        }
         // change land duration based on jump type
         // TODO: no double jump anymore
         if(isDoubleJumpLand && landTimer < playerModel.LandDuration.Value ||
@@ -53,7 +57,7 @@ public class LandState : GroundMovementState, ICanSendEvent
         }
         else
         {
-            if(rb.linearVelocity.x == 0)
+            if(rb.linearVelocity.x < 0.01f)
             {
                 player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             }

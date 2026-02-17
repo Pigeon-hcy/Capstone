@@ -104,6 +104,7 @@ namespace SkateGame
     public struct PushInputEvent
     {
         public bool IsPushing;
+        public bool IsPushingRight;
     }
     
     // Trick列表变化事件

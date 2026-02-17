@@ -98,8 +98,8 @@ namespace SkateGame
         
         [Tooltip("坡度补偿力"), Range(0f, 1f)] public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
+        public float maxPushSpeed = 10f;
         public float maxFallSpeed = -10f;
-        public float maxAirHorizontalSpeed = 10f;
         public float airAccel = 20f;
         public float groundAccel = 20f;
         
@@ -121,6 +121,8 @@ namespace SkateGame
 
         [Header("Power Grind相关")]
         public float powerGrindDeceleration = 1f;
+        public float powerGrindStopSpeedThreshold = 0.5f;
+        public float powerGrindMaxDuration = 2f;
         public float reverseInputWindow = 2.0f;
         public float grindJumpIgnoreTime = 0.2f;
 

@@ -21,8 +21,6 @@ namespace SkateGame
         public bool Grinding;
         public bool PowerGrinding;
         public bool Pushing;
-        public float TrickBDirection;
-        public Vector2 GrappleDirection;
 
         public void Clear()
         {
@@ -71,6 +69,9 @@ namespace SkateGame
         private float cachedMoveInput;
         private PendingActions pending;
         private float lastTrickBDirection;
+        public bool IsPushingRight;
+        public float TrickBDirection;
+        public Vector2 GrappleDirection;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -137,7 +138,7 @@ namespace SkateGame
             ApplyStateChanged(evt);
             UpdateAnimatorOnStateChanged(evt);
         }
-        private void OnPushInput(PushInputEvent evt) { pending.Pushing = evt.IsPushing; }
+        private void OnPushInput(PushInputEvent evt) { pending.Pushing = evt.IsPushing; IsPushingRight = evt.IsPushingRight; }
         private void OnPowerGrindInput(PowerGrindInputEvent evt) { pending.PowerGrinding = evt.IsPowerGrinding; }
         private void OnReverseInput(ReverseInputEvent evt) { pending.ReverseQueued = true; }
         private void OnGrindInput(GrindInputEvent evt) { pending.Grinding = evt.IsGrinding; }
@@ -147,7 +148,7 @@ namespace SkateGame
             pending.Dashing = evt.IsTrickingB;
             if (pending.Dashing)
             {
-                pending.TrickBDirection = evt.Direction;
+                TrickBDirection = evt.Direction;
                 lastTrickBDirection = evt.Direction;
             }
         }
@@ -159,7 +160,7 @@ namespace SkateGame
         {
             pending.GrappleImpulseQueued = evt.IsGrappling;
             pending.Grapplling = evt.IsGrappling;
-            pending.GrappleDirection = evt.pullDirection;
+            GrappleDirection = evt.pullDirection;
         }
         #endregion
 
@@ -177,7 +178,7 @@ namespace SkateGame
                 if (vUpMove < 0f) { moveVel -= vUpMove * groundUp; }
                 if (vUpBonus < 0f) { bonusVel -= vUpBonus * groundUp; }
                 ApplySlopeCompensation();
-                ClampGroundSpeed();
+                ClampGroundSpeed(pending.Pushing);
             }
             if (pending.PowerGrinding) ApplyPowerGrind();
             ApplyCustomDamping(isGrounded);
@@ -192,20 +193,20 @@ namespace SkateGame
             if (pending.JumpCutQueued) ApplyJumpCut();
             // Priority 3: trick one-shots
             if (pending.TrickARewardQueued) ApplyTrickAReward();
-            if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(pending.TrickBDirection != 0f ? pending.TrickBDirection : lastTrickBDirection);
+            if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
             if (pending.TrickCLandQueued) ApplyTrickCLand();
-            if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(pending.GrappleDirection);
+            if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
             // Priority 4: sustained actions
             if (pending.Grinding) ApplyGrind();
-            if (pending.Dashing) ApplyTrickB(pending.TrickBDirection);
+            if (pending.Dashing) ApplyTrickB(TrickBDirection);
             if (pending.Slamming) ApplyTrickC();
-            if (pending.Grapplling) ApplyGrappleForce(pending.GrappleDirection);
+            if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
 
             pending.Clear();
 
             // Bonus velocity
-            rb.linearVelocity = moveVel + bonusVel;
             Debug.Log("moveVel: " + moveVel + " bonusVel: " + bonusVel);
+            rb.linearVelocity = moveVel + bonusVel;
             bonusVel *= playerModel.Config.Value.bonusVelDecay;
             if (Mathf.Abs(bonusVel.x) < 0.01f && Mathf.Abs(bonusVel.y) < 0.01f)
                 bonusVel = Vector2.zero;
@@ -215,7 +216,7 @@ namespace SkateGame
         {
             if (pushing)
             {
-                moveVel += groundRight * (playerModel.IsFacingRight.Value ? 1 : -1) * playerModel.Config.Value.pushAccel * Time.fixedDeltaTime;
+                moveVel += groundRight * (IsPushingRight ? 1 : -1) * playerModel.Config.Value.pushAccel * Time.fixedDeltaTime;
             }
             else if (Mathf.Abs(horizontalInput) > 0.01f)
             {
@@ -261,6 +262,7 @@ namespace SkateGame
 
         private void ApplyPowerGrind()
         {
+            if (playerModel.PowerGrindStopped.Value) return;
             float deceleration = playerModel.Config.Value.powerGrindDeceleration;
             float direction = Mathf.Sign(vRightMove);
             // 逐渐减少的速度，保持方向不变
@@ -268,14 +270,17 @@ namespace SkateGame
             float newVxBonus = vRightBonus - direction * deceleration * Time.fixedDeltaTime;
             // 防止越过零点
             if (Mathf.Sign(newVx) != direction || Mathf.Abs(newVx) < 0.01f) newVx = 0f;
-            if (newVxBonus < 0f) newVxBonus = 0f;
+            if (Mathf.Sign(newVxBonus) != direction || Mathf.Abs(newVxBonus) < 0.01f) newVxBonus = 0f;
+            // powergrind直到减速到0为止
+            if (Mathf.Abs(newVx) < 0.01f && Mathf.Abs(newVxBonus) < 0.01f) playerModel.PowerGrindStopped.Value = true;
             bonusVel = newVxBonus * groundRight + vUpBonus * groundUp;
             moveVel = newVx * groundRight + vUpMove * groundUp;
         }
 
-        private void ClampGroundSpeed()
+        private void ClampGroundSpeed(bool pushing)
         {
-            float newVRight = Mathf.Clamp(vRightMove, -playerModel.Config.Value.maxMoveSpeed, playerModel.Config.Value.maxMoveSpeed);
+            float maxSpeed = playerModel.Config.Value.maxPushSpeed;
+            float newVRight = Mathf.Clamp(vRightMove, -maxSpeed, maxSpeed);
             moveVel = newVRight * groundRight + vUpMove * groundUp;
         }
         #endregion

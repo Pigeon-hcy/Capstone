@@ -24,18 +24,12 @@ public class MoveState : GroundMovementState
     protected override void UpdateGroundMovement()
     {
         /* 状态切换 */
-        // Brake
-        if (inputModel.BrakeStart.Value)
-        {
-            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Movement);
-        }
-        // Push
-        else if(inputModel.Push.Value)
+        if (inputModel.Push.Value)
         {
             player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
         }
         // Idle
-        else if (rb.linearVelocity.x == 0)
+        else if (Mathf.Abs(rb.linearVelocity.x) < 0.01f)
         {
             player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             pauseMove();
@@ -48,11 +42,6 @@ public class MoveState : GroundMovementState
         {
             player.moveEffect.StopFeedbacks();
         }
-    }
-
-    public void playMoving()
-    {
-        AudioManager.Instance.fmodPlayMove();
     }
 
     public void pauseMove()

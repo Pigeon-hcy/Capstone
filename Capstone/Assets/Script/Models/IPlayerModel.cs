@@ -58,6 +58,7 @@ namespace SkateGame
         /// Action Layer 基础参数
         /// </summary>
         BindableProperty<bool> IsIgnoringMovementLayer { get; }
+        BindableProperty<bool> PowerGrindStopped { get; }
 
         /// <summary>
         /// 子弹相关
@@ -125,7 +126,8 @@ namespace SkateGame
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);
-        
+        public BindableProperty<bool> PowerGrindStopped { get; } = new BindableProperty<bool>(false);
+
         // 子弹相关
         public BindableProperty<int> CurrentBulletIndex { get; } = new BindableProperty<int>(0);
         public BindableProperty<int> CurrentBulletCount { get; } = new BindableProperty<int>(0);

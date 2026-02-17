@@ -16,27 +16,22 @@ public class PushState : GroundMovementState
         pushTimer = 0f;
         playPush();
         player.animator.SetTrigger("Push");
-        player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true });
+        bool isPushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
+        player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = isPushingRight });
     }
 
     protected override void UpdateGroundMovement()
     {
         pushTimer += Time.deltaTime;
-        if(pushTimer > 1.5f)
+        if(pushTimer > 1f)
         {
             pushTimer = 0f;
             // TODO: Add push sliding animation
             player.animator.SetTrigger("Push");
         }
-        // Switch State
-        // Brake
-        if(inputModel.BrakeStart.Value)
+        if (!inputModel.Push.Value)
         {
             player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Movement);
-        }
-        else if(!inputModel.Push.Value)
-        {
-            player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
         }
     }
 

@@ -79,11 +79,11 @@ MonoBehaviour:
   wallJumpForceMultiplier: 1.5
   groundForce: 10
   slopeCompensationForce: 0.5
-  maxMoveSpeed: 15
+  maxMoveSpeed: 12
+  maxPushSpeed: 24
   maxFallSpeed: -12
-  maxAirHorizontalSpeed: 15
   airAccel: 1
-  groundAccel: 1
+  groundAccel: 4
   stopDecelIncrement: -1
   turnDecel: 1
   airTurnDecel: 10
@@ -95,7 +95,9 @@ MonoBehaviour:
   maxAirHorizontalSpeedConfig: 8
   normalG: 3.2
   gravityMagnitude: 9.81
-  powerGrindDeceleration: 8
+  powerGrindDeceleration: 12
+  powerGrindStopSpeedThreshold: 0.5
+  powerGrindMaxDuration: 1
   reverseInputWindow: 2
   grindJumpIgnoreTime: 0.2
   baseMaxAimTime: 3
