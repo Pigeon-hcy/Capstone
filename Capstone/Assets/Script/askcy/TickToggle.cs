@@ -16,9 +16,9 @@ public class TickToggle : MonoBehaviour
 
     public GameObject targetGrid;
     public float openTime = 5f;
-    public float openTimer;
+    public static float openTimer;
 
-    public bool isOpen = false;
+    public static bool isOpen = false;
 
     public GameObject progressBar;
 
@@ -81,12 +81,18 @@ public class TickToggle : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
+            if(isOpen == true)
+            {
+                openTimer = openTime;
+            }
+
             isUsed = true;
             if (OnUseEffect != null)
             {
                 OnUseEffect.PlayFeedbacks();
             }
             ToggleOpen();
+            
         }
     }
 
