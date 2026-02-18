@@ -2,20 +2,19 @@ using UnityEngine;
 using SkateGame;
 using QFramework;
 
-public class PowerGrindState : GroundMovementState
+public class PowerGrindState : ActionStateBase
 {
-    private float grindTimer;
 
-    public PowerGrindState(PlayerController player, Rigidbody2D rb)
+    public PowerGrindState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
         this.rb = rb;
+        isLoop = playerModel.Config.Value.isLoopPowerGrind;
+        ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerPowerGrind;
     }
 
-    protected override void EnterGroundMovement()
+    protected override void EnterActionState()
     {
-        grindTimer = 0f;
-        playerModel.PowerGrindStopped.Value = false;
         player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true });
         // 开始检查反向输入窗口
         StartCheckReverseWindow();
@@ -26,18 +25,19 @@ public class PowerGrindState : GroundMovementState
         playPowerGrind();
     }
 
-    protected override void UpdateGroundMovement()
+    protected override void UpdateActionState()
     {
-        grindTimer += Time.deltaTime;
-        if (playerModel.PowerGrindStopped.Value || grindTimer >= playerModel.Config.Value.powerGrindMaxDuration)
+        CheckSwitchAction();
+        bool hasStopped = Mathf.Abs(playerModel.PushSpeed.Value) < playerModel.Config.Value.powerGrindStopSpeedThreshold;
+        if (hasStopped || !playerModel.IsGrounded.Value)
         {
-            player.stateMachine.SwitchState<MoveState>(StateLayer.Movement);
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
 
         // CheckReverse();
     }
 
-    protected override void ExitGroundMovement()
+    protected override void ExitActionState()
     {   
         // 停止MMF效果
         if (player.powerGrindEffect != null)

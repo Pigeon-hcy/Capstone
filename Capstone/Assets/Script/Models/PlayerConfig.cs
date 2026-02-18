@@ -9,6 +9,18 @@ namespace SkateGame
         [Header("No Action State")]
         public bool isLoopNoAction = true;
         public bool ignoringMovementLayerNoAction = false;
+        [Header("Push State")]
+        public bool isLoopPush = true;
+        public bool ignoringMovementLayerPush = false;
+        public float maxPushSpeed = 10f;
+        public float pushBurstSpeed = 20f;
+        public float pushTimeToMaxSpeed = 2f;
+
+        [Header("Power Grind State")]
+        public bool isLoopPowerGrind = true;
+        public bool ignoringMovementLayerPowerGrind = true;
+        public float powerGrindStopSpeedThreshold = 0.5f;
+        public float powerGrindDuration = 0.5f;
 
         [Header("Recovery State")]
         public bool isLoopRecovery = false;
@@ -29,6 +41,7 @@ namespace SkateGame
         public float durationTrickA = 0.2f;
         public bool ignoringMovementLayerTrickA = true;
         public float recoveryDurationTrickA = 0.5f;
+        public float TrickARewardForce = 14f;
         [Header("Trick B State")]
         public bool isLoopTrickB = false;
         public float durationTrickB = 0.25f;
@@ -91,6 +104,7 @@ namespace SkateGame
         public float wallJumpForce = 6f;
         [Range(0f, 1f)] public float wallJumpUpMultiplier = 0.7f;
         public float wallJumpForceMultiplier = 1.5f;
+        public float grindJumpIgnoreTime = 0.2f;
 
         [Header("移动设置")]
         
@@ -98,15 +112,7 @@ namespace SkateGame
         
         [Tooltip("坡度补偿力"), Range(0f, 1f)] public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
-        public float maxPushSpeed = 10f;
         public float maxFallSpeed = -10f;
-        public float airAccel = 20f;
-        public float groundAccel = 20f;
-        
-        [Tooltip("低速状态减速提升"), Range(0f, -2f)] public float stopDecelIncrement = -1f;
-        public float turnDecel = 40f;
-        public float airTurnDecel = 40f;
-        public float pushAccel = 20f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
         public float bonusVelDecay = 0.98f;
@@ -118,13 +124,6 @@ namespace SkateGame
         [Header("Grind相关")]
         public float normalG = 1f;
         public float gravityMagnitude = 9.81f;
-
-        [Header("Power Grind相关")]
-        public float powerGrindDeceleration = 1f;
-        public float powerGrindStopSpeedThreshold = 0.5f;
-        public float powerGrindMaxDuration = 2f;
-        public float reverseInputWindow = 2.0f;
-        public float grindJumpIgnoreTime = 0.2f;
 
 
         [Header("瞄准设置")]

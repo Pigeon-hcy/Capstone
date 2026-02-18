@@ -105,6 +105,7 @@ namespace SkateGame
     {
         public bool IsPushing;
         public bool IsPushingRight;
+        public bool IsReversing;
     }
     
     // Trick列表变化事件

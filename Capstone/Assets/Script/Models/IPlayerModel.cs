@@ -35,6 +35,7 @@ namespace SkateGame
         /// <summary>
         /// jump相关
         /// </summary>
+        BindableProperty<bool> JumpStarted { get; }
         BindableProperty<float> JumpDuration { get; }
         BindableProperty<float> DoubleJumpDuration { get; }
 
@@ -45,9 +46,11 @@ namespace SkateGame
         BindableProperty<float> DoubleJumpLandDuration { get; }
 
         /// <summary>
-        /// move相关
+        /// push相关
         /// </summary>
         BindableProperty<float> PushDuration { get; }
+        BindableProperty<float> PushSpeed { get; }
+        BindableProperty<float> PushSpeedBeforeReverse { get; }
 
         /// <summary>
         /// Trick相关
@@ -58,7 +61,6 @@ namespace SkateGame
         /// Action Layer 基础参数
         /// </summary>
         BindableProperty<bool> IsIgnoringMovementLayer { get; }
-        BindableProperty<bool> PowerGrindStopped { get; }
 
         /// <summary>
         /// 子弹相关
@@ -110,6 +112,7 @@ namespace SkateGame
         public BindableProperty<Vector2> GrindDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);
         
         // jump相关
+        public BindableProperty<bool> JumpStarted { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> JumpDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> DoubleJumpDuration { get; } = new BindableProperty<float>(0f);
         
@@ -117,8 +120,10 @@ namespace SkateGame
         public BindableProperty<float> LandDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> DoubleJumpLandDuration { get; } = new BindableProperty<float>(0f);
 
-        // move相关
+        // push相关
         public BindableProperty<float> PushDuration { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> PushSpeed { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> PushSpeedBeforeReverse { get; } = new BindableProperty<float>(0f);
 
         // Trick相关
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);
@@ -126,7 +131,6 @@ namespace SkateGame
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<bool> PowerGrindStopped { get; } = new BindableProperty<bool>(false);
 
         // 子弹相关
         public BindableProperty<int> CurrentBulletIndex { get; } = new BindableProperty<int>(0);

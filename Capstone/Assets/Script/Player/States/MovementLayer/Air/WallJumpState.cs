@@ -16,6 +16,7 @@ public class WallJumpState : AirborneMovementState
         // player.animator.Play("oPlayer@Ollie", 0);
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
+        playerModel.JumpStarted.Value = false;
         // 立即发送跳跃执行事件
         player.SendEvent<WallJumpExecuteEvent>();
 
@@ -59,6 +60,10 @@ public class WallJumpState : AirborneMovementState
         if (jumpTimer < playerModel.JumpDuration.Value)
         {
             jumpTimer += Time.deltaTime;
+            if (playerModel.CanDoubleJump.Value && jumpTimer > 0f)
+            {
+                playerModel.JumpStarted.Value = true;
+            }
         }
         else
         {
@@ -68,10 +73,6 @@ public class WallJumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (playerModel.CanDoubleJump.Value && jumpTimer > 0f && inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
-        {
-            player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
-        }
     }
 
     public void playOllie()

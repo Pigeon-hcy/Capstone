@@ -78,6 +78,24 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             GrindInput();
         }
     }
+
+    protected void CheckPushAndPowerGrind()
+    {
+        if (inputModel.Push.Value && playerModel.IsGrounded.Value)
+        {
+            player.stateMachine.SwitchState<PushState>(StateLayer.Action);
+        }
+        else if (!inputModel.Push.Value && playerModel.IsGrounded.Value && Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
+        {
+            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
+        }
+    }
+    
+    protected float VRight()
+    {
+        Vector2 groundRight = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
+        return Mathf.Abs(Vector2.Dot(rb.linearVelocity, groundRight));
+    }
     protected void GrindInput()
     {
         // 优先滑轨

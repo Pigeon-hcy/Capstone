@@ -143,12 +143,12 @@ namespace SkateGame
             stateMachine.AddState(new AirState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
             // stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
-            stateMachine.AddState(new PushState(this, rb), StateLayer.Movement);
-            stateMachine.AddState(new PowerGrindState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
             // Action Layer
             stateMachine.AddState(new NoActionState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new PushState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new PowerGrindState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickAState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickBState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickBBoostState(this, rb), StateLayer.Action);

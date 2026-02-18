@@ -23,13 +23,7 @@ public class MoveState : GroundMovementState
 
     protected override void UpdateGroundMovement()
     {
-        /* 状态切换 */
-        if (inputModel.Push.Value)
-        {
-            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
-        }
-        // Idle
-        else if (Mathf.Abs(rb.linearVelocity.x) < 0.01f)
+        if (Mathf.Abs(rb.linearVelocity.x) < 0.01f)
         {
             player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             pauseMove();

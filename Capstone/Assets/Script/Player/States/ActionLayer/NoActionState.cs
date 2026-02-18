@@ -13,5 +13,10 @@ public class NoActionState : ActionStateBase
     protected override void UpdateActionState()
     {
         CheckSwitchAction();
+        CheckPushAndPowerGrind();
+        if (!playerModel.IsGrounded.Value && playerModel.JumpStarted.Value && inputModel.JumpStart.Value)
+        {
+            player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
+        }
     }
-}
+}   

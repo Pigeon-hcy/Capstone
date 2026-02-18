@@ -31,14 +31,6 @@ public class LandState : GroundMovementState, ICanSendEvent
 
     protected override void UpdateGroundMovement()
     {
-        if(inputModel.Push.Value)
-        {
-            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
-        }
-        else
-        {
-            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Movement);
-        }
         UpdateLandTimer();
     }
 
@@ -54,6 +46,7 @@ public class LandState : GroundMovementState, ICanSendEvent
             !isDoubleJumpLand && landTimer < playerModel.DoubleJumpLandDuration.Value)
         {
             landTimer += Time.deltaTime;
+            Debug.Log("landTimer: " + landTimer);
         }
         else
         {

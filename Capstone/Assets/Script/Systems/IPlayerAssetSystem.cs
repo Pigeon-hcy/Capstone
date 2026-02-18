@@ -20,7 +20,7 @@ namespace SkateGame
         }
 
         public void SetPlayerConfig(PlayerConfig config)
-        {   
+        {
             playerConfig = config;
             playerModel.Config.Value = playerConfig;
         }
