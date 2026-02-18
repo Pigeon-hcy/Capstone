@@ -20,6 +20,9 @@ public class TickToggle : MonoBehaviour
 
     public static bool isOpen = false;
 
+    /// <summary>当前处于打开状态、负责扣时间的那个实例；只有它会执行 openTimer 倒数。</summary>
+    private static TickToggle _currentOpenInstance;
+
     public GameObject progressBar;
 
     void Start()
@@ -54,13 +57,15 @@ public class TickToggle : MonoBehaviour
             spriteRenderer.sprite = normalSprite;
         }
 
-        if (isOpen)
+        // 只有“当前打开”的那一个实例用 Time.deltaTime 扣时间，保证按现实秒计时
+        if (isOpen && _currentOpenInstance == this)
         {
             openTimer -= Time.deltaTime;
             if (openTimer <= 0)
             {
                 isOpen = false;
                 openTimer = openTime;
+                _currentOpenInstance = null;
                 EndOpen();
             }
             else if (progressBar != null)
@@ -69,7 +74,7 @@ public class TickToggle : MonoBehaviour
             }
         }
 
-        if(!isOpen)
+        if (!isOpen)
         {
             progressBar.SetActive(false);
         }
@@ -100,7 +105,8 @@ public class TickToggle : MonoBehaviour
     {
         targetGrid.SetActive(true);
         isOpen = true;
-        openTimer = openTime;
+        openTimer = openTime;  // openTime 单位为秒，与 Time.deltaTime 一致
+        _currentOpenInstance = this;
         progressBar.SetActive(true);
     }
 
