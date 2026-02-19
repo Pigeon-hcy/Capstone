@@ -40,20 +40,17 @@ public class LandState : GroundMovementState, ICanSendEvent
 
     private void UpdateLandTimer()
     {
-        if(inputModel.Push.Value)
-        {
-            player.stateMachine.SwitchState<PushState>(StateLayer.Movement);
-        }
         // change land duration based on jump type
         // TODO: no double jump anymore
         if(isDoubleJumpLand && landTimer < playerModel.LandDuration.Value ||
             !isDoubleJumpLand && landTimer < playerModel.DoubleJumpLandDuration.Value)
         {
             landTimer += Time.deltaTime;
+            Debug.Log("landTimer: " + landTimer);
         }
         else
         {
-            if(rb.linearVelocity.x == 0)
+            if(rb.linearVelocity.x < 0.01f)
             {
                 player.stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             }

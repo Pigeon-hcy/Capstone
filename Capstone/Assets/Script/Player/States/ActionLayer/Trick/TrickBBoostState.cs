@@ -22,6 +22,7 @@ public class TrickBBoostState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void UpdateActionState()
     {
         CheckSwitchAction();
+        CheckPushAndPowerGrind();
     }
     protected override void ExitActionState()
     {

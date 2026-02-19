@@ -81,10 +81,9 @@ void ApplySpeedBoost(bool applyBoost)
     {
         // 保存原始速度并翻倍
         originalMaxMoveSpeed = playerController.playerConfig.maxMoveSpeed;
-        originalMaxAirHorizontalSpeed = playerController.playerConfig.maxAirHorizontalSpeed;
+        // originalMaxAirHorizontalSpeed = playerController.playerConfig.maxAirHorizontalSpeed;
         
         playerController.playerConfig.maxMoveSpeed *= 2f;
-        playerController.playerConfig.maxAirHorizontalSpeed *= 2f;
         
         speedModified = true;
         Debug.Log("玩家速度翻倍！");
@@ -93,7 +92,7 @@ void ApplySpeedBoost(bool applyBoost)
     {
         // 恢复原始速度
         playerController.playerConfig.maxMoveSpeed = originalMaxMoveSpeed;
-        playerController.playerConfig.maxAirHorizontalSpeed = originalMaxAirHorizontalSpeed;
+        // playerController.playerConfig.maxAirHorizontalSpeed = originalMaxAirHorizontalSpeed;
         
         speedModified = false;
         Debug.Log("玩家速度恢复！");

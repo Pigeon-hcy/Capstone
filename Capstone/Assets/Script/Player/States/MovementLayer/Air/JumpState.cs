@@ -18,6 +18,7 @@ public class JumpState : AirborneMovementState
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
         jumpEnded = false;
+        playerModel.JumpStarted.Value = false;
         // 立即发送跳跃执行事件
         player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = true });
 
@@ -73,6 +74,10 @@ public class JumpState : AirborneMovementState
         if (jumpTimer < playerModel.JumpDuration.Value)
         {
             jumpTimer += Time.deltaTime;
+            if (playerModel.CanDoubleJump.Value && jumpTimer > 0f)
+            {
+                playerModel.JumpStarted.Value = true;
+            }
         }
         else
         {
@@ -87,12 +92,6 @@ public class JumpState : AirborneMovementState
             if (playerModel.IsNearFgWall.Value)
             {
                 player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
-            }
-            else if (playerModel.CanDoubleJump.Value && jumpTimer > 0f 
-                && !playerModel.IsIgnoringMovementLayer.Value 
-                && player.stateMachine.IsActionState<NoActionState>())
-            {
-                player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
             }
         }
     }
