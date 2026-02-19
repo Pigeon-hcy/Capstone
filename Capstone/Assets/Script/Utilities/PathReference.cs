@@ -15,6 +15,7 @@ public static class PathReference
             EnemyType.ThrowEnemy => "ThrowEnemy",
             EnemyType.DongEnemy => "DongEnemySet",
             EnemyType.IdleEnemy => "Idlenemy",
+            EnemyType.IdleThrowEnemy => "ThrowEnemy_StandStill",
             _=>"BasicEnemy"
         };
     }

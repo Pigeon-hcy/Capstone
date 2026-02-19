@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 291d20f3c2e0ae7408418791dc95eee1, type: 2}
   reportBoxFactory: {fileID: 11400000, guid: ec0b14ae412bc4a52abfefb1ca04d0bf, type: 2}
-  prefabRef: {fileID: 11400000, guid: a65bd3eca363242d88d5af8688cacfd0, type: 2}
+  prefabRef: {fileID: 11400000, guid: a7535b3bb38954176a09516ad1d96271, type: 2}
   displayTrans: {fileID: 8578948255075231031}
   IfDrawRange: 0
   GroundLayer:
@@ -240,7 +240,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6603774, g: 0, b: 0.44027385, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

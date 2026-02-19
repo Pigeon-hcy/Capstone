@@ -32,7 +32,8 @@ public enum EnemyType
     FlyEnemy,
     ThrowEnemy,
     DongEnemy,
-    IdleEnemy
+    IdleEnemy,
+    IdleThrowEnemy
 }
 
 [Serializable]
