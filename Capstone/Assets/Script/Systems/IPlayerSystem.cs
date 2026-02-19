@@ -74,6 +74,7 @@ namespace SkateGame
         private Vector2 bonusVel; // 额外速度，不限速，只随时间衰减
         private float cachedMoveInput;
         private PendingActions pending;
+        private float TrickARewardDirection;
         private float lastTrickBDirection;
         public bool IsPushingRight;
         public float TrickBDirection;
@@ -183,7 +184,7 @@ namespace SkateGame
         private void OnTrickCInput(TrickCInputEvent evt) { pending.Slamming = evt.IsTrickingC; }
         private void OnTrickBResetSpeed(TrickBResetSpeedEvent evt) { pending.TrickBResetSpeedQueued = true; }
         private void OnTrickCLand(TrickCLandEvent evt) { pending.TrickCLandQueued = true; }
-        private void OnTrickAReward(TrickARewardEvent evt) { pending.TrickARewardQueued = true; }
+        private void OnTrickAReward(TrickARewardEvent evt) { pending.TrickARewardQueued = true; TrickARewardDirection = evt.RewardDirection; }
         private void OnGrapple(GrappleEvent evt)
         {
             pending.GrappleImpulseQueued = evt.IsGrappling;
@@ -222,7 +223,7 @@ namespace SkateGame
                 if (pending.Jumping) ApplyJumpHeld();
                 if (pending.JumpCutQueued) ApplyJumpCut();
                 // 3: trick one-shots
-                if (pending.TrickARewardQueued) ApplyTrickAReward();
+                if (pending.TrickARewardQueued) ApplyTrickAReward(TrickARewardDirection);
                 if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
                 if (pending.TrickCLandQueued) ApplyTrickCLand();
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
@@ -367,8 +368,7 @@ namespace SkateGame
         {
             if (!playerModel.IsNearFgWall.Value) return;
             // reverse push speed
-            pushSpeed = -pushSpeed;
-            playerModel.PushSpeed.Value = pushSpeed;
+            ChangePushDirection(-1f);
             moveVel = (pushSpeed + moveSpeed) * groundRight + vUpMove * groundUp;
             // jump
             Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
@@ -385,7 +385,7 @@ namespace SkateGame
         {
             moveVel = new Vector2(-moveVel.x, moveVel.y);
             bonusVel = new Vector2(-bonusVel.x, bonusVel.y);
-            pushSpeed = -pushSpeed; // Reverse push momentum too
+            ChangePushDirection(-1f);
         }
 
         private void ApplyGrind()
@@ -395,7 +395,7 @@ namespace SkateGame
         private void ApplyTrickB(float direction)
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
-            pushSpeed = direction * Mathf.Abs(pushSpeed);
+            ChangePushDirection(direction);
             moveVel = new Vector2(direction * speed, 0);
         }
         private void ApplyTrickBResetSpeed(float direction)
@@ -413,10 +413,12 @@ namespace SkateGame
             bonusVel += slamIntoSlope * groundRight;
         }
 
-        private void ApplyTrickAReward()
+        private void ApplyTrickAReward(float direction)
         {
-            moveVel = new Vector2(moveVel.x, 0);
-            moveVel += Vector2.up * playerModel.Config.Value.TrickARewardForce;
+            moveVel = new Vector2(Mathf.Abs(moveVel.x) * direction, 0);
+            if (direction != 0f) ChangePushDirection(direction);
+            Vector2 rewardDir = new Vector2(direction, .5f).normalized;
+            moveVel += rewardDir * playerModel.Config.Value.TrickARewardForce;
         }
         private void ApplyGrappleImpulse(Vector2 dir)
         {
@@ -491,6 +493,11 @@ namespace SkateGame
         #endregion
 
         #region Helper
+        private void ChangePushDirection(float direction)
+        {
+            pushSpeed = direction * Mathf.Abs(pushSpeed);
+            playerModel.PushSpeed.Value = pushSpeed;
+        }
         private Vector2 groundUp => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized;
         private Vector2 groundRight => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
         private float vUpMove => Vector2.Dot(moveVel, groundUp);

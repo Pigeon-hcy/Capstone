@@ -29,8 +29,9 @@ public class TrickAState : TrickState
             IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
             interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
-            player.SendEvent<TrickARewardEvent>();
+            float rewardDirection = inputModel.Move.Value.x != 0f ? (inputModel.Move.Value.x < 0f ? -1f : 1f) : 0f;
+            player.SendEvent<TrickARewardEvent>(new TrickARewardEvent { RewardDirection = rewardDirection });
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
     }
-}
+}   

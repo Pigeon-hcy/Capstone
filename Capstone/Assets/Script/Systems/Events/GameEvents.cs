@@ -47,7 +47,8 @@ namespace SkateGame
     // 奖励跳跃事件
     public struct TrickARewardEvent
     {
-    }
+        public float RewardDirection;
+    }   
     
     // TrickB - Dash
     public struct TrickBInputEvent
