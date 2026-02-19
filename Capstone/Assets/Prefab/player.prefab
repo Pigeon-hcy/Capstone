@@ -30227,7 +30227,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.33641866, g: 0.6792453, b: 0.5374457, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -50360,6 +50360,7 @@ MonoBehaviour:
   pushEffectPlayer: {fileID: 3784447410742485576}
   particleEffectContainer: {fileID: 770241612130879766}
   tracePointPrefab: {fileID: 1245450733113535259, guid: 53b69ad52f50ebf46ae9d874a4acf024, type: 3}
+  traceDeathPointPrefab: {fileID: 0}
 --- !u!114 &2971916587710835888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81963,7 +81964,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.50502586, g: 0, b: 1, a: 1}
+      maxColor: {r: 0.50502586, g: 0, b: 1, a: 0}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
