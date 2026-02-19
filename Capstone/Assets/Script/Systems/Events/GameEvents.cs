@@ -118,4 +118,16 @@ namespace SkateGame
     {
         public Vector2 CheckpointPosition;
     }
+    
+    // 撞墙事件
+    public struct WallHitEvent
+    {
+        public Vector2 wallNormal;
+    }
+    
+    // 受击事件
+    public struct HitEvent
+    {
+        public bool IsHitting;
+    }
 }

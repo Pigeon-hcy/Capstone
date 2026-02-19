@@ -21,8 +21,13 @@ namespace SkateGame
         public bool ignoringMovementLayerPowerGrind = true;
         public float powerGrindDuration = 0.5f;
         public float powerGrindStopSpeedThreshold = 0.5f;
-        [Tooltip("Brake curve exponent: >1 = hard brake at start then gentle to stop. 2 = quadratic.")]
         public float powerGrindDistanceMultiplier = 2f;
+
+        [Header("Hit State")]
+        public bool isLoopHit = false;
+        public bool ignoringMovementLayerHit = true;
+        public float hitDuration = 0.5f;
+        public float hitKnockbackForce = 5f;
 
         [Header("Recovery State")]
         public bool isLoopRecovery = false;

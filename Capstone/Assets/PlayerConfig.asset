@@ -21,9 +21,13 @@ MonoBehaviour:
   pushTimeToMaxSpeed: 1
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 1
+  powerGrindDuration: 0.8
   powerGrindStopSpeedThreshold: 0.5
-  powerGrindDuration: 0.5
   powerGrindDistanceMultiplier: 1
+  isLoopHit: 0
+  ignoringMovementLayerHit: 1
+  hitDuration: 0.5
+  hitKnockbackForce: 5
   isLoopRecovery: 0
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
@@ -38,17 +42,17 @@ MonoBehaviour:
   recoveryDurationTrickA: 0.5
   TrickARewardForce: 14
   isLoopTrickB: 0
-  durationTrickB: 0.15
+  durationTrickB: 0.2
   ignoringMovementLayerTrickB: 1
   recoveryDurationTrickB: 0
   TrickBinertia: 0.3
-  TrickBspeed: 30
+  TrickBspeed: 40
   isLoopTrickBBoost: 0
   durationTrickBBoost: 0.3
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 20
+  TrickCspeed: 40
   TrickCinertia: 0.25
   recoveryDurationTrickC: 0.1
   slamHitboxDurationTrickC: 0.25
@@ -78,7 +82,7 @@ MonoBehaviour:
   wallCheckDistanceFarSlow: 1
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
-  crashVelocity: 2
+  crashVelocity: 10
   crashAngle: 60
   crashAngleDiff: 45
   jumpForce: 16

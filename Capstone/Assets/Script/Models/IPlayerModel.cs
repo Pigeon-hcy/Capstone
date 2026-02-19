@@ -74,6 +74,11 @@ namespace SkateGame
         BindableProperty<float> AimTimer { get; }
 
         /// <summary>
+        /// 受击方向
+        /// </summary>
+        BindableProperty<Vector2> HitKnockbackDirection { get; }
+
+        /// <summary>
         /// State Machine相关
         /// </summary>
         BindableProperty<string> LastActionStateName { get; }
@@ -142,6 +147,9 @@ namespace SkateGame
         public BindableProperty<bool> IsAiming { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> MaxAimTime { get; } = new BindableProperty<float>(3f);
         public BindableProperty<float> AimTimer { get; } = new BindableProperty<float>(0f);
+
+        // 受击方向
+        public BindableProperty<Vector2> HitKnockbackDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);
 
         // State Machine相关
         public BindableProperty<string> LastActionStateName { get; } = new BindableProperty<string>("None");

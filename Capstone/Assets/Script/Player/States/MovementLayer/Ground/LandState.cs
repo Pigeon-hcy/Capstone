@@ -46,7 +46,6 @@ public class LandState : GroundMovementState, ICanSendEvent
             !isDoubleJumpLand && landTimer < playerModel.DoubleJumpLandDuration.Value)
         {
             landTimer += Time.deltaTime;
-            Debug.Log("landTimer: " + landTimer);
         }
         else
         {

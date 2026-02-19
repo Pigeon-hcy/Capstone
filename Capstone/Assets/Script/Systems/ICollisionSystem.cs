@@ -108,11 +108,8 @@ namespace SkateGame
                 && angleDifference > playerModel.Config.Value.crashAngleDiff
                 && Mathf.Abs(angle) > playerModel.Config.Value.crashAngle)
             {
-                /*
-                 need to add crash effect
-                */
-                var respawnSystem = this.GetSystem<IRespawnSystem>();
-                respawnSystem.RespawnPlayer();
+                Vector2 wallNormal = Quaternion.Euler(0f, 0f, angle) * Vector2.up;
+                this.SendEvent<WallHitEvent>(new WallHitEvent { wallNormal = wallNormal });
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 using SkateGame;
 
 // Base class for action-layer states that may suppress movement
-public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchitecture
+public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchitecture, ICanRegisterEvent
 {
     protected float stateTimer;
     protected float stateDuration = -1f;
@@ -17,6 +17,7 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
     {
         this.player = player;
         this.rb = rb;
+        this.RegisterEvent<WallHitEvent>(OnWallHit);
     }
     public sealed override void Enter()
     {
@@ -111,5 +112,10 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
                 player.stateMachine.SwitchState<WallRideState>(StateLayer.Action);
             }
         }   
+    }
+    private void OnWallHit(WallHitEvent evt)
+    {
+        playerModel.HitKnockbackDirection.Value = evt.wallNormal.normalized;
+        player.stateMachine.SwitchState<HitState>(StateLayer.Action);
     }
 }

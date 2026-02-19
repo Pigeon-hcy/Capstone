@@ -22,6 +22,7 @@ namespace SkateGame
         public bool Grinding;
         public bool PowerGrinding;
         public bool Pushing;
+        public bool HitStunning;
 
         // 触发一次后自动清空
         public void Clear()
@@ -54,6 +55,7 @@ namespace SkateGame
             Grinding = false;
             PowerGrinding = false;
             Pushing = false;
+            HitStunning = false;
         }
     }
 
@@ -106,6 +108,7 @@ namespace SkateGame
             this.RegisterEvent<TrickCLandEvent>(OnTrickCLand);
             this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
+            this.RegisterEvent<HitEvent>(OnHitInput);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -187,6 +190,10 @@ namespace SkateGame
             pending.Grapplling = evt.IsGrappling;
             GrappleDirection = evt.pullDirection;
         }
+        private void OnHitInput(HitEvent evt)
+        {
+            pending.HitStunning = evt.IsHitting;
+        }
         #endregion
 
         #region Basic Movement
@@ -195,38 +202,47 @@ namespace SkateGame
             moveVel = rb.linearVelocity - bonusVel;
             bool isGrounded = playerModel.IsGrounded.Value;
 
-            // Base movement
+            // Hit Stun
+            if (pending.HitStunning) ApplyHit();
+            else
+            {
+                // Base movement
+                if (pending.PushQueued) ApplyPushBurst();
+                if (pending.Pushing) ApplyPushSpeed();
+                else if (pending.PowerGrinding) ApplyPowerGrind();
+                playerModel.PushSpeed.Value = pushSpeed;
+                ApplyHorizontalSpeed(cachedMoveInput);
+            
+                // Actions
+                // 1: Reverse (deprecated)
+                if (pending.ReverseQueued) ApplyReverse();
+                // 2: leave ground
+                if (pending.JumpQueued) ApplyJumpImpulse();
+                if (pending.WallJumpQueued) ApplyWallJumpImpulse();
+                if (pending.Jumping) ApplyJumpHeld();
+                if (pending.JumpCutQueued) ApplyJumpCut();
+                // 3: trick one-shots
+                if (pending.TrickARewardQueued) ApplyTrickAReward();
+                if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
+                if (pending.TrickCLandQueued) ApplyTrickCLand();
+                if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
+                // 4: sustained actions
+                if (pending.Grinding) ApplyGrind();
+                if (pending.Dashing) ApplyTrickB(TrickBDirection);
+                if (pending.Slamming) ApplyTrickC();
+                if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
+            }
+            
+            // 5: gravity
             ApplyCustomGravity();
-            if (pending.PushQueued) ApplyPushBurst();
-            if (pending.Pushing) ApplyPushSpeed();
-            else if (pending.PowerGrinding) ApplyPowerGrind();
-            playerModel.PushSpeed.Value = pushSpeed;
-            ApplyHorizontalSpeed(cachedMoveInput);
+            
+            // 6: ground support
             if (isGrounded)
             {
                 if (vUpMove < 0f) { moveVel -= vUpMove * groundUp; }
                 if (vUpBonus < 0f) { bonusVel -= vUpBonus * groundUp; }
                 ApplySlopeCompensation();
             }
-
-            // Actions
-            // Priority 1: Reverse
-            if (pending.ReverseQueued) ApplyReverse();
-            // Priority 2: leave ground
-            if (pending.JumpQueued) ApplyJumpImpulse();
-            if (pending.WallJumpQueued) ApplyWallJumpImpulse();
-            if (pending.Jumping) ApplyJumpHeld();
-            if (pending.JumpCutQueued) ApplyJumpCut();
-            // Priority 3: trick one-shots
-            if (pending.TrickARewardQueued) ApplyTrickAReward();
-            if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
-            if (pending.TrickCLandQueued) ApplyTrickCLand();
-            if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
-            // Priority 4: sustained actions
-            if (pending.Grinding) ApplyGrind();
-            if (pending.Dashing) ApplyTrickB(TrickBDirection);
-            if (pending.Slamming) ApplyTrickC();
-            if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
 
             pending.Clear();
             // Bonus velocity
@@ -273,7 +289,6 @@ namespace SkateGame
         private void ApplyHorizontalSpeed(float horizontalInput)
         {
             moveSpeed = 0f;
-            
             if (Mathf.Abs(horizontalInput) > 0.01f && Mathf.Abs(pushSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
             {
                 moveSpeed = Mathf.Sign(horizontalInput) * playerModel.Config.Value.maxMoveSpeed;
@@ -293,7 +308,8 @@ namespace SkateGame
             else
             {
                 moveVel += g * Time.fixedDeltaTime;
-                moveVel = new Vector2(moveVel.x, Mathf.Max(moveVel.y, playerModel.Config.Value.maxFallSpeed));
+                if (!pending.Slamming)
+                    moveVel = new Vector2(moveVel.x, Mathf.Max(moveVel.y, playerModel.Config.Value.maxFallSpeed));
             }
         }
 
@@ -350,6 +366,11 @@ namespace SkateGame
         private void ApplyWallJumpImpulse()
         {
             if (!playerModel.IsNearFgWall.Value) return;
+            // reverse push speed
+            pushSpeed = -pushSpeed;
+            playerModel.PushSpeed.Value = pushSpeed;
+            moveVel = (pushSpeed + moveSpeed) * groundRight + vUpMove * groundUp;
+            // jump
             Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
             Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
             moveVel = new Vector2(0, 0);
@@ -374,6 +395,7 @@ namespace SkateGame
         private void ApplyTrickB(float direction)
         {
             float speed = Mathf.Max(playerModel.Config.Value.TrickBspeed, playerModel.VelocityBeforeTrick.Value * direction);
+            pushSpeed = direction * Mathf.Abs(pushSpeed);
             moveVel = new Vector2(direction * speed, 0);
         }
         private void ApplyTrickBResetSpeed(float direction)
@@ -406,6 +428,21 @@ namespace SkateGame
         }
         #endregion
 
+        #region Hit
+        private void ApplyHit()
+        {
+            if (playerModel.HitKnockbackDirection.Value != Vector2.zero)
+            {
+                moveVel = Vector2.zero;
+                bonusVel = Vector2.zero;
+                pushSpeed = 0f;
+                playerModel.PushSpeed.Value = pushSpeed;
+                moveSpeed = 0f;
+                bonusVel = playerModel.HitKnockbackDirection.Value.normalized * playerModel.Config.Value.hitKnockbackForce;
+                playerModel.HitKnockbackDirection.Value = Vector2.zero;
+            }
+        }
+        #endregion
         #region Animation
         public void ApplyRotation()
         {

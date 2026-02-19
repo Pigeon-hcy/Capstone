@@ -158,6 +158,7 @@ namespace SkateGame
             stateMachine.AddState(new GrindState(this, rb), StateLayer.Action);
             stateMachine.AddState(new WallRideState(this, rb), StateLayer.Action);
             stateMachine.AddState(new RecoveryState(this, rb), StateLayer.Action);
+            stateMachine.AddState(new HitState(this, rb), StateLayer.Action);
             // 初始各层状态
             stateMachine.SwitchState<IdleState>(StateLayer.Movement);
             stateMachine.SwitchState<NoActionState>(StateLayer.Action);

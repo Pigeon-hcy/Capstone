@@ -20,19 +20,20 @@ public class PushState : ActionStateBase
         pushTimer = 0f;
         if (playerModel.PendingReversePush.Value)
         {
+            Debug.Log("PendingReversePush");
             pushingRight = playerModel.PendingReversePushRight.Value;
             playerModel.PendingReversePush.Value = false;
         }
         else if(Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
         {
+            Debug.Log("PowerGrind");
             pushingRight = Mathf.Sign(playerModel.PushSpeed.Value) > 0f;
         }
         else
         {
+            Debug.Log("NoPowerGrind");
             pushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
         }
-        
-        Debug.Log("pushingRight: " + pushingRight);
         playPush();
         player.animator.SetTrigger("Push");
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, IsReversing = reversing });
