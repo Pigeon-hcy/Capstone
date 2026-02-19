@@ -17,10 +17,12 @@ namespace SkateGame
         public float pushTimeToMaxSpeed = 2f;
 
         [Header("Power Grind State")]
-        public bool isLoopPowerGrind = true;
+        public bool isLoopPowerGrind = false;
         public bool ignoringMovementLayerPowerGrind = true;
-        public float powerGrindStopSpeedThreshold = 0.5f;
         public float powerGrindDuration = 0.5f;
+        public float powerGrindStopSpeedThreshold = 0.5f;
+        [Tooltip("Brake curve exponent: >1 = hard brake at start then gentle to stop. 2 = quadratic.")]
+        public float powerGrindDistanceMultiplier = 2f;
 
         [Header("Recovery State")]
         public bool isLoopRecovery = false;

@@ -51,6 +51,8 @@ namespace SkateGame
         BindableProperty<float> PushDuration { get; }
         BindableProperty<float> PushSpeed { get; }
         BindableProperty<float> PushSpeedBeforeReverse { get; }
+        BindableProperty<bool> PendingReversePush { get; }
+        BindableProperty<bool> PendingReversePushRight { get; }
 
         /// <summary>
         /// Trick相关
@@ -124,6 +126,8 @@ namespace SkateGame
         public BindableProperty<float> PushDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> PushSpeed { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> PushSpeedBeforeReverse { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<bool> PendingReversePush { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<bool> PendingReversePushRight { get; } = new BindableProperty<bool>(false);
 
         // Trick相关
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);

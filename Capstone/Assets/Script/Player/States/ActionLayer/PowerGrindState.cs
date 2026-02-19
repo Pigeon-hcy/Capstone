@@ -4,12 +4,12 @@ using QFramework;
 
 public class PowerGrindState : ActionStateBase
 {
-
     public PowerGrindState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
         this.rb = rb;
         isLoop = playerModel.Config.Value.isLoopPowerGrind;
+        stateDuration = playerModel.Config.Value.powerGrindDuration;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerPowerGrind;
     }
 
@@ -27,14 +27,16 @@ public class PowerGrindState : ActionStateBase
 
     protected override void UpdateActionState()
     {
-        CheckSwitchAction();
         bool hasStopped = Mathf.Abs(playerModel.PushSpeed.Value) < playerModel.Config.Value.powerGrindStopSpeedThreshold;
-        if (hasStopped || !playerModel.IsGrounded.Value)
+        bool durationReached = stateTimer >= stateDuration;
+        if (hasStopped || durationReached)
         {
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            if (playerModel.PendingReversePush.Value)
+                player.stateMachine.SwitchState<PushState>(StateLayer.Action);
+            else
+                player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            return;
         }
-
-        // CheckReverse();
     }
 
     protected override void ExitActionState()

@@ -9,9 +9,7 @@ namespace SkateGame
         AirState = 3,
         JumpState = 4,
         DoubleJumpState = 5,
-        PowerGrindState = 6,
-        ReverseState = 7,
-        PushState = 8,
+        ReverseState = 6,
     }
 
     public enum ActionStates
@@ -21,6 +19,8 @@ namespace SkateGame
         GrabbingState = 2,
         WallRideState = 3,
         TrickAState = 4,
+        PushState = 5,
+        PowerGrindState = 6,
     }
 }
 

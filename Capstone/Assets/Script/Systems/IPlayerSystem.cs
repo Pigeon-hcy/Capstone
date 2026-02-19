@@ -9,7 +9,6 @@ namespace SkateGame
         public bool JumpCutQueued;
         public bool PushQueued;
         public bool WallJumpQueued;
-        public bool PowerGrindStopQueued;
         public bool ReverseQueued;
         public bool GrappleImpulseQueued;
         public bool TrickBResetSpeedQueued;
@@ -31,7 +30,6 @@ namespace SkateGame
             JumpCutQueued = false;
             PushQueued = false;
             WallJumpQueued = false;
-            PowerGrindStopQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
             TrickBResetSpeedQueued = false;
@@ -44,7 +42,6 @@ namespace SkateGame
             JumpCutQueued = false;
             PushQueued = false;
             WallJumpQueued = false;
-            PowerGrindStopQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
             TrickBResetSpeedQueued = false;
@@ -82,7 +79,9 @@ namespace SkateGame
         
         private float pushSpeed;
         private float moveSpeed;
-        private float powerGrindDecel;
+        private float powerGrindStartTime;
+        private float powerGrindStartSpeed;
+        private float powerGrindDirection;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -118,7 +117,7 @@ namespace SkateGame
             moveVel = Vector2.zero;
             bonusVel = Vector2.zero;
             pushSpeed = 0f;
-            powerGrindDecel = 0f;
+            powerGrindStartSpeed = 0f;
             pending.ClearAll();
             if (rb != null)
                 rb.linearVelocity = Vector2.zero;
@@ -155,13 +154,15 @@ namespace SkateGame
         private void OnPowerGrindInput(PowerGrindInputEvent evt) 
         { 
             pending.PowerGrinding = evt.IsPowerGrinding;
-            pending.PowerGrindStopQueued = !evt.IsPowerGrinding;
-            // 计算减速度
             if (evt.IsPowerGrinding)
             {
-                float absPushSpeed = Mathf.Abs(pushSpeed);
-                float duration = Mathf.Max(playerModel.Config.Value.powerGrindDuration, 0.01f);
-                powerGrindDecel = absPushSpeed / duration;
+                powerGrindStartTime = Time.time;
+                powerGrindStartSpeed = Mathf.Abs(pushSpeed);
+                powerGrindDirection = Mathf.Sign(pushSpeed);
+            }
+            else
+            {
+                pushSpeed = 0f;
             }
         }
         private void OnReverseInput(ReverseInputEvent evt) { pending.ReverseQueued = true; }
@@ -199,7 +200,6 @@ namespace SkateGame
             if (pending.PushQueued) ApplyPushBurst();
             if (pending.Pushing) ApplyPushSpeed();
             else if (pending.PowerGrinding) ApplyPowerGrind();
-            else if (pending.PowerGrindStopQueued) pushSpeed = 0f;
             playerModel.PushSpeed.Value = pushSpeed;
             ApplyHorizontalSpeed(cachedMoveInput);
             if (isGrounded)
@@ -248,6 +248,7 @@ namespace SkateGame
                     burstSpeed = Mathf.Max(burstSpeed, Mathf.Min(playerModel.PushSpeedBeforeReverse.Value, playerModel.Config.Value.maxPushSpeed));
                     playerModel.PushSpeedBeforeReverse.Value = 0f;
                 }
+                pushSpeed = playerModel.Config.Value.pushBurstSpeed * pushDir;
                 pushSpeed = burstSpeed * pushDir;
             }
         }
@@ -262,7 +263,11 @@ namespace SkateGame
         }
         private void ApplyPowerGrind()
         {
-            pushSpeed = Mathf.MoveTowards(pushSpeed, 0f, powerGrindDecel * Time.fixedDeltaTime);
+            float T = Mathf.Max(playerModel.Config.Value.powerGrindDuration, 0.01f);
+            float scale = playerModel.Config.Value.powerGrindDistanceMultiplier;
+            float t = Time.time - powerGrindStartTime;
+            float newSpeed = powerGrindStartSpeed * (1f - Mathf.Pow(Mathf.Clamp01(t / T), scale));
+            pushSpeed = powerGrindDirection * newSpeed;
         }
 
         private void ApplyHorizontalSpeed(float horizontalInput)
@@ -273,7 +278,6 @@ namespace SkateGame
             {
                 moveSpeed = Mathf.Sign(horizontalInput) * playerModel.Config.Value.maxMoveSpeed;
             }
-            Debug.Log("pushSpeed: " + pushSpeed + " moveSpeed: " + moveSpeed);
             moveVel = (pushSpeed + moveSpeed) * groundRight + vUpMove * groundUp;
         }
 

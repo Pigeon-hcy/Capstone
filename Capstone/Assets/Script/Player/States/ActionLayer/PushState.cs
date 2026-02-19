@@ -18,7 +18,21 @@ public class PushState : ActionStateBase
     protected override void EnterActionState()
     {
         pushTimer = 0f;
-        pushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
+        if (playerModel.PendingReversePush.Value)
+        {
+            pushingRight = playerModel.PendingReversePushRight.Value;
+            playerModel.PendingReversePush.Value = false;
+        }
+        else if(Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
+        {
+            pushingRight = Mathf.Sign(playerModel.PushSpeed.Value) > 0f;
+        }
+        else
+        {
+            pushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
+        }
+        
+        Debug.Log("pushingRight: " + pushingRight);
         playPush();
         player.animator.SetTrigger("Push");
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, IsReversing = reversing });
@@ -36,6 +50,8 @@ public class PushState : ActionStateBase
             {
                 reversing = true;
                 playerModel.PushSpeedBeforeReverse.Value = Mathf.Abs(playerModel.PushSpeed.Value);
+                playerModel.PendingReversePush.Value = true;
+                playerModel.PendingReversePushRight.Value = inputRight;
                 player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
                 return;
             }

@@ -14,6 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLoopNoAction: 1
   ignoringMovementLayerNoAction: 0
+  isLoopPush: 1
+  ignoringMovementLayerPush: 0
+  maxPushSpeed: 24
+  pushBurstSpeed: 10
+  pushTimeToMaxSpeed: 1
+  isLoopPowerGrind: 1
+  ignoringMovementLayerPowerGrind: 1
+  powerGrindStopSpeedThreshold: 0.5
+  powerGrindDuration: 0.5
+  powerGrindDistanceMultiplier: 1
   isLoopRecovery: 0
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
@@ -26,6 +36,7 @@ MonoBehaviour:
   durationTrickA: 0.2
   ignoringMovementLayerTrickA: 1
   recoveryDurationTrickA: 0.5
+  TrickARewardForce: 14
   isLoopTrickB: 0
   durationTrickB: 0.15
   ignoringMovementLayerTrickB: 1
@@ -77,17 +88,11 @@ MonoBehaviour:
   wallJumpForce: 12
   wallJumpUpMultiplier: 0.6
   wallJumpForceMultiplier: 1.5
+  grindJumpIgnoreTime: 0.2
   groundForce: 10
   slopeCompensationForce: 0.5
-  maxMoveSpeed: 12
-  maxPushSpeed: 24
+  maxMoveSpeed: 5
   maxFallSpeed: -12
-  airAccel: 1
-  groundAccel: 4
-  stopDecelIncrement: -1
-  turnDecel: 1
-  airTurnDecel: 10
-  pushAccel: 25
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
   bonusVelDecay: 0.98
@@ -95,11 +100,6 @@ MonoBehaviour:
   maxAirHorizontalSpeedConfig: 8
   normalG: 3.2
   gravityMagnitude: 9.81
-  powerGrindDeceleration: 12
-  powerGrindStopSpeedThreshold: 0.5
-  powerGrindMaxDuration: 1
-  reverseInputWindow: 2
-  grindJumpIgnoreTime: 0.2
   baseMaxAimTime: 3
   bulletPrefabs:
   - {fileID: 9141978474503307967, guid: f82702240d0fd6445947da81cd3c4534, type: 3}
