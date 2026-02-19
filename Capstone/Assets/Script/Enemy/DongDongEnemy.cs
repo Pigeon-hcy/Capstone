@@ -59,6 +59,7 @@ namespace SkateGame
             _getPlayer = false;
             detector.Close();
             _atkCoroutine = StartCoroutine(FallAndResetCoroutine());
+            directFirstAtk = false;
         }
         
         private IEnumerator FallAndResetCoroutine()

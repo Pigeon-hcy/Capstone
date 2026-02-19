@@ -68,6 +68,8 @@ namespace SkateGame
     public float JumpAtkBoxActiveTime { get; set; }
     public List<string> AtkTags { get; set; }
     public bool CanBeKilled { get; set; }
+
+    protected bool directFirstAtk = false;
     
     protected virtual void Start()
     {
@@ -87,7 +89,7 @@ namespace SkateGame
         JumpAtkBoxActiveTime = config.JumpAtkBoxActiveTime;
         AtkTags             = config.AtkTags;
         CanBeKilled      = config.canBeKilledByQ;
-
+        directFirstAtk = config.directFirstAtk;
 
         movingRight = config.startFacingRight;
         rb.gravityScale = config.gravityScale;
@@ -129,7 +131,8 @@ namespace SkateGame
             GuardProcess =
                 Mathf.Clamp01(GuardProcess +
                               GuardIncreaseSpeed/ 10f * Time.deltaTime);
-
+            if (directFirstAtk)
+                GuardProcess = 1;
             Guard(trans, GuardProcess);
 
             //Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
@@ -284,7 +287,7 @@ namespace SkateGame
                 dmgBox = reportBoxFactory.CreateHitbox(transform);
             }
             dmgBox.OpenBox(AtkTags, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
-            
+            directFirstAtk = false;
 
         }
 

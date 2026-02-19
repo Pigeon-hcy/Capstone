@@ -62,6 +62,7 @@ namespace SkateGame
                    new Vector2(1f, 1f)
                )
            );
+           directFirstAtk = false;
        }
     }
 }

@@ -17,6 +17,8 @@ MonoBehaviour:
   waitTime: 1
   maxHealth: 30
   startFacingRight: 1
+  canBeKilledByQ: 1
+  directFirstAtk: 0
   gravityScale: 2
   guardIncreaseSpeed: 2
   guardDecreaseSpeed: 0.5

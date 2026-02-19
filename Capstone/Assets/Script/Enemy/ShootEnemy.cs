@@ -36,6 +36,7 @@ namespace SkateGame
             DirectionMoveCompoInitData initData = new DirectionMoveCompoInitData(dir, bulletSpeed, bulletLifeTime);
             BaseBullet bullet = bulletFactory.CreateBulletWithDir<DirectionMoveCompo>(shootPos.position, initData);
             bullet.StartShoot(new HitBoxInitValue(enemyModel.AtkTags.Value, new EffectPackage(0), new Vector2(1f, 1f)));
+            directFirstAtk = false;
         }
 
         protected override void Guard(Transform pTrans, float guard)

@@ -15,6 +15,7 @@ namespace SkateGame
         public int   maxHealth       = 30;
         public bool  startFacingRight = true;
         public bool canBeKilledByQ = true;
+        public bool directFirstAtk = false;
 
         [Header("物理")]
         public float gravityScale    = 2f;   // 地面型用得到；飞行型可设为 0
