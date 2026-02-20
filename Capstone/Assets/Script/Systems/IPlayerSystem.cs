@@ -111,6 +111,7 @@ namespace SkateGame
             this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
             this.RegisterEvent<HitEvent>(OnHit);
+            this.RegisterEvent<PlayerRespawnEvent>(OnPlayerRespawn);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -195,6 +196,14 @@ namespace SkateGame
         private void OnHit(HitEvent evt)
         {
             pending.HitStunning = evt.IsHitting;
+        }
+        private void OnPlayerRespawn(PlayerRespawnEvent evt)
+        {
+            moveVel = Vector2.zero;
+            bonusVel = Vector2.zero;
+            pushSpeed = 0f;
+            powerGrindStartSpeed = 0f;
+            pending.ClearAll();
         }
         #endregion
 

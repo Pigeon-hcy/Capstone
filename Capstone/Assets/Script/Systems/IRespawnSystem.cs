@@ -111,6 +111,7 @@ namespace SkateGame
             playerController.gameObject.SetActive(true);
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
+            playerController.SendEvent<PlayerRespawnEvent>();
             playerController.UpdatePlayerDirection(true);
             
             energySystem.ResetEnergy();

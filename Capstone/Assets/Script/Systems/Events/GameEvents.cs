@@ -12,6 +12,10 @@ namespace SkateGame
     public struct SceneChangeEvent
     {
     }
+
+    public struct PlayerRespawnEvent
+    {
+    }
     // 玩家落地事件
     public struct PlayerLandedEvent
     {
