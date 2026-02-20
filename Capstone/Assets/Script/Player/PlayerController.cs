@@ -196,8 +196,6 @@ namespace SkateGame
             }
 
             _velocityLastFrame = rb.linearVelocity;
-            // 更新冷却计时器
-            UpdateCooldownTimers();
 
             // 检测玩家是否掉落过低
             CheckFallOutOfBounds();
@@ -231,20 +229,6 @@ namespace SkateGame
             yield return new WaitForSeconds(delay);
             this.GetSystem<ITrickSystem>().RemoveAllTricks();
             this.GetModel<ITrickListModel>().Grade.Value = 'D';
-        }
-
-        // 更新各种冷却计时器
-        private void UpdateCooldownTimers()
-        {
-            // 更新滑墙冷却计时器
-            if (playerModel.WallRideCooldownTimer.Value > 0f)
-            {
-                playerModel.WallRideCooldownTimer.Value -= Time.deltaTime;
-                if (playerModel.WallRideCooldownTimer.Value < 0f)
-                {
-                    playerModel.WallRideCooldownTimer.Value = 0f;
-                }
-            }
         }
 
         // 检测玩家是否掉落过低

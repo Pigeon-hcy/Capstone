@@ -41,6 +41,7 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
     }
     public sealed override void Update()
     {
+        UpdateCooldownTimers();
         stateTimer += Time.deltaTime;
         UpdateActionState();
         
@@ -117,5 +118,21 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
     {
         playerModel.HitKnockbackDirection.Value = evt.wallNormal.normalized;
         player.stateMachine.SwitchState<HitState>(StateLayer.Action);
+    }
+
+    private void UpdateCooldownTimers()
+    {
+        if (playerModel.WallRideCooldownTimer.Value > 0f)
+        {
+            playerModel.WallRideCooldownTimer.Value -= Time.deltaTime;
+            if (playerModel.WallRideCooldownTimer.Value < 0f)
+                playerModel.WallRideCooldownTimer.Value = 0f;
+        }
+        if (playerModel.ReversePushCooldownTimer.Value > 0f)
+        {
+            playerModel.ReversePushCooldownTimer.Value -= Time.deltaTime;
+            if (playerModel.ReversePushCooldownTimer.Value < 0f)
+                playerModel.ReversePushCooldownTimer.Value = 0f;
+        }
     }
 }

@@ -20,18 +20,16 @@ public class PushState : ActionStateBase
         pushTimer = 0f;
         if (playerModel.PendingReversePush.Value)
         {
-            Debug.Log("PendingReversePush");
             pushingRight = playerModel.PendingReversePushRight.Value;
             playerModel.PendingReversePush.Value = false;
+            playerModel.ReversePushCooldownTimer.Value = playerModel.Config.Value.pushReverseCooldown;
         }
         else if(Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
         {
-            Debug.Log("PowerGrind");
             pushingRight = Mathf.Sign(playerModel.PushSpeed.Value) > 0f;
         }
         else
         {
-            Debug.Log("NoPowerGrind");
             pushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
         }
         playPush();
@@ -44,7 +42,7 @@ public class PushState : ActionStateBase
     {
         CheckSwitchAction();
         float moveX = inputModel.Move.Value.x;
-        if (Mathf.Abs(moveX) > 0.01f)
+        if (Mathf.Abs(moveX) > 0.01f && playerModel.ReversePushCooldownTimer.Value <= 0f)
         {
             bool inputRight = moveX > 0f;
             if (inputRight != pushingRight)

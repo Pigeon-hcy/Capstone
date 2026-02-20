@@ -10,6 +10,7 @@ namespace SkateGame
         JumpState = 4,
         DoubleJumpState = 5,
         ReverseState = 6,
+        WallJumpState = 7,
     }
 
     public enum ActionStates

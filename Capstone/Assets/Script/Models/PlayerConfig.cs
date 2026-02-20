@@ -15,6 +15,7 @@ namespace SkateGame
         public float maxPushSpeed = 10f;
         public float pushBurstSpeed = 20f;
         public float pushTimeToMaxSpeed = 2f;
+        public float pushReverseCooldown = 0.5f;
 
         [Header("Power Grind State")]
         public bool isLoopPowerGrind = false;

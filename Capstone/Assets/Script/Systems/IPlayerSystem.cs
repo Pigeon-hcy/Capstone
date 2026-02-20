@@ -109,7 +109,7 @@ namespace SkateGame
             this.RegisterEvent<TrickCLandEvent>(OnTrickCLand);
             this.RegisterEvent<GrappleEvent>(OnGrapple);
             this.RegisterEvent<StateChangedEvent>(OnStateChanged);
-            this.RegisterEvent<HitEvent>(OnHitInput);
+            this.RegisterEvent<HitEvent>(OnHit);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -191,7 +191,7 @@ namespace SkateGame
             pending.Grapplling = evt.IsGrappling;
             GrappleDirection = evt.pullDirection;
         }
-        private void OnHitInput(HitEvent evt)
+        private void OnHit(HitEvent evt)
         {
             pending.HitStunning = evt.IsHitting;
         }
@@ -433,6 +433,7 @@ namespace SkateGame
         #region Hit
         private void ApplyHit()
         {
+            Debug.Log("ApplyHit");
             if (playerModel.HitKnockbackDirection.Value != Vector2.zero)
             {
                 moveVel = Vector2.zero;
@@ -441,6 +442,10 @@ namespace SkateGame
                 playerModel.PushSpeed.Value = pushSpeed;
                 moveSpeed = 0f;
                 bonusVel = playerModel.HitKnockbackDirection.Value.normalized * playerModel.Config.Value.hitKnockbackForce;
+                Debug.Log("ApplyHit: bonusVel = " + bonusVel);
+                Debug.Log("ApplyHit: moveVel = " + moveVel);
+                Debug.Log("ApplyHit: pushSpeed = " + pushSpeed);
+                Debug.Log("ApplyHit: playerModel.HitKnockbackDirection.Value = " + playerModel.HitKnockbackDirection.Value);
                 playerModel.HitKnockbackDirection.Value = Vector2.zero;
             }
         }
