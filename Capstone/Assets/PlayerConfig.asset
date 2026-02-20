@@ -19,6 +19,7 @@ MonoBehaviour:
   maxPushSpeed: 24
   pushBurstSpeed: 10
   pushTimeToMaxSpeed: 1
+  pushReverseCooldown: 0.5
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 1
   powerGrindDuration: 0.8
@@ -27,11 +28,12 @@ MonoBehaviour:
   isLoopHit: 0
   ignoringMovementLayerHit: 1
   hitDuration: 0.5
-  hitKnockbackForce: 5
+  hitKnockbackForce: 10
   isLoopRecovery: 0
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
   ignoringMovementLayerGrind: 0
+  grindJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
   ignoringMovementLayerBgWallRide: 0
   BgWallRideCooldown: 1.5
@@ -90,9 +92,9 @@ MonoBehaviour:
   jumpHoldMaxTime: 0.3
   jumpCutMultiplier: 0.8
   wallJumpForce: 12
-  wallJumpUpMultiplier: 0.6
+  wallJumpUpMultiplier: 0.8
   wallJumpForceMultiplier: 1.5
-  grindJumpIgnoreTime: 0.2
+  wallJumpGraceAfterHit: 0.1
   groundForce: 10
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5

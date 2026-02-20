@@ -36,12 +36,9 @@ public class AirState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (inputModel.JumpStart.Value)
+        if (inputModel.JumpStart.Value && (playerModel.IsNearFgWall.Value || playerModel.WallJumpGraceTimer.Value > 0f))
         {
-            if (playerModel.IsNearFgWall.Value)
-            {
-                player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
-            }
+            player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
         }
     }
 } 

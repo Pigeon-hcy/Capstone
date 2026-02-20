@@ -13,12 +13,22 @@ public class WallJumpState : AirborneMovementState
 
     public override void Enter()
     {
-        // player.animator.Play("oPlayer@Ollie", 0);
+        if (playerModel.CurrentActionState.Value == ActionStates.HitState)
+        {
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        }
+        if (playerModel.WallJumpGraceTimer.Value > 0f)
+        {
+            playerModel.WallJumpGraceTimer.Value = 0f;
+            player.SendEvent<WallJumpExecuteEvent>(new WallJumpExecuteEvent { IsGraceWallJump = true });
+        }
+        else
+        {
+            player.SendEvent<WallJumpExecuteEvent>(new WallJumpExecuteEvent { IsGraceWallJump = false });
+        }
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
         playerModel.JumpStarted.Value = false;
-        // 立即发送跳跃执行事件
-        player.SendEvent<WallJumpExecuteEvent>();
 
        // 播放MMF效果
         if (player.JumpEffect != null)

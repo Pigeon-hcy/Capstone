@@ -15,6 +15,11 @@ namespace SkateGame
         BindableProperty<bool> IsNearBgWall { get; }
         BindableProperty<bool> IsNearFgWall { get; }
         BindableProperty<float> FgWallAngle { get; }
+
+        /// <summary>
+        /// Hit相关
+        /// </summary>
+        BindableProperty<float> PushSpeedBeforeHit { get; }
         
         /// <summary>
         /// Wall相关
@@ -88,6 +93,8 @@ namespace SkateGame
         BindableProperty<Track> CurrentTrack { get; }
         BindableProperty<float> GrindJumpTimer { get; } // 用来防止跳跃后被吸附到原先滑轨
         BindableProperty<float> WallRideCooldownTimer { get; } // 用来控制两次滑墙之间的冷却时间
+        BindableProperty<float> WallJumpGraceTimer { get; }
+        BindableProperty<Vector2> WallJumpWallNormal { get; }
         BindableProperty<bool> WasGrounded { get; }
         BindableProperty<bool> IsCheckingReverseWindow { get; }
         BindableProperty<float> ReverseTimer { get; }
@@ -109,6 +116,9 @@ namespace SkateGame
         public BindableProperty<bool> IsNearBgWall { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsNearFgWall { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> FgWallAngle { get; } = new BindableProperty<float>(0f);
+        // Hit相关
+        public BindableProperty<float> PushSpeedBeforeHit { get; } = new BindableProperty<float>(0f);
+        
         // Wall相关
         public BindableProperty<Wall> CurrentBgWall { get; } = new BindableProperty<Wall>(null);
         
@@ -160,6 +170,8 @@ namespace SkateGame
         public BindableProperty<Track> CurrentTrack { get; } = new BindableProperty<Track>(null);
         public BindableProperty<float> GrindJumpTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> WallRideCooldownTimer { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> WallJumpGraceTimer { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<Vector2> WallJumpWallNormal { get; } = new BindableProperty<Vector2>(Vector2.zero);
         public BindableProperty<bool> WasGrounded { get; } = new BindableProperty<bool>(true);
         public BindableProperty<bool> IsCheckingReverseWindow { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> ReverseTimer { get; } = new BindableProperty<float>(0f);

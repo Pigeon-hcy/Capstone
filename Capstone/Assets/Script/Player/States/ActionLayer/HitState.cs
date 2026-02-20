@@ -15,6 +15,7 @@ public class HitState : ActionStateBase
 
     protected override void EnterActionState()
     {
+        playerModel.PushSpeedBeforeHit.Value = playerModel.PushSpeed.Value;
         player.SendEvent<HitEvent>(new HitEvent { IsHitting = true });
     }
 

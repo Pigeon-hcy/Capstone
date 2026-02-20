@@ -116,7 +116,10 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
     }
     private void OnWallHit(WallHitEvent evt)
     {
-        playerModel.HitKnockbackDirection.Value = evt.wallNormal.normalized;
+        Vector2 n = evt.wallNormal.normalized;
+        playerModel.HitKnockbackDirection.Value = n;
+        playerModel.WallJumpGraceTimer.Value = playerModel.Config.Value.wallJumpGraceAfterHit;
+        playerModel.WallJumpWallNormal.Value = n;
         player.stateMachine.SwitchState<HitState>(StateLayer.Action);
     }
 
@@ -133,6 +136,12 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             playerModel.ReversePushCooldownTimer.Value -= Time.deltaTime;
             if (playerModel.ReversePushCooldownTimer.Value < 0f)
                 playerModel.ReversePushCooldownTimer.Value = 0f;
+        }
+        if (playerModel.WallJumpGraceTimer.Value > 0f)
+        {
+            playerModel.WallJumpGraceTimer.Value -= Time.deltaTime;
+            if (playerModel.WallJumpGraceTimer.Value < 0f)
+                playerModel.WallJumpGraceTimer.Value = 0f;
         }
     }
 }

@@ -94,6 +94,7 @@ namespace SkateGame
     }
     public struct WallJumpExecuteEvent
     {
+        public bool IsGraceWallJump;
     }
     // 移动输入事件
     public struct MoveInputEvent

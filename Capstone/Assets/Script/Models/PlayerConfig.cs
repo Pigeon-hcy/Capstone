@@ -37,6 +37,7 @@ namespace SkateGame
         [Header("Grind State")]
         public bool isLoopGrind = true;
         public bool ignoringMovementLayerGrind = false;
+        public float grindJumpIgnoreTime = 0.2f;
 
         [Header("Bg Wall Ride State")]
         public bool isLoopBgWallRide = true;
@@ -104,15 +105,21 @@ namespace SkateGame
         public float crashAngle = 60f;
         public float crashAngleDiff = 45f;
         
-        [Header("跳跃设置")]
+        [Header("跳跃")]
         public float jumpForce = 2f;
         public float jumpHoldForce = 6f;
         public float jumpHoldMaxTime = 0.2f;
         [Range(0f, 1f)] public float jumpCutMultiplier = 0.5f;
+
+        [Header("Wall Jump")]
         public float wallJumpForce = 6f;
+        [Tooltip("越小越接近墙面normal，越大越接近垂直向上")]
         [Range(0f, 1f)] public float wallJumpUpMultiplier = 0.7f;
+        [Tooltip("墙跳力度")]
         public float wallJumpForceMultiplier = 1.5f;
-        public float grindJumpIgnoreTime = 0.2f;
+        [Tooltip("墙跳后摇时间")]
+        public float wallJumpGraceAfterHit = 0.1f;
+        
 
         [Header("移动设置")]
         

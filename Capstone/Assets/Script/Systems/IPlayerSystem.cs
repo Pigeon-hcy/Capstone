@@ -77,6 +77,7 @@ namespace SkateGame
         private float TrickARewardDirection;
         private float lastTrickBDirection;
         public bool IsPushingRight;
+        public bool IsGraceWallJump;
         public float TrickBDirection;
         public Vector2 GrappleDirection;
         
@@ -148,7 +149,7 @@ namespace SkateGame
             cachedMoveInput = evt.HorizontalInput;
         }
         private void OnJumpInput(JumpExecuteEvent evt) { pending.JumpQueued = evt.IsJumping; pending.Jumping = evt.IsJumping; pending.JumpCutQueued = !evt.IsJumping; }
-        private void OnWallJumpInput(WallJumpExecuteEvent evt) { pending.WallJumpQueued = true; }
+        private void OnWallJumpInput(WallJumpExecuteEvent evt) { pending.WallJumpQueued = true; IsGraceWallJump = evt.IsGraceWallJump; }
         private void OnStateChanged(StateChangedEvent evt)
         {
             ApplyStateChanged(evt);
@@ -219,7 +220,7 @@ namespace SkateGame
                 if (pending.ReverseQueued) ApplyReverse();
                 // 2: leave ground
                 if (pending.JumpQueued) ApplyJumpImpulse();
-                if (pending.WallJumpQueued) ApplyWallJumpImpulse();
+                if (pending.WallJumpQueued) ApplyWallJumpImpulse(IsGraceWallJump);
                 if (pending.Jumping) ApplyJumpHeld();
                 if (pending.JumpCutQueued) ApplyJumpCut();
                 // 3: trick one-shots
@@ -240,8 +241,7 @@ namespace SkateGame
             // 6: ground support
             if (isGrounded)
             {
-                if (vUpMove < 0f) { moveVel -= vUpMove * groundUp; }
-                if (vUpBonus < 0f) { bonusVel -= vUpBonus * groundUp; }
+                if (vUpMove + vUpBonus < 0f) { moveVel -= vUpMove * groundUp; bonusVel -= vUpBonus * groundUp; }
                 ApplySlopeCompensation();
             }
 
@@ -364,19 +364,15 @@ namespace SkateGame
             moveVel -= Vector2.Dot(moveVel, upDir) * upDir * playerModel.Config.Value.jumpCutMultiplier;
         }
 
-        private void ApplyWallJumpImpulse()
+        private void ApplyWallJumpImpulse(bool isGraceWallJump)
         {
-            if (!playerModel.IsNearFgWall.Value) return;
-            // reverse push speed
-            ChangePushDirection(-1f);
+            pushSpeed = isGraceWallJump ? -playerModel.PushSpeedBeforeHit.Value : -playerModel.PushSpeed.Value;
+            playerModel.PushSpeed.Value = pushSpeed;
             moveVel = (pushSpeed + moveSpeed) * groundRight + vUpMove * groundUp;
-            // jump
-            Vector2 normal = Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value).normalized * Vector2.up;
-            Vector2 jumpDir =  Vector2.Lerp(normal, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
-            moveVel = new Vector2(0, 0);
             bonusVel = Vector2.zero;
-            moveVel += jumpDir * playerModel.Config.Value.wallJumpForce *
-                playerModel.Config.Value.wallJumpForceMultiplier;
+            Vector2 wallN = isGraceWallJump ? playerModel.WallJumpWallNormal.Value : Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up;
+            Vector2 jumpDir = Vector2.Lerp(wallN, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
+            moveVel += jumpDir * playerModel.Config.Value.wallJumpForce * playerModel.Config.Value.wallJumpForceMultiplier;
         }
         #endregion
 
@@ -422,18 +418,17 @@ namespace SkateGame
         }
         private void ApplyGrappleImpulse(Vector2 dir)
         {
-            moveVel += dir * playerModel.Config.Value.grappleImpulse;
+            bonusVel += dir * playerModel.Config.Value.grappleImpulse;
         }
         private void ApplyGrappleForce(Vector2 dir)
         {
-            moveVel += dir * playerModel.Config.Value.grappleForce * Time.fixedDeltaTime;
+            bonusVel += dir * playerModel.Config.Value.grappleForce * Time.fixedDeltaTime;
         }
         #endregion
 
         #region Hit
         private void ApplyHit()
         {
-            Debug.Log("ApplyHit");
             if (playerModel.HitKnockbackDirection.Value != Vector2.zero)
             {
                 moveVel = Vector2.zero;
@@ -442,10 +437,6 @@ namespace SkateGame
                 playerModel.PushSpeed.Value = pushSpeed;
                 moveSpeed = 0f;
                 bonusVel = playerModel.HitKnockbackDirection.Value.normalized * playerModel.Config.Value.hitKnockbackForce;
-                Debug.Log("ApplyHit: bonusVel = " + bonusVel);
-                Debug.Log("ApplyHit: moveVel = " + moveVel);
-                Debug.Log("ApplyHit: pushSpeed = " + pushSpeed);
-                Debug.Log("ApplyHit: playerModel.HitKnockbackDirection.Value = " + playerModel.HitKnockbackDirection.Value);
                 playerModel.HitKnockbackDirection.Value = Vector2.zero;
             }
         }
