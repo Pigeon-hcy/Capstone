@@ -3,7 +3,7 @@ using SkateGame;
 using QFramework;
 
 public class GrindState : ActionStateBase
-{    private float speed;
+{   
     private Vector2 direction;
     private float normalG;
 
@@ -13,8 +13,6 @@ public class GrindState : ActionStateBase
 
     public GrindState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
-        speed = playerModel.Speed.Value;
-        direction = playerModel.GrindDirection.Value;
         normalG = playerModel.Config.Value.normalG;
         isLoop = playerModel.Config.Value.isLoopGrind;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerGrind;
@@ -28,29 +26,27 @@ public class GrindState : ActionStateBase
         if (playerModel.CurrentTrack.Value == null)
         {
             Debug.LogError("GrindState.Enter: currentTrack为null，无法进入滑轨状态");
-            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+            GrindJump();
             return;
         }
         
         Vector2 velocity = rb.linearVelocity;
-        speed = velocity.magnitude;
-        if (speed < 0.1f)
+        direction = new Vector2(velocity.x, 0).normalized;
+        if(velocity.x > 0.1f)
         {
-            Vector2 trackDir = playerModel.CurrentTrack.Value.GetTrackDirection();
-            direction = new Vector2(trackDir.x, 0).normalized;
-            leftToRight = velocity.x > 0 ? 1 : -1;
-            direction *= leftToRight;
-            speed = playerModel.Config.Value.maxMoveSpeed;
-            
+            leftToRight = 1;
+        }
+        else if(velocity.x < -0.1f)
+        {
+            leftToRight = -1;
         }
         else
         {
-            direction = new Vector2(velocity.x, 0).normalized;
-            leftToRight = velocity.x > 0 ? 1 : -1;
+            GrindJump();
+            return;
         }
-
         playerModel.CurrentGravityScale.Value = 0f;
-        rb.linearVelocity = new Vector2(direction.x * speed, 0);
+        playerModel.GrindDirection.Value = direction;
         trackRef = playerModel.CurrentTrack.Value.GetDirTool();
         SnapPlayerToTrack();
         
@@ -59,6 +55,7 @@ public class GrindState : ActionStateBase
             player.GrindEffect.PlayFeedbacks();
         }
         playRailGrind();
+        player.SendEvent<GrindInputEvent>(new GrindInputEvent { IsGrinding = true });
     }
 
     protected override void UpdateActionState()
@@ -66,23 +63,20 @@ public class GrindState : ActionStateBase
         // 首先检查E键是否按住，如果没有按住立即退出
         if (!inputModel.Grind.Value)
         {
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+            GrindJump();
             return;
         }
         
         // 如果按下跳跃键，直接跳跃
         if (inputModel.JumpStart.Value)
         {
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+            GrindJump();
             return;
         }
         // 然后检查currentTrack是否为null
         if (playerModel.CurrentTrack.Value == null)
         {
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+            GrindJump();
             return;
         }
 
@@ -107,8 +101,7 @@ public class GrindState : ActionStateBase
             //pos.x += moveDelta.x;
             //pos.y = playerModel.CurrentTrack.Value.GetTrackPosition().y+0.2f;
             player.transform.position = pos;
-
-            rb.linearVelocity = direction*playerModel.Config.Value.maxMoveSpeed;
+            playerModel.GrindDirection.Value = direction;
         }
     }
 
@@ -134,15 +127,22 @@ public class GrindState : ActionStateBase
 
         }
         pauseRailGrind();
+        player.SendEvent<GrindInputEvent>(new GrindInputEvent { IsGrinding = false });
     }
 
-    public void playRailGrind()
+    private void playRailGrind()
     {
         AudioManager.Instance.fmodPlayRailGrind();
         AudioManager.Instance.fmodPlayLanding();
     }
-    public void pauseRailGrind()
+    private void pauseRailGrind()
     {
         AudioManager.Instance.fmodPauseRailGrind();
+    }
+    private void GrindJump()
+    {
+        playerModel.IsGrindJump.Value = true;
+        player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
     }
 }

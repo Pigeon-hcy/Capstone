@@ -37,6 +37,7 @@ namespace SkateGame
         [Header("Grind State")]
         public bool isLoopGrind = true;
         public bool ignoringMovementLayerGrind = false;
+        public float grindSpeed = 28f;
         public float grindJumpIgnoreTime = 0.2f;
 
         [Header("Bg Wall Ride State")]

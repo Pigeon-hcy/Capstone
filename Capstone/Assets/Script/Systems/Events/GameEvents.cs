@@ -36,6 +36,7 @@ namespace SkateGame
     public struct GrindInputEvent
     {
         public bool IsGrinding;
+        public Vector2 GrindDirection;
     }
     
     #region Tricks

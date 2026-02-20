@@ -6,6 +6,7 @@ public class JumpState : AirborneMovementState
 {
     private float jumpTimer;
     private bool jumpEnded;
+    private bool isGrindJump;
     public JumpState(PlayerController player, Rigidbody2D rb)
     {
         this.player = player;
@@ -19,6 +20,8 @@ public class JumpState : AirborneMovementState
         jumpTimer = 0f;
         jumpEnded = false;
         playerModel.JumpStarted.Value = false;
+        isGrindJump = playerModel.IsGrindJump.Value;
+        playerModel.IsGrindJump.Value = false;
         // 立即发送跳跃执行事件
         player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = true });
 
@@ -53,7 +56,8 @@ public class JumpState : AirborneMovementState
     private void CheckEndJump()
     {
         if (jumpEnded) return;
-        if (inputModel.JumpReleased.Value || jumpTimer > playerModel.Config.Value.jumpHoldMaxTime)
+        // GrindJump时自动大跳
+        if ((!isGrindJump && inputModel.JumpReleased.Value) || jumpTimer > playerModel.Config.Value.jumpHoldMaxTime)
         {
             player.SendEvent<JumpExecuteEvent>(new JumpExecuteEvent { IsJumping = false });
             jumpEnded = true;

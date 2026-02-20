@@ -249,8 +249,7 @@ namespace SkateGame
             // Bonus velocity
             rb.linearVelocity = moveVel + bonusVel;
             bonusVel *= playerModel.Config.Value.bonusVelDecay;
-            if (Mathf.Abs(bonusVel.x) < 0.01f && Mathf.Abs(bonusVel.y) < 0.01f)
-                bonusVel = Vector2.zero;
+            if (Mathf.Abs(bonusVel.x) < 0.01f && Mathf.Abs(bonusVel.y) < 0.01f) bonusVel = Vector2.zero;
         }
 
 
@@ -386,6 +385,8 @@ namespace SkateGame
 
         private void ApplyGrind()
         {
+            moveVel = playerModel.GrindDirection.Value * playerModel.Config.Value.grindSpeed;
+            bonusVel = Vector2.zero;
         }
 
         private void ApplyTrickB(float direction)
