@@ -104,9 +104,13 @@ namespace SkateGame
             yield return new WaitForSeconds(1f);
 
             player.position = respawnModel.LatestCheckpoint.Value;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             rb.simulated = true;
 
             playerController.gameObject.SetActive(true);
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             playerController.UpdatePlayerDirection(true);
             
             energySystem.ResetEnergy();
