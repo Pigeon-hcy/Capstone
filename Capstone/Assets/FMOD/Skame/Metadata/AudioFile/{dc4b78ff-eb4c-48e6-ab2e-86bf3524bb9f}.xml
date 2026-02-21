@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{5c160524-b4ed-4f62-9f67-c9a772af0ae2}">
+	<object class="AudioFile" id="{dc4b78ff-eb4c-48e6-ab2e-86bf3524bb9f}">
 		<property name="assetPath">
-			<value>mx_Music1.wav</value>
+			<value>mx_Music2.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
@@ -14,7 +14,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>52.965510204081632</value>
+			<value>24</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>
