@@ -70,9 +70,9 @@ MonoBehaviour:
   extendSpeed: 50
   retractSpeed: 35
   maxDistance: 20
-  grappleForce: 55
-  grappleDuration: 0.25
-  grappleImpulse: 20
+  grappleForce: 30
+  grappleDuration: 0.15
+  grappleImpulse: 30
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
@@ -99,7 +99,7 @@ MonoBehaviour:
   groundForce: 10
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5
-  maxFallSpeed: -12
+  maxFallSpeed: -24
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
   bonusVelDecay: 0.98
