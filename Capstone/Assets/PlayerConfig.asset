@@ -33,6 +33,7 @@ MonoBehaviour:
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
   ignoringMovementLayerGrind: 0
+  grindSpeed: 28
   grindJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
   ignoringMovementLayerBgWallRide: 0
@@ -69,9 +70,9 @@ MonoBehaviour:
   extendSpeed: 50
   retractSpeed: 35
   maxDistance: 20
-  grappleForce: 25
-  grappleDuration: 0.5
-  grappleImpulse: 15
+  grappleForce: 55
+  grappleDuration: 0.25
+  grappleImpulse: 20
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
