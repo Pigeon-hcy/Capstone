@@ -22,7 +22,7 @@ MonoBehaviour:
   pushReverseCooldown: 0.5
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 1
-  powerGrindDuration: 0.8
+  powerGrindDuration: 1
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
   isLoopHit: 0
