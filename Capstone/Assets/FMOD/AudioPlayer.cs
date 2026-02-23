@@ -10,7 +10,11 @@ public class AudioPlayer : MonoBehaviour
 
     public bool pause;
 
-    public bool LM;
+    public bool LM1;
+
+    public bool LM2;
+
+    public bool LM3;
 
     public GameObject speaker;
 
@@ -67,9 +71,17 @@ public class AudioPlayer : MonoBehaviour
 
     public void playAudio()
     {
-        if (LM)
+        if (LM1)
         {
             speaker.GetComponent<MusicManager>().fmodPlayLM1();
+        }
+        else if (LM2)
+        {
+            speaker.GetComponent<MusicManager>().fmodPlayLM2();
+        }
+        else if (LM3)
+        {
+            speaker.GetComponent<MusicManager>().fmodPlayLM3();
         }
         else
         {
@@ -78,9 +90,17 @@ public class AudioPlayer : MonoBehaviour
     }
     public void pauseAudio()
     {
-        if (LM)
+        if (LM1)
         {
             speaker.GetComponent<MusicManager>().fmodPauseLM1();
+        }
+        else if (LM2)
+        {
+            speaker.GetComponent<MusicManager>().fmodPauseLM2();
+        }
+         else if (LM3)
+        {
+            speaker.GetComponent<MusicManager>().fmodPauseLM3();
         }
         else
         {

@@ -22,7 +22,7 @@ MonoBehaviour:
   pushReverseCooldown: 0.5
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 1
-  powerGrindDuration: 0.8
+  powerGrindDuration: 1
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
   isLoopHit: 0
@@ -33,6 +33,7 @@ MonoBehaviour:
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
   ignoringMovementLayerGrind: 0
+  grindSpeed: 28
   grindJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
   ignoringMovementLayerBgWallRide: 0
@@ -69,9 +70,9 @@ MonoBehaviour:
   extendSpeed: 50
   retractSpeed: 35
   maxDistance: 20
-  grappleForce: 25
-  grappleDuration: 0.5
-  grappleImpulse: 15
+  grappleForce: 30
+  grappleDuration: 0.15
+  grappleImpulse: 30
   groundRotationSpeed: 10
   airRotationSpeed: 4
   groundLayer:
@@ -98,7 +99,7 @@ MonoBehaviour:
   groundForce: 10
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5
-  maxFallSpeed: -12
+  maxFallSpeed: -24
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
   bonusVelDecay: 0.98
