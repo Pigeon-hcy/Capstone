@@ -8,6 +8,8 @@ public class EnergyBarChild : MonoBehaviour
     MMSpringScale mmSpringScale;
     MMSpringRectTransformPosition mmSpringRectTrans;
 
+    bool wasActive;
+
     void Start()
     {
         image = GetComponent<Image>();
@@ -23,13 +25,19 @@ public class EnergyBarChild : MonoBehaviour
 
     public void Activate()
     {
+        if (wasActive) return;
+
         image.color = Color.white;
         mmSpringRectTrans.Bump(new Vector3(750, 1000, 50));
+        wasActive = true;
     }
 
     public void Deactivate()
     {
+        if (!wasActive) return;
+
         image.color = Color.black;
         mmSpringScale.Bump(new Vector3(20, 20, 20));
+        wasActive = false;
     }
 }
