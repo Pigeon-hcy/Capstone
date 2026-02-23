@@ -83,10 +83,6 @@ public class AudioPlayer : MonoBehaviour
         {
             speaker.GetComponent<MusicManager>().fmodPlayLM3();
         }
-        else
-        {
-            speaker.GetComponent<MusicManager>().fmodPlayBM1();
-        }
     }
     public void pauseAudio()
     {
@@ -101,10 +97,6 @@ public class AudioPlayer : MonoBehaviour
          else if (LM3)
         {
             speaker.GetComponent<MusicManager>().fmodPauseLM3();
-        }
-        else
-        {
-            speaker.GetComponent<MusicManager>().fmodPauseBM1();
         }
     }
 }
