@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{56462f53-6e78-405f-9bbb-481a5b439bf3}">
+		<property name="name">
+			<value>MusicSpeadup</value>
+		</property>
+		<relationship name="folder">
+			<destination>{9b0ef9ed-367c-4591-bd94-151d37213a16}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{379637b3-250a-4f88-a26e-e0e46a8cb8d3}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{379637b3-250a-4f88-a26e-e0e46a8cb8d3}">
+		<property name="minimum">
+			<value>0.5</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<relationship name="automators">
+			<destination>{84bbac1a-7a92-4e9d-b75c-74aa21aa18b2}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{84bbac1a-7a92-4e9d-b75c-74aa21aa18b2}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>
