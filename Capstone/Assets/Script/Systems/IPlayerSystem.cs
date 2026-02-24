@@ -234,7 +234,11 @@ namespace SkateGame
                 {
                     if (!isWalking)
                     {
-                        if (vUpMove < 0f) { vPhysics -= Vector2.Dot(vPhysics, groundUp) * groundUp;}
+                        if (vUpPhysics < 0f) { vPhysics -= Vector2.Dot(vPhysics, groundUp) * groundUp;}
+                        // When nearly stopped on slope，stop sliding down
+                        float totalSpeed = Vector2.Dot(vPhysics + vPush, groundRight);
+                        if (Mathf.Abs(totalSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
+                            vPhysics -= Vector2.Dot(vPhysics, groundRight) * groundRight;
                     }
                     else // High friction when walking
                     {
@@ -273,7 +277,7 @@ namespace SkateGame
         private void ProjectVPush(bool isGrounded)
         {
             bool crash = Vector2.Dot(vPush, groundUp) < 0f;
-            if (isGrounded && crash)
+            if (isGrounded && crash && !isWalking)
             {
                 pushSpeed = Vector2.Dot(vPush, groundRight);
                 vPush = pushSpeed * groundRight;
@@ -352,7 +356,7 @@ namespace SkateGame
         private void ApplySlopeCompensation()
         {
             Vector2 g = Vector2.down * playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
-            Vector2 gTangent = Vector2.Dot(g, groundRight) * groundRight * Mathf.Sign(vRightMove);
+            Vector2 gTangent = Vector2.Dot(g, groundRight) * groundRight * Mathf.Sign(vRightPhysics);
             vPhysics += -playerModel.Config.Value.slopeCompensationForce * gTangent * Time.fixedDeltaTime;
         }
 
@@ -525,8 +529,8 @@ namespace SkateGame
         }
         private Vector2 groundUp => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized;
         private Vector2 groundRight => (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.right).normalized;
-        private float vUpMove => Vector2.Dot(vPhysics, groundUp);
-        private float vRightMove => Vector2.Dot(vPhysics, groundRight) + Vector2.Dot(vPush, groundRight);
+        private float vUpPhysics => Vector2.Dot(vPhysics, groundUp);
+        private float vRightPhysics => Vector2.Dot(vPhysics, groundRight);
         #endregion
     }
 }
