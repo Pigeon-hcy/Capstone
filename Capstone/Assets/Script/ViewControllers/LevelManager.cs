@@ -197,7 +197,12 @@ namespace SkateGame
         }
 
         public void BindingLevelInfoToPrefab(){
-            Debug.Log(levelItemPrefab != null && groupForButton != null ? "Binding:可执行" : "Binding:prefab或group缺失");
+            if (levelItemPrefab == null || groupForButton == null) return;
+           //delete existed old items
+            for (int i = groupForButton.childCount - 1; i >= 0; i--)
+            {
+                Destroy(groupForButton.GetChild(i).gameObject);
+            }
             for (int i = 0; i < levelList.Count; i++)
             {
                 int index = i;

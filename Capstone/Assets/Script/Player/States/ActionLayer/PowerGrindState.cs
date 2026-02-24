@@ -4,6 +4,7 @@ using QFramework;
 
 public class PowerGrindState : ActionStateBase
 {
+    private bool isInterrupted;
     public PowerGrindState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
@@ -15,6 +16,7 @@ public class PowerGrindState : ActionStateBase
 
     protected override void EnterActionState()
     {
+        isInterrupted = true;
         player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true });
         // 开始检查反向输入窗口
         StartCheckReverseWindow();
@@ -27,10 +29,23 @@ public class PowerGrindState : ActionStateBase
 
     protected override void UpdateActionState()
     {
+        
+        CheckSwitchAction();
+        // if (!playerModel.IsGrounded.Value)
+        // {
+        //     player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        //     return;
+        // }
+        // if (inputModel.PushStart.Value && playerModel.IsGrounded.Value)
+        // {
+        //     player.stateMachine.SwitchState<PushState>(StateLayer.Action);
+        //     return;
+        // }
         bool hasStopped = Mathf.Abs(playerModel.PushSpeed.Value) < playerModel.Config.Value.powerGrindStopSpeedThreshold;
         bool durationReached = stateTimer >= stateDuration;
         if (hasStopped || durationReached)
         {
+            isInterrupted = false;
             if (playerModel.PendingReversePush.Value)
                 player.stateMachine.SwitchState<PushState>(StateLayer.Action);
             else
@@ -47,7 +62,7 @@ public class PowerGrindState : ActionStateBase
             player.powerGrindEffect.StopFeedbacks();
 
         }
-        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = false });
+        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = false, IsInterrupted = isInterrupted });
         pausePowerGrind();
     }
 

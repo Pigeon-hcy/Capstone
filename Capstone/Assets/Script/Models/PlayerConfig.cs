@@ -51,7 +51,8 @@ namespace SkateGame
         public float durationTrickA = 0.2f;
         public bool ignoringMovementLayerTrickA = true;
         public float recoveryDurationTrickA = 0.5f;
-        public float TrickARewardForce = 14f;
+        public float TrickARewardForceVertical = 14f;
+        public float TrickARewardForceHorizontal = 14f;
         [Header("Trick B State")]
         public bool isLoopTrickB = false;
         public float durationTrickB = 0.25f;
@@ -131,7 +132,7 @@ namespace SkateGame
         public float maxFallSpeed = -10f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
-        public float bonusVelDecay = 0.98f;
+        public float vPhysicsDecay = 0.98f;
 
         [Header("Air相关")]
         public float airControlForceConfig = 10f;

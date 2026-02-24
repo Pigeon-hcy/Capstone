@@ -23,6 +23,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/New Move Set Scene/New_1-4.unity
     guid: 1b62743813f97714cb578fc529a92772
+  - enabled: 1
+    path: Assets/Scenes/New Move Set Scene/New_1-5.unity
+    guid: 64a12e9ce79816e42a6a51fb3c9376b7
+  - enabled: 1
+    path: Assets/Scenes/New Move Set Scene/New_1-6.unity
+    guid: c3c0f99a266b0254a9c8f810f18938bb
+  - enabled: 1
+    path: Assets/Scenes/New Move Set Scene/New_1-7.unity
+    guid: 80db61d4d337b554eb12099f7995be4e
+  - enabled: 1
+    path: Assets/Scenes/New Move Set Scene/New_1-8.unity
+    guid: 3c17dffbbde513f4eae6800eba53caa5
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e15a66fba268bb4479843aa677c8aa23, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

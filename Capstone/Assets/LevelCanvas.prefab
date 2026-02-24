@@ -403,6 +403,26 @@ MonoBehaviour:
     Name: New_1-3
     button: {fileID: 0}
     image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-4
+    Name: New_1-4
+    button: {fileID: 0}
+    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-5
+    Name: New_1-5
+    button: {fileID: 0}
+    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-6
+    Name: New_1-6
+    button: {fileID: 0}
+    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-7
+    Name: New_1-7
+    button: {fileID: 0}
+    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-8
+    Name: New_1-8
+    button: {fileID: 0}
+    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   allLevelCanvas: {fileID: 3949141274861609245}
   basicCanvas: {fileID: 7949062265538136729}
 --- !u!1 &2876593292536863995
@@ -576,7 +596,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.81662}
+  m_AnchoredPosition: {x: 0, y: -14.81665}
   m_SizeDelta: {x: 0, y: 47.3859}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22077443124353804
@@ -1332,7 +1352,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: 111}
+  m_AnchoredPosition: {x: -309, y: 223}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &53968044461021638
