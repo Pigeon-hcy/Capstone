@@ -76,7 +76,7 @@ public class GrindState : ActionStateBase
         // 然后检查currentTrack是否为null
         if (playerModel.CurrentTrack.Value == null)
         {
-            GrindJump();
+            NormalExit();
             return;
         }
 
@@ -144,5 +144,11 @@ public class GrindState : ActionStateBase
         playerModel.IsGrindJump.Value = true;
         player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+    }
+
+    private void NormalExit()
+    {
+        player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
     }
 }
