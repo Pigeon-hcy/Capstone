@@ -18,6 +18,7 @@ namespace BulletToolKit
             }
             initV.package.AddEffect(new DestroyEffectDeco(gameObject));
             hitBox = hitBoxFactory.CreateAndOpenHitbox(transform, initV);
+            
             moveCompo?.AllowMove();
         }
 
