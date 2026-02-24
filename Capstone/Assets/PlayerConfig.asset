@@ -43,7 +43,8 @@ MonoBehaviour:
   durationTrickA: 0.2
   ignoringMovementLayerTrickA: 1
   recoveryDurationTrickA: 0.5
-  TrickARewardForce: 14
+  TrickARewardForceVertical: 16
+  TrickARewardForceHorizontal: 10
   isLoopTrickB: 0
   durationTrickB: 0.2
   ignoringMovementLayerTrickB: 1
@@ -102,7 +103,7 @@ MonoBehaviour:
   maxFallSpeed: -24
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
-  bonusVelDecay: 0.98
+  vPhysicsDecay: 0.98
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
   normalG: 3.2
