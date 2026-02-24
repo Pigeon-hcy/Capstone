@@ -62,6 +62,33 @@ public class LayeredStateMachine : ICanGetModel, ICanSendEvent, IBelongToArchite
         }
     }
 
+    public void ReenterCurrentState(StateLayer layer)
+    {
+        if (layer == StateLayer.Movement)
+        {
+            var from = mMovement.GetCurrentStateName();
+            mMovement.ReenterCurrentState();
+            this.SendEvent<StateChangedEvent>(new StateChangedEvent
+            {
+                Layer = StateLayer.Movement,
+                FromState = from,
+                ToState = from
+            });
+        }
+        else
+        {
+            var from = mAction.GetCurrentStateName();
+            playerModel.LastActionStateName.Value = from;
+            mAction.ReenterCurrentState();
+            this.SendEvent<StateChangedEvent>(new StateChangedEvent
+            {
+                Layer = StateLayer.Action,
+                FromState = from,
+                ToState = from
+            });
+        }
+    }
+
     public void UpdateCurrentState()
     {
         // Update action first

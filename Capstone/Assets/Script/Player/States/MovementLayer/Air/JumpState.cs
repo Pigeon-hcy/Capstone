@@ -78,7 +78,7 @@ public class JumpState : AirborneMovementState
         if (jumpTimer < playerModel.JumpDuration.Value)
         {
             jumpTimer += Time.deltaTime;
-            if (playerModel.CanDoubleJump.Value && jumpTimer > 0f)
+            if (jumpTimer > 0f)
             {
                 playerModel.JumpStarted.Value = true;
             }

@@ -13,15 +13,7 @@ public class AirState : AirborneMovementState
 
     public override void Enter()
     {
-        if (playerModel.CanDoubleJump.Value)
-        {
-            // player.animator.Play("oPlayer@OllieAirborne", 0);
-            player.animator.SetBool("CanDoubleJump", true);
-        }
-        else // player.animator.Play("oPlayer@KickFlipAirborne", 0);
-        {
-            player.animator.SetBool("CanDoubleJump", false);
-        }
+        player.animator.SetBool("CanDoubleJump", true);
     }
 
     protected override void UpdateAirMovement()

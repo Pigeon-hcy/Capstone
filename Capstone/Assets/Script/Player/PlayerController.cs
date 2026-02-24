@@ -190,7 +190,7 @@ namespace SkateGame
             // 检测前方墙壁(近距离), 用上一帧速度以防取到碰撞后速度
             var (touchingWall, wallAngle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
             // wall jump时免疫碰撞
-            if (touchingWall && stateMachine.GetMovementStateName() != "WallJumpState")
+            if (touchingWall)
             {
                 collisionSystem.CheckCrash(_velocityLastFrame, wallAngle);
             }

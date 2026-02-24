@@ -18,8 +18,6 @@ public class LandState : GroundMovementState, ICanSendEvent
     protected override void EnterGroundMovement()
     {
         playerModel.CurrentBulletCount.Value = playerModel.Config.Value.bulletMaxCount;
-        isDoubleJumpLand = playerModel.CanDoubleJump.Value;
-        playerModel.CanDoubleJump.Value = true;
         landTimer = 0f;
         player.SendEvent<PlayerLandedEvent>();
         playLanding();

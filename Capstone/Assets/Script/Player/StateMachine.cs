@@ -37,10 +37,21 @@ public class E
         }
         else if (currentState.GetType() != targetType)
         {
-            StateBase oldState = currentState;
             currentState.Exit();
             EnterState(targetType);
         }
+    }
+    
+    public void ReenterCurrentState()
+    {
+        if (currentState == null)
+        {
+            return;
+        }
+
+        var targetState = currentState.GetType();
+        currentState.Exit();
+        EnterState(targetState);
     }
     
     // 获取当前状态

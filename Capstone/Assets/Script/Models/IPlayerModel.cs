@@ -27,11 +27,6 @@ namespace SkateGame
         BindableProperty<Wall> CurrentBgWall { get; }
 
         /// <summary>
-        /// air相关
-        /// </summary>
-        BindableProperty<bool> CanDoubleJump { get; }
-
-        /// <summary>
         /// grind相关
         /// </summary>
         BindableProperty<float> Speed { get; }
@@ -123,9 +118,6 @@ namespace SkateGame
         // Wall相关
         public BindableProperty<Wall> CurrentBgWall { get; } = new BindableProperty<Wall>(null);
         
-        // air相关
-        public BindableProperty<bool> CanDoubleJump { get; } = new BindableProperty<bool>(true);
-
         // grind相关
         public BindableProperty<float> Speed { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> GrindDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);

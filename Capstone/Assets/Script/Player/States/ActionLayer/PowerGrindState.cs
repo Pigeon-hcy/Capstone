@@ -31,16 +31,17 @@ public class PowerGrindState : ActionStateBase
     {
         
         CheckSwitchAction();
-        // if (!playerModel.IsGrounded.Value)
-        // {
-        //     player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
-        //     return;
-        // }
-        // if (inputModel.PushStart.Value && playerModel.IsGrounded.Value)
-        // {
-        //     player.stateMachine.SwitchState<PushState>(StateLayer.Action);
-        //     return;
-        // }
+        if (!playerModel.IsGrounded.Value)
+        {
+            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            return;
+        }
+        bool isReversing = inputModel.Move.Value.x != 0f && (playerModel.IsFacingRight.Value != (inputModel.Move.Value.x > 0));
+        if (inputModel.PushStart.Value && playerModel.IsGrounded.Value && !isReversing)
+        {
+            player.stateMachine.SwitchState<PushState>(StateLayer.Action);
+            return;
+        }
         bool hasStopped = Mathf.Abs(playerModel.PushSpeed.Value) < playerModel.Config.Value.powerGrindStopSpeedThreshold;
         bool durationReached = stateTimer >= stateDuration;
         if (hasStopped || durationReached)

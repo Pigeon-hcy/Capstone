@@ -11,6 +11,7 @@ namespace SkateGame
         public bool WallJumpQueued;
         public bool ReverseQueued;
         public bool GrappleImpulseQueued;
+        public bool GrindResetSpeedQueued;
         public bool TrickBResetSpeedQueued;
         public bool TrickCLandQueued;
         public bool TrickARewardQueued;
@@ -33,6 +34,7 @@ namespace SkateGame
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
+            GrindResetSpeedQueued = false;
             TrickBResetSpeedQueued = false;
             TrickCLandQueued = false;
             TrickARewardQueued = false;
@@ -45,6 +47,7 @@ namespace SkateGame
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
+            GrindResetSpeedQueued = false;
             TrickBResetSpeedQueued = false;
             TrickCLandQueued = false;
             TrickARewardQueued = false;
@@ -175,7 +178,11 @@ namespace SkateGame
             }
         }
         private void OnReverseInput(ReverseInputEvent evt) { pending.ReverseQueued = true; }
-        private void OnGrindInput(GrindInputEvent evt) { pending.Grinding = evt.IsGrinding; }
+        private void OnGrindInput(GrindInputEvent evt) 
+        { 
+            pending.Grinding = evt.IsGrinding; 
+            pending.GrindResetSpeedQueued = !evt.IsGrinding;
+        }
         private void OnTrickAInput(TrickAInputEvent evt) { }
         private void OnTrickBInput(TrickBInputEvent evt)
         {
@@ -255,16 +262,19 @@ namespace SkateGame
                 if (pending.WallJumpQueued) ApplyWallJumpImpulse(IsGraceWallJump);
                 if (pending.Jumping) ApplyJumpHeld();
                 if (pending.JumpCutQueued) ApplyJumpCut();
-                // 5: trick one-shots
+
+                // 5: vPhysics
                 if (pending.TrickARewardQueued) ApplyTrickAReward(TrickARewardDirection);
-                if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
                 if (pending.TrickCLandQueued) ApplyTrickCLand();
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
-                // 6: sustained actions
-                if (pending.Grinding) ApplyGrind();
-                if (pending.Dashing) ApplyTrickB(TrickBDirection);
                 if (pending.Slamming) ApplyTrickC();
                 if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
+
+                // 6: vOveride 
+                if (pending.Grinding) ApplyGrind();
+                if (pending.GrindResetSpeedQueued) ApplyGrindResetSpeed();
+                if (pending.Dashing) ApplyTrickB(TrickBDirection);
+                if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
             }
             
 
@@ -415,8 +425,12 @@ namespace SkateGame
 
         private void ApplyGrind()
         {
-            vPhysics = playerModel.GrindDirection.Value * playerModel.Config.Value.grindSpeed;
-            vPush = Vector2.zero;
+            vOveride = playerModel.GrindDirection.Value * playerModel.Config.Value.grindSpeed;
+        }
+
+        private void ApplyGrindResetSpeed()
+        {
+            vOveride = Vector2.zero;
         }
 
         private void ApplyTrickB(float direction)

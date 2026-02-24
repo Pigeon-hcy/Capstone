@@ -43,7 +43,6 @@ public class WallJumpState : AirborneMovementState
         StateChange();
         UpdateGrindJumpTimer();
         UpdateJumpTimer();
-        
     }
 
     public override void Exit()
@@ -70,7 +69,7 @@ public class WallJumpState : AirborneMovementState
         if (jumpTimer < playerModel.JumpDuration.Value)
         {
             jumpTimer += Time.deltaTime;
-            if (playerModel.CanDoubleJump.Value && jumpTimer > 0f)
+            if (jumpTimer > 0f)
             {
                 playerModel.JumpStarted.Value = true;
             }
@@ -83,6 +82,11 @@ public class WallJumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
+        if (inputModel.JumpStart.Value && (playerModel.IsNearFgWall.Value || playerModel.WallJumpGraceTimer.Value > 0f))
+        {
+            // 重新walljump
+            player.stateMachine.ReenterCurrentState(StateLayer.Movement);
+        }
     }
 
     public void playOllie()
