@@ -42,9 +42,11 @@ namespace SkateGame
 
         void OnTriggerStay2D(Collider2D collision)
         {
+            
             if (targetTags == null || targetTags.Count == 0)
                 return;
 
+            
             string colTag = collision.tag;
 
             // 如果这个 tag 在目标列表里
