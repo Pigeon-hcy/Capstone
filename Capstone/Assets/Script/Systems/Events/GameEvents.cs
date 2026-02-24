@@ -85,6 +85,7 @@ namespace SkateGame
     public struct PowerGrindInputEvent
     {
         public bool IsPowerGrinding;
+        public bool IsInterrupted;
     }
     
     // 反向输入事件
