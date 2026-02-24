@@ -168,7 +168,8 @@ namespace SkateGame
                 powerGrindStartSpeed = Mathf.Abs(pushSpeed);
                 powerGrindDirection = Mathf.Sign(pushSpeed);
             }
-            else
+            // If not interrupted, ensure push speed is stopped
+            if (!evt.IsInterrupted)
             {
                 pushSpeed = 0f;
             }
