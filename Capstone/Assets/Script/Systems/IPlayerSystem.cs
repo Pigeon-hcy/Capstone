@@ -430,6 +430,8 @@ namespace SkateGame
 
         private void ApplyGrindResetSpeed()
         {
+            pushSpeed = Mathf.Max(pushSpeed, playerModel.Config.Value.grindResetSpeed) * Mathf.Sign(playerModel.GrindDirection.Value.x);
+            vPush = pushSpeed * groundRight;
             vOveride = Vector2.zero;
         }
 
