@@ -153,7 +153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1833970915496216302
 RectTransform:
   m_ObjectHideFlags: 0
@@ -402,27 +402,27 @@ MonoBehaviour:
   - SceneName: New_1-3
     Name: New_1-3
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300010, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   - SceneName: New_1-4
     Name: New_1-4
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300010, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   - SceneName: New_1-5
     Name: New_1-5
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300010, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   - SceneName: New_1-6
     Name: New_1-6
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300010, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   - SceneName: New_1-7
     Name: New_1-7
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300010, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   - SceneName: New_1-8
     Name: New_1-8
     button: {fileID: 0}
-    image: {fileID: 21300386, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+    image: {fileID: 21300028, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   allLevelCanvas: {fileID: 3949141274861609245}
   basicCanvas: {fileID: 7949062265538136729}
 --- !u!1 &2876593292536863995
