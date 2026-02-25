@@ -90,9 +90,9 @@ MonoBehaviour:
   crashVelocity: 10
   crashAngle: 60
   crashAngleDiff: 45
-  jumpForce: 16
-  jumpHoldForce: 12
-  jumpHoldMaxTime: 0.3
+  jumpForce: 20
+  jumpHoldForce: 18
+  jumpHoldMaxTime: 0.2
   jumpCutMultiplier: 0.8
   wallJumpImpulse: 18
   wallJumpSpeed: 10
