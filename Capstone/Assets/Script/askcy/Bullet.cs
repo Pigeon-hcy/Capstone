@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;
+    public float xSpeed = 10f;
+    public float ySpeed = 0f;
 
     public Vector3 startPoint;
     public bool isActive = false;
@@ -16,7 +17,8 @@ public class Bullet : MonoBehaviour
     {
         if (isActive)
         {
-            transform.Translate(Vector2.up * speed * Time.deltaTime);
+            transform.Translate(Vector2.right * xSpeed * Time.deltaTime, Space.World);
+            transform.Translate(Vector2.up * ySpeed * Time.deltaTime, Space.World);
         }
     }
 
