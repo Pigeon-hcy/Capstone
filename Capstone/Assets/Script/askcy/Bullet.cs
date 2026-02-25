@@ -1,4 +1,6 @@
 using UnityEngine;
+using HUDIndicator;
+using System.Collections;
 
 public class Bullet : MonoBehaviour
 {
@@ -8,9 +10,15 @@ public class Bullet : MonoBehaviour
     public Vector3 startPoint;
     public bool isActive = false;
 
+    [Header("HUD 离屏指示器（可选）")]
+    public IndicatorOffScreen offscreenIndicator;
+
+    public float indicatorTimer = 1f;
     void Start()
     {
         startPoint = transform.position;
+        if (offscreenIndicator == null)
+            offscreenIndicator = GetComponentInChildren<IndicatorOffScreen>(true);
     }
 
     void Update()
@@ -26,6 +34,7 @@ public class Bullet : MonoBehaviour
     {
         transform.position = startPoint;
         isActive = true;
+        StartCoroutine(ShowIndicator());
     }
 
     public void reset()
@@ -33,6 +42,16 @@ public class Bullet : MonoBehaviour
         isActive = false;
         transform.position = startPoint;
     }
+
+    IEnumerator ShowIndicator()
+    {
+        if (offscreenIndicator == null) yield break;
+        offscreenIndicator.enabled = true;
+        yield return new WaitForSeconds(indicatorTimer);
+        offscreenIndicator.enabled = false;
+    }
+
+
 
 
 }
