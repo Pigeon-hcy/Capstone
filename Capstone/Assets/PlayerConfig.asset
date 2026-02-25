@@ -95,7 +95,7 @@ MonoBehaviour:
   jumpHoldMaxTime: 0.2
   jumpCutMultiplier: 0.8
   wallJumpImpulse: 18
-  wallJumpSpeed: 10
+  wallJumpSpeed: 16
   wallJumpUpMultiplier: 1
   wallJumpGraceAfterHit: 0.15
   groundForce: 10

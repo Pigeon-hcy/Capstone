@@ -408,7 +408,7 @@ namespace SkateGame
         {
             Vector2 wallN = isGraceWallJump ? playerModel.WallJumpWallNormal.Value : Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up;
             Vector2 jumpDir = Vector2.Lerp(wallN, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
-            vPhysics += jumpDir * playerModel.Config.Value.wallJumpImpulse;
+            vPhysics = jumpDir * playerModel.Config.Value.wallJumpImpulse;
             
             bool isJumpright = wallN.x > 0;
             pushSpeed = isJumpright ? playerModel.Config.Value.wallJumpSpeed : -playerModel.Config.Value.wallJumpSpeed;
