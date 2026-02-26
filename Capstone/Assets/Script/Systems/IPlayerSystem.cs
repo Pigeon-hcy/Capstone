@@ -293,8 +293,6 @@ namespace SkateGame
                 CheckWalk(cachedMoveInput);
             }
             
-            Debug.Log("vPhysics: " + vPhysics + " vPush: " + vPush + " vOveride: " + vOveride);
-            Debug.Log("isGrounded: " + isGrounded);
             pending.Clear();
             rb.linearVelocity = vOveride==Vector2.zero ? vPhysics + vPush + vMove : vOveride;
             vPhysics*= playerModel.Config.Value.vPhysicsDecay;

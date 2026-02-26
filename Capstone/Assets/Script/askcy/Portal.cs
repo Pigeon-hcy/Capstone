@@ -39,8 +39,7 @@ public class Portal : MonoBehaviour, IBelongToArchitecture, ICanSendEvent
             else
             {
                 float exitAngleDegrees = targetPortal.transform.eulerAngles.z;
-                Vector2 direction = (Quaternion.Euler(0f, 0f, exitAngleDegrees) * Vector2.up).normalized;
-                
+                Vector2 direction = (Quaternion.Euler(0f, 0f, -exitAngleDegrees) * Vector2.right).normalized;
                 var playerController = other.GetComponent<PlayerController>();
                 if (playerController != null)
                     playerController.SendEvent(new PortalTeleportEvent { ExitDirection = direction});
