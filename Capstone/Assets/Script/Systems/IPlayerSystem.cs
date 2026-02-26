@@ -406,14 +406,12 @@ namespace SkateGame
 
         private void ApplyWallJumpImpulse(bool isGraceWallJump)
         {
+            pushSpeed = isGraceWallJump ? -playerModel.PushSpeedBeforeHit.Value : -playerModel.PushSpeed.Value;
+            playerModel.PushSpeed.Value = pushSpeed;
             Vector2 wallN = isGraceWallJump ? playerModel.WallJumpWallNormal.Value : Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up;
             Vector2 jumpDir = Vector2.Lerp(wallN, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized;
-            vPhysics = jumpDir * playerModel.Config.Value.wallJumpImpulse;
-            
-            bool isJumpright = wallN.x > 0;
-            pushSpeed = isJumpright ? playerModel.Config.Value.wallJumpSpeed : -playerModel.Config.Value.wallJumpSpeed;
-            playerModel.PushSpeed.Value = pushSpeed;
             vPush = (pushSpeed + moveSpeed) * groundRight;
+            vPhysics += jumpDir * playerModel.Config.Value.wallJumpForce * playerModel.Config.Value.wallJumpForceMultiplier;
         }
         #endregion
 
@@ -432,8 +430,6 @@ namespace SkateGame
 
         private void ApplyGrindResetSpeed()
         {
-            pushSpeed = Mathf.Max(pushSpeed, playerModel.Config.Value.grindResetSpeed) * Mathf.Sign(playerModel.GrindDirection.Value.x);
-            vPush = pushSpeed * groundRight;
             vOveride = Vector2.zero;
         }
 

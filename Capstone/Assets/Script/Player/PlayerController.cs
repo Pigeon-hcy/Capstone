@@ -182,7 +182,7 @@ namespace SkateGame
 
             // 检测前方墙壁(远距离)
             float wallCheckDistance = Mathf.Lerp(playerModel.Config.Value.wallCheckDistanceFarSlow,playerModel.Config.Value.wallCheckDistanceFarFast, 
-                Mathf.Abs(rb.linearVelocity.x) / playerModel.Config.Value.maxPushSpeed);
+                Mathf.Abs(rb.linearVelocity.x) / playerModel.Config.Value.maxMoveSpeed);
             var (isNearWall, angle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, wallCheckDistance);
             playerModel.IsNearFgWall.Value = isNearWall;
             playerModel.FgWallAngle.Value = angle;

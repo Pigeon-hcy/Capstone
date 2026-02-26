@@ -31,7 +31,19 @@ public class GrindState : ActionStateBase
         
         Vector2 velocity = rb.linearVelocity;
         direction = new Vector2(velocity.x, 0).normalized;
-        leftToRight = velocity.x >= 0f ? 1 : -1;
+        if(velocity.x > 0.1f)
+        {
+            leftToRight = 1;
+        }
+        else if(velocity.x < -0.1f)
+        {
+            leftToRight = -1;
+        }
+        else
+        {
+            GrindJump();
+            return;
+        }
         playerModel.CurrentGravityScale.Value = 0f;
         playerModel.GrindDirection.Value = direction;
         trackRef = playerModel.CurrentTrack.Value.GetDirTool();
@@ -63,7 +75,7 @@ public class GrindState : ActionStateBase
         // 然后检查currentTrack是否为null
         if (playerModel.CurrentTrack.Value == null)
         {
-            GrindJump();
+            NormalExit();
             return;
         }
 
@@ -133,4 +145,9 @@ public class GrindState : ActionStateBase
         player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
     }
 
+    private void NormalExit()
+    {
+        player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+        player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
+    }
 }

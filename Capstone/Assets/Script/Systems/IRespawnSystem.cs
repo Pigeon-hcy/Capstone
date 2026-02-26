@@ -113,12 +113,7 @@ namespace SkateGame
             rb.angularVelocity = 0f;
             playerController.SendEvent<PlayerRespawnEvent>();
             playerController.UpdatePlayerDirection(true);
-
             
-            var triggers = Object.FindObjectsByType<AttackTrigger>(FindObjectsSortMode.None);
-            foreach (var t in triggers)
-                t.isResetting = false;
-
             energySystem.ResetEnergy();
             playRespawnParticleAt(player.position);
 
