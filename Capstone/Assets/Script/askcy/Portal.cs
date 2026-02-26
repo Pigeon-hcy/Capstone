@@ -1,7 +1,8 @@
 using UnityEngine;
 using MoreMountains.Feedbacks;
-
-public class Portal : MonoBehaviour
+using SkateGame;
+using QFramework;
+public class Portal : MonoBehaviour, IBelongToArchitecture, ICanSendEvent
 {
 
     public Transform targetPortal;
@@ -20,14 +21,12 @@ public class Portal : MonoBehaviour
 
     private float travelProgress = 0;
 
-    
+    public IArchitecture GetArchitecture() => GameApp.Interface;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player" && !isCoolingDown)
         {
-            Rigidbody2D playerRb = other.GetComponent<Rigidbody2D>();
-            float playerSpeed = playerRb.linearVelocity.magnitude;
             Vector3 targetPosition = targetPortal.position;
 
             if (!coverPlayerAngle)
@@ -36,19 +35,20 @@ public class Portal : MonoBehaviour
                 isCoolingDown = true;
                 otherPortal.isCoolingDown = true;
                 isTraveling = true;
-
             }
             else
             {
                 float exitAngleDegrees = targetPortal.transform.eulerAngles.z;
                 Vector2 direction = (Quaternion.Euler(0f, 0f, exitAngleDegrees) * Vector2.up).normalized;
-                playerRb.linearVelocity = direction * playerSpeed;
+                
+                var playerController = other.GetComponent<PlayerController>();
+                if (playerController != null)
+                    playerController.SendEvent(new PortalTeleportEvent { ExitDirection = direction});
                 other.transform.position = targetPosition;
                 isCoolingDown = true;
                 otherPortal.isCoolingDown = true;
                 isTraveling = true;
             }
-
         }
     }
 

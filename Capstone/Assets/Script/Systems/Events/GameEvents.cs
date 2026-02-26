@@ -138,4 +138,9 @@ namespace SkateGame
     {
         public bool IsHitting;
     }
+
+    public struct PortalTeleportEvent
+    {
+        public Vector2 ExitDirection;
+    }
 }

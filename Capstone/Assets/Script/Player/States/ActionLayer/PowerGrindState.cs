@@ -17,7 +17,7 @@ public class PowerGrindState : ActionStateBase
     protected override void EnterActionState()
     {
         isInterrupted = true;
-        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true });
+        player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true, IsInterrupted = isInterrupted });
         // 开始检查反向输入窗口
         StartCheckReverseWindow();
         
