@@ -130,6 +130,7 @@ namespace SkateGame
         [Tooltip("坡度补偿力"), Range(0f, 1f)] public float slopeCompensationForce = 0.5f;
         public float maxMoveSpeed = 5f;
         public float maxFallSpeed = -10f;
+        public float maxSlopeSlideSpeed = 6f;
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
         public float vPhysicsDecay = 0.98f;
@@ -138,7 +139,7 @@ namespace SkateGame
         public float airControlForceConfig = 10f;
         public float maxAirHorizontalSpeedConfig = 8f;
 
-        [Header("Grind相关")]
+        [Header("重力相关")]
         public float normalG = 1f;
         public float gravityMagnitude = 9.81f;
 

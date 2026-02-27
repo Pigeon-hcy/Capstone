@@ -91,6 +91,7 @@ namespace SkateGame
         public Vector2 GrappleDirection;
         private bool isWalking;
         
+        Vector2 jumpDir;
         private float pushSpeed;
         private float moveSpeed;// movespeed != 0 means walking
         private float powerGrindStartTime;
@@ -253,7 +254,13 @@ namespace SkateGame
                 {
                     if (!isWalking)
                     {
-                        if (vUpPhysics < 0f) { vPhysics -= Vector2.Dot(vPhysics, groundUp) * groundUp;}
+                        if (vUpPhysics < 0f) { vPhysics -= vUpPhysics * groundUp;}
+                        if (Mathf.Abs(vRightPhysics) > playerModel.Config.Value.maxSlopeSlideSpeed) 
+                        { 
+                            float sign = Mathf.Sign(vRightPhysics);
+                            vPhysics -= vRightPhysics * groundRight;
+                            vPhysics += sign * playerModel.Config.Value.maxSlopeSlideSpeed * groundRight;
+                        }
                         // When nearly stopped on slope，stop sliding down
                         float totalSpeed = Vector2.Dot(vPhysics + vPush, groundRight);
                         if (Mathf.Abs(totalSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
@@ -295,7 +302,7 @@ namespace SkateGame
             
             pending.Clear();
             rb.linearVelocity = vOveride==Vector2.zero ? vPhysics + vPush + vMove : vOveride;
-            vPhysics*= playerModel.Config.Value.vPhysicsDecay;
+            if(isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
             if (Mathf.Abs(vPhysics.x) < 0.01f && Mathf.Abs(vPhysics.y) < 0.01f) vPhysics = Vector2.zero;
         }
 
@@ -368,7 +375,7 @@ namespace SkateGame
             {
                 vPhysics += g * Time.fixedDeltaTime;
                 if (!pending.Slamming)
-                    vPhysics = new Vector2(vPhysics.x, Mathf.Max(vPhysics.y, playerModel.Config.Value.maxFallSpeed+vPush.y));
+                    vPhysics = new Vector2(vPhysics.x, Mathf.Max(vPhysics.y, playerModel.Config.Value.maxFallSpeed-vPush.y));
             }
         }
 
@@ -393,30 +400,34 @@ namespace SkateGame
             vPhysics += down * (playerModel.Config.Value.groundForce * Time.fixedDeltaTime);
         }
         #endregion
-
         #region Jumps
+        // 沿push方向跳跃
         private void ApplyJumpImpulse()
         {
-            Vector2 upDir = Vector2.up;
-            vPhysics -= Vector2.Dot(vPhysics, upDir) * upDir;
-            vPhysics += upDir * playerModel.Config.Value.jumpForce;
+            Vector2 upReflected = -Vector2.Dot(Vector2.up, groundRight) * groundRight;
+
+            float uphillAmount = Mathf.Sign(pushSpeed) * Vector2.Dot(groundRight, Vector2.up);
+            float speedFactor = Mathf.Clamp01(Mathf.Abs(pushSpeed) / playerModel.Config.Value.maxPushSpeed);
+            float t = 0.5f + 0.5f * uphillAmount * speedFactor;
+            Vector2 upDir = Vector2.Lerp(upReflected, Vector2.up, t).normalized;
+            jumpDir = upDir;
+            vPhysics = upDir * playerModel.Config.Value.jumpForce;
         }
 
         private void ApplyJumpHeld()
         {
             // Vector2 upDir = playerModel.IsGrounded.Value ? groundUp : Vector2.up;   
-            Vector2 upDir = Vector2.up;
+            Vector2 upDir = jumpDir;
             float vUp = Vector2.Dot(vPhysics, upDir);
             if (vUp < playerModel.Config.Value.jumpHoldForce)
             {
-                vPhysics -= vUp * upDir;
-                vPhysics += playerModel.Config.Value.jumpHoldForce * upDir;
+                vPhysics = playerModel.Config.Value.jumpHoldForce * upDir;
             }
         }
 
         private void ApplyJumpCut()
         {
-            Vector2 upDir = Vector2.up;
+            Vector2 upDir = jumpDir;
             vPhysics -= Vector2.Dot(vPhysics, upDir) * upDir * playerModel.Config.Value.jumpCutMultiplier;
         }
 
@@ -445,7 +456,7 @@ namespace SkateGame
 
         private void ApplyGrindResetSpeed()
         {
-            pushSpeed = Mathf.Max(pushSpeed, playerModel.Config.Value.grindResetSpeed) * Mathf.Sign(playerModel.GrindDirection.Value.x);
+            pushSpeed = Mathf.Max(Mathf.Abs(pushSpeed), playerModel.Config.Value.grindResetSpeed) * Mathf.Sign(playerModel.GrindDirection.Value.x);
             vPush = pushSpeed * groundRight;
             vOveride = Vector2.zero;
         }
@@ -508,7 +519,7 @@ namespace SkateGame
         private void ApplyPortalTeleport()
         {
             vPush = pushSpeed * PortalTeleportExitDirection;
-            pushSpeed = PortalTeleportExitDirection.magnitude * Mathf.Sign(PortalTeleportExitDirection.x);
+            pushSpeed = vPush.magnitude * Mathf.Sign(PortalTeleportExitDirection.x);
             vPhysics = Vector2.zero;
         }
 
