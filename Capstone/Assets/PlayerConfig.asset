@@ -22,7 +22,7 @@ MonoBehaviour:
   pushReverseCooldown: 0.5
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 0
-  powerGrindDuration: 1
+  powerGrindDuration: 0.5
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
   isLoopHit: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   jumpForce: 20
   jumpHoldForce: 18
   jumpHoldMaxTime: 0.2
-  jumpCutMultiplier: 1
+  jumpCutMultiplier: 0.9
   wallJumpImpulse: 18
   wallJumpSpeed: 16
   wallJumpUpMultiplier: 1
@@ -102,6 +102,7 @@ MonoBehaviour:
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5
   maxFallSpeed: -24
+  maxSlopeSlideSpeed: 6
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
   vPhysicsDecay: 0.98
