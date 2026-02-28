@@ -22,6 +22,14 @@ public class MusicManager : MonoBehaviour
     public EventReference levelMusic3Event;
     private EventInstance levelMusic3EventInstance;
 
+    //MX7
+    public EventReference levelMusic7Event;
+    private EventInstance levelMusic7EventInstance;
+    FMOD.Studio.PARAMETER_ID levelMusic7Parameter;
+    public float currentValue7;
+    public float targetValue7;
+
+
     //BMX1
     public EventReference bossMusic1Event;
     private EventInstance bossMusic1EventInstance;
@@ -46,6 +54,18 @@ public class MusicManager : MonoBehaviour
         //MX3
         levelMusic3EventInstance = RuntimeManager.CreateInstance(levelMusic3Event);
 
+        //MX7
+        levelMusic7EventInstance = RuntimeManager.CreateInstance(levelMusic7Event);
+
+        FMOD.Studio.EventDescription levelMusic7EventDescription;
+        levelMusic7EventInstance.getDescription(out levelMusic7EventDescription);
+        FMOD.Studio.PARAMETER_DESCRIPTION levelMusic7EventParameterDescription;
+        levelMusic7EventDescription.getParameterDescriptionByName("MusicSpeedup", out levelMusic7EventParameterDescription);
+        levelMusic7Parameter = levelMusic7EventParameterDescription.id;
+
+        currentValue7 = 0.5f;
+        targetValue7 = 0.5f;
+
         //BMX1
         bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
         #endregion
@@ -54,7 +74,9 @@ public class MusicManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //MX7
+        currentValue7 = Mathf.Lerp(currentValue7, targetValue7, Time.deltaTime * 2);
+        levelMusic7EventInstance.setParameterByID(levelMusic7Parameter, currentValue7);
     }
     
     #region Music
@@ -157,6 +179,36 @@ public class MusicManager : MonoBehaviour
                 levelMusic3EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
+    }
+
+    //LevelMusic3
+    public void fmodPlayLM7()
+    {
+        if (levelMusic7EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic7EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                levelMusic7EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM7()
+    {
+        if (levelMusic7EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic7EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic7EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+    public void setTargetValue7 (float newValue)
+    {
+        targetValue7 = newValue;
     }
 
     //BossMusic1

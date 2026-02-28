@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7724531524110533715}
   - component: {fileID: 5188256893031043663}
   - component: {fileID: 3149676261824128038}
+  - component: {fileID: 1574633308884936454}
+  - component: {fileID: 249014547511873737}
   m_Layer: 0
   m_Name: SpeedUp
   m_TagString: Untagged
@@ -29,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -82.0585, y: 26.1709, z: 0}
-  m_LocalScale: {x: 14.586149, y: 8.552261, z: 1}
+  m_LocalScale: {x: 62.7886, y: 22.87077, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.5937422, b: 0, a: 0.043137256}
+  m_Color: {r: 1, g: 0.5937422, b: 0, a: 0.05882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -174,3 +176,49 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   transitionDuration: 0.5
+--- !u!114 &1574633308884936454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3582018241562728834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25e341aa9fa5fe43ad4450935c31d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnLoad: 0
+  playOnEnter: 1
+  playOnLeave: 0
+  setNewValue: 1
+  pause: 0
+  LM1: 0
+  LM2: 0
+  LM3: 0
+  LM7: 1
+  newValue: 2
+  speaker: {fileID: 0}
+--- !u!114 &249014547511873737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3582018241562728834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25e341aa9fa5fe43ad4450935c31d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnLoad: 0
+  playOnEnter: 0
+  playOnLeave: 1
+  setNewValue: 1
+  pause: 0
+  LM1: 0
+  LM2: 0
+  LM3: 0
+  LM7: 1
+  newValue: 0.5
+  speaker: {fileID: 0}

@@ -6,7 +6,13 @@ using QFramework;
 
 public class AudioPlayer : MonoBehaviour
 {
- public bool playOnLoad;
+    public bool playOnLoad;
+
+    public bool playOnEnter;
+
+    public bool playOnLeave;
+
+    public bool setNewValue;
 
     public bool pause;
 
@@ -15,6 +21,10 @@ public class AudioPlayer : MonoBehaviour
     public bool LM2;
 
     public bool LM3;
+
+    public bool LM7;
+
+    public float newValue;
 
     public GameObject speaker;
 
@@ -30,17 +40,7 @@ public class AudioPlayer : MonoBehaviour
 
         if (playOnLoad)
         {
-            //eventInstance.start();
-            Debug.Log("playOnLoad is true");
-            Debug.Log(AudioManager.Instance);
-            if (pause)
-            {
-                pauseAudio();
-            }
-            else
-            {
-                playAudio();
-            }
+            playConditions();
             Debug.Log("audio play on load");
         }
         else
@@ -56,16 +56,43 @@ public class AudioPlayer : MonoBehaviour
 
     void OnTriggerEnter2D (Collider2D collision)
     {
-        if (collision.CompareTag("player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if (pause)
+            if (playOnEnter)
             {
-                pauseAudio();
+                playConditions();
             }
-            else if (!playOnLoad)
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (playOnLeave)
             {
-                playAudio();
+                playConditions();
             }
+        }
+    }
+
+    public void playConditions()
+    {
+        //eventInstance.start();
+        Debug.Log("playOnLoad is true");
+        Debug.Log(AudioManager.Instance);
+        if (setNewValue)
+        {
+            setNewMusicValue();
+            Debug.Log("A");
+        }
+        else if (pause)
+        {
+            pauseAudio();
+        }
+        else
+        {
+            playAudio();
         }
     }
 
@@ -83,6 +110,10 @@ public class AudioPlayer : MonoBehaviour
         {
             speaker.GetComponent<MusicManager>().fmodPlayLM3();
         }
+        else if (LM7)
+        {
+            speaker.GetComponent<MusicManager>().fmodPlayLM7();
+        }
     }
     public void pauseAudio()
     {
@@ -94,9 +125,21 @@ public class AudioPlayer : MonoBehaviour
         {
             speaker.GetComponent<MusicManager>().fmodPauseLM2();
         }
-         else if (LM3)
+        else if (LM3)
         {
             speaker.GetComponent<MusicManager>().fmodPauseLM3();
+        }
+        else if (LM7)
+        {
+            speaker.GetComponent<MusicManager>().fmodPauseLM7();
+        }
+    }
+    public void setNewMusicValue ()
+    {
+        if (LM7)
+        {
+            speaker.GetComponent<MusicManager>().setTargetValue7(newValue);
+            Debug.Log("B");
         }
     }
 }

@@ -72,6 +72,15 @@ MonoBehaviour:
       Data3: -502477651
       Data4: -1143734506
     Path: event:/MX_Music3
+  levelMusic7Event:
+    Guid:
+      Data1: 1291229686
+      Data2: 1299396945
+      Data3: -1391368284
+      Data4: 1549571003
+    Path: event:/MX_SwitchTest
+  currentValue7: 0
+  targetValue7: 0
   bossMusic1Event:
     Guid:
       Data1: 1826733611
