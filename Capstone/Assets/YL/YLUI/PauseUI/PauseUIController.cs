@@ -6,10 +6,14 @@ public class PauseUIController : MonoBehaviour
 {
     Animator animator;
     Image image;
-    [SerializeField] GameObject buttons;
+    [SerializeField] GameObject mainButtons;
+    [SerializeField] GameObject options;
 
     bool canInput = true;
     PauseUIState state = PauseUIState.Inactive;
+
+    [SerializeField] Slider musicSlider;
+    [SerializeField] Slider sfxSlider;
 
     enum PauseUIState
     {
@@ -23,9 +27,12 @@ public class PauseUIController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         image = GetComponent<Image>();
-        buttons.SetActive(false);
+        mainButtons.SetActive(false);
+        options.SetActive(false);
         image.enabled = false;
         animator.speed = 0;
+
+        InitializeVolumeSliders();
     }
 
     void Update()
@@ -64,13 +71,14 @@ public class PauseUIController : MonoBehaviour
         animator.speed = 0;
         if (state == PauseUIState.StartAnimation) 
         {
-            buttons.SetActive(true);
+            mainButtons.SetActive(true);
+            options.SetActive(true);
             state = PauseUIState.Active;
         } 
         else if (state == PauseUIState.EndAnimation)
         {
             Time.timeScale = 1;
-            buttons.SetActive(false);
+            mainButtons.SetActive(false);
             image.enabled = false;
             state = PauseUIState.Inactive;
         }
@@ -79,5 +87,51 @@ public class PauseUIController : MonoBehaviour
     public void DisableInput()
     {
         canInput = false;
+    }
+
+    private void InitializeVolumeSliders()
+    {
+        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
+        if (musicSlider != null)
+        {
+            musicSlider.minValue = 0f;
+            musicSlider.maxValue = 1f;
+            musicSlider.value = savedMusicVolume;
+            musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+        }
+
+        if (sfxSlider != null)
+        {
+            sfxSlider.minValue = 0f;
+            sfxSlider.maxValue = 1f;
+            sfxSlider.value = savedSFXVolume;
+            sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+        }
+    }
+
+    private void OnMusicVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetMusicVolume(value);
+        }
+    }
+
+    private void OnSFXVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetSFXVolume(value);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (musicSlider != null)
+            musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
     }
 }
