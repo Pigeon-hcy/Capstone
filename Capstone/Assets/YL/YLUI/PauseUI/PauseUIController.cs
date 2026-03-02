@@ -1,5 +1,8 @@
+using MoreMountains.Feedbacks;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseUIController : MonoBehaviour
@@ -15,6 +18,10 @@ public class PauseUIController : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
 
+    [SerializeField] GameObject pauseText;
+
+    Vector3 bumpAmount;
+
     enum PauseUIState
     {
         Inactive,
@@ -29,8 +36,10 @@ public class PauseUIController : MonoBehaviour
         image = GetComponent<Image>();
         mainButtons.SetActive(false);
         options.SetActive(false);
+        pauseText.SetActive(false);
         image.enabled = false;
         animator.speed = 0;
+        bumpAmount = new Vector3(750, 1000, 50);
 
         InitializeVolumeSliders();
     }
@@ -71,14 +80,14 @@ public class PauseUIController : MonoBehaviour
         animator.speed = 0;
         if (state == PauseUIState.StartAnimation) 
         {
-            mainButtons.SetActive(true);
-            options.SetActive(true);
             state = PauseUIState.Active;
         } 
         else if (state == PauseUIState.EndAnimation)
         {
             Time.timeScale = 1;
             mainButtons.SetActive(false);
+            options.SetActive(false);
+            pauseText.SetActive(false);
             image.enabled = false;
             state = PauseUIState.Inactive;
         }
@@ -87,6 +96,40 @@ public class PauseUIController : MonoBehaviour
     public void DisableInput()
     {
         canInput = false;
+    }
+
+    public void StartSpring()
+    {
+        mainButtons.SetActive(true);
+        options.SetActive(true);
+        pauseText.SetActive(true);
+        StartCoroutine(SpringCoroutine());
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    IEnumerator SpringCoroutine()
+    {
+        pauseText.transform.GetChild(0).GetComponent<MMSpringRectTransformPosition>().Bump(bumpAmount);
+
+        yield return new WaitForSecondsRealtime(0.05f);
+
+        for (int i = 0; i < mainButtons.transform.childCount; i++)
+        {
+            mainButtons.transform.GetChild(i).GetComponent<MMSpringRectTransformPosition>().Bump(bumpAmount);
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
     }
 
     private void InitializeVolumeSliders()
