@@ -86,6 +86,10 @@ public class AudioManager : MonoBehaviour
     //Death
     public EventReference deathEvent;
     private EventInstance deathEventInstance;
+
+    //Energy Recover
+    public EventReference energyEvent;
+    private EventInstance energyEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -167,6 +171,9 @@ public class AudioManager : MonoBehaviour
 
         //Death
         deathEventInstance = RuntimeManager.CreateInstance(deathEvent);
+
+        //Energy Recover
+        energyEventInstance = RuntimeManager.CreateInstance(energyEvent);
         #endregion
     }
 
@@ -467,6 +474,15 @@ public class AudioManager : MonoBehaviour
         if (deathEventInstance.isValid())
         {
             deathEventInstance.start();
+        }
+    }
+
+    //Energy Recover
+    public void fmodPlayEnergy()
+    {
+        if (energyEventInstance.isValid())
+        {
+            energyEventInstance.start();
         }
     }
     #endregion

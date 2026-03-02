@@ -53,6 +53,7 @@ public class EnergyRecoverItem : MonoBehaviour, IController
 
         if(other.CompareTag("Player"))
         {
+            playEnergy();
             isUsed = true;
             if(OnUseEffect != null)
             {
@@ -60,5 +61,10 @@ public class EnergyRecoverItem : MonoBehaviour, IController
             }
             energySystem.ResetEnergy();
         }
+    }
+
+    public void playEnergy()
+    {
+        AudioManager.Instance.fmodPlayEnergy();
     }
 }

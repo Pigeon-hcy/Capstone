@@ -144,3 +144,10 @@ MonoBehaviour:
       Data3: 611916986
       Data4: 770414567
     Path: event:/SFX_Death
+  energyEvent:
+    Guid:
+      Data1: 869928859
+      Data2: 1320013257
+      Data3: -640026191
+      Data4: -1091491656
+    Path: event:/SFX_Skillup
