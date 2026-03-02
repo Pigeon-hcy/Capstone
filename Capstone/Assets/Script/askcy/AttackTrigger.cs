@@ -10,6 +10,8 @@ public class AttackTrigger : MonoBehaviour
     public float resetTimer = 0f;
     public bool isResetting = false;
 
+    private Coroutine _launchCoroutine;
+
     void Start()
     {
         // 不在这里调用 bullet.reset()，否则会在 Bullet.Start() 记录起点之前把子弹移到 startPoint（此时为默认 0,0,0）
@@ -50,7 +52,7 @@ public class AttackTrigger : MonoBehaviour
     {
         if (!other.CompareTag("Player") || isResetting) return;
 
-        StartCoroutine(LaunchBullets());
+        _launchCoroutine = StartCoroutine(LaunchBullets());
         isResetting = true;
         resetTimer = resetTime;
     }
@@ -66,6 +68,26 @@ public class AttackTrigger : MonoBehaviour
             }
             yield return new WaitForSeconds(attackInterval);
         }
+        _launchCoroutine = null;
         yield return null;
+    }
+
+    public void ResetTrapOnPlayerDeath()
+    {
+        if (_launchCoroutine != null)
+        {
+            StopCoroutine(_launchCoroutine);
+            _launchCoroutine = null;
+        }
+        isResetting = false;
+        resetTimer = 0f;
+        foreach (Bullet bullet in bullets)
+        {
+            if (bullet != null)
+            {
+                bullet.reset();
+                bullet.gameObject.SetActive(false);
+            }
+        }
     }
 }

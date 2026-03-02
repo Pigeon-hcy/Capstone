@@ -97,6 +97,13 @@ namespace SkateGame
 
             playerController.gameObject.SetActive(false);
 
+            var triggers = Object.FindObjectsByType<AttackTrigger>(FindObjectsSortMode.None);
+            foreach (var t in triggers)
+                t.ResetTrapOnPlayerDeath();
+            var tickToggles = Object.FindObjectsByType<TickToggle>(FindObjectsSortMode.None);
+            foreach (var t in tickToggles)
+                t.ResetOnPlayerDeath();
+
             yield return new WaitForSeconds(1f);
 
             PlayDeathMMFEffects();
@@ -114,12 +121,14 @@ namespace SkateGame
             playerController.SendEvent<PlayerRespawnEvent>();
             playerController.UpdatePlayerDirection(true);
             
-            var triggers = Object.FindObjectsByType<AttackTrigger>(FindObjectsSortMode.None);
             foreach (var t in triggers)
                 t.isResetting = false;
 
             energySystem.ResetEnergy();
             playRespawnParticleAt(player.position);
+
+            foreach (var t in triggers)
+                t.isResetting = true;
 
             MessageSystem.Instance.Send(GameStateEnum.PlayerRespawn, null);
         }

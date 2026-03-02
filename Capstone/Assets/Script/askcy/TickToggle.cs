@@ -115,4 +115,17 @@ public class TickToggle : MonoBehaviour
         targetGrid.SetActive(false);
         progressBar.SetActive(false);
     }
+
+    public void ResetOnPlayerDeath()
+    {
+        timer = resetTime;
+        isUsed = false;
+        if (_currentOpenInstance == this)
+        {
+            EndOpen();
+            _currentOpenInstance = null;
+        }
+        isOpen = false;
+        openTimer = openTime;
+    }
 }
