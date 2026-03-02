@@ -47,6 +47,8 @@ namespace SkateGame
             SyncCurrentLevelIndex(currentSceneName);
 
             InitializeButtons();
+            RefreshButtonStatesOnShow();
+            BindingLevelInfoToPrefab();
         }
 
         /// <summary>
