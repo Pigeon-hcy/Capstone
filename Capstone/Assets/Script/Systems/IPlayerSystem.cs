@@ -89,7 +89,9 @@ namespace SkateGame
         public float TrickBDirection;
         public Vector2 GrappleDirection;
         private bool isWalking;
-        
+
+        private bool isGrounded;
+        private bool wasGrounded;
         Vector2 jumpDir;
         private float pushSpeed;
         private float moveSpeed;// movespeed != 0 means walking
@@ -233,7 +235,8 @@ namespace SkateGame
         #region Basic Movement
         public void ApplyMovement()
         {
-            bool isGrounded = playerModel.IsGrounded.Value;
+            wasGrounded = isGrounded;
+            isGrounded = playerModel.IsGrounded.Value;
 
             // 0: gravity
             ApplyCustomGravity();
@@ -242,12 +245,11 @@ namespace SkateGame
             else
             {
                 // 1: Base movement
-                ProjectVPush(isGrounded);
+                if(isGrounded) ProjectVPush();
                 if (pending.PushQueued) ApplyPushBurst();
                 if (pending.Pushing) ApplyPushSpeed();
                 else if (pending.PowerGrinding) ApplyPowerGrind();
 
-                
                 // 2: ground support
                 if (isGrounded)
                 {
@@ -300,15 +302,15 @@ namespace SkateGame
             
             pending.Clear();
             playerModel.PushSpeed.Value = pushSpeed;
-            rb.linearVelocity = vOveride==Vector2.zero ? vPhysics + vPush + vMove : vOveride;
+            rb.linearVelocity = vOveride == Vector2.zero ? vPhysics + vPush + vMove : vOveride;
             if(isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
             if (Mathf.Abs(vPhysics.x) < 0.01f && Mathf.Abs(vPhysics.y) < 0.01f) vPhysics = Vector2.zero;
         }
 
-        private void ProjectVPush(bool isGrounded)
+        private void ProjectVPush()
         {
             bool crash = Vector2.Dot(vPush, groundUp) < 0f;
-            if (isGrounded && !isWalking)
+            if (!wasGrounded || (crash && !isWalking))
             {
                 pushSpeed = Vector2.Dot(vPush, groundRight);
                 vPush = pushSpeed * groundRight;
@@ -426,8 +428,10 @@ namespace SkateGame
 
         private void ApplyJumpCut()
         {
-            Vector2 upDir = jumpDir;
+            Vector2 upDir = Vector2.up;
             vPhysics -= Vector2.Dot(vPhysics, upDir) * upDir * playerModel.Config.Value.jumpCutMultiplier;
+            vPush = new Vector2(vPush.x, Mathf.Min(vPush.y, 0f));
+            pushSpeed = vPush.magnitude * Mathf.Sign(vPush.x);
         }
 
         private void ApplyWallJumpImpulse(bool isGraceWallJump)

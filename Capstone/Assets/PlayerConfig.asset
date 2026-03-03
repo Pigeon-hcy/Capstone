@@ -27,7 +27,7 @@ MonoBehaviour:
   powerGrindDistanceMultiplier: 1
   isLoopHit: 0
   ignoringMovementLayerHit: 1
-  hitDuration: 0.5
+  hitDuration: 0.8
   hitKnockbackForce: 10
   isLoopRecovery: 0
   ignoringMovementLayerRecovery: 0
