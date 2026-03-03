@@ -5,9 +5,6 @@ using QFramework;
 public class LandState : GroundMovementState, ICanSendEvent
 {
     private float landTimer;
-    private bool isDoubleJumpLand;
-
-
 
     public LandState(PlayerController player, Rigidbody2D rb)
     {
@@ -40,8 +37,8 @@ public class LandState : GroundMovementState, ICanSendEvent
     {
         // change land duration based on jump type
         // TODO: no double jump anymore
-        if(isDoubleJumpLand && landTimer < playerModel.LandDuration.Value ||
-            !isDoubleJumpLand && landTimer < playerModel.DoubleJumpLandDuration.Value)
+        if(landTimer < playerModel.LandDuration.Value ||
+            !playerModel.IsGrindJump.Value && landTimer < playerModel.DoubleJumpLandDuration.Value)
         {
             landTimer += Time.deltaTime;
         }

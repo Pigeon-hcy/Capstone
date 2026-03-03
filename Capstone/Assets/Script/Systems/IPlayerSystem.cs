@@ -294,12 +294,12 @@ namespace SkateGame
                 if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
                 if (pending.PortalTeleportQueued) ApplyPortalTeleport();
                 
-                // 7: Check walk and update push speed
-                playerModel.PushSpeed.Value = pushSpeed;
+                // 7: Check walk
                 CheckWalk(cachedMoveInput);
             }
             
             pending.Clear();
+            playerModel.PushSpeed.Value = pushSpeed;
             rb.linearVelocity = vOveride==Vector2.zero ? vPhysics + vPush + vMove : vOveride;
             if(isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
             if (Mathf.Abs(vPhysics.x) < 0.01f && Mathf.Abs(vPhysics.y) < 0.01f) vPhysics = Vector2.zero;
