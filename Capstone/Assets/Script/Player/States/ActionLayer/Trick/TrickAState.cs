@@ -23,14 +23,12 @@ public class TrickAState : TrickState
     }
     protected override void UpdateActionState()
     {
-        //Debug.LogError("TrickC");
         if(DetectInteractiveObjects(out Collider2D[] colliders)){
             //尝试对第一个进行交互
             IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
             interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
-            float rewardDirection = inputModel.Move.Value.x != 0f ? (inputModel.Move.Value.x < 0f ? -1f : 1f) : 0f;
-            player.SendEvent<TrickARewardEvent>(new TrickARewardEvent { RewardDirection = rewardDirection });
+            player.SendEvent<TrickARewardEvent>();
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
     }

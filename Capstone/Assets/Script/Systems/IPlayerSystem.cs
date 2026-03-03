@@ -82,7 +82,6 @@ namespace SkateGame
         private Vector2 vOveride;
         private float cachedMoveInput;
         private PendingActions pending;
-        private float TrickARewardDirection;
         private float lastTrickBDirection;
         private Vector2 PortalTeleportExitDirection;
         public bool IsPushingRight;
@@ -205,7 +204,7 @@ namespace SkateGame
         private void OnTrickCInput(TrickCInputEvent evt) { pending.Slamming = evt.IsTrickingC; }
         private void OnTrickBResetSpeed(TrickBResetSpeedEvent evt) { pending.TrickBResetSpeedQueued = true; }
         private void OnTrickCLand(TrickCLandEvent evt) { pending.TrickCLandQueued = true; }
-        private void OnTrickAReward(TrickARewardEvent evt) { pending.TrickARewardQueued = true; TrickARewardDirection = evt.RewardDirection; }
+        private void OnTrickAReward(TrickARewardEvent evt) { pending.TrickARewardQueued = true; }
         private void OnGrapple(GrappleEvent evt)
         {
             pending.GrappleImpulseQueued = evt.IsGrappling;
@@ -282,7 +281,7 @@ namespace SkateGame
                 if (pending.JumpCutQueued) ApplyJumpCut();
 
                 // 5: physics forces
-                if (pending.TrickARewardQueued) ApplyTrickAReward(TrickARewardDirection);
+                if (pending.TrickARewardQueued) ApplyTrickAReward();
                 if (pending.TrickCLandQueued) ApplyTrickCLand();
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
                 if (pending.Slamming) ApplyTrickC();
@@ -482,8 +481,9 @@ namespace SkateGame
             vPhysics = slamIntoSlope * groundRight;
         }
 
-        private void ApplyTrickAReward(float direction)
+        private void ApplyTrickAReward()
         {
+            float direction = 0f;
             if (direction != 0f) 
             {
                 ChangePushDirection(direction);
