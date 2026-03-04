@@ -135,7 +135,7 @@ namespace SkateGame
                 GuardProcess = 1;
             Guard(trans, GuardProcess);
 
-            Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
+            //Debug.Log($"{transform.name} 警戒中，当前警戒值 {GuardProcess}，提升速度 {GuardIncreaseSpeed / 10f * Time.deltaTime}");
 
             // 到达满值 → 跳跃攻击（可覆写）
             //【攻击音效】
