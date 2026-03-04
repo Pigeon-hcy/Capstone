@@ -85,7 +85,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2536958208992351251}
   - component: {fileID: 1024699168651283625}
-  - component: {fileID: 5400576446578469938}
   m_Layer: 7
   m_Name: interacLayer
   m_TagString: Untagged
@@ -144,21 +143,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.7
---- !u!114 &5400576446578469938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4836446259803533601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7b9a0e281b24ebe9428615c20678ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &6471907097878431976
 GameObject:
   m_ObjectHideFlags: 0
