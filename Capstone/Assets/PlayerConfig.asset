@@ -38,8 +38,8 @@ MonoBehaviour:
   grindJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
   ignoringMovementLayerBgWallRide: 0
-  BgWallRideCooldown: 1.5
-  BgWallrideDuration: 0.6
+  BgWallRideCooldown: 0.5
+  BgWallrideDuration: 1.5
   isLoopTrickA: 0
   durationTrickA: 0.2
   ignoringMovementLayerTrickA: 1
