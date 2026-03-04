@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7838688703603981118}
   - component: {fileID: 7401338202324123527}
   - component: {fileID: 2630336941308079462}
+  - component: {fileID: 2678326226868911443}
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
@@ -167,6 +168,34 @@ MonoBehaviour:
   ySpeed: 0
   startPoint: {x: 0, y: 0, z: 0}
   isActive: 0
+  offscreenIndicator: {fileID: 0}
+  indicatorTimer: 2
+--- !u!114 &2678326226868911443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648384831717094621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08470e2a2343b14e90107557e5208ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visible: 1
+  renderers: []
+  style:
+    texture: {fileID: 8228938214290033325, guid: d69ba10a5cfd9d748bd38f539b6646d9, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 1}
+    width: 128
+    height: 128
+  showArrow: 1
+  arrowStyle:
+    texture: {fileID: 2800000, guid: 8cf91b30a1def09438538a5aad32fa7e, type: 3}
+    color: {r: 1, g: 0, b: 0, a: 1}
+    margin: 0
+    width: 128
+    height: 128
 --- !u!1 &4279124008709963660
 GameObject:
   m_ObjectHideFlags: 0
