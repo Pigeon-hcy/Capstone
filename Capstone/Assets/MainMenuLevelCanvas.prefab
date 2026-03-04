@@ -698,6 +698,10 @@ MonoBehaviour:
     Name: New_1-9
     button: {fileID: 0}
     image: {fileID: 21300028, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
+  - SceneName: New_1-10
+    Name: New_1-10
+    button: {fileID: 0}
+    image: {fileID: 21300028, guid: 0bbb4973cb6e355408c55e6857cbc224, type: 3}
   allLevelCanvas: {fileID: 227281861761883370}
   basicCanvas: {fileID: 0}
 --- !u!1 &8144679655425491472
