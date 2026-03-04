@@ -101,9 +101,14 @@ public class PauseUIController : MonoBehaviour
     public void StartSpring()
     {
         mainButtons.SetActive(true);
-        options.SetActive(true);
         pauseText.SetActive(true);
         StartCoroutine(SpringCoroutine());
+    }
+
+    public void Options()
+    {
+        options.SetActive(true);
+        StartCoroutine(OptionsBumpRoutine());
     }
 
     public void Restart()
@@ -129,6 +134,17 @@ public class PauseUIController : MonoBehaviour
         {
             mainButtons.transform.GetChild(i).GetComponent<MMSpringRectTransformPosition>().Bump(bumpAmount);
             yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+
+    IEnumerator OptionsBumpRoutine()
+    {
+        yield return null;
+
+        var spring = options.GetComponent<MMSpringScale>();
+        if (spring != null)
+        {
+            spring.Bump(new Vector3(20f, 20f, 20f));
         }
     }
 
