@@ -81,13 +81,13 @@ public class GrindState : ActionStateBase
             Vector2 movement = direction * playerModel.Config.Value.maxMoveSpeed * Time.deltaTime;
             Vector3 recorcPos = player.transform.position;
             //Debug.Log("Direction的x是正的1"+ (direction.x>0));
-            player.transform.position = player.transform.position + new Vector3(movement.x,movement.y, 0);
+            // player.transform.position = player.transform.position + new Vector3(movement.x,movement.y, 0);
             pos = trackRef.GetNearestPointAndTangent(player.transform.position, leftToRight, recorcPos, hintTangent: recordDir).nearest;
 
 
             //pos.x += moveDelta.x;
             //pos.y = playerModel.CurrentTrack.Value.GetTrackPosition().y+0.2f;
-            player.transform.position = pos;
+            // player.transform.position = pos;
             playerModel.GrindDirection.Value = direction;
         }
     }

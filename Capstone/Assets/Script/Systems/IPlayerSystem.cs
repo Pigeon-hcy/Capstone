@@ -140,6 +140,7 @@ namespace SkateGame
             UpdatePlayerController();
             vPhysics = Vector2.zero;
             vPush = Vector2.zero;
+            vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
             pending.ClearAll();
@@ -227,6 +228,7 @@ namespace SkateGame
         {
             vPhysics = Vector2.zero;
             vPush = Vector2.zero;
+            vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
             pending.ClearAll();

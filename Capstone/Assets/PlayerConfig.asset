@@ -33,7 +33,7 @@ MonoBehaviour:
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
   ignoringMovementLayerGrind: 0
-  grindSpeed: 24
+  grindSpeed: 32
   grindResetSpeed: 10
   grindJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
