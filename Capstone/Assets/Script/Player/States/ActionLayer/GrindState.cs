@@ -41,6 +41,7 @@ public class GrindState : ActionStateBase
         {
             player.GrindEffect.PlayFeedbacks();
         }
+        // FOR JERRY'S AUDIO - RAIL GRIND
         playRailGrind();
         player.SendEvent<GrindInputEvent>(new GrindInputEvent { IsGrinding = true });
     }
@@ -113,6 +114,7 @@ public class GrindState : ActionStateBase
             player.GrindEffect.StopFeedbacks();
 
         }
+        // FOR JERRY'S AUDIO - RAIL GRIND STOP
         pauseRailGrind();
         player.SendEvent<GrindInputEvent>(new GrindInputEvent { IsGrinding = false });
     }
@@ -120,7 +122,8 @@ public class GrindState : ActionStateBase
     private void playRailGrind()
     {
         AudioManager.Instance.fmodPlayRailGrind();
-        AudioManager.Instance.fmodPlayLanding();
+            // FOR JERRY'S AUDIO - LANDING
+            AudioManager.Instance.fmodPlayLanding();
     }
     private void pauseRailGrind()
     {

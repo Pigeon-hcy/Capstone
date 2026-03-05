@@ -58,6 +58,7 @@ public class TickToggle : MonoBehaviour
         }
 
         // 只有“当前打开”的那一个实例用 Time.deltaTime 扣时间，保证按现实秒计时
+        // FOR JERRY'S AUDIO - TICK TOCK BLOCK ACTIVE
         if (isOpen && _currentOpenInstance == this)
         {
             openTimer -= Time.deltaTime;

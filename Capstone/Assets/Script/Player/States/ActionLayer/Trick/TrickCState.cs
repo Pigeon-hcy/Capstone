@@ -15,6 +15,7 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
 
     protected override void EnterTrickState()
     {
+        // FOR JERRY'S AUDIO - SLAM
         player.SendEvent<TrickCInputEvent>(new TrickCInputEvent { IsTrickingC = true });
     }
     protected override void UpdateActionState()

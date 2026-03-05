@@ -65,6 +65,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     /// <summary>
     /// 继续当前关卡：加载当前进度对应的关卡场景。按钮绑定此方法即可。
     /// </summary>
+    // FOR JERRY'S AUDIO - UI CLICK
     public void OnClickContinueCurrentLevel()
     {
         EnsureLevelModelPopulated();
@@ -78,6 +79,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
         SceneManager.LoadScene(sceneName);
     }
 
+    // FOR JERRY'S AUDIO - UI CLICK
     public void OnClickStart()
     {
         if (GameStateController.Instance != null)

@@ -48,6 +48,7 @@ public abstract class GroundMovementState : StateBase
 
     public void playMoving()
     {
+        // FOR JERRY'S AUDIO - SKATEBOARD MOVING
         AudioManager.Instance.fmodPlayMove();
     }
     public void pauseMoving()

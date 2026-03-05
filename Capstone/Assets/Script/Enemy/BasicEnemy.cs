@@ -241,6 +241,7 @@ namespace SkateGame
         /// </summary>
         protected void PauseMove()
         {
+            // FOR JERRY'S AUDIO - ENEMY ATTACK (frame 1)
             movePaused = true;
             timeCount = JumpAtkBoxActiveTime;
             
@@ -321,6 +322,7 @@ namespace SkateGame
             }
         }
 
+        // FOR JERRY'S AUDIO - 360 (double jump on enemy) / enemy kill
         public void DoInteraction()
         {
             if(CanBeKilled)

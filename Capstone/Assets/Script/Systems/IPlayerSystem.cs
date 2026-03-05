@@ -305,6 +305,7 @@ namespace SkateGame
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
                 if (pending.Slamming) ApplyTrickC();
                 if (pending.TrickCLandQueued) ApplyTrickCLand();
+                // FOR JERRY'S AUDIO - HOOK SWING
                 if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
                 if (isInUpdraft) ApplyUpdraft();
 

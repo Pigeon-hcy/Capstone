@@ -24,6 +24,7 @@ public class WallRideState : ActionStateBase
         {
             player.WallRideEffect.PlayFeedbacks();
         }
+        // FOR JERRY'S AUDIO - WALL RIDE
         playWallRide();
     }
 
@@ -55,12 +56,14 @@ public class WallRideState : ActionStateBase
         {
             player.WallRideEffect.StopFeedbacks();
         }
+        // FOR JERRY'S AUDIO - WALL RIDE STOP
         pauseWallRide();
     }
 
     public void playWallRide()
     {
         AudioManager.Instance.fmodPlayWallRide();
+        // FOR JERRY'S AUDIO - LANDING
         AudioManager.Instance.fmodPlayLanding();
     }
     public void pauseWallRide()

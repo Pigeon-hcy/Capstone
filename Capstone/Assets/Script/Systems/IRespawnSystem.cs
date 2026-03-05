@@ -179,6 +179,7 @@ namespace SkateGame
             respawnModel.LatestCheckpoint.Value = Vector2.zero;
             respawnModel.HasCheckpoint.Value = false;
         }
+        // FOR JERRY'S AUDIO - PLAYER DEATH
         public void playDeath()
         {
             AudioManager.Instance.fmodPlayDeath();

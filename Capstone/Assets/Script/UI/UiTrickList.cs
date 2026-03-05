@@ -128,6 +128,7 @@ namespace SkateGame
 
                 UpdateAllSprites();
                 TriggerPopAnimation();
+                // FOR JERRY'S AUDIO - D/C/B/A/S RANK (gradeIndex: 4=D, 3=C, 2=B, 1=A, 0=S)
                 gainScoreEffect.PlayFeedbacks();
             }
 

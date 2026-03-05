@@ -16,6 +16,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
 
     protected override void EnterTrickState()
     {
+        // FOR JERRY'S AUDIO - DASH
         //Debug.LogError("触发了");
         player.TrickBEffect.PlayFeedbacks();
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;

@@ -29,6 +29,7 @@ public class Portal : MonoBehaviour, IBelongToArchitecture, ICanSendEvent
         {
             Vector3 targetPosition = targetPortal.position;
 
+            // FOR JERRY'S AUDIO - TELEPORT DOORS
             if (!coverPlayerAngle)
             {
                 other.transform.position = targetPosition;

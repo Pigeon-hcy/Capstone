@@ -91,6 +91,7 @@ namespace SkateGame
                 if (lvl.button != null)
                 {
                     lvl.button.onClick.RemoveAllListeners();
+                    // FOR JERRY'S AUDIO - UI CLICK
                     lvl.button.onClick.AddListener(() => OnLevelButtonClick(index));
                 }
             }
@@ -212,6 +213,7 @@ namespace SkateGame
                 item.transform.localScale = Vector3.one;
                 levelItem levelItem = item.GetComponent<levelItem>();
                 levelItem.setUp(levelList[i]);
+                // FOR JERRY'S AUDIO - UI CLICK
                 levelItem.button.onClick.AddListener(() => OnLevelButtonClick(index));
                 levelItem.GetComponentInChildren<Image>().sprite = levelList[i].image;
                 levelItem.button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].Name;

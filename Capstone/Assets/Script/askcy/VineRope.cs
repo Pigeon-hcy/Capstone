@@ -124,6 +124,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
     /// <param name="hit">钩住物体的信息</param>
     private void StartGrappling(RaycastHit2D hit)
     {
+        // FOR JERRY'S AUDIO - HOOK ATTACH
         grapplePoint = hit.point;
 
         this.SendEvent<GrappleEvent>(new GrappleEvent { 

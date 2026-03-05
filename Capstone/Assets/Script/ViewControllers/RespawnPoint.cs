@@ -41,6 +41,7 @@ namespace SkateGame
                 isActivated = true;
                 playerFeedback.PlayFeedbacks();
                 
+                // FOR JERRY'S AUDIO - CHECKPOINT
                 // 发送事件，传递检查点位置
                 this.SendEvent(new PassRespawnPointEvent
                 {
