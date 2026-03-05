@@ -14,7 +14,8 @@ public class NoActionState : ActionStateBase
     {
         CheckSwitchAction();
         CheckPushAndPowerGrind();
-        if (!playerModel.IsGrounded.Value && playerModel.JumpStarted.Value && inputModel.JumpStart.Value && !playerModel.IsNearFgWall.Value)
+        if (!playerModel.IsGrounded.Value && playerModel.JumpStarted.Value && inputModel.JumpStart.Value
+            && !playerModel.IsNearFgWall.Value && playerModel.CoyoteTimer.Value <= 0f)
         {
             player.stateMachine.SwitchState<TrickAState>(StateLayer.Action);
         }

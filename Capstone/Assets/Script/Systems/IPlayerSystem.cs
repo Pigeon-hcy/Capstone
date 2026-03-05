@@ -300,9 +300,9 @@ namespace SkateGame
 
                 // 5: physics forces
                 if (pending.TrickARewardQueued) ApplyTrickAReward();
-                if (pending.TrickCLandQueued) ApplyTrickCLand();
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
                 if (pending.Slamming) ApplyTrickC();
+                if (pending.TrickCLandQueued) ApplyTrickCLand();
                 if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
                 if (isInUpdraft) ApplyUpdraft();
 
@@ -499,7 +499,8 @@ namespace SkateGame
         private void ApplyTrickCLand()
         {
             float slamIntoSlope = Vector2.Dot(Vector2.down * playerModel.Config.Value.TrickCBoostspeed, groundRight);
-            vPhysics = slamIntoSlope * groundRight;
+            if (Mathf.Sign(slamIntoSlope) == Mathf.Sign(pushSpeed)) vPhysics = slamIntoSlope * groundRight;
+            else vPhysics = Vector2.zero;
         }
 
         private void ApplyTrickAReward()

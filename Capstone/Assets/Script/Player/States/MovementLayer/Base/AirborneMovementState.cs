@@ -9,6 +9,11 @@ public abstract class AirborneMovementState : StateBase
     {
         float moveInput = inputModel.Move.Value.x;
         player.SendEvent<MoveInputEvent>(new MoveInputEvent { HorizontalInput = moveInput });
+        if (playerModel.CoyoteTimer.Value > 0f)
+        {
+            playerModel.CoyoteTimer.Value -= Time.deltaTime;
+            if (playerModel.CoyoteTimer.Value < 0f) playerModel.CoyoteTimer.Value = 0f;
+        }
         UpdateAirMovement();
         switchGroundMovement();
     }

@@ -17,6 +17,7 @@ public class JumpState : AirborneMovementState
     {
         // player.animator.Play("oPlayer@Ollie", 0);
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
+        playerModel.CoyoteTimer.Value = 0f;
         jumpTimer = 0f;
         jumpEnded = false;
         playerModel.JumpStarted.Value = false;

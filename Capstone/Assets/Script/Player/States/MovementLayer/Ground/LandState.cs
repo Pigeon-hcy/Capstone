@@ -15,6 +15,7 @@ public class LandState : GroundMovementState, ICanSendEvent
     protected override void EnterGroundMovement()
     {
         playerModel.CurrentBulletCount.Value = playerModel.Config.Value.bulletMaxCount;
+        playerModel.CoyoteTimer.Value = 0f;
         landTimer = 0f;
         player.SendEvent<PlayerLandedEvent>();
         playLanding();

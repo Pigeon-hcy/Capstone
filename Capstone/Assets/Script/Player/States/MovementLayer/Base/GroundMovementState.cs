@@ -31,9 +31,7 @@ public abstract class GroundMovementState : StateBase
     private void switchAirborneMovement()
     {
         if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
-        {
             player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
-        }
         else
         {
             CheckFall();
@@ -43,6 +41,7 @@ public abstract class GroundMovementState : StateBase
     {
         if (WasGrounded && !IsGrounded)
         {
+            playerModel.CoyoteTimer.Value = playerModel.Config.Value.coyoteTime;
             player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
         }
     }

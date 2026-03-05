@@ -93,6 +93,7 @@ MonoBehaviour:
   jumpForce: 20
   jumpHoldForce: 18
   jumpHoldMaxTime: 0.2
+  coyoteTime: 0.1
   jumpCutMultiplier: 0.9
   wallJumpImpulse: 18
   wallJumpSpeed: 16

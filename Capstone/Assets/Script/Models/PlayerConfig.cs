@@ -112,6 +112,7 @@ namespace SkateGame
         public float jumpForce = 2f;
         public float jumpHoldForce = 6f;
         public float jumpHoldMaxTime = 0.2f;
+        public float coyoteTime = 0.1f;
         [Range(0f, 1f)] public float jumpCutMultiplier = 0.5f;
 
         [Header("Wall Jump")]

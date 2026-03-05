@@ -22,8 +22,6 @@ namespace SkateGame
         [SerializeField] private GameState _current = GameState.Menu;
         public GameState Current => _current;
         private GameState _stateBeforePause = GameState.InGame;
-		[SerializeField] private GameObject pauseUI;
-		[SerializeField] private GameObject pauseFirstSelected;
 		[SerializeField] private GameObject playerUI;
         private IInputGateSystem gate;
 
@@ -108,24 +106,16 @@ namespace SkateGame
             {
                 _stateBeforePause = _current;
                 EnterPause();
-                SetPauseUI(true);
             }
             else if (_current == GameState.Pause)
             {
                 Switch(_stateBeforePause);
-                SetPauseUI(false);
             }
         }
         private void OnSceneChange(SceneChangeEvent evt)
         {
             EnterInGame();
         }
-		private void SetPauseUI(bool show)
-		{
-			if (pauseUI != null) pauseUI.SetActive(show);
-			if (show) EventSystem.current?.SetSelectedGameObject(pauseFirstSelected);
-			else if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
-		}
         private void SetPlayerUI(bool show)
         {
             if (playerUI != null) playerUI.SetActive(show);

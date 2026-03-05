@@ -39,6 +39,7 @@ namespace SkateGame
         BindableProperty<float> JumpDuration { get; }
         BindableProperty<float> DoubleJumpDuration { get; }
         BindableProperty<bool> IsGrindJump { get; }
+        BindableProperty<float> CoyoteTimer { get; }
 
         /// <summary>
         /// land相关
@@ -127,6 +128,7 @@ namespace SkateGame
         public BindableProperty<float> JumpDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> DoubleJumpDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<bool> IsGrindJump { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<float> CoyoteTimer { get; } = new BindableProperty<float>(0f);
         
         // land相关
         public BindableProperty<float> LandDuration { get; } = new BindableProperty<float>(0f);
