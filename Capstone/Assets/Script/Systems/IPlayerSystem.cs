@@ -98,6 +98,10 @@ namespace SkateGame
         private float powerGrindStartTime;
         private float powerGrindStartSpeed;
         private float powerGrindDirection;
+        
+        private bool isInUpdraft;
+        private Vector2 updraftDirection;
+        private float updraftForce;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -125,6 +129,7 @@ namespace SkateGame
             this.RegisterEvent<HitEvent>(OnHit);
             this.RegisterEvent<PlayerRespawnEvent>(OnPlayerRespawn);
             this.RegisterEvent<PortalTeleportEvent>(OnPortalTeleport);
+            this.RegisterEvent<UpperAirEvent>(OnUpdraft);
             // 每次场景更新自动获取PlayerController
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -138,6 +143,7 @@ namespace SkateGame
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
             pending.ClearAll();
+            isInUpdraft = false;
             if (rb != null)
                 rb.linearVelocity = Vector2.zero;
         }
@@ -224,11 +230,21 @@ namespace SkateGame
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
             pending.ClearAll();
+            isInUpdraft = false;
         }
         private void OnPortalTeleport(PortalTeleportEvent evt)
         {
             pending.PortalTeleportQueued = true;
             PortalTeleportExitDirection = evt.ExitDirection;
+        }
+        private void OnUpdraft(UpperAirEvent evt)
+        {
+            isInUpdraft = evt.IsTriggerEnter;
+            if (evt.IsTriggerEnter)
+            {
+                updraftDirection = evt.Direction.normalized;
+                updraftForce = evt.ForceMagnitude;
+            }
         }
         #endregion
 
@@ -288,6 +304,7 @@ namespace SkateGame
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
                 if (pending.Slamming) ApplyTrickC();
                 if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
+                if (isInUpdraft) ApplyUpdraft();
 
                 // 6: overrides
                 if (pending.Grinding) ApplyGrind();
@@ -504,6 +521,10 @@ namespace SkateGame
         private void ApplyGrappleForce(Vector2 dir)
         {
             vPhysics += dir * playerModel.Config.Value.grappleForce * Time.fixedDeltaTime;
+        }
+        private void ApplyUpdraft()
+        {
+            vPhysics += updraftDirection * (updraftForce * Time.fixedDeltaTime);
         }
         #endregion
 

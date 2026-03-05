@@ -138,8 +138,18 @@ namespace SkateGame
         public bool IsHitting;
     }
 
+    //-----------关卡机制事件-----------
+    // 传送门传送事件
     public struct PortalTeleportEvent
     {
         public Vector2 ExitDirection;
+    }
+
+    // 上升气流事件
+    public struct UpperAirEvent
+    {
+        public bool IsTriggerEnter;
+        public Vector2 Direction;
+        public float ForceMagnitude;
     }
 }
