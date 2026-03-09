@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: be38e7e49fe8fae40871da754c11600b
   - enabled: 1
+    path: Assets/Scenes/beboq/StartScreen[-].unity
+    guid: 4a94b4e7475d44534aaa8463b82991cd
+  - enabled: 1
     path: Assets/Scenes/New Move Set Scene/New_1-1.unity
     guid: f4cefbf00d55bdc47941a89d105dadce
   - enabled: 1
