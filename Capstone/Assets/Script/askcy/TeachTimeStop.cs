@@ -23,6 +23,8 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
 
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
+    public MMF_Player CompleteEffectBack;
+
     private void OnEnable()
     {
         if (timeStopEffect != null && timeStopEffect.Events != null)
@@ -69,6 +71,9 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
     {
         if (GameStateController.Instance != null && GameStateController.Instance.Current == GameState.Tutorial)
             GameStateController.Instance.EnterInGame();
+        
+        if(CompleteEffectBack != null)
+            CompleteEffectBack.PlayFeedbacks();
     }
 
     private bool GetRequiredInputPressed(IInputModel inputModel)
