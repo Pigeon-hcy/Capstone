@@ -31,8 +31,8 @@ namespace SkateGame
         private bool _isShootLocked = false;
         public IArchitecture GetArchitecture() => GameApp.Interface;
 
-        bool _lastPlayerEnabled = true;
-        bool _lastUiEnabled = false;
+        bool _lastPlayerEnabled = false;
+        bool _lastUiEnabled = true;
         
         void Awake()
         {
