@@ -174,13 +174,11 @@ namespace SkateGame
 
         private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
         {
-            if (device == null) return;
-            
-            // switch device
-            if (_currentDevice != device)
-            {
-                _currentDevice = device;
-            }
+            if (device == null || _currentDevice == device) return;
+
+            _currentDevice = device;
+            var type = device is Gamepad ? InputDeviceType.Gamepad : InputDeviceType.KeyboardMouse;
+            this.SendEvent(new InputDeviceSwitchedEvent { DeviceType = type });
         }
 
         public void SetShootLock(bool locked)

@@ -138,6 +138,13 @@ namespace SkateGame
         public bool IsHitting;
     }
 
+    // Input device hot-switch event
+    public enum InputDeviceType { KeyboardMouse, Gamepad }
+    public struct InputDeviceSwitchedEvent
+    {
+        public InputDeviceType DeviceType;
+    }
+
     //-----------关卡机制事件-----------
     // 传送门传送事件
     public struct PortalTeleportEvent
