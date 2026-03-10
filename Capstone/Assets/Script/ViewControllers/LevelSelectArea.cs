@@ -19,16 +19,16 @@ namespace SkateGame
         {
             Debug.Log("LevelSelectArea: OnEnable");
             base.OnEnable();
-            this.RegisterEvent<TogglePauseEvent>(OnTogglePause);
+            this.RegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
         }
         protected override void OnDisable()
         {
-            this.UnRegisterEvent<TogglePauseEvent>(OnTogglePause);
+            this.UnRegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
             base.OnDisable();
         }
-        void OnTogglePause(TogglePauseEvent evt)
+        void OnGameStateChanged(GameStateChangedEvent e)
         {
-            HideCanvas();
+            if (e.NewState == GameState.InGame) HideCanvas();
         }
 
         protected override void InitializeController()
@@ -108,7 +108,7 @@ namespace SkateGame
                     playerController.disableInput = true;
                     playerController.rb.linearVelocity = Vector2.zero;
                 }
-                GameStateController.Instance.EnterPause();
+                GameStateController.Instance.EnterUIPause();
             }
         }
 

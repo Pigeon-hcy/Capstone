@@ -1,11 +1,12 @@
 using MoreMountains.Feedbacks;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using QFramework;
+using SkateGame;
 
-public class PauseUIController : MonoBehaviour
+public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegisterEvent, ICanSendEvent
 {
     Animator animator;
     Image image;
@@ -17,7 +18,6 @@ public class PauseUIController : MonoBehaviour
 
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
-
     [SerializeField] GameObject pauseText;
 
     Vector3 bumpAmount;
@@ -29,6 +29,8 @@ public class PauseUIController : MonoBehaviour
         Active,
         EndAnimation,
     }
+    
+    public IArchitecture GetArchitecture() => GameApp.Interface;
 
     void Start()
     {
@@ -40,37 +42,32 @@ public class PauseUIController : MonoBehaviour
         image.enabled = false;
         animator.speed = 0;
         bumpAmount = new Vector3(750, 1000, 50);
-
         InitializeVolumeSliders();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseClicked();
-        }
-    }
+    void OnEnable() => this.RegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
+    void OnDisable() => this.UnRegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
 
-    public void PauseClicked()
+    // Called by UI Resume/Pause button
+    public void PauseClicked() => this.SendEvent<TogglePauseEvent>();
+
+    private void OnGameStateChanged(GameStateChangedEvent e)
     {
-        if (canInput)
+        if (!canInput) return;
+        animator.speed = 1f;
+        if (e.NewState == GameState.Pause)
         {
+            image.enabled = true;
+            state = PauseUIState.StartAnimation;
             animator.speed = 1f;
-            if (state == PauseUIState.Inactive)
-            {
-                Time.timeScale = 0;
-                image.enabled = true;
-                state = PauseUIState.StartAnimation;
-                animator.enabled = true;
-                animator.Play("anim_PauseStart");
-            }
-            else if (state == PauseUIState.Active)
-            {
-                state = PauseUIState.EndAnimation;
-                animator.enabled = true;
-                animator.Play("anim_PauseEnd");
-            }
+            animator.enabled = true;
+            animator.Play("anim_PauseStart");
+        }
+        else if (e.OldState == GameState.Pause)
+        {
+            state = PauseUIState.EndAnimation;
+            animator.enabled = true;
+            animator.Play("anim_PauseEnd");
         }
     }
 
@@ -78,13 +75,12 @@ public class PauseUIController : MonoBehaviour
     {
         canInput = true;
         animator.speed = 0;
-        if (state == PauseUIState.StartAnimation) 
+        if (state == PauseUIState.StartAnimation)
         {
             state = PauseUIState.Active;
-        } 
+        }
         else if (state == PauseUIState.EndAnimation)
         {
-            Time.timeScale = 1;
             mainButtons.SetActive(false);
             options.SetActive(false);
             pauseText.SetActive(false);
@@ -114,6 +110,7 @@ public class PauseUIController : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        this.SendEvent(new SceneChangeEvent());
     }
 
     public void Quit()

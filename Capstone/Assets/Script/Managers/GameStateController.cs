@@ -10,10 +10,11 @@ namespace SkateGame
         Pause,
         InGame,
         Dialogue,
-        Tutorial
+        Tutorial,
+        UIPause
     }
 
-	public class GameStateController : MonoBehaviour, IBelongToArchitecture, ICanGetSystem, ICanRegisterEvent
+	public class GameStateController : MonoBehaviour, IBelongToArchitecture, ICanGetSystem, ICanRegisterEvent, ICanSendEvent
     {
         public IArchitecture GetArchitecture() => GameApp.Interface;
         private static GameStateController _instance;
@@ -54,12 +55,15 @@ namespace SkateGame
         public void EnterDialogue() => Switch(GameState.Dialogue);
         public void EnterPause() => Switch(GameState.Pause);
         public void EnterTutorial() => Switch(GameState.Tutorial);
+        public void EnterUIPause() => Switch(GameState.UIPause);
         public void Switch(GameState next)
         {
 			if (_current == GameState.Menu && next != GameState.InGame) return;
             if (_current == next) return;
+            var old = _current;
             _current = next;
             ApplyState(_current);
+            this.SendEvent(new GameStateChangedEvent { NewState = next, OldState = old });
         }
 
         private void ApplyState(GameState s)
@@ -97,6 +101,12 @@ namespace SkateGame
                     SetPlayerUI(true);
                     Debug.Log("Enter Tutorial");
                     break;
+                case GameState.UIPause:
+                    UseUiInput(true);
+                    TimeStop(true);
+                    SetPlayerUI(false);
+                    Debug.Log("Enter UIPause");
+                    break;
             }
         }
         private void OnTogglePause(TogglePauseEvent evt)
@@ -107,7 +117,7 @@ namespace SkateGame
                 _stateBeforePause = _current;
                 EnterPause();
             }
-            else if (_current == GameState.Pause)
+            else if (_current == GameState.Pause || _current == GameState.UIPause)
             {
                 Switch(_stateBeforePause);
             }

@@ -145,6 +145,13 @@ namespace SkateGame
         public InputDeviceType DeviceType;
     }
 
+    // Game state changed event (sent by GameStateController)
+    public struct GameStateChangedEvent
+    {
+        public GameState NewState;
+        public GameState OldState;
+    }
+
     //-----------关卡机制事件-----------
     // 传送门传送事件
     public struct PortalTeleportEvent
