@@ -469,7 +469,7 @@ MonoBehaviour:
           DirectionMode: 0
           DissipationMode: 2
           DissipationDistance: 100
-          PropagationSpeed: 343
+          PropagationSpeed: Infinity
         Velocity: {x: 5, y: 5, z: 5}
         ClearImpulseOnStop: 0
         DrawGizmos: 0
