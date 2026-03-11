@@ -75,6 +75,18 @@ namespace SkateGame
 
         private IEnumerator DeathRoutine()
         {
+            // Debug: 死亡时检查点状态
+            if (!respawnModel.HasCheckpoint.Value || respawnModel.CheckpointList.Value == null || respawnModel.CheckpointList.Value.Count == 0)
+            {
+                Debug.LogWarning("[RespawnSystem] 死亡时检查点为空！HasCheckpoint=" + respawnModel.HasCheckpoint.Value
+                    + ", CheckpointList.Count=" + (respawnModel.CheckpointList.Value?.Count ?? 0)
+                    + ", LatestCheckpoint=" + respawnModel.LatestCheckpoint.Value + "（将重生在原点或上次记录点）");
+            }
+            else
+            {
+                Debug.Log("[RespawnSystem] 死亡时检查点有效，重生位置: " + respawnModel.LatestCheckpoint.Value + ", 检查点数量: " + respawnModel.CheckpointList.Value.Count);
+            }
+
             playDeath();
             if (playerController == null)
                 UpdatePlayerController();
