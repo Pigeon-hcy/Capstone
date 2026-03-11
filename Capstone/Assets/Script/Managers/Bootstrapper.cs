@@ -11,6 +11,6 @@ public class Bootstrapper : MonoBehaviour
     private void Start()
     {
         if (SceneManager.GetActiveScene().name != "Bootstrap") return;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu[-]");
     }
 }

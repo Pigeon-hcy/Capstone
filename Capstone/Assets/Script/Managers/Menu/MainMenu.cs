@@ -45,8 +45,8 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
         bgIndex = Mathf.Clamp(bgIndex, 0, backgroundImageList.Count - 1);
         for (int i = 0; i < backgroundImageList.Count; i++)
         {
-            if (backgroundImageList[i] != null)
-                backgroundImageList[i].gameObject.SetActive(i == bgIndex);
+            if (backgroundImageList[i] != null){}
+                //backgroundImageList[i].gameObject.SetActive(i == bgIndex);
         }
     }
     private void EnsureLevelModelPopulated()
