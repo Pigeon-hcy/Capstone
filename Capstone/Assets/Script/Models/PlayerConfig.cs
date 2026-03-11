@@ -1,3 +1,4 @@
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 namespace SkateGame
@@ -16,6 +17,13 @@ namespace SkateGame
         public float pushBurstSpeed = 20f;
         public float pushTimeToMaxSpeed = 2f;
         public float pushReverseCooldown = 0.5f;
+        [Tooltip("If push hasn't fired when entering push state, check push quicker")]
+        public float firstPushKickInterval = 0.4f;
+        public float pushKickInterval = 0.8f;
+        public float pushKickSpeedIncrement = 2f;
+        public float applyPushKickThreshold = 20f;
+        [Tooltip("Wait for animation time before applying push speed increment")]
+        public float pushKickDelay = 0.1f;
 
         [Header("Power Grind State")]
         public bool isLoopPowerGrind = false;
@@ -135,6 +143,7 @@ namespace SkateGame
         public float groundLinearDamping = 6f;
         public float airLinearDamping = 0.5f;
         public float vPhysicsDecay = 0.98f;
+        public float vPushDecay = 0.998f;
 
         [Header("Air相关")]
         public float airControlForceConfig = 10f;

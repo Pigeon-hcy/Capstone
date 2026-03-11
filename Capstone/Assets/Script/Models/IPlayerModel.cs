@@ -58,6 +58,11 @@ namespace SkateGame
         BindableProperty<float> ReversePushCooldownTimer { get; }
 
         /// <summary>
+        /// Power Grind相关
+        /// </summary>
+        BindableProperty<bool> PowergrindInterrupted { get; }
+
+        /// <summary>
         /// Trick相关
         /// </summary>
         BindableProperty<bool> IsInPower { get; }
@@ -142,6 +147,9 @@ namespace SkateGame
         public BindableProperty<bool> PendingReversePushRight { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> ReversePushCooldownTimer { get; } = new BindableProperty<float>(0f);
 
+        // Power Grind相关
+        public BindableProperty<bool> PowergrindInterrupted { get; } = new BindableProperty<bool>(false);
+        
         // Trick相关
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> VelocityBeforeTrick { get; } = new BindableProperty<float>(0f);

@@ -39,6 +39,7 @@ public class PowerGrindState : ActionStateBase
         bool isReversing = inputModel.Move.Value.x != 0f && (playerModel.IsFacingRight.Value != (inputModel.Move.Value.x > 0));
         if (inputModel.PushStart.Value && playerModel.IsGrounded.Value && !isReversing)
         {
+            playerModel.PowergrindInterrupted.Value = true;
             player.stateMachine.SwitchState<PushState>(StateLayer.Action);
             return;
         }

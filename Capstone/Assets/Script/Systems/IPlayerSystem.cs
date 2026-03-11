@@ -1,4 +1,5 @@
 using QFramework;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace SkateGame
@@ -7,7 +8,6 @@ namespace SkateGame
     {
         public bool JumpQueued;
         public bool JumpCutQueued;
-        public bool PushQueued;
         public bool WallJumpQueued;
         public bool ReverseQueued;
         public bool GrappleImpulseQueued;
@@ -24,6 +24,7 @@ namespace SkateGame
         public bool Grinding;
         public bool PowerGrinding;
         public bool Pushing;
+        public bool KickQueued;
         public bool HitStunning;
 
         // 触发一次后自动清空
@@ -31,7 +32,6 @@ namespace SkateGame
         {
             JumpQueued = false;
             JumpCutQueued = false;
-            PushQueued = false;
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
@@ -40,12 +40,12 @@ namespace SkateGame
             TrickCLandQueued = false;
             TrickARewardQueued = false;
             PortalTeleportQueued = false;
+            KickQueued = false;
         }
         public void ClearAll()
         {
             JumpQueued = false;
             JumpCutQueued = false;
-            PushQueued = false;
             WallJumpQueued = false;
             ReverseQueued = false;
             GrappleImpulseQueued = false;
@@ -60,7 +60,6 @@ namespace SkateGame
             Grapplling = false;
             Grinding = false;
             PowerGrinding = false;
-            Pushing = false;
             HitStunning = false;
         }
     }
@@ -85,6 +84,7 @@ namespace SkateGame
         private float lastTrickBDirection;
         private Vector2 PortalTeleportExitDirection;
         public bool IsPushingRight;
+        public bool isFirstPush;
         public bool IsGraceWallJump;
         public float TrickBDirection;
         public Vector2 GrappleDirection;
@@ -102,6 +102,7 @@ namespace SkateGame
         private bool isInUpdraft;
         private Vector2 updraftDirection;
         private float updraftForce;
+        private float kickWaitTime = -1f;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -143,6 +144,7 @@ namespace SkateGame
             vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
+            kickWaitTime = -1f;
             pending.ClearAll();
             isInUpdraft = false;
             if (rb != null)
@@ -176,7 +178,15 @@ namespace SkateGame
             ApplyStateChanged(evt);
             UpdateAnimatorOnStateChanged(evt);
         }
-        private void OnPushInput(PushInputEvent evt) { pending.PushQueued = evt.IsPushing; pending.Pushing = evt.IsPushing; IsPushingRight = evt.IsPushingRight; }
+        private void OnPushInput(PushInputEvent evt)
+        {
+            IsPushingRight = evt.IsPushingRight;
+            isFirstPush = evt.isFirstPush;
+            if (evt.IsPushing)
+                kickWaitTime = Time.time + playerModel.Config.Value.pushKickDelay;
+            else
+                kickWaitTime = -1f;
+        }
         private void OnPowerGrindInput(PowerGrindInputEvent evt) 
         { 
             pending.PowerGrinding = evt.IsPowerGrinding;
@@ -231,6 +241,7 @@ namespace SkateGame
             vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
+            kickWaitTime = -1f;
             pending.ClearAll();
             isInUpdraft = false;
         }
@@ -264,8 +275,11 @@ namespace SkateGame
             {
                 // 1: Base movement
                 if(isGrounded) ProjectVPush();
-                if (pending.PushQueued) ApplyPushBurst();
-                if (pending.Pushing) ApplyPushSpeed();
+                if (kickWaitTime > 0 && Time.time >= kickWaitTime)
+                {
+                    ApplyPushKick(isFirstPush);
+                    kickWaitTime = -1f;
+                }
                 else if (pending.PowerGrinding) ApplyPowerGrind();
 
                 // 2: ground support
@@ -321,10 +335,16 @@ namespace SkateGame
             }
             
             pending.Clear();
-            playerModel.PushSpeed.Value = pushSpeed;
             rb.linearVelocity = vOveride == Vector2.zero ? vPhysics + vPush + vMove : vOveride;
-            if(isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
+            
+            if (isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
             if (Mathf.Abs(vPhysics.x) < 0.01f && Mathf.Abs(vPhysics.y) < 0.01f) vPhysics = Vector2.zero;
+
+            if (isGrounded) pushSpeed = pushSpeed * playerModel.Config.Value.vPushDecay;
+            if (Mathf.Abs(pushSpeed) < 0.01f) pushSpeed = 0f;
+            vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
+            
+            playerModel.PushSpeed.Value = pushSpeed;
         }
 
         private void ProjectVPush()
@@ -350,6 +370,19 @@ namespace SkateGame
                 pushSpeed = burstSpeed * pushDir;
                 vPush = pushSpeed * groundRight;
             }
+        }
+
+        private void ApplyPushKick(bool isFirstPush)
+        {
+            float pushDir = IsPushingRight ? 1f : -1f;
+            float newSpeed;
+            if (isFirstPush && Mathf.Abs(pushSpeed) < playerModel.Config.Value.pushBurstSpeed)
+            {
+                newSpeed = playerModel.Config.Value.pushBurstSpeed;
+            }
+            else newSpeed = Mathf.Abs(pushSpeed) + playerModel.Config.Value.pushKickSpeedIncrement;
+            pushSpeed = pushDir * Mathf.Min(newSpeed, playerModel.Config.Value.maxPushSpeed);
+            vPush = pushSpeed * groundRight;
         }
 
         private void ApplyPushSpeed()

@@ -20,9 +20,14 @@ MonoBehaviour:
   pushBurstSpeed: 10
   pushTimeToMaxSpeed: 1
   pushReverseCooldown: 0.5
+  firstPushKickInterval: 0.4
+  pushKickInterval: 0.7
+  pushKickSpeedIncrement: 6
+  applyPushKickThreshold: 20
+  pushKickDelay: 0.2
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 0
-  powerGrindDuration: 0.5
+  powerGrindDuration: 0.8
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
   isLoopHit: 0
@@ -107,6 +112,7 @@ MonoBehaviour:
   groundLinearDamping: 0.05
   airLinearDamping: 0.05
   vPhysicsDecay: 0.98
+  vPushDecay: 0.998
   airControlForceConfig: 10
   maxAirHorizontalSpeedConfig: 8
   normalG: 3.2

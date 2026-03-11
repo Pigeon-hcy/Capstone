@@ -491,6 +491,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""262f4f8d-8986-44a5-846f-63e0629922c3"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""2f73afaa-04c5-48e2-846a-1c1e19c56164"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": ""Hold"",

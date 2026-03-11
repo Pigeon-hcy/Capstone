@@ -5,7 +5,7 @@ using QFramework;
 public class PushState : ActionStateBase
 {
     private float pushTimer;
-    private bool pushingRight; 
+    private bool pushingRight;
     private bool reversing = false;
     public PushState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
@@ -17,7 +17,7 @@ public class PushState : ActionStateBase
 
     protected override void EnterActionState()
     {
-        pushTimer = 0f;
+        pushTimer = playerModel.Config.Value.pushKickInterval - playerModel.Config.Value.firstPushKickInterval;
         if (playerModel.PendingReversePush.Value)
         {
             pushingRight = playerModel.PendingReversePushRight.Value;
@@ -32,11 +32,20 @@ public class PushState : ActionStateBase
         {
             pushingRight = inputModel.Move.Value.x > 0f || (inputModel.Move.Value.x == 0f && playerModel.IsFacingRight.Value);
         }
-        // FOR JERRY'S AUDIO - PUSH
-        playPush();
-        player.animator.SetTrigger("Push");
-        player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, IsReversing = reversing });
-        reversing = false;
+
+        // 是否需要播放push动画和声音
+        // 如果刚起步或者刹车过程中尝试起步，就播放
+        bool forceKick = playerModel.PowergrindInterrupted.Value;
+        playerModel.PowergrindInterrupted.Value = false;
+        if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
+        {
+            pushTimer = 0f;
+            // FOR JERRY'S AUDIO - PUSH
+            playPush();
+            player.animator.SetTrigger("Push");
+            player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, IsReversing = reversing, isFirstPush = true });
+            reversing = false;
+        }
     }
 
     protected override void UpdateActionState()
@@ -56,12 +65,17 @@ public class PushState : ActionStateBase
                 return;
             }
         }
+
+        // 如果速度不满则阶梯式push
         pushTimer += Time.deltaTime;
-        if (pushTimer > 1f)
+        if (pushTimer >= playerModel.Config.Value.pushKickInterval && 
+            (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.applyPushKickThreshold ||
+            rb.linearVelocity.magnitude <= playerModel.Config.Value.applyPushKickThreshold))
         {
             pushTimer = 0f;
-            // TODO: Add push sliding animation
             player.animator.SetTrigger("Push");
+            playPush();
+            player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, isFirstPush = false });
         }
         if (!inputModel.Push.Value || !playerModel.IsGrounded.Value)
         {
