@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using Febucci.UI;
+using SkateGame;
 
 /// <summary>
 /// 简单封装：对外提供 ShowText(string text)，内部使用 TextAnimator 的 Typewriter 打字效果。
@@ -35,7 +36,25 @@ public class TMPTextRevealBounce : MonoBehaviour
             return;
         }
 
+        // 根据当前输入设备替换占位符（例如 {Jump} -> Space/A）
+        string jumpKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "A" : "Space";
+        string processed = content.Replace("{Jump}", jumpKey);
+
+        string dashKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "X" : "K";
+        processed = processed.Replace("{Dash}", dashKey);
+
+        string pushKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "R2" : "Shift";
+        processed = processed.Replace("{Push}", pushKey);
+
+        string hookKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "Y" : "J";
+        processed = processed.Replace("{Hook}", hookKey);
+
+        string slamKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "B" : "S";
+        processed = processed.Replace("{Slam}", slamKey);
+
+        
+
         // 通过 Typewriter 的 ShowText 来设置文本并触发打字机
-        typewriter.ShowText(content);
+        typewriter.ShowText(processed);
     }
 }
