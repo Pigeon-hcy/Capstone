@@ -23,8 +23,7 @@ namespace SkateGame
         public bool Grapplling;
         public bool Grinding;
         public bool PowerGrinding;
-        public bool Pushing;
-        public bool KickQueued;
+        public bool pushQueued;
         public bool HitStunning;
 
         // 触发一次后自动清空
@@ -40,7 +39,7 @@ namespace SkateGame
             TrickCLandQueued = false;
             TrickARewardQueued = false;
             PortalTeleportQueued = false;
-            KickQueued = false;
+            pushQueued = false;
         }
         public void ClearAll()
         {
@@ -102,7 +101,6 @@ namespace SkateGame
         private bool isInUpdraft;
         private Vector2 updraftDirection;
         private float updraftForce;
-        private float kickWaitTime = -1f;
         protected override void OnInit()
         {
             // 获取玩家控制器
@@ -144,7 +142,6 @@ namespace SkateGame
             vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
-            kickWaitTime = -1f;
             pending.ClearAll();
             isInUpdraft = false;
             if (rb != null)
@@ -182,10 +179,7 @@ namespace SkateGame
         {
             IsPushingRight = evt.IsPushingRight;
             isFirstPush = evt.isFirstPush;
-            if (evt.IsPushing)
-                kickWaitTime = Time.time + playerModel.Config.Value.pushKickDelay;
-            else
-                kickWaitTime = -1f;
+            if (evt.IsPushing) pending.pushQueued = true;
         }
         private void OnPowerGrindInput(PowerGrindInputEvent evt) 
         { 
@@ -241,7 +235,6 @@ namespace SkateGame
             vOveride = Vector2.zero;
             pushSpeed = 0f;
             powerGrindStartSpeed = 0f;
-            kickWaitTime = -1f;
             pending.ClearAll();
             isInUpdraft = false;
         }
@@ -275,16 +268,18 @@ namespace SkateGame
             {
                 // 1: Base movement
                 if(isGrounded) ProjectVPush();
-                if (kickWaitTime > 0 && Time.time >= kickWaitTime)
-                {
+                if (pending.pushQueued)
                     ApplyPushKick(isFirstPush);
-                    kickWaitTime = -1f;
-                }
                 else if (pending.PowerGrinding) ApplyPowerGrind();
 
                 // 2: ground support
                 if (isGrounded)
                 {
+                    if (!wasGrounded)
+                    {
+                        if (pushSpeed != 0f && Mathf.Sign(vRightPhysics) != Mathf.Sign(pushSpeed))
+                            vPhysics -= vRightPhysics * groundRight;
+                    }
                     if (!isWalking)
                     {
                         if (vUpPhysics < 0f) { vPhysics -= vUpPhysics * groundUp;}
@@ -352,7 +347,7 @@ namespace SkateGame
             bool crash = Vector2.Dot(vPush, groundUp) < 0f;
             if (!wasGrounded || (crash && !isWalking))
             {
-                pushSpeed = Vector2.Dot(vPush, groundRight);
+                // pushSpeed = Vector2.Dot(vPush, groundRight);
                 vPush = pushSpeed * groundRight;
             }
         }

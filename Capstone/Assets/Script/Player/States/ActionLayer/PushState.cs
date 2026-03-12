@@ -7,6 +7,8 @@ public class PushState : ActionStateBase
     private float pushTimer;
     private bool pushingRight;
     private bool reversing = false;
+    private float kickDelayTimer = -1f;
+    private bool kickIsFirst;
     public PushState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
@@ -40,10 +42,8 @@ public class PushState : ActionStateBase
         if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
         {
             pushTimer = 0f;
-            // FOR JERRY'S AUDIO - PUSH
-            playPush();
             player.animator.SetTrigger("Push");
-            player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, IsReversing = reversing, isFirstPush = true });
+            StartKickDelay(isFirst: true);
             reversing = false;
         }
     }
@@ -68,14 +68,25 @@ public class PushState : ActionStateBase
 
         // 如果速度不满则阶梯式push
         pushTimer += Time.deltaTime;
-        if (pushTimer >= playerModel.Config.Value.pushKickInterval && 
+        if (pushTimer >= playerModel.Config.Value.pushKickInterval &&
             (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.applyPushKickThreshold ||
             rb.linearVelocity.magnitude <= playerModel.Config.Value.applyPushKickThreshold))
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
-            playPush();
-            player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, isFirstPush = false });
+            StartKickDelay(isFirst: false);
+        }
+
+        // Kick delay countdown
+        if (kickDelayTimer > 0f)
+        {
+            kickDelayTimer -= Time.deltaTime;
+            if (kickDelayTimer <= 0f)
+            {
+                kickDelayTimer = -1f;
+                playPush();
+                player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, isFirstPush = kickIsFirst });
+            }
         }
         if (!inputModel.Push.Value || !playerModel.IsGrounded.Value)
         {
@@ -85,7 +96,14 @@ public class PushState : ActionStateBase
 
     protected override void ExitActionState()
     {
+        kickDelayTimer = -1f;
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = false, IsReversing = false });
+    }
+
+    private void StartKickDelay(bool isFirst)
+    {
+        kickDelayTimer = playerModel.Config.Value.pushKickDelay;
+        kickIsFirst = isFirst;
     }
 
     // TODO: 让push特效和声音与动画同步
