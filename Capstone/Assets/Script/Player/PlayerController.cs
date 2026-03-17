@@ -44,6 +44,7 @@ namespace SkateGame
         [Header("Collision")]
         public Transform bottomLeft;
         public Transform bottomRight;
+        public Collider2D bodyCollider;
         [Header("Hitbox")]
         public Collider2D slamHitbox;
         Coroutine _slamHitboxRoutine;
@@ -65,8 +66,6 @@ namespace SkateGame
 
         [Header("Trigger 控制")]
         public bool disableInput = false;
-
-        private Vector2 _velocityLastFrame;
 
         [Header("MMF效果")]
         public MMF_Player moveEffect;
@@ -168,7 +167,12 @@ namespace SkateGame
         private void FixedUpdate()
         {
             playerSystem?.ApplyMovement();
+            playerModel.VelocityLastFrame.Value = rb.linearVelocity;
             playerSystem?.ApplyRotation();
+            if (playerModel.IsGrounded.Value)
+            {
+                collisionSystem.GroundSnap(bodyCollider, rb);
+            }
         }
 
         protected override void OnRealTimeUpdate()
@@ -191,13 +195,6 @@ namespace SkateGame
             // 检测前方墙壁(近距离), 用上一帧速度以防取到碰撞后速度
             var (touchingWall, wallAngle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
             playerModel.touchingWall.Value = touchingWall;
-            // wall jump时免疫碰撞
-            if (touchingWall)
-            {
-                collisionSystem.CheckCrash(_velocityLastFrame, wallAngle);
-            }
-
-            _velocityLastFrame = rb.linearVelocity;
 
             // 检测玩家是否掉落过低
             CheckFallOutOfBounds();

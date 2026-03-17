@@ -49836,7 +49836,7 @@ Transform:
   m_GameObject: {fileID: 2142974060230296798}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.247, y: -0.037, z: 0}
+  m_LocalPosition: {x: 0.201, y: -0.037, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55473,6 +55473,7 @@ MonoBehaviour:
   playerConfig: {fileID: 11400000, guid: b5cbb05eab090864cb59d2c09ff51b4e, type: 2}
   bottomLeft: {fileID: 5770009860846134919}
   bottomRight: {fileID: 8471675605899274312}
+  bodyCollider: {fileID: 8047088689554580087}
   slamHitbox: {fileID: 0}
   vineGun: {fileID: 6980180234252946943}
   rb: {fileID: 0}
@@ -96700,7 +96701,7 @@ Transform:
   m_GameObject: {fileID: 5963217035759248766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.414, y: -0.05, z: 0}
+  m_LocalPosition: {x: -0.363, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

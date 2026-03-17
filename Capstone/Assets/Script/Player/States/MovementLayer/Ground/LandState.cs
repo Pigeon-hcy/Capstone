@@ -18,11 +18,15 @@ public class LandState : GroundMovementState, ICanSendEvent
         playerModel.CoyoteTimer.Value = 0f;
         landTimer = 0f;
         player.SendEvent<PlayerLandedEvent>();
-        // FOR JERRY'S AUDIO - LANDING
-        playLanding();
-        if (player.landEffectPlayer != null)
+        Vector2 groundUp = (Quaternion.Euler(0f, 0f, playerModel.TargetRotationDeg.Value) * Vector2.up).normalized;
+        float impactSpeed = -Vector2.Dot(playerModel.VelocityLastFrame.Value, groundUp);
+        
+        if (impactSpeed > playerModel.Config.Value.landingSpeedThreshold)
         {
-            player.landEffectPlayer.PlayFeedbacks();
+            // FOR JERRY'S AUDIO - LANDING
+            playLanding();
+            if (player.landEffectPlayer != null)
+                player.landEffectPlayer.PlayFeedbacks();
         }
     }
 

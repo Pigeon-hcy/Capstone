@@ -45,13 +45,13 @@ public class AirState : AirborneMovementState
             return;
         }
         bool wantJump = inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value;
+        if (wantJump && playerModel.CoyoteTimer.Value > 0f)
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
         if (wantJump && playerModel.IsNearFgWall.Value)
         {
             playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up);
             player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
             return;
         }
-        if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value && playerModel.CoyoteTimer.Value > 0f)
-            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
     }
 } 

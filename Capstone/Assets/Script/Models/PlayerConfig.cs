@@ -36,6 +36,7 @@ namespace SkateGame
         public bool ignoringMovementLayerHit = true;
         public float hitDuration = 0.5f;
         public float hitKnockbackForce = 5f;
+        public float hitSpeedDecay = 0.8f;
 
         [Header("Recovery State")]
         public bool isLoopRecovery = false;
@@ -111,6 +112,7 @@ namespace SkateGame
         public float wallCheckDistanceFarSlow = 1f;
         public float wallCheckDistanceNear = 0.35f;
         public float wallCheckOffset = 0.3f;
+        public float landingSpeedThreshold = 2f;
         public float crashVelocity = 8f;
         public float crashAngle = 60f;
         public float crashAngleDiff = 45f;
@@ -128,8 +130,6 @@ namespace SkateGame
         public float wallJumpSpeed = 10f;
         [Tooltip("越小越接近墙面normal，越大越接近垂直向上")]
         [Range(0f, 1f)] public float wallJumpUpMultiplier = 0.7f;
-        [Tooltip("墙跳后摇时间")]
-        public float wallJumpGraceAfterHit = 0.1f;
         
 
         [Header("移动设置")]

@@ -16,6 +16,7 @@ namespace SkateGame
         public bool TrickCLandQueued;
         public bool TrickARewardQueued;
         public bool PortalTeleportQueued;
+        public bool pushQueued;
 
         public bool Jumping;
         public bool Dashing;
@@ -23,7 +24,6 @@ namespace SkateGame
         public bool Grapplling;
         public bool Grinding;
         public bool PowerGrinding;
-        public bool pushQueued;
         public bool HitStunning;
 
         // 触发一次后自动清空
@@ -84,7 +84,6 @@ namespace SkateGame
         private Vector2 PortalTeleportExitDirection;
         public bool IsPushingRight;
         public bool isFirstPush;
-        public bool IsGraceWallJump;
         public float TrickBDirection;
         public Vector2 GrappleDirection;
         private bool isWalking;
@@ -169,7 +168,7 @@ namespace SkateGame
             cachedMoveInput = evt.HorizontalInput;
         }
         private void OnJumpInput(JumpExecuteEvent evt) { pending.JumpQueued = evt.IsJumping; pending.Jumping = evt.IsJumping; pending.JumpCutQueued = !evt.IsJumping; }
-        private void OnWallJumpInput(WallJumpExecuteEvent evt) { pending.WallJumpQueued = true; IsGraceWallJump = evt.IsGraceWallJump; }
+        private void OnWallJumpInput(WallJumpExecuteEvent evt) { pending.WallJumpQueued = true; }
         private void OnStateChanged(StateChangedEvent evt)
         {
             ApplyStateChanged(evt);
@@ -394,9 +393,10 @@ namespace SkateGame
             float T = Mathf.Max(playerModel.Config.Value.powerGrindDuration, 0.01f);
             float scale = playerModel.Config.Value.powerGrindDistanceMultiplier;
             float t = Time.time - powerGrindStartTime;
-            float newSpeed = powerGrindStartSpeed * (1f - Mathf.Pow(Mathf.Clamp01(t / T), scale));
-            pushSpeed = powerGrindDirection * newSpeed;
-            vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
+            float maxSpeed = powerGrindStartSpeed * (1f - Mathf.Pow(Mathf.Clamp01(t / T), scale));
+            if (Mathf.Abs(pushSpeed) > maxSpeed)
+                pushSpeed = Mathf.Sign(pushSpeed) * maxSpeed;
+            vPush = pushSpeed * groundRight;
         }
 
         private void CheckWalk(float horizontalInput)
@@ -438,7 +438,7 @@ namespace SkateGame
         // On landing, if momentum has reversed direction, adopt actual speed as new pushSpeed
         private void ReconcilePushOnLanding()
         {
-            float landingSlope = Vector2.Dot(rb.linearVelocity, groundRight);
+            float landingSlope = Vector2.Dot(playerModel.VelocityLastFrame.Value, groundRight);
             Debug.Log("groundRight"+ groundRight + "landigslope: " + landingSlope + ", new pushSpeed: " + pushSpeed);
             if (pushSpeed == 0f || Mathf.Sign(landingSlope) == Mathf.Sign(pushSpeed)) return;
             if (Mathf.Abs(landingSlope) <= playerModel.Config.Value.powerGrindStopSpeedThreshold) return;
@@ -501,7 +501,10 @@ namespace SkateGame
 
         private void ProjectVelocityToWall()
         {
-            Vector2 wallTangent = groundRight;
+            float wallAngle = playerModel.IsSlidingWall.Value
+                ? playerModel.SlidingWallAngle.Value
+                : playerModel.FgWallAngle.Value;
+            Vector2 wallTangent = (Vector2)(Quaternion.Euler(0f, 0f, wallAngle) * Vector2.right);
             vPhysics = Vector2.Dot(vPhysics, wallTangent) * wallTangent;
             float projPush = Vector2.Dot(vPush, wallTangent);
             pushSpeed = projPush;
@@ -598,6 +601,10 @@ namespace SkateGame
                 pushSpeed = 0f;
                 moveSpeed = 0f;
                 playerModel.HitKnockbackDirection.Value = Vector2.zero;
+            }
+            else
+            {
+                vPhysics *= playerModel.Config.Value.hitSpeedDecay;
             }
         }
         private void ApplyPortalTeleport()

@@ -98,7 +98,7 @@ public class JumpState : AirborneMovementState
             player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
             return;
         }
-        if (playerModel.touchingWall.Value)
+        if (playerModel.touchingWall.Value && jumpEnded)
         {
             // Vector2 wallTangent = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.right);
             // if (Mathf.Abs(Vector2.Dot(rb.linearVelocity, wallTangent)) > playerModel.Config.Value.wallSlideEntrySpeed)

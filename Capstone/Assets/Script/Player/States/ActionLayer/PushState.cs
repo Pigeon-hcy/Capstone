@@ -41,8 +41,9 @@ public class PushState : ActionStateBase
         // 如果刚起步或者刹车过程中尝试起步，就播放
         bool forceKick = playerModel.PowergrindInterrupted.Value;
         playerModel.PowergrindInterrupted.Value = false;
-        // if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
-        if (inputModel.PushStart.Value || forceKick || reversePush)
+        bool landingHold = inputModel.Push.Value && !inputModel.PushStart.Value
+            && !playerModel.WasGrounded.Value && playerModel.IsGrounded.Value;
+        if (!landingHold || forceKick || reversePush)
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");

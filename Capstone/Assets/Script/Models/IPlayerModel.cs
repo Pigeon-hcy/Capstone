@@ -97,7 +97,6 @@ namespace SkateGame
         BindableProperty<Track> CurrentTrack { get; }
         BindableProperty<float> GrindJumpTimer { get; } // 用来防止跳跃后被吸附到原先滑轨
         BindableProperty<float> WallRideCooldownTimer { get; } // 用来控制两次滑墙之间的冷却时间
-        BindableProperty<float> WallJumpGraceTimer { get; }
         BindableProperty<Vector2> WallJumpWallNormal { get; }
         BindableProperty<bool> WasGrounded { get; }
         BindableProperty<bool> IsCheckingReverseWindow { get; }
@@ -108,6 +107,7 @@ namespace SkateGame
         BindableProperty<float> TargetRotationDeg { get; }
         // 0 = no gravity 
         BindableProperty<float> CurrentGravityScale { get; }
+        BindableProperty<Vector2> VelocityLastFrame { get; }
     }
 
     public class PlayerModel : AbstractModel, IPlayerModel
@@ -179,7 +179,6 @@ namespace SkateGame
         public BindableProperty<Track> CurrentTrack { get; } = new BindableProperty<Track>(null);
         public BindableProperty<float> GrindJumpTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> WallRideCooldownTimer { get; } = new BindableProperty<float>(0f);
-        public BindableProperty<float> WallJumpGraceTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> WallJumpWallNormal { get; } = new BindableProperty<Vector2>(Vector2.zero);
         public BindableProperty<bool> WasGrounded { get; } = new BindableProperty<bool>(true);
         public BindableProperty<bool> IsCheckingReverseWindow { get; } = new BindableProperty<bool>(false);
@@ -189,6 +188,7 @@ namespace SkateGame
         public BindableProperty<float> CurrentRotationDeg { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> TargetRotationDeg { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> CurrentGravityScale { get; } = new BindableProperty<float>(1f);
+        public BindableProperty<Vector2> VelocityLastFrame { get; } = new BindableProperty<Vector2>(Vector2.zero);
         protected override void OnInit()
         {
             // 初始化逻辑

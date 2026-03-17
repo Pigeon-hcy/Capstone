@@ -32,8 +32,11 @@ public class WallSlideState : AirborneMovementState, ICanGetSystem
             playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, _wallAngle) * Vector2.up);
             player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
         }
-        else if (CheckFloorBelow() && !IsMovingAwayFromFloor())
+        else if (CheckFloorBelow().hitFloor && !IsMovingAwayFromFloor())
+        {
+            playerModel.TargetRotationDeg.Value = CheckFloorBelow().floorAngle;
             player.stateMachine.SwitchState<LandState>(StateLayer.Movement);
+        }
         else if (!playerModel.IsNearFgWall.Value && !playerModel.IsSlidingWall.Value)
             player.stateMachine.SwitchState<AirState>(StateLayer.Movement);
     }
@@ -46,7 +49,7 @@ public class WallSlideState : AirborneMovementState, ICanGetSystem
     }
 
     // World-space downward floor check from the lowest corner, independent of player rotation
-    private bool CheckFloorBelow()
+    private (bool hitFloor, float floorAngle) CheckFloorBelow()
     {
         Vector2 origin = player.bottomLeft.position.y < player.bottomRight.position.y
             ? player.bottomLeft.position
