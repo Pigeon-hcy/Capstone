@@ -151,3 +151,10 @@ MonoBehaviour:
       Data3: -640026191
       Data4: -1091491656
     Path: event:/SFX_Skillup
+  _360Event:
+    Guid:
+      Data1: 1123672704
+      Data2: 1109164912
+      Data3: 744821389
+      Data4: -6204619
+    Path: event:/SFX_360

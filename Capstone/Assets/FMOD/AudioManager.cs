@@ -90,6 +90,10 @@ public class AudioManager : MonoBehaviour
     //Energy Recover
     public EventReference energyEvent;
     private EventInstance energyEventInstance;
+
+    //360
+    public EventReference _360Event;
+    private EventInstance _360EventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -174,6 +178,9 @@ public class AudioManager : MonoBehaviour
 
         //Energy Recover
         energyEventInstance = RuntimeManager.CreateInstance(energyEvent);
+
+        //360
+        _360EventInstance = RuntimeManager.CreateInstance(_360Event);
         #endregion
     }
 
@@ -483,6 +490,15 @@ public class AudioManager : MonoBehaviour
         if (energyEventInstance.isValid())
         {
             energyEventInstance.start();
+        }
+    }
+
+    //360
+    public void fmodPlay360()
+    {
+        if (_360EventInstance.isValid())
+        {
+            _360EventInstance.start();
         }
     }
     #endregion
