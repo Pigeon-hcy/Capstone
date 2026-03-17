@@ -260,6 +260,9 @@ namespace SkateGame
             wasGrounded = isGrounded;
             isGrounded = playerModel.IsGrounded.Value;
 
+            if (playerModel.CurrentMovementState.Value == MovementStates.WallSlideState) ProjectVelocityToWall();
+            // clear slope-accumulated horizontal on leaving ground
+            if (wasGrounded && !isGrounded) vPhysics.x = 0f;
             // 0: gravity
             ApplyCustomGravity();
             // Hit Stun
@@ -275,28 +278,24 @@ namespace SkateGame
                 // 2: ground support
                 if (isGrounded)
                 {
-                    if (!wasGrounded)
-                    {
-                        if (pushSpeed != 0f && Mathf.Sign(vRightPhysics) != Mathf.Sign(pushSpeed))
-                            vPhysics -= vRightPhysics * groundRight;
-                    }
+                    if (!wasGrounded) ReconcilePushOnLanding();
                     if (!isWalking)
                     {
-                        if (vUpPhysics < 0f) { vPhysics -= vUpPhysics * groundUp;}
-                        if (Mathf.Abs(vRightPhysics) > playerModel.Config.Value.maxSlopeSlideSpeed) 
-                        { 
+                        if (vUpPhysics < 0f) vPhysics -= vUpPhysics * groundUp;
+                        if (Mathf.Abs(vRightPhysics) > playerModel.Config.Value.maxSlopeSlideSpeed)
+                        {
                             float sign = Mathf.Sign(vRightPhysics);
                             vPhysics -= vRightPhysics * groundRight;
                             vPhysics += sign * playerModel.Config.Value.maxSlopeSlideSpeed * groundRight;
                         }
-                        // When nearly stopped on slope，stop sliding down
+                        // When nearly stopped on slope, stop sliding down
                         float totalSpeed = Vector2.Dot(vPhysics + vPush, groundRight);
                         if (Mathf.Abs(totalSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
                             vPhysics -= Vector2.Dot(vPhysics, groundRight) * groundRight;
                     }
                     else // High friction when walking
                     {
-                        vPhysics = Vector2.zero; 
+                        vPhysics = Vector2.zero;
                     }
                     // ApplySlopeCompensation();
                 }
@@ -305,7 +304,7 @@ namespace SkateGame
                 // if (pending.ReverseQueued) ApplyReverse();
                 // 4: jumps
                 if (pending.JumpQueued) ApplyJumpImpulse();
-                if (pending.WallJumpQueued) ApplyWallJumpImpulse(IsGraceWallJump);
+                if (pending.WallJumpQueued) ApplyWallJumpImpulse();
                 if (pending.Jumping) ApplyJumpHeld();
                 if (pending.JumpCutQueued) ApplyJumpCut();
 
@@ -331,7 +330,7 @@ namespace SkateGame
             
             pending.Clear();
             rb.linearVelocity = vOveride == Vector2.zero ? vPhysics + vPush + vMove : vOveride;
-            
+
             if (isGrounded) vPhysics = new Vector2(vPhysics.x * playerModel.Config.Value.vPhysicsDecay, vPhysics.y);
             if (Mathf.Abs(vPhysics.x) < 0.01f && Mathf.Abs(vPhysics.y) < 0.01f) vPhysics = Vector2.zero;
 
@@ -340,16 +339,17 @@ namespace SkateGame
             vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
             
             playerModel.PushSpeed.Value = pushSpeed;
+            Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
         }
 
         private void ProjectVPush()
         {
-            bool crash = Vector2.Dot(vPush, groundUp) < 0f;
-            if (!wasGrounded || (crash && !isWalking))
-            {
-                // pushSpeed = Vector2.Dot(vPush, groundRight);
+            bool crashPush = Vector2.Dot(vPush, groundUp) < 0f;
+            if (!wasGrounded || (crashPush && !isWalking))
                 vPush = pushSpeed * groundRight;
-            }
+            bool crashPhysics = Vector2.Dot(vPhysics, groundUp) < 0f;
+            if (!wasGrounded || crashPhysics)
+                vPhysics = Vector2.Dot(vPhysics, groundRight) * groundRight;
         }
         private void ApplyPushBurst()
         {
@@ -402,7 +402,11 @@ namespace SkateGame
         private void CheckWalk(float horizontalInput)
         {
             moveSpeed = 0f;
-            if (Mathf.Abs(pushSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold) isWalking = true;
+            if (!playerModel.IsSlidingWall.Value &&
+                 Mathf.Abs(pushSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
+            {
+                isWalking = true;
+            }
             else isWalking = false;
             if (Mathf.Abs(horizontalInput) > 0.01f && isWalking)
             {
@@ -414,18 +418,33 @@ namespace SkateGame
         private void ApplyCustomGravity()
         {
             Vector2 g = Vector2.down * playerModel.Config.Value.gravityMagnitude * playerModel.CurrentGravityScale.Value;
-            if (playerModel.IsGrounded.Value)
-            {
-                float intoSlope = Vector2.Dot(g, groundUp);
-                Vector2 gravityTangent = g - intoSlope * groundUp;
-                vPhysics += gravityTangent * Time.fixedDeltaTime;
-            }
-            else
-            {
-                vPhysics += g * Time.fixedDeltaTime;
-                if (!pending.Slamming)
-                    vPhysics = new Vector2(vPhysics.x, Mathf.Max(vPhysics.y, playerModel.Config.Value.maxFallSpeed-vPush.y));
-            }
+            if (playerModel.IsGrounded.Value) ApplyGroundGravity(g);
+            else ApplyAirGravity(g);
+        }
+
+        private void ApplyGroundGravity(Vector2 g)
+        {
+            float intoSlope = Vector2.Dot(g, groundUp);
+            vPhysics += (g - intoSlope * groundUp) * Time.fixedDeltaTime;
+        }
+
+        private void ApplyAirGravity(Vector2 g)
+        {
+            vPhysics += g * Time.fixedDeltaTime;
+            if (!pending.Slamming)
+                vPhysics = new Vector2(vPhysics.x, Mathf.Max(vPhysics.y, playerModel.Config.Value.maxFallSpeed-vPush.y-vMove.y));
+        }
+
+        // On landing, if momentum has reversed direction, adopt actual speed as new pushSpeed
+        private void ReconcilePushOnLanding()
+        {
+            float landingSlope = Vector2.Dot(rb.linearVelocity, groundRight);
+            Debug.Log("groundRight"+ groundRight + "landigslope: " + landingSlope + ", new pushSpeed: " + pushSpeed);
+            if (pushSpeed == 0f || Mathf.Sign(landingSlope) == Mathf.Sign(pushSpeed)) return;
+            if (Mathf.Abs(landingSlope) <= playerModel.Config.Value.powerGrindStopSpeedThreshold) return;
+            pushSpeed = Mathf.Clamp(landingSlope, -playerModel.Config.Value.maxPushSpeed, playerModel.Config.Value.maxPushSpeed);
+            vPhysics -= Vector2.Dot(vPhysics, groundRight) * groundRight;
+            vPush = pushSpeed * groundRight;
         }
 
         private void ApplyCustomDamping(bool isGrounded)
@@ -469,9 +488,7 @@ namespace SkateGame
             Vector2 upDir = jumpDir;
             float vUp = Vector2.Dot(vPhysics, upDir);
             if (vUp < playerModel.Config.Value.jumpHoldForce)
-            {
-                vPhysics = playerModel.Config.Value.jumpHoldForce * upDir;
-            }
+                vPhysics += (playerModel.Config.Value.jumpHoldForce - vUp) * upDir;
         }
 
         private void ApplyJumpCut()
@@ -482,13 +499,23 @@ namespace SkateGame
             pushSpeed = vPush.magnitude * Mathf.Sign(vPush.x);
         }
 
-        private void ApplyWallJumpImpulse(bool isGraceWallJump)
+        private void ProjectVelocityToWall()
         {
-            Vector2 wallN = isGraceWallJump ? playerModel.WallJumpWallNormal.Value : Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up;
-            Vector2 jumpDir = Vector2.Lerp(wallN, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized; vPhysics = jumpDir * playerModel.Config.Value.wallJumpImpulse;
+            Vector2 wallTangent = groundRight;
+            vPhysics = Vector2.Dot(vPhysics, wallTangent) * wallTangent;
+            float projPush = Vector2.Dot(vPush, wallTangent);
+            pushSpeed = projPush;
+            vPush = projPush * wallTangent;
+        }
+
+        private void ApplyWallJumpImpulse()
+        {
+            Vector2 wallN = playerModel.WallJumpWallNormal.Value;
+            Vector2 jumpDir = Vector2.Lerp(wallN, Vector2.up, playerModel.Config.Value.wallJumpUpMultiplier).normalized; 
+            vPhysics = jumpDir * playerModel.Config.Value.wallJumpImpulse;
             bool isJumpright = wallN.x > 0;
             pushSpeed = isJumpright ? playerModel.Config.Value.wallJumpSpeed : -playerModel.Config.Value.wallJumpSpeed;
-            vPush = pushSpeed* groundRight;
+            vPush = playerModel.Config.Value.wallJumpSpeed * wallN;
         }
         #endregion
 
@@ -537,11 +564,11 @@ namespace SkateGame
         private void ApplyTrickAReward()
         {
             float direction = 0f;
-            if (direction != 0f) 
-            {
-                ChangePushDirection(direction);
-            }
-            vPush = pushSpeed* groundRight;
+            // if (direction != 0f) 
+            // {
+            //     ChangePushDirection(direction);
+            // }
+            // vPush = pushSpeed* groundRight;
             Vector2 rewardDir = new Vector2(direction, .5f).normalized;
             float rewardForce = direction == 0f ? playerModel.Config.Value.TrickARewardForceVertical : playerModel.Config.Value.TrickARewardForceHorizontal;
             vPhysics = rewardDir * rewardForce;

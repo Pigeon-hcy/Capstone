@@ -8,6 +8,7 @@ namespace SkateGame
         void GroundCheck(Vector2 position);
         (bool, float) WallCheck(Vector2 leftPosition, Vector2 rightPosition, float rayDistance);
         void CheckCrash(Vector2 velocity, float angle);
+        bool CheckFloorBelow(Vector2 origin);
     }
 
     public class CollisionSystem : AbstractSystem, ICollisionSystem
@@ -48,20 +49,28 @@ namespace SkateGame
             }
             
             bool grounded = hit.collider != null;
+            bool slidingWall = false;
             float angle = 0f;
             if (grounded)
             {
                 angle = Vector2.Angle(Vector2.up, hit.normal);
-                if (angle > playerModel.Config.Value.groundCheckAngle) grounded = false;
+                if (angle > playerModel.Config.Value.groundCheckAngle)
+                {
+                    slidingWall = true;
+                    playerModel.SlidingWallAngle.Value = angle * Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z);
+                    grounded = false;
+                }
             }
 
             // rotate if grounded
-            playerModel.TargetRotationDeg.Value = grounded && angle > 0f 
+            playerModel.TargetRotationDeg.Value = grounded && angle > 0f
                 ? angle * Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z)
                 : 0f;
             playerModel.WasGrounded.Value = playerModel.IsGrounded.Value;
             playerModel.IsGrounded.Value = grounded;
+            playerModel.IsSlidingWall.Value = slidingWall;
         }
+        
         public (bool, float) WallCheck(Vector2 leftPosition, Vector2 rightPosition, float rayDistance)
         {
             Vector2 rayStart = playerModel.IsFacingRight.Value ? rightPosition : leftPosition;
@@ -90,6 +99,12 @@ namespace SkateGame
                 if (Mathf.Abs(angle) < playerModel.Config.Value.groundCheckAngle) isNearWall = false;
             }
             return (isNearWall, angle);
+        }
+
+        public bool CheckFloorBelow(Vector2 origin)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, playerModel.Config.Value.wallCheckDistanceFarFast, playerModel.Config.Value.groundLayer);
+            return hit.collider != null && Vector2.Angle(Vector2.up, hit.normal) <= playerModel.Config.Value.groundCheckAngle;
         }
 
         /// <summary>

@@ -123,6 +123,7 @@ namespace SkateGame
         [Range(0f, 1f)] public float jumpCutMultiplier = 0.5f;
 
         [Header("Wall Jump")]
+        public float wallSlideEntrySpeed = 5f;
         public float wallJumpImpulse = 6f;
         public float wallJumpSpeed = 10f;
         [Tooltip("越小越接近墙面normal，越大越接近垂直向上")]

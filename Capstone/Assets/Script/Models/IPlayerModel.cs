@@ -14,6 +14,9 @@ namespace SkateGame
         BindableProperty<bool> IsNearTrack { get; }
         BindableProperty<bool> IsNearBgWall { get; }
         BindableProperty<bool> IsNearFgWall { get; }
+        BindableProperty<bool> touchingWall { get; }
+        BindableProperty<bool> IsSlidingWall { get; }
+        BindableProperty<float> SlidingWallAngle { get; }
         BindableProperty<float> FgWallAngle { get; }
 
         /// <summary>
@@ -29,7 +32,6 @@ namespace SkateGame
         /// <summary>
         /// grind相关
         /// </summary>
-        BindableProperty<float> Speed { get; }
         BindableProperty<Vector2> GrindDirection { get; }
 
         /// <summary>
@@ -117,6 +119,10 @@ namespace SkateGame
         public BindableProperty<bool> IsNearTrack { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsNearBgWall { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsNearFgWall { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<bool> touchingWall { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<bool> IsSlidingWall { get; } = new BindableProperty<bool>(false);
+        public BindableProperty<float> SlidingWallAngle { get; } = new BindableProperty<float>(0f);
+
         public BindableProperty<float> FgWallAngle { get; } = new BindableProperty<float>(0f);
         // Hit相关
         public BindableProperty<float> PushSpeedBeforeHit { get; } = new BindableProperty<float>(0f);
@@ -125,7 +131,6 @@ namespace SkateGame
         public BindableProperty<Wall> CurrentBgWall { get; } = new BindableProperty<Wall>(null);
         
         // grind相关
-        public BindableProperty<float> Speed { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> GrindDirection { get; } = new BindableProperty<Vector2>(Vector2.zero);
         
         // jump相关

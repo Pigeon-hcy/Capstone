@@ -142,6 +142,7 @@ namespace SkateGame
             stateMachine.AddState(new MoveState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new AirState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
+            stateMachine.AddState(new WallSlideState(this, rb), StateLayer.Movement);
             // stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
@@ -189,6 +190,7 @@ namespace SkateGame
 
             // 检测前方墙壁(近距离), 用上一帧速度以防取到碰撞后速度
             var (touchingWall, wallAngle) = collisionSystem.WallCheck(bottomLeft.position, bottomRight.position, playerModel.Config.Value.wallCheckDistanceNear);
+            playerModel.touchingWall.Value = touchingWall;
             // wall jump时免疫碰撞
             if (touchingWall)
             {

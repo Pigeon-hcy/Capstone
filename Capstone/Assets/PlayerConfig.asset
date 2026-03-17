@@ -81,25 +81,26 @@ MonoBehaviour:
   grappleDuration: 0.15
   grappleImpulse: 30
   groundRotationSpeed: 10
-  airRotationSpeed: 4
+  airRotationSpeed: 6
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheckDistance: 0.35
   groundCheckOffset: 0.3
   groundCheckAngle: 60
-  wallCheckDistanceFarFast: 3
+  wallCheckDistanceFarFast: 1
   wallCheckDistanceFarSlow: 1
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
-  crashVelocity: 10
-  crashAngle: 60
+  crashVelocity: 0
+  crashAngle: 80
   crashAngleDiff: 45
   jumpForce: 20
   jumpHoldForce: 18
   jumpHoldMaxTime: 0.2
   coyoteTime: 0.1
   jumpCutMultiplier: 0.9
+  wallSlideEntrySpeed: 2
   wallJumpImpulse: 18
   wallJumpSpeed: 16
   wallJumpUpMultiplier: 1

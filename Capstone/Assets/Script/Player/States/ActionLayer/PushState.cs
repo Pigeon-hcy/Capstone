@@ -6,7 +6,7 @@ public class PushState : ActionStateBase
 {
     private float pushTimer;
     private bool pushingRight;
-    private bool reversing = false;
+    private bool reversePush = false;
     private float kickDelayTimer = -1f;
     private bool kickIsFirst;
     public PushState(PlayerController player, Rigidbody2D rb) : base(player, rb)
@@ -19,9 +19,11 @@ public class PushState : ActionStateBase
 
     protected override void EnterActionState()
     {
+        reversePush = false;
         pushTimer = playerModel.Config.Value.pushKickInterval - playerModel.Config.Value.firstPushKickInterval;
         if (playerModel.PendingReversePush.Value)
         {
+            reversePush = true;
             pushingRight = playerModel.PendingReversePushRight.Value;
             playerModel.PendingReversePush.Value = false;
             playerModel.ReversePushCooldownTimer.Value = playerModel.Config.Value.pushReverseCooldown;
@@ -39,12 +41,13 @@ public class PushState : ActionStateBase
         // 如果刚起步或者刹车过程中尝试起步，就播放
         bool forceKick = playerModel.PowergrindInterrupted.Value;
         playerModel.PowergrindInterrupted.Value = false;
-        if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
+        // if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
+        if (inputModel.PushStart.Value || forceKick || reversePush)
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
             StartKickDelay(isFirst: true);
-            reversing = false;
+            reversePush = false;
         }
     }
 
@@ -57,7 +60,7 @@ public class PushState : ActionStateBase
             bool inputRight = moveX > 0f;
             if (inputRight != pushingRight)
             {
-                reversing = true;
+                reversePush = true;
                 playerModel.PushSpeedBeforeReverse.Value = Mathf.Abs(playerModel.PushSpeed.Value);
                 playerModel.PendingReversePush.Value = true;
                 playerModel.PendingReversePushRight.Value = inputRight;
