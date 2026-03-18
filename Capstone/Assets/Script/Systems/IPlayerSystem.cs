@@ -83,7 +83,6 @@ namespace SkateGame
         private float lastTrickBDirection;
         private Vector2 PortalTeleportExitDirection;
         public bool IsPushingRight;
-        public bool isFirstPush;
         public float TrickBDirection;
         public Vector2 GrappleDirection;
         private bool isWalking;
@@ -177,7 +176,6 @@ namespace SkateGame
         private void OnPushInput(PushInputEvent evt)
         {
             IsPushingRight = evt.IsPushingRight;
-            isFirstPush = evt.isFirstPush;
             if (evt.IsPushing) pending.pushQueued = true;
         }
         private void OnPowerGrindInput(PowerGrindInputEvent evt) 
@@ -271,7 +269,7 @@ namespace SkateGame
                 // 1: Base movement
                 if(isGrounded) ProjectVPush();
                 if (pending.pushQueued)
-                    ApplyPushKick(isFirstPush);
+                    ApplyPushKick();
                 else if (pending.PowerGrinding) ApplyPowerGrind();
 
                 // 2: ground support
@@ -366,11 +364,11 @@ namespace SkateGame
             }
         }
 
-        private void ApplyPushKick(bool isFirstPush)
+        private void ApplyPushKick()
         {
             float pushDir = IsPushingRight ? 1f : -1f;
             float newSpeed;
-            if (isFirstPush && Mathf.Abs(pushSpeed) < playerModel.Config.Value.pushBurstSpeed)
+            if (Mathf.Abs(pushSpeed) < (playerModel.Config.Value.pushBurstSpeed-playerModel.Config.Value.pushKickSpeedIncrement))
             {
                 newSpeed = playerModel.Config.Value.pushBurstSpeed;
             }

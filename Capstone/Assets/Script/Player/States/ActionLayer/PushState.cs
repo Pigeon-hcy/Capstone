@@ -8,7 +8,6 @@ public class PushState : ActionStateBase
     private bool pushingRight;
     private bool reversePush = false;
     private float kickDelayTimer = -1f;
-    private bool kickIsFirst;
     public PushState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
@@ -47,7 +46,7 @@ public class PushState : ActionStateBase
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
-            StartKickDelay(isFirst: true);
+            StartKickDelay();
             reversePush = false;
         }
     }
@@ -78,7 +77,7 @@ public class PushState : ActionStateBase
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
-            StartKickDelay(isFirst: false);
+            StartKickDelay();
         }
 
         // Kick delay countdown
@@ -89,7 +88,7 @@ public class PushState : ActionStateBase
             {
                 kickDelayTimer = -1f;
                 playPush();
-                player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, isFirstPush = kickIsFirst });
+                player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight});
             }
         }
         if (!inputModel.Push.Value || !playerModel.IsGrounded.Value)
@@ -104,10 +103,9 @@ public class PushState : ActionStateBase
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = false, IsReversing = false });
     }
 
-    private void StartKickDelay(bool isFirst)
+    private void StartKickDelay()
     {
         kickDelayTimer = playerModel.Config.Value.pushKickDelay;
-        kickIsFirst = isFirst;
     }
 
     // TODO: 让push特效和声音与动画同步
