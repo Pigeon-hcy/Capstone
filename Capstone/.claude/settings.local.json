@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.asset$\")",
+      "Bash(ls -la /Users/a23544/Documents/GitHub/Capstone/Capstone/Assets/Art/Tilemap/tilemap*)"
+    ]
+  }
+}
