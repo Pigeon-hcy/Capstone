@@ -86,9 +86,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckDistance: 0.35
+  groundCheckDistance: 0.5
   groundCheckOffset: 0.3
-  groundCheckAngle: 60
+  groundCheckAngle: 80
   wallCheckDistanceFarFast: 1
   wallCheckDistanceFarSlow: 1
   wallCheckDistanceNear: 0.35
@@ -106,6 +106,7 @@ MonoBehaviour:
   wallJumpImpulse: 18
   wallJumpSpeed: 16
   wallJumpUpMultiplier: 1
+  wallSlideLandSpeed: 10
   groundForce: 10
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5

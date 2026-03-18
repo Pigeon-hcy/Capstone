@@ -28,7 +28,6 @@ namespace SkateGame
 
             // 主射线检测
             RaycastHit2D hit = Physics2D.Raycast(rayStart, rayDirection, rayDistance, playerModel.Config.Value.groundLayer);
-            Debug.DrawRay(rayStart, rayDirection * rayDistance, Color.red, 0f);
 
             // 如果主射线没检测到，尝试左右偏移的射线
             if (hit.collider == null)
@@ -47,7 +46,6 @@ namespace SkateGame
             if (grounded)
             {
                 angle = Vector2.Angle(Vector2.up, hit.normal);
-                Debug.Log($"Ground angle: {angle}");
                 if (angle > playerModel.Config.Value.groundCheckAngle)
                 {
                     slidingWall = true;
@@ -140,7 +138,7 @@ namespace SkateGame
             Vector2 normal = Quaternion.Euler(0f, 0f, angle) * Vector2.up;
             float angleDifference = Mathf.Abs(playerModel.TargetRotationDeg.Value - angle);
             // 计算玩家速度在墙法线方向上的分量
-            float velocityTowardWall = Mathf.Abs(Vector2.Dot(velocity, -normal));
+            float velocityTowardWall = Vector2.Dot(velocity, -normal);
             if (velocityTowardWall > playerModel.Config.Value.crashVelocity
                 && angleDifference > playerModel.Config.Value.crashAngleDiff
                 && Mathf.Abs(angle) > playerModel.Config.Value.crashAngle)

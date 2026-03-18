@@ -35,6 +35,7 @@ public class WallSlideState : AirborneMovementState, ICanGetSystem
         else if (CheckFloorBelow().hitFloor && !IsMovingAwayFromFloor())
         {
             playerModel.TargetRotationDeg.Value = CheckFloorBelow().floorAngle;
+            this.GetSystem<IPlayerSystem>().ApplyWallSlideLandPush(_wallAngle);
             player.stateMachine.SwitchState<LandState>(StateLayer.Movement);
         }
         else if (!playerModel.IsNearFgWall.Value && !playerModel.IsSlidingWall.Value)

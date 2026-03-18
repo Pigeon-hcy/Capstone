@@ -93,7 +93,7 @@ public class JumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (playerModel.IsSlidingWall.Value)
+        if (playerModel.IsSlidingWall.Value && jumpEnded)
         {
             player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
             return;

@@ -67,6 +67,7 @@ namespace SkateGame
     {
         void ApplyMovement();
         void ApplyRotation();
+        void ApplyWallSlideLandPush(float wallAngle);
     }
 
     public class PlayerSystem : AbstractSystem, IPlayerSystem, ICanSendCommand
@@ -336,7 +337,7 @@ namespace SkateGame
             vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
             
             playerModel.PushSpeed.Value = pushSpeed;
-            Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
+            // Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
         }
 
         private void ProjectVPush()
@@ -628,6 +629,14 @@ namespace SkateGame
             }
             playerModel.CurrentRotationDeg.Value = rb.rotation;
         }
+        public void ApplyWallSlideLandPush(float wallAngle)
+        {
+            Vector2 wallNormal = (Vector2)(Quaternion.Euler(0f, 0f, wallAngle) * Vector2.up);
+            float dir = Mathf.Sign(wallNormal.x);
+            if (dir == 0f) dir = 1f;
+            pushSpeed = dir * playerModel.Config.Value.wallSlideLandSpeed;
+        }
+
         public void ApplyStateChanged(StateChangedEvent evt)
         {
             if (evt.Layer == StateLayer.Movement)
