@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -76,7 +77,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
         if (string.IsNullOrEmpty(sceneName)) return;
         if (GameStateController.Instance != null)
             GameStateController.Instance.EnterInGame();
-        SceneManager.LoadScene(sceneName);
+        ActionKit.Coroutine(() => LoadSceneWithFade(sceneName)).StartGlobal();
     }
 
     // FOR JERRY'S AUDIO - UI CLICK
@@ -84,7 +85,30 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     {
         if (GameStateController.Instance != null)
             GameStateController.Instance.EnterInGame();
-        SceneManager.LoadScene("New_1-1");
+        ActionKit.Coroutine(() => LoadSceneWithFade("New_1-1")).StartGlobal();
+    }
+
+    private static IEnumerator LoadSceneWithFade(string sceneName)
+    {
+        bool blackDone = false;
+        ActionKit.ScreenTransition.FadeIn()
+            .Duration(0.25f)
+            .StartGlobal(() => blackDone = true);
+        yield return new WaitUntil(() => blackDone);
+
+        var op = SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = false;
+        while (op.progress < 0.9f)
+            yield return null;
+
+        op.allowSceneActivation = true;
+        while (!op.isDone)
+            yield return null;
+        yield return null;
+
+        ActionKit.ScreenTransition.FadeOut()
+            .Duration(0.25f)
+            .StartGlobal();
     }
 
     public void ShowLevelSelectCanvas()

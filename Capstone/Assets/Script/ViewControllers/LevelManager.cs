@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using QFramework;
 using System.Collections.Generic;
@@ -145,12 +147,49 @@ namespace SkateGame
 
         public void LoadLevel(int index)
         {
-            if (isLoadingLevel)
-            {
-                return;
-            }
+            if (isLoadingLevel) return;
+            if (index < 0 || index >= levelModel.LevelList.Count) return;
+
+            // Keep consistent with MainMenu flow: leave menu state before transition,
+            // otherwise Time.timeScale may stay at 0 and block fade completion.
+            if (GameStateController.Instance != null)
+                GameStateController.Instance.EnterInGame();
+
             isLoadingLevel = true;
-            levelSystem.LoadLevel(index);
+            ActionKit.Coroutine(() => LoadLevelWithFade(index)).StartGlobal();
+        }
+
+        private static IEnumerator LoadLevelWithFade(int index)
+        {
+            var levelModel = GameApp.Interface.GetModel<ILevelModel>();
+            if (levelModel == null || index < 0 || index >= levelModel.LevelList.Count)
+                yield break;
+
+            levelModel.CurrentLevelIndex = index;
+            var current = levelModel.LevelList[index];
+            levelModel.CurrentLevelName = current.Name;
+
+            bool blackDone = false;
+            ActionKit.ScreenTransition.FadeIn()
+                .Duration(0.25f)
+                .StartGlobal(() => blackDone = true);
+            yield return new WaitUntil(() => blackDone);
+
+            var op = SceneManager.LoadSceneAsync(current.SceneName);
+            op.allowSceneActivation = false;
+            while (op.progress < 0.9f)
+                yield return null;
+
+            op.allowSceneActivation = true;
+            while (!op.isDone)
+                yield return null;
+            yield return null;
+
+            ActionKit.ScreenTransition.FadeOut()
+                .Duration(0.25f)
+                .StartGlobal();
+
+            GameApp.Interface.SendEvent(new SceneChangeEvent());
         }
 
         public void LoadNextLevel()
