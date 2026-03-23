@@ -333,9 +333,15 @@ namespace SkateGame
                 var energySystem = this.GetSystem<IEnergySystem>();
                 energySystem.AddEnergy(1);
                 MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
+                play360();
                 Die();
             }
-           
+
+        }
+
+        public void play360()
+        {
+            AudioManager.Instance.fmodPlay360();
         }
 
         void OnDrawGizmos()
