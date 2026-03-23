@@ -6,9 +6,8 @@ public class PushState : ActionStateBase
 {
     private float pushTimer;
     private bool pushingRight;
-    private bool reversing = false;
+    private bool reversePush = false;
     private float kickDelayTimer = -1f;
-    private bool kickIsFirst;
     public PushState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         this.player = player;
@@ -19,9 +18,11 @@ public class PushState : ActionStateBase
 
     protected override void EnterActionState()
     {
+        reversePush = false;
         pushTimer = playerModel.Config.Value.pushKickInterval - playerModel.Config.Value.firstPushKickInterval;
         if (playerModel.PendingReversePush.Value)
         {
+            reversePush = true;
             pushingRight = playerModel.PendingReversePushRight.Value;
             playerModel.PendingReversePush.Value = false;
             playerModel.ReversePushCooldownTimer.Value = playerModel.Config.Value.pushReverseCooldown;
@@ -39,12 +40,14 @@ public class PushState : ActionStateBase
         // 如果刚起步或者刹车过程中尝试起步，就播放
         bool forceKick = playerModel.PowergrindInterrupted.Value;
         playerModel.PowergrindInterrupted.Value = false;
-        if (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.pushBurstSpeed || forceKick)
+        bool landingHold = inputModel.Push.Value && !inputModel.PushStart.Value
+            && !playerModel.WasGrounded.Value && playerModel.IsGrounded.Value;
+        if (!landingHold || forceKick || reversePush)
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
-            StartKickDelay(isFirst: true);
-            reversing = false;
+            StartKickDelay();
+            reversePush = false;
         }
     }
 
@@ -57,7 +60,7 @@ public class PushState : ActionStateBase
             bool inputRight = moveX > 0f;
             if (inputRight != pushingRight)
             {
-                reversing = true;
+                reversePush = true;
                 playerModel.PushSpeedBeforeReverse.Value = Mathf.Abs(playerModel.PushSpeed.Value);
                 playerModel.PendingReversePush.Value = true;
                 playerModel.PendingReversePushRight.Value = inputRight;
@@ -74,7 +77,7 @@ public class PushState : ActionStateBase
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");
-            StartKickDelay(isFirst: false);
+            StartKickDelay();
         }
 
         // Kick delay countdown
@@ -85,7 +88,7 @@ public class PushState : ActionStateBase
             {
                 kickDelayTimer = -1f;
                 playPush();
-                player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight, isFirstPush = kickIsFirst });
+                player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = true, IsPushingRight = pushingRight});
             }
         }
         if (!inputModel.Push.Value || !playerModel.IsGrounded.Value)
@@ -100,10 +103,9 @@ public class PushState : ActionStateBase
         player.SendEvent<PushInputEvent>(new PushInputEvent { IsPushing = false, IsReversing = false });
     }
 
-    private void StartKickDelay(bool isFirst)
+    private void StartKickDelay()
     {
         kickDelayTimer = playerModel.Config.Value.pushKickDelay;
-        kickIsFirst = isFirst;
     }
 
     // TODO: 让push特效和声音与动画同步

@@ -93,9 +93,25 @@ public class JumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (inputModel.JumpStart.Value && (playerModel.IsNearFgWall.Value || playerModel.WallJumpGraceTimer.Value > 0f))
+        if (playerModel.IsSlidingWall.Value && jumpEnded)
         {
+            player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
+            return;
+        }
+        if (playerModel.touchingWall.Value && jumpEnded)
+        {
+            // Vector2 wallTangent = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.right);
+            // if (Mathf.Abs(Vector2.Dot(rb.linearVelocity, wallTangent)) > playerModel.Config.Value.wallSlideEntrySpeed)
+            // {   
+            player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
+            return;
+            // }
+        }
+        if (inputModel.JumpStart.Value && playerModel.IsNearFgWall.Value && playerModel.JumpStarted.Value)
+        {
+            playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up);
             player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
+            return;
         }
     }
 

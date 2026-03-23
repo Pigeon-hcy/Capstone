@@ -17,10 +17,10 @@ MonoBehaviour:
   isLoopPush: 1
   ignoringMovementLayerPush: 0
   maxPushSpeed: 24
-  pushBurstSpeed: 10
+  pushBurstSpeed: 14
   pushTimeToMaxSpeed: 1
   pushReverseCooldown: 0.5
-  firstPushKickInterval: 0.4
+  firstPushKickInterval: 0.1
   pushKickInterval: 0.7
   pushKickSpeedIncrement: 8
   applyPushKickThreshold: 20
@@ -34,6 +34,7 @@ MonoBehaviour:
   ignoringMovementLayerHit: 1
   hitDuration: 0.8
   hitKnockbackForce: 10
+  hitSpeedDecay: 0.98
   isLoopRecovery: 0
   ignoringMovementLayerRecovery: 0
   isLoopGrind: 1
@@ -81,29 +82,31 @@ MonoBehaviour:
   grappleDuration: 0.15
   grappleImpulse: 30
   groundRotationSpeed: 10
-  airRotationSpeed: 4
+  airRotationSpeed: 6
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckDistance: 0.35
+  groundCheckDistance: 0.5
   groundCheckOffset: 0.3
-  groundCheckAngle: 60
-  wallCheckDistanceFarFast: 3
+  groundCheckAngle: 80
+  wallCheckDistanceFarFast: 1
   wallCheckDistanceFarSlow: 1
   wallCheckDistanceNear: 0.35
   wallCheckOffset: 0.3
-  crashVelocity: 10
-  crashAngle: 60
+  landingSpeedThreshold: 2
+  crashVelocity: 8
+  crashAngle: 80
   crashAngleDiff: 45
   jumpForce: 20
   jumpHoldForce: 18
   jumpHoldMaxTime: 0.2
   coyoteTime: 0.1
   jumpCutMultiplier: 0.9
+  wallSlideEntrySpeed: 2
   wallJumpImpulse: 18
   wallJumpSpeed: 16
   wallJumpUpMultiplier: 1
-  wallJumpGraceAfterHit: 0.15
+  wallSlideLandSpeed: 10
   groundForce: 10
   slopeCompensationForce: 0.5
   maxMoveSpeed: 5

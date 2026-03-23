@@ -28,17 +28,30 @@ public class AirState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        bool wantJump = inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value;
-        if (wantJump)
+        // Case 1: hit wall from ground - require along-wall speed threshold
+        if (playerModel.IsSlidingWall.Value)
         {
-            if(playerModel.IsNearFgWall.Value || playerModel.WallJumpGraceTimer.Value > 0f)
-            {
-                player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
-            }
-            else if (wantJump && playerModel.CoyoteTimer.Value > 0f)
-            {
-                player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
-            }
+            // Vector2 wallTangent = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.SlidingWallAngle.Value) * Vector2.right);
+            // if (Mathf.Abs(Vector2.Dot(rb.linearVelocity, wallTangent)) > playerModel.Config.Value.wallSlideEntrySpeed)
+            // {
+            player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
+            return;
+            // }
+        }
+        // Case 2: airborne touching wall - enter immediately, no threshold
+        if (playerModel.touchingWall.Value)
+        {
+            player.stateMachine.SwitchState<WallSlideState>(StateLayer.Movement);
+            return;
+        }
+        bool wantJump = inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value;
+        if (wantJump && playerModel.CoyoteTimer.Value > 0f)
+            player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+        if (wantJump && playerModel.IsNearFgWall.Value)
+        {
+            playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up);
+            player.stateMachine.SwitchState<WallJumpState>(StateLayer.Movement);
+            return;
         }
     }
 } 

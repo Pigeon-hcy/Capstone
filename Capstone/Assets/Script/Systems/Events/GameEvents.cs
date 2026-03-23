@@ -99,7 +99,6 @@ namespace SkateGame
     }
     public struct WallJumpExecuteEvent
     {
-        public bool IsGraceWallJump;
     }
     // 移动输入事件
     public struct MoveInputEvent
@@ -113,7 +112,6 @@ namespace SkateGame
         public bool IsPushing;
         public bool IsPushingRight;
         public bool IsReversing;
-        public bool isFirstPush;
     }
     
     // Trick列表变化事件

@@ -1,6 +1,7 @@
 using SkateGame;
 using QFramework;
-public abstract class GroundMovementState : StateBase
+using UnityEngine;
+public abstract class GroundMovementState : StateBase, ICanGetSystem
 {
     protected bool WasGrounded => this.GetModel<IPlayerModel>().WasGrounded.Value;
     protected bool IsGrounded => this.GetModel<IPlayerModel>().IsGrounded.Value;
@@ -14,6 +15,7 @@ public abstract class GroundMovementState : StateBase
         player.SendEvent<MoveInputEvent>(new MoveInputEvent { HorizontalInput = moveInput });
         UpdateGroundMovement();
         switchAirborneMovement();
+        CheckCrash();
     }
 
     public sealed override void Enter()
@@ -28,14 +30,21 @@ public abstract class GroundMovementState : StateBase
         pauseMoving();
     }
 
+    private void CheckCrash()
+    {
+        if (!this.GetSystem<ICollisionSystem>().CheckCrash(playerModel.VelocityLastFrame.Value, playerModel.FgWallAngle.Value))
+            return;
+        Vector2 n = ((Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up)).normalized;
+        playerModel.HitKnockbackDirection.Value = n;
+        playerModel.WallJumpWallNormal.Value = n;
+        player.stateMachine.SwitchState<HitState>(StateLayer.Action);
+    }
+
     private void switchAirborneMovement()
     {
         if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
             player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
-        else
-        {
-            CheckFall();
-        }
+        else CheckFall();
     }
     private void CheckFall()
     {

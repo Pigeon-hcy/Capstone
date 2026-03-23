@@ -17,15 +17,7 @@ public class WallJumpState : AirborneMovementState
         {
             player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
-        if (playerModel.WallJumpGraceTimer.Value > 0f)
-        {
-            playerModel.WallJumpGraceTimer.Value = 0f;
-            player.SendEvent<WallJumpExecuteEvent>(new WallJumpExecuteEvent { IsGraceWallJump = true });
-        }
-        else
-        {
-            player.SendEvent<WallJumpExecuteEvent>(new WallJumpExecuteEvent { IsGraceWallJump = false });
-        }
+        player.SendEvent<WallJumpExecuteEvent>(new WallJumpExecuteEvent {});
         playerModel.GrindJumpTimer.Value = playerModel.Config.Value.grindJumpIgnoreTime;
         jumpTimer = 0f;
         playerModel.JumpStarted.Value = false;
@@ -83,9 +75,9 @@ public class WallJumpState : AirborneMovementState
     // state change
     private void StateChange()
     {
-        if (inputModel.JumpStart.Value && (playerModel.IsNearFgWall.Value || playerModel.WallJumpGraceTimer.Value > 0f))
+        if (inputModel.JumpStart.Value && playerModel.IsNearFgWall.Value)
         {
-            // 重新walljump
+            playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, playerModel.FgWallAngle.Value) * Vector2.up);
             player.stateMachine.ReenterCurrentState(StateLayer.Movement);
         }
     }
