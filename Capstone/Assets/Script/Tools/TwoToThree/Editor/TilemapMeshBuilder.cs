@@ -208,12 +208,16 @@ public static class TilemapMeshBuilder
         }
 
         // --- Side walls ---
+        float fullDepth = halfD * 2f;
+        float cumulativeU = 0f;
         for (int i = 0; i < n; i++)
         {
             int j = (i + 1) % n;
 
             Vector2 a = loop[i];
             Vector2 b = loop[j];
+
+            float edgeLen = Vector2.Distance(a, b);
 
             // Per-quad normal (flat shading)
             Vector3 edge   = new Vector3(b.x - a.x, b.y - a.y, 0f);
@@ -226,18 +230,20 @@ public static class TilemapMeshBuilder
             verts.Add(new Vector3(b.x, b.y,  halfD));  // 2 back-right
             verts.Add(new Vector3(a.x, a.y,  halfD));  // 3 back-left
 
-            float uA = i / (float)n;
-            float uB = (i + 1) / (float)n;
+            float uA = cumulativeU;
+            float uB = cumulativeU + edgeLen;
             uvs.Add(new Vector2(uA, 0));
             uvs.Add(new Vector2(uB, 0));
-            uvs.Add(new Vector2(uB, 1));
-            uvs.Add(new Vector2(uA, 1));
+            uvs.Add(new Vector2(uB, fullDepth));
+            uvs.Add(new Vector2(uA, fullDepth));
 
             for (int k = 0; k < 4; k++) normals.Add(normal);
 
             // Two triangles (CCW from outside)
             tris.Add(qi); tris.Add(qi + 1); tris.Add(qi + 2);
             tris.Add(qi); tris.Add(qi + 2); tris.Add(qi + 3);
+
+            cumulativeU += edgeLen;
         }
     }
 
