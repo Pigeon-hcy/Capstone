@@ -48,6 +48,7 @@ namespace SkateGame
         [Header("Hitbox")]
         public Collider2D slamHitbox;
         Coroutine _slamHitboxRoutine;
+        Coroutine _clearTricksRoutine;
 
         [Header("Grappling Vine Gun")]
         public VineGun vineGun;
@@ -197,7 +198,11 @@ namespace SkateGame
             playerModel.touchingWall.Value = touchingWall;
 
             // 检测玩家是否掉落过低
-            CheckFallOutOfBounds();
+            if (CheckFallOutOfBounds())
+            {
+                // 重生过程中玩家可能被设为 inactive，避免继续执行并启动协程
+                return;
+            }
 
             // 更新当前State
             stateMachine.UpdateCurrentState();
@@ -217,9 +222,12 @@ namespace SkateGame
             CheckPlayerDirectionChange();
 
             //过几秒自动清空tricklist和grade
-            if (this.GetSystem<ITrickSystem>().TrickList.Value.Count > 0)
+            if (this.GetSystem<ITrickSystem>().TrickList.Value.Count > 0
+                && _clearTricksRoutine == null
+                && isActiveAndEnabled
+                && gameObject.activeInHierarchy)
             {
-                StartCoroutine(ClearTricksAfterDelay(5f));
+                _clearTricksRoutine = StartCoroutine(ClearTricksAfterDelay(5f));
             }
         }
         //过几秒自动清空tricklist和grade
@@ -228,18 +236,21 @@ namespace SkateGame
             yield return new WaitForSeconds(delay);
             this.GetSystem<ITrickSystem>().RemoveAllTricks();
             this.GetModel<ITrickListModel>().Grade.Value = 'D';
+            _clearTricksRoutine = null;
         }
 
         // 检测玩家是否掉落过低
-        private void CheckFallOutOfBounds()
+        private bool CheckFallOutOfBounds()
         {
             if (transform.position.y < -20f)
             {
                 
                 var respawnSystem = this.GetSystem<IRespawnSystem>();
                 respawnSystem.RespawnPlayer();
-                
+                return true;
             }
+
+            return false;
         }
 
         // 提供给状态机使用的方法
@@ -251,6 +262,23 @@ namespace SkateGame
         public Rigidbody2D GetRigidbody()
         {
             return rb;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (_clearTricksRoutine != null)
+            {
+                StopCoroutine(_clearTricksRoutine);
+                _clearTricksRoutine = null;
+            }
+
+            if (_slamHitboxRoutine != null)
+            {
+                StopCoroutine(_slamHitboxRoutine);
+                _slamHitboxRoutine = null;
+            }
         }
         
         #region Hitbox
