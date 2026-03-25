@@ -100,6 +100,13 @@ namespace SkateGame
         // 初始化为移动阶段
         waiting   = false;
         moveTimer = config.moveDuration; 
+        
+        BoxCollider2D cld = GetComponent<BoxCollider2D>();
+        if(dmgBox == null)
+        {
+            dmgBox = reportBoxFactory.CreateHitbox(transform);
+        }
+        dmgBox.OpenBox(AtkTags, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
     }
 
     protected struct FlipInfoRecorder
@@ -224,8 +231,10 @@ namespace SkateGame
             {
                 movePaused = false;
 
+                /*
                 if (dmgBox != null)
                     dmgBox.CloseBox();
+                */
 
                 dmgBox = null;
             }
@@ -282,12 +291,14 @@ namespace SkateGame
             float jumpForce = JumpForce*1000;
 
             rb.AddForce(jumpDir * jumpForce, ForceMode2D.Impulse);
+            /*
             BoxCollider2D cld = GetComponent<BoxCollider2D>();
             if(dmgBox == null)
             {
                 dmgBox = reportBoxFactory.CreateHitbox(transform);
             }
             dmgBox.OpenBox(AtkTags, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
+            */
             directFirstAtk = false;
 
         }
