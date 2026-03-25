@@ -21,7 +21,7 @@ public interface IEnergySystem : ISystem
 
 public class EnergySystem : AbstractSystem, IEnergySystem
 {
-    public int MaxEnergy => 3;
+    public int MaxEnergy => 1;
 
     public BindableProperty<int> Energy { get; }
         = new BindableProperty<int>(0);
