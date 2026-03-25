@@ -158,3 +158,17 @@ MonoBehaviour:
       Data3: 744821389
       Data4: -6204619
     Path: event:/SFX_360
+  _grappleShootEvent:
+    Guid:
+      Data1: -233994573
+      Data2: 1123232013
+      Data3: 756128696
+      Data4: 101916125
+    Path: event:/SFX_GrappleShoot
+  _grappleAttachEvent:
+    Guid:
+      Data1: -784059671
+      Data2: 1225550054
+      Data3: -1804978816
+      Data4: 1677160444
+    Path: event:/SFX_GrappleAttach
