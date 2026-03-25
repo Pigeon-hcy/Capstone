@@ -10,6 +10,8 @@ TagManager:
   - PlayerHitBox
   - AudioManager
   - MusicManager
+  - Slow
+  - Fast
   layers:
   - Default
   - TransparentFX

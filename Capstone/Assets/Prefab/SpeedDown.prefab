@@ -174,3 +174,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   transitionDuration: 0.5
+  volumeSLow: {fileID: 0}
+  volumeFast: {fileID: 0}
+  weight: 0
+  transitionWeightDuration: 0.5
