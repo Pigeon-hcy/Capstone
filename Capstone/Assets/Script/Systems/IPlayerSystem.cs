@@ -389,6 +389,8 @@ namespace SkateGame
                  walkCooldownTimer <= 0f)
             {
                 isWalking = true;
+                pushSpeed = 0f;
+                vPush = Vector2.zero;
             }
             else isWalking = false;
             if (Mathf.Abs(horizontalInput) > 0.01f && isWalking)

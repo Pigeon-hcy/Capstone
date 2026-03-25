@@ -24,6 +24,7 @@ namespace SkateGame
         PushState = 5,
         PowerGrindState = 6,
         HitState = 7,
+        CruiseState = 8,
     }
 }
 
