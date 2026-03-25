@@ -88,12 +88,12 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             player.stateMachine.SwitchState<PushState>(StateLayer.Action);
         }
         else if (playerModel.IsGrounded.Value
-            && playerModel.ReversePushCooldownTimer.Value <= 0f
             && Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
         {
             float moveX = inputModel.Move.Value.x;
             if (Mathf.Abs(moveX) > 0.01f && (moveX > 0) != (playerModel.PushSpeed.Value > 0))
                 player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
+            else player.stateMachine.SwitchState<CruiseState>(StateLayer.Action);
         }
     }
     
@@ -133,12 +133,6 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             playerModel.WallRideCooldownTimer.Value -= Time.deltaTime;
             if (playerModel.WallRideCooldownTimer.Value < 0f)
                 playerModel.WallRideCooldownTimer.Value = 0f;
-        }
-        if (playerModel.ReversePushCooldownTimer.Value > 0f)
-        {
-            playerModel.ReversePushCooldownTimer.Value -= Time.deltaTime;
-            if (playerModel.ReversePushCooldownTimer.Value < 0f)
-                playerModel.ReversePushCooldownTimer.Value = 0f;
         }
     }
 }

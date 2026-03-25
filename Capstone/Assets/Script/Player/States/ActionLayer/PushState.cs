@@ -48,7 +48,7 @@ public class PushState : ActionStateBase
     {
         CheckSwitchAction();
         float moveX = inputModel.Move.Value.x;
-        if (Mathf.Abs(moveX) > 0.01f && playerModel.ReversePushCooldownTimer.Value <= 0f)
+        if (Mathf.Abs(moveX) > 0.01f)
         {
             bool inputRight = moveX > 0f;
             if (inputRight != pushingRight)
