@@ -94,6 +94,14 @@ public class AudioManager : MonoBehaviour
     //360
     public EventReference _360Event;
     private EventInstance _360EventInstance;
+
+    //GrappleShoot
+    public EventReference _grappleShootEvent;
+    private EventInstance _grappleShootEventInstance;
+
+    //GrappleAttach
+    public EventReference _grappleAttachEvent;
+    private EventInstance _grappleAttachEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -181,6 +189,12 @@ public class AudioManager : MonoBehaviour
 
         //360
         _360EventInstance = RuntimeManager.CreateInstance(_360Event);
+
+        //Grapple Shoot
+        _grappleShootEventInstance = RuntimeManager.CreateInstance(_grappleShootEvent);
+
+        //Grapple Attach
+        _grappleAttachEventInstance = RuntimeManager.CreateInstance(_grappleAttachEvent);
         #endregion
     }
 
@@ -499,6 +513,24 @@ public class AudioManager : MonoBehaviour
         if (_360EventInstance.isValid())
         {
             _360EventInstance.start();
+        }
+    }
+
+    //GrappleShoot
+    public void fmodPlayGrappleShoot()
+    {
+        if (_grappleShootEventInstance.isValid())
+        {
+            _grappleShootEventInstance.start();
+        }
+    }
+
+    //Grapple Attach
+    public void fmodPlayGrappleAttach()
+    {
+        if (_grappleAttachEventInstance.isValid())
+        {
+            _grappleAttachEventInstance.start();
         }
     }
     #endregion
