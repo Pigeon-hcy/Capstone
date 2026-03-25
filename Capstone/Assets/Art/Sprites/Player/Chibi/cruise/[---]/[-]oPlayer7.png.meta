@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 9773fb53d15d148fabd4ad77048b90a0
+guid: d879341efeeeb4e1da0acd6140fd2863
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1553068999250323147
-    second: '[-]oPlayer_0'
-  - first:
-      213: -1211533898351494061
-    second: '[-]oPlayer_1'
+      213: 3789298487015678342
+    second: '[-]oPlayer7_0'
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: '[-]oPlayer_0'
+      name: '[-]oPlayer7_0'
       rect:
         serializedVersion: 2
-        x: 185
-        y: 275
-        width: 23
-        height: 21
+        x: 211
+        y: 244
+        width: 77
+        height: 89
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc6acfbb60c9d8510800000000000000
-      internalID: 1553068999250323147
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: '[-]oPlayer_1'
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 242
-        width: 94
-        height: 87
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 35c3a63a654cf2fe0800000000000000
-      internalID: -1211533898351494061
+      spriteID: 681ae7ab5ea469430800000000000000
+      internalID: 3789298487015678342
       vertices: []
       indices: 
       edges: []
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      '[-]oPlayer_0': 1553068999250323147
-      '[-]oPlayer_1': -1211533898351494061
+      '[-]oPlayer7_0': 3789298487015678342
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

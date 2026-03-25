@@ -70,6 +70,8 @@ namespace SkateGame
     public bool CanBeKilled { get; set; }
 
     protected bool directFirstAtk = false;
+
+    public Transform boxSource;
     
     protected virtual void Start()
     {
@@ -101,7 +103,7 @@ namespace SkateGame
         waiting   = false;
         moveTimer = config.moveDuration; 
         
-        BoxCollider2D cld = GetComponent<BoxCollider2D>();
+        BoxCollider2D cld = boxSource.GetComponent<BoxCollider2D>();
         if(dmgBox == null)
         {
             dmgBox = reportBoxFactory.CreateHitbox(transform);
