@@ -20,14 +20,7 @@ public class PushState : ActionStateBase
     {
         reversePush = false;
         pushTimer = playerModel.Config.Value.pushKickInterval - playerModel.Config.Value.firstPushKickInterval;
-        if (playerModel.PendingReversePush.Value)
-        {
-            reversePush = true;
-            pushingRight = playerModel.PendingReversePushRight.Value;
-            playerModel.PendingReversePush.Value = false;
-            playerModel.ReversePushCooldownTimer.Value = playerModel.Config.Value.pushReverseCooldown;
-        }
-        else if(Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
+        if(Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
         {
             pushingRight = Mathf.Sign(playerModel.PushSpeed.Value) > 0f;
         }
@@ -60,10 +53,6 @@ public class PushState : ActionStateBase
             bool inputRight = moveX > 0f;
             if (inputRight != pushingRight)
             {
-                reversePush = true;
-                playerModel.PushSpeedBeforeReverse.Value = Mathf.Abs(playerModel.PushSpeed.Value);
-                playerModel.PendingReversePush.Value = true;
-                playerModel.PendingReversePushRight.Value = inputRight;
                 player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
                 return;
             }
@@ -71,9 +60,7 @@ public class PushState : ActionStateBase
 
         // 如果速度不满则阶梯式push
         pushTimer += Time.deltaTime;
-        if (pushTimer >= playerModel.Config.Value.pushKickInterval &&
-            (Mathf.Abs(playerModel.PushSpeed.Value) <= playerModel.Config.Value.applyPushKickThreshold ||
-            rb.linearVelocity.magnitude <= playerModel.Config.Value.applyPushKickThreshold))
+        if (pushTimer >= playerModel.Config.Value.pushKickInterval)
         {
             pushTimer = 0f;
             player.animator.SetTrigger("Push");

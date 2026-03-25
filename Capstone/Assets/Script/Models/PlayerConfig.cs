@@ -27,9 +27,10 @@ namespace SkateGame
         [Header("Power Grind State")]
         public bool isLoopPowerGrind = false;
         public bool ignoringMovementLayerPowerGrind = true;
-        public float powerGrindDuration = 0.5f;
         public float powerGrindStopSpeedThreshold = 0.5f;
         public float powerGrindDistanceMultiplier = 2f;
+        public float powerGrindDecelerationRate = 20f; // units/s
+        public float powerGrindWalkDelay = 0.3f; // seconds before walk allowed after full stop
 
         [Header("Hit State")]
         public bool isLoopHit = false;

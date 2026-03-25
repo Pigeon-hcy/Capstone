@@ -87,9 +87,13 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
         {
             player.stateMachine.SwitchState<PushState>(StateLayer.Action);
         }
-        else if (!inputModel.Push.Value && playerModel.IsGrounded.Value && Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
+        else if (playerModel.IsGrounded.Value
+            && playerModel.ReversePushCooldownTimer.Value <= 0f
+            && Mathf.Abs(playerModel.PushSpeed.Value) > playerModel.Config.Value.powerGrindStopSpeedThreshold)
         {
-            player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
+            float moveX = inputModel.Move.Value.x;
+            if (Mathf.Abs(moveX) > 0.01f && (moveX > 0) != (playerModel.PushSpeed.Value > 0))
+                player.stateMachine.SwitchState<PowerGrindState>(StateLayer.Action);
         }
     }
     
