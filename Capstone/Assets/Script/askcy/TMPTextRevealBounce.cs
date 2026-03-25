@@ -2,16 +2,32 @@ using UnityEngine;
 using TMPro;
 using Febucci.UI;
 using SkateGame;
+using QFramework;
 
 /// <summary>
 /// 简单封装：对外提供 ShowText(string text)，内部使用 TextAnimator 的 Typewriter 打字效果。
 /// 需要在同一个物体上挂 TextAnimator_TMP 和 Typewriter（如 TypewriterByCharacter）组件。
 /// </summary>
-public class TMPTextRevealBounce : MonoBehaviour
+public class TMPTextRevealBounce : MonoBehaviour, ICanRegisterEvent, IBelongToArchitecture
 {
+    public InputDeviceType LastDeviceType { get; private set; } = InputDeviceType.KeyboardMouse;
     public TMP_Text text;                    // 可选：如果需要直接访问 TMP_Text
     public TextAnimator_TMP textAnimator;    // 引用 TextAnimator 组件
     public TypewriterByCharacter typewriter;        // 引用 Typewriter 组件（ByCharacter 或 ByWord）
+
+    public IArchitecture GetArchitecture() => GameApp.Interface;
+
+    void Start()
+    {
+        this.RegisterEvent<InputDeviceSwitchedEvent>(OnDeviceSwitched)
+            .UnRegisterWhenGameObjectDestroyed(gameObject);
+    }
+
+    void OnDeviceSwitched(InputDeviceSwitchedEvent e)
+    {
+        // 更新当前设备类型缓存
+        LastDeviceType = e.DeviceType;
+    }
 
     /// <summary>
     /// 对外公开的接口：显示一段文字并用打字机效果播放
@@ -37,19 +53,19 @@ public class TMPTextRevealBounce : MonoBehaviour
         }
 
         // 根据当前输入设备替换占位符（例如 {Jump} -> Space/A）
-        string jumpKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "A" : "Space";
+        string jumpKey = LastDeviceType == InputDeviceType.Gamepad ? "A" : "Space";
         string processed = content.Replace("{Jump}", jumpKey);
 
-        string dashKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "X" : "K";
+        string dashKey = LastDeviceType == InputDeviceType.Gamepad ? "X" : "K";
         processed = processed.Replace("{Dash}", dashKey);
 
-        string pushKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "R2" : "Shift";
+        string pushKey = LastDeviceType == InputDeviceType.Gamepad ? "R2" : "Shift";
         processed = processed.Replace("{Push}", pushKey);
 
-        string hookKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "Y" : "J";
+        string hookKey = LastDeviceType == InputDeviceType.Gamepad ? "Y" : "J";
         processed = processed.Replace("{Hook}", hookKey);
 
-        string slamKey = DeviceText.LastDeviceType == InputDeviceType.Gamepad ? "B" : "S";
+        string slamKey = LastDeviceType == InputDeviceType.Gamepad ? "B" : "S";
         processed = processed.Replace("{Slam}", slamKey);
 
         
