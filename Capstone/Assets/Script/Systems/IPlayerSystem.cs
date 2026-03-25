@@ -93,10 +93,7 @@ namespace SkateGame
         Vector2 jumpDir;
         private float pushSpeed;
         private float moveSpeed;// movespeed != 0 means walking
-        private float powerGrindStartTime;
-        private float powerGrindStartSpeed;
-        private float powerGrindDirection;
-        
+        private float walkCooldownTimer;
         private bool isInUpdraft;
         private Vector2 updraftDirection;
         private float updraftForce;
@@ -140,7 +137,6 @@ namespace SkateGame
             vPush = Vector2.zero;
             vOveride = Vector2.zero;
             pushSpeed = 0f;
-            powerGrindStartSpeed = 0f;
             pending.ClearAll();
             isInUpdraft = false;
             if (rb != null)
@@ -179,22 +175,11 @@ namespace SkateGame
             IsPushingRight = evt.IsPushingRight;
             if (evt.IsPushing) pending.pushQueued = true;
         }
-        private void OnPowerGrindInput(PowerGrindInputEvent evt) 
-        { 
+        private void OnPowerGrindInput(PowerGrindInputEvent evt)
+        {
             pending.PowerGrinding = evt.IsPowerGrinding;
-            if (evt.IsPowerGrinding)
-            {
-                powerGrindStartTime = Time.time;
-                powerGrindStartSpeed = Mathf.Abs(pushSpeed);
-                powerGrindDirection = Mathf.Sign(pushSpeed);
-            }
-            // If not interrupted, ensure push speed is stopped
-            else if (!evt.IsInterrupted)
-            {
-                // TODO: queue it
-                pushSpeed = 0f;
-                vPush = Vector2.zero;
-            }
+            if (!evt.IsPowerGrinding && !evt.IsInterrupted)
+                walkCooldownTimer = playerModel.Config.Value.powerGrindWalkDelay;
         }
         private void OnReverseInput(ReverseInputEvent evt) { pending.ReverseQueued = true; }
         private void OnGrindInput(GrindInputEvent evt) 
@@ -232,7 +217,6 @@ namespace SkateGame
             vPush = Vector2.zero;
             vOveride = Vector2.zero;
             pushSpeed = 0f;
-            powerGrindStartSpeed = 0f;
             pending.ClearAll();
             isInUpdraft = false;
         }
@@ -323,6 +307,7 @@ namespace SkateGame
                 if (pending.PortalTeleportQueued) ApplyPortalTeleport();
                 
                 // 7: Check walk
+                if (walkCooldownTimer > 0f) walkCooldownTimer -= Time.fixedDeltaTime;
                 CheckWalk(cachedMoveInput);
             }
             
@@ -337,7 +322,7 @@ namespace SkateGame
             vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
             
             playerModel.PushSpeed.Value = pushSpeed;
-            // Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
+            Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
         }
 
         private void ProjectVPush()
@@ -389,12 +374,10 @@ namespace SkateGame
         }
         private void ApplyPowerGrind()
         {
-            float T = Mathf.Max(playerModel.Config.Value.powerGrindDuration, 0.01f);
-            float scale = playerModel.Config.Value.powerGrindDistanceMultiplier;
-            float t = Time.time - powerGrindStartTime;
-            float maxSpeed = powerGrindStartSpeed * (1f - Mathf.Pow(Mathf.Clamp01(t / T), scale));
-            if (Mathf.Abs(pushSpeed) > maxSpeed)
-                pushSpeed = Mathf.Sign(pushSpeed) * maxSpeed;
+            float decel = playerModel.Config.Value.powerGrindDecelerationRate * Time.fixedDeltaTime;
+            float newSpeed = Mathf.Abs(pushSpeed) - decel;
+            if (newSpeed <= playerModel.Config.Value.powerGrindStopSpeedThreshold) newSpeed = 0f;
+            pushSpeed = Mathf.Sign(pushSpeed) * Mathf.Max(0f, newSpeed);
             vPush = pushSpeed * groundRight;
         }
 
@@ -402,7 +385,8 @@ namespace SkateGame
         {
             moveSpeed = 0f;
             if (!playerModel.IsSlidingWall.Value &&
-                 Mathf.Abs(pushSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold)
+                 Mathf.Abs(pushSpeed) < playerModel.Config.Value.powerGrindStopSpeedThreshold &&
+                 walkCooldownTimer <= 0f)
             {
                 isWalking = true;
             }

@@ -30,6 +30,8 @@ MonoBehaviour:
   powerGrindDuration: 0.8
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
+  powerGrindDecelerationRate: 20
+  powerGrindWalkDelay: 0.5
   isLoopHit: 0
   ignoringMovementLayerHit: 1
   hitDuration: 0.8
