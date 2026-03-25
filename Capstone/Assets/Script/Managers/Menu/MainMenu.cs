@@ -16,11 +16,11 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     public GameObject defaultCanvas;
 
     
-    [Header("主界面背景：按进度显示对应 Image。0: 1-1~1-3, 1: 1-4~1-7, 2: 1-8~1-10")]
+    [Header("主界面背景：按最近一次通关关卡显示对应 Image。0: 1-1~1-3, 1: 1-4~1-7, 2: 1-8~1-10")]
     public List<Image> backgroundImageList = new List<Image>();
 
     /// <summary>
-    /// Get background index from player progress. 1-1~1-3 -> 0, 1-4~1-7 -> 1, 1-8~1-10 -> 2.
+    /// Get background index from last cleared level. 1-1~1-3 -> 0, 1-4~1-7 -> 1, 1-8~1-10 -> 2.
     /// </summary>
     private int GetBackgroundIndexByProgress(int passedLevelIndex)
     {
@@ -41,8 +41,8 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
             return;
         this.GetSystem<ILevelProgressSystem>(); // ensure progress loaded
         var levelProgressModel = this.GetModel<ILevelProgressModel>();
-        int passed = levelProgressModel != null ? levelProgressModel.PassedLevelIndex : -1;
-        int bgIndex = GetBackgroundIndexByProgress(passed);
+        int lastCleared = levelProgressModel != null ? levelProgressModel.LastClearedLevelIndex : -1;
+        int bgIndex = GetBackgroundIndexByProgress(lastCleared);
         bgIndex = Mathf.Clamp(bgIndex, 0, backgroundImageList.Count - 1);
         for (int i = 0; i < backgroundImageList.Count; i++)
         {
