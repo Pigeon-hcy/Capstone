@@ -172,8 +172,11 @@ namespace SkateGame
         }
         private void OnPushInput(PushInputEvent evt)
         {
-            IsPushingRight = evt.IsPushingRight;
-            if (evt.IsPushing) pending.pushQueued = true;
+            if (evt.IsPushing)
+            {
+                IsPushingRight = evt.IsPushingRight;
+                pending.pushQueued = true;
+            }
         }
         private void OnPowerGrindInput(PowerGrindInputEvent evt)
         {
