@@ -530,6 +530,10 @@ public class AudioManager : MonoBehaviour
     {
         if (_grappleAttachEventInstance.isValid())
         {
+            if (_grappleShootEventInstance.isValid())
+            {
+                _grappleShootEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
             _grappleAttachEventInstance.start();
         }
     }

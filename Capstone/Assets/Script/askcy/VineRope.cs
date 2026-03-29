@@ -74,8 +74,13 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
         }
     }
 
+    public void playGrappleAttach()
+    {
+        AudioManager.Instance.fmodPlayGrappleAttach();
+    }
+
     #region States
-    
+
     /// <summary>
     /// 开始延伸绳子, 由VineGun调用
     /// </summary>
@@ -133,6 +138,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
         });
         grappleTime = 0f;
         currentState = RopeState.Grappling;
+        playGrappleAttach();
     }
 
     /// <summary>
