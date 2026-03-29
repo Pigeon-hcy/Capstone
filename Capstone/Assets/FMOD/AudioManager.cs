@@ -102,6 +102,10 @@ public class AudioManager : MonoBehaviour
     //GrappleAttach
     public EventReference _grappleAttachEvent;
     private EventInstance _grappleAttachEventInstance;
+
+    //Walk
+    public EventReference _walkEvent;
+    private EventInstance _walkEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -195,6 +199,9 @@ public class AudioManager : MonoBehaviour
 
         //Grapple Attach
         _grappleAttachEventInstance = RuntimeManager.CreateInstance(_grappleAttachEvent);
+
+        //Walk
+        _walkEventInstance = RuntimeManager.CreateInstance(_walkEvent);
         #endregion
     }
 
@@ -535,6 +542,15 @@ public class AudioManager : MonoBehaviour
                 _grappleShootEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
             _grappleAttachEventInstance.start();
+        }
+    }
+
+    //Walk
+    public void fmodPlayWalk()
+    {
+        if (_walkEventInstance.isValid())
+        {
+            _walkEventInstance.start();
         }
     }
     #endregion

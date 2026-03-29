@@ -55,11 +55,11 @@ MonoBehaviour:
     Path: event:/SFX_Test
   levelMusic1Event:
     Guid:
-      Data1: 648682146
-      Data2: 1261685103
-      Data3: 1668285353
-      Data4: 1889763285
-    Path: event:/SFX_1-1Bgm
+      Data1: 121758079
+      Data2: 1235834796
+      Data3: 180770450
+      Data4: 208572081
+    Path: event:/MX_Music1
   levelMusic2Event:
     Guid:
       Data1: 702589545
@@ -172,3 +172,10 @@ MonoBehaviour:
       Data3: -1804978816
       Data4: 1677160444
     Path: event:/SFX_GrappleAttach
+  _walkEvent:
+    Guid:
+      Data1: -1306479955
+      Data2: 1223065303
+      Data3: -2094420560
+      Data4: -1977221551
+    Path: event:/SFX_Walk
