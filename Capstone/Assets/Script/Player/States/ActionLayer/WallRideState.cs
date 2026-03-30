@@ -7,7 +7,9 @@ public class WallRideState : ActionStateBase
     private float normalG;
     private float onWallGravity = 0.1f;
     private Wall lastWall;  // 记录上一个墙体
-    
+    /// <summary>进入滑墙时选中的 CM 偏转方向；退出时用同一套 Exit，避免 CurrentBgWall 已清空。</summary>
+    private bool wallRideCameraIsLeftToRight;
+
     public WallRideState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopBgWallRide;
@@ -23,6 +25,17 @@ public class WallRideState : ActionStateBase
         if (player.WallRideEffect != null)
         {
             player.WallRideEffect.PlayFeedbacks();
+        }
+        if (player.cmControls != null && player.cmControls.Length > 0)
+        {
+            wallRideCameraIsLeftToRight = playerModel.IsFacingRight.Value;
+            foreach (var cmControl in player.cmControls)
+            {
+                if (wallRideCameraIsLeftToRight)
+                    cmControl.EnterSpecialCameraPositionWhenWallRideLeftToRight();
+                else
+                    cmControl.EnterSpecialCameraPositionWhenWallRideRightToLeft();
+            }
         }
         // FOR JERRY'S AUDIO - WALL RIDE
         playWallRide();
@@ -48,13 +61,23 @@ public class WallRideState : ActionStateBase
         }
     }
 
-        protected override void ExitActionState()
-        {
-            playerModel.CurrentGravityScale.Value = normalG;
+    protected override void ExitActionState()
+    {
+        playerModel.CurrentGravityScale.Value = normalG;
         playerModel.WallRideCooldownTimer.Value = playerModel.Config.Value.BgWallRideCooldown;
         if (player.WallRideEffect != null)
         {
             player.WallRideEffect.StopFeedbacks();
+        }
+        if (player.cmControls != null && player.cmControls.Length > 0)
+        {
+            foreach (var cmControl in player.cmControls)
+            {
+                if (wallRideCameraIsLeftToRight)
+                    cmControl.ExitSpecialCameraPositionWhenWallRideLeftToRight();
+                else
+                    cmControl.ExitSpecialCameraPositionWhenWallRideRightToLeft();
+            }
         }
         // FOR JERRY'S AUDIO - WALL RIDE STOP
         pauseWallRide();

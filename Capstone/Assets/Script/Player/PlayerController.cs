@@ -68,6 +68,9 @@ namespace SkateGame
         [Header("Trigger 控制")]
         public bool disableInput = false;
 
+        [Header("Camera")]
+        public CM_Control[] cmControls;
+
         [Header("MMF效果")]
         public MMF_Player moveEffect;
         public MMF_Player powerGrindEffect;
