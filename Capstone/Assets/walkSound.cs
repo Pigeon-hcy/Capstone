@@ -16,6 +16,20 @@ public class walkSound : MonoBehaviour
 
     public void _playWalk()
     {
-        AudioManager.Instance.fmodPlayWalk();
+        Debug.Log("Move SFX " + AudioManager.Instance.fmodCheckMove());
+        if (AudioManager.Instance.fmodCheckMove())
+        {
+            AudioManager.Instance.fmodPlayWalk();
+        }
+    }
+    public void _walkTrue()
+    {
+        AudioManager.Instance.fmodMoveTrue();
+        Debug.Log("Walk True");
+    }
+    public void _walkFalse()
+    {
+        AudioManager.Instance.fmodMoveFalse();
+        Debug.Log("Walk False");
     }
 }

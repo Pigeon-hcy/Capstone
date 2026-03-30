@@ -53,6 +53,7 @@ MonoBehaviour:
       Data3: 237030290
       Data4: 2054913725
     Path: event:/SFX_Test
+  moving: 0
   levelMusic1Event:
     Guid:
       Data1: 121758079
@@ -179,3 +180,24 @@ MonoBehaviour:
       Data3: -2094420560
       Data4: -1977221551
     Path: event:/SFX_Walk
+  _clickEvent:
+    Guid:
+      Data1: -998169792
+      Data2: 1270896711
+      Data3: 1951130038
+      Data4: -921152592
+    Path: event:/SFX_UIClick
+  _openEvent:
+    Guid:
+      Data1: 1300864738
+      Data2: 1138937679
+      Data3: 1937052571
+      Data4: -314384439
+    Path: event:/SFX_UIPause
+  _closeEvent:
+    Guid:
+      Data1: 1789624365
+      Data2: 1316826308
+      Data3: 1662351523
+      Data4: -1230914971
+    Path: event:/SFX_UIContinue
