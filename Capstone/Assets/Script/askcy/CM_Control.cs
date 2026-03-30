@@ -1,11 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using Unity.Cinemachine;
 
+/// <summary>LateUpdate 需在 CinemachineBrain 之后运行，才能把角偏移叠到真实渲染相机上。</summary>
+[DefaultExecutionOrder(200)]
 public class CM_Control : MonoBehaviour
 {
     [Header("Cinemachine设置")]
     public CinemachineCamera virtualCamera;
     public CinemachinePositionComposer positionComposer;
+    [Tooltip("带 CinemachineBrain 的实际渲染相机；留空则用 Camera.main")]
+    public Camera outputCamera;
     
     [Header("Z轴锁定")]
     public bool lockZAxis = true; // 是否锁定相机Z轴
@@ -47,11 +52,42 @@ public class CM_Control : MonoBehaviour
     private float currentCameraDistance; // 当前CameraDistance
     private float originalCameraDistance; // 原始CameraDistance
     private float slowSpeedTimer = 0f; // 速度过慢的计时器
+    private Coroutine wallRideCameraAngleCoroutine;
+    /// <summary>叠在 Brain 输出旋转上的局部欧拉角 (0, Y, Z)。</summary>
+    private Vector3 wallRideEulerOffset = Vector3.zero;
+    private Coroutine grindCameraAngleCoroutine;
+    private Vector3 grindEulerOffset = Vector3.zero;
+
+    [Header("Speical Camera position settings")]
+    [Header("Speical Camera position settings when wall ride")]
+    public float specialCameraPositionYWhenWallRide = 0f;
+    public float specialCameraPositionZWhenWallRide = 0f;
+    public float EnterTimeWhenWallRide = 0f;
+    public float ExitTimeWhenWallRide = 0f;
+    [Header("Speical Camera position settings when grind")]
+    public float specialCameraPositionYWhenGrind = 0f;
+    public float specialCameraPositionZWhenGrind = 0f;
+
+    public float EnterTimeWhenGrind = 0f;
+    public float ExitTimeWhenGrind = 0f;
+
+    [Header("Speical Camera position settings when slide Down from the wall(right side)")]
+    public float specialCameraPositionYWhenSlideDownFromWallRight = 0f;
+    public float specialCameraPositionZWhenSlideDownFromWallRight = 0f;
+    [Header("Speical Camera position settings when slide Down from the wall(left side)")]
+    public float specialCameraPositionYWhenSlideDownFromWallLeft = 0f;
+    public float specialCameraPositionZWhenSlideDownFromWallLeft = 0f;
+
+
+    
 
 
     
     void Start()
     {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+
         // 获取玩家引用
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
@@ -109,6 +145,19 @@ public class CM_Control : MonoBehaviour
             Transform camTransform = virtualCamera.transform;
             camTransform.position = new Vector3(camTransform.position.x, camTransform.position.y, lockedZ);
         }
+
+        ApplySpecialEulerOffsetsToOutputCamera();
+    }
+
+    void ApplySpecialEulerOffsetsToOutputCamera()
+    {
+        if (outputCamera == null) return;
+        if (wallRideEulerOffset.sqrMagnitude < 1e-8f && grindEulerOffset.sqrMagnitude < 1e-8f) return;
+        Transform t = outputCamera.transform;
+        if (wallRideEulerOffset.sqrMagnitude >= 1e-8f)
+            t.rotation = t.rotation * Quaternion.Euler(wallRideEulerOffset);
+        if (grindEulerOffset.sqrMagnitude >= 1e-8f)
+            t.rotation = t.rotation * Quaternion.Euler(grindEulerOffset);
     }
     
     void CalculateCameraOffset()
@@ -248,5 +297,200 @@ public class CM_Control : MonoBehaviour
                 Gizmos.DrawLine(currentHeightPos + Vector3.left * 1f, currentHeightPos + Vector3.right * 1f);
             }
         }
+    }
+
+    public void EnterSpecialCameraPositionWhenWallRideLeftToRight()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopWallRideCameraAngleRoutine();
+        wallRideCameraAngleCoroutine = StartCoroutine(WallRideEnterCameraAnglesRoutine(
+            new Vector3(0f, specialCameraPositionYWhenWallRide, specialCameraPositionZWhenWallRide)));
+    }
+
+    /// <summary>与 LeftToRight 相同，但 Y 角为 <c>-specialCameraPositionYWhenWallRide</c>。</summary>
+    public void EnterSpecialCameraPositionWhenWallRideRightToLeft()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopWallRideCameraAngleRoutine();
+        wallRideCameraAngleCoroutine = StartCoroutine(WallRideEnterCameraAnglesRoutine(
+            new Vector3(0f, -specialCameraPositionYWhenWallRide, specialCameraPositionZWhenWallRide)));
+    }
+
+    public void ExitSpecialCameraPositionWhenWallRideLeftToRight()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopWallRideCameraAngleRoutine();
+        wallRideCameraAngleCoroutine = StartCoroutine(WallRideExitCameraAnglesRoutine());
+    }
+
+    public void ExitSpecialCameraPositionWhenWallRideRightToLeft()
+    {
+        ExitSpecialCameraPositionWhenWallRideLeftToRight();
+    }
+
+    void StopWallRideCameraAngleRoutine()
+    {
+        if (wallRideCameraAngleCoroutine != null)
+        {
+            StopCoroutine(wallRideCameraAngleCoroutine);
+            wallRideCameraAngleCoroutine = null;
+        }
+    }
+
+    IEnumerator WallRideEnterCameraAnglesRoutine(Vector3 end)
+    {
+        Vector3 start = wallRideEulerOffset;
+        if (EnterTimeWhenWallRide <= 0f)
+        {
+            wallRideEulerOffset = end;
+            wallRideCameraAngleCoroutine = null;
+            yield break;
+        }
+        float duration = EnterTimeWhenWallRide;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float u = Mathf.Clamp01(elapsed / duration);
+            float x = Mathf.LerpAngle(start.x, end.x, u);
+            float y = Mathf.LerpAngle(start.y, end.y, u);
+            float z = Mathf.LerpAngle(start.z, end.z, u);
+            wallRideEulerOffset = new Vector3(x, y, z);
+            yield return null;
+        }
+        wallRideEulerOffset = end;
+        wallRideCameraAngleCoroutine = null;
+    }
+
+    IEnumerator WallRideExitCameraAnglesRoutine()
+    {
+        Vector3 start = wallRideEulerOffset;
+        Vector3 end = Vector3.zero;
+        if (ExitTimeWhenWallRide <= 0f)
+        {
+            wallRideEulerOffset = end;
+            wallRideCameraAngleCoroutine = null;
+            yield break;
+        }
+        float duration = ExitTimeWhenWallRide;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float u = Mathf.Clamp01(elapsed / duration);
+            float x = Mathf.LerpAngle(start.x, end.x, u);
+            float y = Mathf.LerpAngle(start.y, end.y, u);
+            float z = Mathf.LerpAngle(start.z, end.z, u);
+            wallRideEulerOffset = new Vector3(x, y, z);
+            yield return null;
+        }
+        wallRideEulerOffset = end;
+        wallRideCameraAngleCoroutine = null;
+    }
+
+    public void EnterSpecialCameraPositionWhenGrindLeftToRight()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopGrindCameraAngleRoutine();
+        grindCameraAngleCoroutine = StartCoroutine(GrindEnterCameraAnglesRoutine(
+            new Vector3(0f, specialCameraPositionYWhenGrind, specialCameraPositionZWhenGrind)));
+    }
+
+    public void EnterSpecialCameraPositionWhenGrindRightToLeft()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopGrindCameraAngleRoutine();
+        grindCameraAngleCoroutine = StartCoroutine(GrindEnterCameraAnglesRoutine(
+            new Vector3(0f, -specialCameraPositionYWhenGrind, specialCameraPositionZWhenGrind)));
+    }
+
+    public void ExitSpecialCameraPositionWhenGrindLeftToRight()
+    {
+        if (outputCamera == null)
+            outputCamera = Camera.main;
+        if (outputCamera == null) return;
+
+        StopGrindCameraAngleRoutine();
+        grindCameraAngleCoroutine = StartCoroutine(GrindExitCameraAnglesRoutine());
+    }
+
+    public void ExitSpecialCameraPositionWhenGrindRightToLeft()
+    {
+        ExitSpecialCameraPositionWhenGrindLeftToRight();
+    }
+
+    void StopGrindCameraAngleRoutine()
+    {
+        if (grindCameraAngleCoroutine != null)
+        {
+            StopCoroutine(grindCameraAngleCoroutine);
+            grindCameraAngleCoroutine = null;
+        }
+    }
+
+    IEnumerator GrindEnterCameraAnglesRoutine(Vector3 end)
+    {
+        Vector3 start = grindEulerOffset;
+        if (EnterTimeWhenGrind <= 0f)
+        {
+            grindEulerOffset = end;
+            grindCameraAngleCoroutine = null;
+            yield break;
+        }
+        float duration = EnterTimeWhenGrind;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float u = Mathf.Clamp01(elapsed / duration);
+            float x = Mathf.LerpAngle(start.x, end.x, u);
+            float y = Mathf.LerpAngle(start.y, end.y, u);
+            float z = Mathf.LerpAngle(start.z, end.z, u);
+            grindEulerOffset = new Vector3(x, y, z);
+            yield return null;
+        }
+        grindEulerOffset = end;
+        grindCameraAngleCoroutine = null;
+    }
+
+    IEnumerator GrindExitCameraAnglesRoutine()
+    {
+        Vector3 start = grindEulerOffset;
+        Vector3 end = Vector3.zero;
+        if (ExitTimeWhenGrind <= 0f)
+        {
+            grindEulerOffset = end;
+            grindCameraAngleCoroutine = null;
+            yield break;
+        }
+        float duration = ExitTimeWhenGrind;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float u = Mathf.Clamp01(elapsed / duration);
+            float x = Mathf.LerpAngle(start.x, end.x, u);
+            float y = Mathf.LerpAngle(start.y, end.y, u);
+            float z = Mathf.LerpAngle(start.z, end.z, u);
+            grindEulerOffset = new Vector3(x, y, z);
+            yield return null;
+        }
+        grindEulerOffset = end;
+        grindCameraAngleCoroutine = null;
     }
 }

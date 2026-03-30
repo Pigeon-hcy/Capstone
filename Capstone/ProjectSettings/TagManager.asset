@@ -12,6 +12,7 @@ TagManager:
   - MusicManager
   - Slow
   - Fast
+  - camera
   layers:
   - Default
   - TransparentFX

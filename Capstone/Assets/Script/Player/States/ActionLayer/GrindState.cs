@@ -10,6 +10,8 @@ public class GrindState : ActionStateBase
     private TrackDirComputeTool trackRef;
 
     private int leftToRight = 1;
+    /// <summary>进入滑轨时选中的 CM 偏转方向；退出时配对 Exit。</summary>
+    private bool grindCameraIsLeftToRight;
 
     public GrindState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
@@ -40,6 +42,17 @@ public class GrindState : ActionStateBase
         if (player.GrindEffect != null)
         {
             player.GrindEffect.PlayFeedbacks();
+        }
+        if (player.cmControls != null && player.cmControls.Length > 0)
+        {
+            grindCameraIsLeftToRight = playerModel.IsFacingRight.Value;
+            foreach (var cmControl in player.cmControls)
+            {
+                if (grindCameraIsLeftToRight)
+                    cmControl.EnterSpecialCameraPositionWhenGrindLeftToRight();
+                else
+                    cmControl.EnterSpecialCameraPositionWhenGrindRightToLeft();
+            }
         }
         // FOR JERRY'S AUDIO - RAIL GRIND
         playRailGrind();
@@ -105,14 +118,23 @@ public class GrindState : ActionStateBase
         }
     }
 
-        protected override void ExitActionState()
-        {
-            playerModel.CurrentGravityScale.Value = normalG;
+    protected override void ExitActionState()
+    {
+        playerModel.CurrentGravityScale.Value = normalG;
 
         if (player.GrindEffect != null)
         {
             player.GrindEffect.StopFeedbacks();
-
+        }
+        if (player.cmControls != null && player.cmControls.Length > 0)
+        {
+            foreach (var cmControl in player.cmControls)
+            {
+                if (grindCameraIsLeftToRight)
+                    cmControl.ExitSpecialCameraPositionWhenGrindLeftToRight();
+                else
+                    cmControl.ExitSpecialCameraPositionWhenGrindRightToLeft();
+            }
         }
         // FOR JERRY'S AUDIO - RAIL GRIND STOP
         pauseRailGrind();

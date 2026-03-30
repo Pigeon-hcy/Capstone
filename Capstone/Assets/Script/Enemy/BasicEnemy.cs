@@ -73,6 +73,8 @@ namespace SkateGame
 
     public Transform boxSource;
     
+    protected Animator animator;
+    
     protected virtual void Start()
     {
         enemyModel = this.GetModel<IEnemyModel>();
@@ -109,6 +111,8 @@ namespace SkateGame
             dmgBox = reportBoxFactory.CreateHitbox(transform);
         }
         dmgBox.OpenBox(AtkTags, new EffectPackage(0),cld == null?new Vector2(1,1):cld.size );
+
+        animator = displayTrans.GetComponentInChildren<Animator>();
     }
 
     protected struct FlipInfoRecorder
@@ -195,8 +199,8 @@ namespace SkateGame
             // 等待阶段
             if (waiting)
             {
+                animator.SetBool("Move",false);
                 if (rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-
                 waitTimer -= Time.deltaTime;
                 if (waitTimer <= 0f)
                 {
@@ -206,7 +210,8 @@ namespace SkateGame
                 }
                 return; // 等待中，不进入移动
             }
-
+            if(config.moveSpeed>0)
+                animator.SetBool("Move",true);
             // 移动阶段
             float speed = config.moveSpeed *
                           (movingRight ? 1f : -1f);
@@ -261,6 +266,7 @@ namespace SkateGame
         protected virtual void AtkTowardsPlayer(Transform pTrans)
         {
             PauseMove();
+            animator.SetTrigger("Attack");
             Vector2 CalDir()
             {
                 return ((Vector2)pTrans.position - (Vector2)transform.position).normalized;
@@ -389,6 +395,7 @@ namespace SkateGame
         if(dmgBox!= null)
             dmgBox.CloseBox();
         dmgBox = null;
+        animator.SetTrigger("Die");
         Destroy(gameObject, 0.1f);
     }
 

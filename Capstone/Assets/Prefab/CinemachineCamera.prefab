@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 8388496975728705655}
   positionComposer: {fileID: 8410419242289208352}
+  outputCamera: {fileID: 0}
   lockZAxis: 1
   lockedZ: -10
   followSpeed: 3
@@ -161,8 +162,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   raycastDistance: 50
-  stopFOV: 20
-  playerMovingFOV: 25
-  FOVChangeSpeed: 3
-  FOVThreshold: 3
+  stopCameraDistance: 10
+  playerMovingCameraDistance: 15
+  cameraDistanceChangeSpeed: 5
+  speedThreshold: 5
   slowSpeedDuration: 3
+  specialCameraPositionYWhenWallRide: 10
+  specialCameraPositionZWhenWallRide: 0
+  EnterTimeWhenWallRide: 0.5
+  ExitTimeWhenWallRide: 0.5
+  specialCameraPositionYWhenGrind: -5
+  specialCameraPositionZWhenGrind: 0
+  EnterTimeWhenGrind: 0.5
+  ExitTimeWhenGrind: 0.5
+  specialCameraPositionYWhenSlideDownFromWallRight: 0
+  specialCameraPositionZWhenSlideDownFromWallRight: 0
+  specialCameraPositionYWhenSlideDownFromWallLeft: 0
+  specialCameraPositionZWhenSlideDownFromWallLeft: 0
