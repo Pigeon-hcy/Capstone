@@ -47,6 +47,7 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("OnTriggerEnter2D: " + other.gameObject.name);
         if (other.gameObject.tag != "Player") return;
         if (GameStateController.Instance == null || GameStateController.Instance.Current != GameState.InGame) return;
 
