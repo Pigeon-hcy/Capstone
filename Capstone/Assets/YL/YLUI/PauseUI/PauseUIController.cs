@@ -62,12 +62,16 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             animator.speed = 1f;
             animator.enabled = true;
             animator.Play("anim_PauseStart");
+            //Pause
+            _playPauseMenuOpen();
         }
         else if (e.OldState == GameState.Pause)
         {
             state = PauseUIState.EndAnimation;
             animator.enabled = true;
             animator.Play("anim_PauseEnd");
+            //Continue
+            _playPauseMenuClose();
         }
     }
 
@@ -189,5 +193,13 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
         if (sfxSlider != null)
             sfxSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
+    }
+    public void _playPauseMenuOpen()
+    {
+        AudioManager.Instance.fmodPlayOpen();
+    }
+    public void _playPauseMenuClose()
+    {
+        AudioManager.Instance.fmodPlayClose();
     }
 }
