@@ -4,11 +4,11 @@ public class walkSound : MonoBehaviour
 {
     private Animator animator;
     void Awake() => animator = GetComponent<Animator>();
-    private bool IsMovementLayerActive => animator.GetLayerWeight(0) > 0.5f;
+    private bool IsActionLayerActive => animator.GetLayerWeight(1) > 0.5f;
 
     public void _playWalk()
     {
-        if (!IsMovementLayerActive) return;
+        if (IsActionLayerActive) return;
         Debug.Log("Move SFX " + AudioManager.Instance.fmodCheckMove());
         AudioManager.Instance.fmodPlayWalk();
     }
