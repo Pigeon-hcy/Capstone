@@ -109,7 +109,8 @@ namespace SkateGame
             this.RegisterEvent<MoveInputEvent>(OnMoveInput);
             this.RegisterEvent<JumpExecuteEvent>(OnJumpInput);
             this.RegisterEvent<WallJumpExecuteEvent>(OnWallJumpInput);
-            this.RegisterEvent<PushInputEvent>(OnPushInput);
+            this.RegisterEvent<PushKickEvent>(OnPushInput);
+            this.RegisterEvent<MountEvent>(OnMount);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
             this.RegisterEvent<ReverseInputEvent>(OnReverseInput);
@@ -170,13 +171,19 @@ namespace SkateGame
             ApplyStateChanged(evt);
             UpdateAnimatorOnStateChanged(evt);
         }
-        private void OnPushInput(PushInputEvent evt)
+        private void OnPushInput(PushKickEvent evt)
         {
-            if (evt.IsPushing)
-            {
-                IsPushingRight = evt.IsPushingRight;
-                pending.pushQueued = true;
-            }
+            if (!evt.IsPushing) return;
+            IsPushingRight = evt.IsPushingRight;
+            pending.pushQueued = true;
+        }
+
+        private void OnMount(MountEvent evt)
+        {
+            IsPushingRight = evt.IsMountingRight;
+            float pushDir = IsPushingRight ? 1f : -1f;
+            pushSpeed = pushDir * playerModel.Config.Value.pushMountSpeed;
+            vPush = pushSpeed * groundRight;
         }
         private void OnPowerGrindInput(PowerGrindInputEvent evt)
         {
@@ -337,44 +344,15 @@ namespace SkateGame
             if (!wasGrounded || crashPhysics)
                 vPhysics = Vector2.Dot(vPhysics, groundRight) * groundRight;
         }
-        private void ApplyPushBurst()
-        {
-            float pushDir = IsPushingRight ? 1f : -1f;
-            if (Mathf.Abs(pushSpeed) < playerModel.Config.Value.pushBurstSpeed)
-            {
-                float burstSpeed = playerModel.Config.Value.pushBurstSpeed;
-                if (playerModel.PushSpeedBeforeReverse.Value > 0f)
-                {
-                    burstSpeed = Mathf.Max(burstSpeed, Mathf.Min(playerModel.PushSpeedBeforeReverse.Value, playerModel.Config.Value.maxPushSpeed));
-                    playerModel.PushSpeedBeforeReverse.Value = 0f;
-                }
-                pushSpeed = burstSpeed * pushDir;
-                vPush = pushSpeed * groundRight;
-            }
-        }
 
         private void ApplyPushKick()
         {
             float pushDir = IsPushingRight ? 1f : -1f;
-            float newSpeed;
-            if (Mathf.Abs(pushSpeed) < (playerModel.Config.Value.pushBurstSpeed-playerModel.Config.Value.pushKickSpeedIncrement))
-            {
-                newSpeed = playerModel.Config.Value.pushBurstSpeed;
-            }
-            else newSpeed = Mathf.Abs(pushSpeed) + playerModel.Config.Value.pushKickSpeedIncrement;
+            float newSpeed = Mathf.Abs(pushSpeed) + playerModel.Config.Value.pushKickSpeedIncrement;
             pushSpeed = pushDir * Mathf.Min(newSpeed, playerModel.Config.Value.maxPushSpeed);
             vPush = pushSpeed * groundRight;
         }
 
-        private void ApplyPushSpeed()
-        {
-            float pushSpeedDelta = playerModel.Config.Value.maxPushSpeed - playerModel.Config.Value.pushBurstSpeed;
-            float pushAccel = pushSpeedDelta / Mathf.Max(playerModel.Config.Value.pushTimeToMaxSpeed, 0.01f);
-            float pushDir = IsPushingRight ? 1f : -1f;
-            pushSpeed += pushDir * pushAccel * Time.fixedDeltaTime;
-            pushSpeed = Mathf.Clamp(pushSpeed, -playerModel.Config.Value.maxPushSpeed, playerModel.Config.Value.maxPushSpeed);
-            vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
-        }
         private void ApplyPowerGrind()
         {
             float decel = playerModel.Config.Value.powerGrindDecelerationRate * Time.fixedDeltaTime;

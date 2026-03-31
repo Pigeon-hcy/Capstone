@@ -17,17 +17,16 @@ MonoBehaviour:
   isLoopPush: 1
   ignoringMovementLayerPush: 0
   maxPushSpeed: 24
-  pushBurstSpeed: 14
   pushTimeToMaxSpeed: 1
   pushReverseCooldown: 0.5
   firstPushKickInterval: 0.1
   pushKickInterval: 0.7
-  pushKickSpeedIncrement: 8
+  pushKickSpeedIncrement: 6
+  pushMountSpeed: 5
   applyPushKickThreshold: 20
   pushKickDelay: 0.2
   isLoopPowerGrind: 1
   ignoringMovementLayerPowerGrind: 0
-  powerGrindDuration: 0.8
   powerGrindStopSpeedThreshold: 0.5
   powerGrindDistanceMultiplier: 1
   powerGrindDecelerationRate: 20
