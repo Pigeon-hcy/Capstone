@@ -2,25 +2,15 @@ using UnityEngine;
 
 public class walkSound : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private Animator animator;
+    void Awake() => animator = GetComponent<Animator>();
+    private bool IsMovementLayerActive => animator.GetLayerWeight(0) > 0.5f;
 
     public void _playWalk()
     {
+        if (!IsMovementLayerActive) return;
         Debug.Log("Move SFX " + AudioManager.Instance.fmodCheckMove());
-        if (AudioManager.Instance.fmodCheckMove())
-        {
-            AudioManager.Instance.fmodPlayWalk();
-        }
+        AudioManager.Instance.fmodPlayWalk();
     }
     public void _walkTrue()
     {
