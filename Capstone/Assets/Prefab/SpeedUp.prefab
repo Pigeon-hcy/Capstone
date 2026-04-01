@@ -224,5 +224,5 @@ MonoBehaviour:
   LM2: 0
   LM3: 0
   LM7: 1
-  newValue: 0.5
+  newValue: 1
   speaker: {fileID: 0}

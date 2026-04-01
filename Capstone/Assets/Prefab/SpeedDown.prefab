@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1365444542333871047}
   - component: {fileID: 7381858657429525245}
   - component: {fileID: 1767565792868482869}
+  - component: {fileID: 7714588378690336994}
+  - component: {fileID: 9011394085379931762}
   m_Layer: 0
   m_Name: SpeedDown
   m_TagString: Untagged
@@ -178,3 +180,49 @@ MonoBehaviour:
   volumeFast: {fileID: 0}
   weight: 0
   transitionWeightDuration: 0.5
+--- !u!114 &7714588378690336994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221943749008313590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25e341aa9fa5fe43ad4450935c31d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnLoad: 0
+  playOnEnter: 1
+  playOnLeave: 0
+  setNewValue: 1
+  pause: 0
+  LM1: 0
+  LM2: 0
+  LM3: 0
+  LM7: 0
+  newValue: 0.5
+  speaker: {fileID: 0}
+--- !u!114 &9011394085379931762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221943749008313590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25e341aa9fa5fe43ad4450935c31d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnLoad: 0
+  playOnEnter: 0
+  playOnLeave: 1
+  setNewValue: 1
+  pause: 0
+  LM1: 0
+  LM2: 0
+  LM3: 0
+  LM7: 0
+  newValue: 1
+  speaker: {fileID: 0}

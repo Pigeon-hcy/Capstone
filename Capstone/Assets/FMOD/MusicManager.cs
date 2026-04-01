@@ -63,8 +63,8 @@ public class MusicManager : MonoBehaviour
         levelMusic7EventDescription.getParameterDescriptionByName("MusicSpeedup", out levelMusic7EventParameterDescription);
         levelMusic7Parameter = levelMusic7EventParameterDescription.id;
 
-        currentValue7 = 0.5f;
-        targetValue7 = 0.5f;
+        currentValue7 = 1f;
+        targetValue7 = 1f;
 
         //BMX1
         bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
