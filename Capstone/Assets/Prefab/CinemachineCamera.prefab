@@ -132,7 +132,7 @@ MonoBehaviour:
     AmplitudeGain: 1
     FrequencyGain: 1
     Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: -995.36487, y: -61.447266, z: -921.6719}
 --- !u!114 &4366772355494497533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,14 +167,14 @@ MonoBehaviour:
   cameraDistanceChangeSpeed: 5
   speedThreshold: 5
   slowSpeedDuration: 3
-  specialCameraPositionYWhenWallRide: 10
+  specialCameraPositionYWhenWallRide: 1.5
   specialCameraPositionZWhenWallRide: 0
-  EnterTimeWhenWallRide: 0.5
-  ExitTimeWhenWallRide: 0.5
-  specialCameraPositionYWhenGrind: -5
+  EnterTimeWhenWallRide: 0.25
+  ExitTimeWhenWallRide: 0.25
+  specialCameraPositionYWhenGrind: 1.5
   specialCameraPositionZWhenGrind: 0
-  EnterTimeWhenGrind: 0.5
-  ExitTimeWhenGrind: 0.5
+  EnterTimeWhenGrind: 0.25
+  ExitTimeWhenGrind: 0.25
   specialCameraPositionYWhenSlideDownFromWallRight: 0
   specialCameraPositionZWhenSlideDownFromWallRight: 0
   specialCameraPositionYWhenSlideDownFromWallLeft: 0
