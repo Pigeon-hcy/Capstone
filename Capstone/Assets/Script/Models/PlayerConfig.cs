@@ -13,13 +13,13 @@ namespace SkateGame
         public bool isLoopPush = true;
         public bool ignoringMovementLayerPush = false;
         public float maxPushSpeed = 10f;
-        public float pushBurstSpeed = 20f;
         public float pushTimeToMaxSpeed = 2f;
         public float pushReverseCooldown = 0.5f;
         [Tooltip("If push hasn't fired when entering push state, check push quicker")]
         public float firstPushKickInterval = 0.4f;
         public float pushKickInterval = 0.8f;
         public float pushKickSpeedIncrement = 2f;
+        public float pushMountSpeed = 5f;
         public float applyPushKickThreshold = 20f;
         [Tooltip("Wait for animation time before applying push speed increment")]
         public float pushKickDelay = 0.1f;

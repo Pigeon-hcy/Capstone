@@ -49712,6 +49712,7 @@ GameObject:
   - component: {fileID: 7870006335986493665}
   - component: {fileID: 2293249360747555423}
   - component: {fileID: 5511330455926906929}
+  - component: {fileID: 4063452491935026335}
   - component: {fileID: 3838880875018964170}
   m_Layer: 0
   m_Name: AnimationManager
@@ -49812,6 +49813,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4063452491935026335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105975380721945084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6505d28434c2c74da0aaa67b952a745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3838880875018964170
 MonoBehaviour:
   m_ObjectHideFlags: 0

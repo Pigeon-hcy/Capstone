@@ -31,6 +31,7 @@ public class AudioManager : MonoBehaviour
     //Moving
     public EventReference testEvent;
     private EventInstance testEventInstance;
+    public bool moving;
 
     //MX1
     public EventReference levelMusic1Event;
@@ -106,23 +107,45 @@ public class AudioManager : MonoBehaviour
     //Walk
     public EventReference _walkEvent;
     private EventInstance _walkEventInstance;
+
+    //UI Click
+    public EventReference _clickEvent;
+    private EventInstance _clickEventInstance;
+
+    //UI Open
+    public EventReference _openEvent;
+    private EventInstance _openEventInstance;
+
+    //UI Close
+    public EventReference _closeEvent;
+    private EventInstance _closeEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-
-        Instance = this;
-        if (GameObject.FindGameObjectsWithTag("AudioManager").Length <= 1)
+        if (Instance == null)
         {
-            Debug.Log("Instance set");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(this.gameObject);
-            Debug.Log("Duplicate destroyed");
+            Destroy(gameObject);
+            return;
         }
+        //DontDestroyOnLoad(this.gameObject);
+
+        //Instance = this;
+        //if (GameObject.FindGameObjectsWithTag("AudioManager").Length <= 1)
+        //{
+        //    Debug.Log("Instance set");
+        //}
+        //else
+        //{
+        //    Destroy(this.gameObject);
+        //    Debug.Log("Duplicate destroyed");
+        //}
         currentSpeed = 0f;
         targetSpeed = 0f;
 
@@ -202,6 +225,15 @@ public class AudioManager : MonoBehaviour
 
         //Walk
         _walkEventInstance = RuntimeManager.CreateInstance(_walkEvent);
+
+        //UI Click
+        _clickEventInstance = RuntimeManager.CreateInstance(_clickEvent);
+
+        //UI Open
+        _openEventInstance = RuntimeManager.CreateInstance(_openEvent);
+
+        //UI Close
+        _closeEventInstance = RuntimeManager.CreateInstance(_closeEvent);
         #endregion
     }
 
@@ -551,6 +583,49 @@ public class AudioManager : MonoBehaviour
         if (_walkEventInstance.isValid())
         {
             _walkEventInstance.start();
+        }
+    }
+    public bool fmodCheckMove()
+    {
+        if (moving)
+        {
+            return true;
+        }
+        return false;
+    }
+    public void fmodMoveTrue()
+    {
+        moving = true;
+    }
+    public void fmodMoveFalse()
+    {
+        moving = false;
+    }
+
+    //UI Click
+    public void fmodPlayClick()
+    {
+        if (_clickEventInstance.isValid())
+        {
+            _clickEventInstance.start();
+        }
+    }
+
+    //UI Open
+    public void fmodPlayOpen()
+    {
+        if (_openEventInstance.isValid())
+        {
+            _openEventInstance.start();
+        }
+    }
+
+    //UI Close
+    public void fmodPlayClose()
+    {
+        if (_closeEventInstance.isValid())
+        {
+            _closeEventInstance.start();
         }
     }
     #endregion

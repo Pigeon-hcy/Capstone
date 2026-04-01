@@ -65,7 +65,7 @@ public class TMPTextRevealBounce : MonoBehaviour, ICanRegisterEvent, IBelongToAr
         string hookKey = LastDeviceType == InputDeviceType.Gamepad ? "Y" : "J";
         processed = processed.Replace("{Hook}", hookKey);
 
-        string slamKey = LastDeviceType == InputDeviceType.Gamepad ? "B" : "S";
+        string slamKey = LastDeviceType == InputDeviceType.Gamepad ? "L2" : "S";
         processed = processed.Replace("{Slam}", slamKey);
 
         

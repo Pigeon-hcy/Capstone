@@ -107,11 +107,17 @@ namespace SkateGame
     }
 
     // Push输入事件
-    public struct PushInputEvent
+    public struct PushKickEvent
     {
         public bool IsPushing;
         public bool IsPushingRight;
         public bool IsReversing;
+    }
+
+    // 上板事件（从静止进入PushState时立刻给初速）
+    public struct MountEvent
+    {
+        public bool IsMountingRight;
     }
     
     // Trick列表变化事件

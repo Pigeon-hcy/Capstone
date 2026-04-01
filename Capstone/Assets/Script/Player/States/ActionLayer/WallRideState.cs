@@ -52,7 +52,7 @@ public class WallRideState : ActionStateBase
             playerModel.CurrentGravityScale.Value = onWallGravity;  // 重置重力
         }
         playerModel.CurrentGravityScale.Value = Mathf.Lerp(onWallGravity, normalG, stateTimer / playerModel.Config.Value.BgWallrideDuration);
-        if (playerModel.CurrentBgWall.Value == null || !inputModel.Grind.Value)
+        if (playerModel.CurrentBgWall.Value == null || !inputModel.Grind.Value || inputModel.JumpStart.Value)
         {
             playerModel.CurrentGravityScale.Value = normalG;
             stateTimer = 0f;
