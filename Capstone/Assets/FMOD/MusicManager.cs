@@ -104,8 +104,17 @@ public class MusicManager : MonoBehaviour
     }
 
     //LevelMusic1
+    public void fmodPauseAll()
+    {
+        fmodPauseBM1();
+        fmodPauseLM1();
+        fmodPauseLM2();
+        fmodPauseLM3();
+        fmodPauseLM7();
+    }
     public void fmodPlayLM1()
     {
+        fmodPauseAll();
         if (levelMusic1EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -132,6 +141,7 @@ public class MusicManager : MonoBehaviour
      //LevelMusic2
     public void fmodPlayLM2()
     {
+        fmodPauseAll();
         if (levelMusic2EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -158,6 +168,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic3
     public void fmodPlayLM3()
     {
+        fmodPauseAll();
         if (levelMusic3EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -184,6 +195,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic3
     public void fmodPlayLM7()
     {
+        fmodPauseAll();
         if (levelMusic7EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -214,6 +226,7 @@ public class MusicManager : MonoBehaviour
     //BossMusic1
     public void fmodPlayBM1()
     {
+        fmodPauseAll();
         if (bossMusic1EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
