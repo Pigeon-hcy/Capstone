@@ -95,6 +95,7 @@ namespace SkateGame
         private float moveSpeed;// movespeed != 0 means walking
         private float walkCooldownTimer;
         private bool isInUpdraft;
+        private bool isSlamming;
         private Vector2 updraftDirection;
         private float updraftForce;
         protected override void OnInit()
@@ -303,7 +304,6 @@ namespace SkateGame
                 // 5: physics forces
                 if (pending.TrickARewardQueued) ApplyTrickAReward();
                 if (pending.GrappleImpulseQueued) ApplyGrappleImpulse(GrappleDirection);
-                if (pending.Slamming) ApplyTrickC();
                 if (pending.TrickCLandQueued) ApplyTrickCLand();
                 // FOR JERRY'S AUDIO - HOOK SWING
                 if (pending.Grapplling) ApplyGrappleForce(GrappleDirection);
@@ -315,7 +315,22 @@ namespace SkateGame
                 if (pending.Dashing) ApplyTrickB(TrickBDirection);
                 if (pending.TrickBResetSpeedQueued) ApplyTrickBResetSpeed(TrickBDirection != 0f ? TrickBDirection : lastTrickBDirection);
                 if (pending.PortalTeleportQueued) ApplyPortalTeleport();
-                
+                // Slam: override velocity downward; on release, reset vPhysics.y so updraft can recover
+                if (pending.Slamming)
+                {
+                    vOveride = new Vector2(vPush.x + vMove.x, -playerModel.Config.Value.TrickCspeed);
+                    isSlamming = true;
+                }
+                else if (isSlamming)
+                {
+                    vOveride = Vector2.zero;
+                    if (vPhysics.y <= 0f)
+                    {
+                        vPhysics.y = playerModel.Config.Value.maxFallSpeed;
+                    }
+                    isSlamming = false;
+                }
+
                 // 7: Check walk
                 if (walkCooldownTimer > 0f) walkCooldownTimer -= Time.fixedDeltaTime;
                 CheckWalk(cachedMoveInput);
@@ -526,10 +541,6 @@ namespace SkateGame
             float maxFall = playerModel.Config.Value.TrickBMaxFallSpeed;
             if (vPhysics.y < maxFall) vPhysics.y = maxFall;
         }
-        private void ApplyTrickC()
-        {
-            vPhysics = new Vector2(vPhysics.x, -playerModel.Config.Value.TrickCspeed);
-        }
         private void ApplyTrickCLand()
         {
             float slamIntoSlope = Vector2.Dot(Vector2.down * playerModel.Config.Value.TrickCBoostspeed, groundRight);
@@ -560,6 +571,7 @@ namespace SkateGame
         private void ApplyUpdraft()
         {
             vPhysics += updraftDirection * (updraftForce * Time.fixedDeltaTime);
+            vPhysics = new Vector2(vPhysics.x, Mathf.Min(vPhysics.y, playerModel.Config.Value.maxUpwardSpeed-vPush.y-vMove.y));
         }
         #endregion
 

@@ -156,6 +156,7 @@ namespace SkateGame
         [Header("重力相关")]
         public float normalG = 1f;
         public float gravityMagnitude = 9.81f;
+        public float maxUpwardSpeed = 24;
 
 
         [Header("瞄准设置")]
