@@ -102,17 +102,20 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
     {
         mainButtons.SetActive(true);
         pauseText.SetActive(true);
+        _playPauseMenuClick();
         StartCoroutine(SpringCoroutine());
     }
 
     public void Options()
     {
         options.SetActive(true);
+        _playPauseMenuClick();
         StartCoroutine(OptionsBumpRoutine());
     }
 
     public void Restart()
     {
+        _playPauseMenuClick();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         this.SendEvent(new SceneChangeEvent());
     }
@@ -134,6 +137,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
         for (int i = 0; i < mainButtons.transform.childCount; i++)
         {
             mainButtons.transform.GetChild(i).GetComponent<MMSpringRectTransformPosition>().Bump(bumpAmount);
+            // SFX for button popup
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
@@ -201,5 +205,9 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
     public void _playPauseMenuClose()
     {
         AudioManager.Instance.fmodPlayClose();
+    }
+    public void _playPauseMenuClick()
+    {
+        AudioManager.Instance.fmodPlayClick();
     }
 }
