@@ -19,6 +19,7 @@ namespace SkateGame
             bulletSpeed =  (config as ThrowEnemyConfig).bSpeed;
             bulletLifeTime = (config  as ThrowEnemyConfig).bLifeTime;
             bulletDirection = (config as ThrowEnemyConfig).bDirection;
+            //Debug.LogError(bulletDirection);
         }
         
        public BulletFactory bulletFactory;
@@ -34,6 +35,7 @@ namespace SkateGame
 
            // 2️⃣ 根据左右计算方向
            Vector3 dir = bulletDirection.normalized;
+           //Debug.LogError(dir.x +" , "+ dir.y);
            if (!playerOnRight)
            {
                dir.x = -dir.x;
