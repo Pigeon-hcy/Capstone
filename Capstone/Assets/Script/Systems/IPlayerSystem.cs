@@ -518,6 +518,13 @@ namespace SkateGame
         private void ApplyTrickBResetSpeed(float direction)
         {
             vOveride = Vector2.zero;
+            if (Mathf.Abs(pushSpeed) < playerModel.Config.Value.TrickBMinExitSpeed)
+            {
+                pushSpeed = playerModel.Config.Value.TrickBMinExitSpeed * direction;
+                vPush = pushSpeed * groundRight;
+            }
+            float maxFall = playerModel.Config.Value.TrickBMaxFallSpeed;
+            if (vPhysics.y < maxFall) vPhysics.y = maxFall;
         }
         private void ApplyTrickC()
         {

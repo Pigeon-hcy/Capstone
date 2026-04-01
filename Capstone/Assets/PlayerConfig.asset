@@ -48,9 +48,9 @@ MonoBehaviour:
   BgWallRideCooldown: 0.5
   BgWallrideDuration: 1.5
   isLoopTrickA: 0
-  durationTrickA: 0.2
+  durationTrickA: 0.3
   ignoringMovementLayerTrickA: 1
-  recoveryDurationTrickA: 0.5
+  recoveryDurationTrickA: 0
   TrickARewardForceVertical: 16
   TrickARewardForceHorizontal: 10
   isLoopTrickB: 0
@@ -59,6 +59,8 @@ MonoBehaviour:
   recoveryDurationTrickB: 0
   TrickBinertia: 0.3
   TrickBspeed: 40
+  TrickBMinExitSpeed: 5
+  TrickBMaxFallSpeed: -12
   isLoopTrickBBoost: 0
   durationTrickBBoost: 0.3
   ignoringMovementLayerTrickBBoost: 0
