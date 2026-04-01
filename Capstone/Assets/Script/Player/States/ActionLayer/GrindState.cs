@@ -81,6 +81,17 @@ public class GrindState : ActionStateBase
             return;
         }
 
+        // Proactive end-of-track detection: trigger exit collider may not align with curve endpoint
+        if (stateTimer > 0.1f)
+        {
+            float exitDist = playerModel.Config.Value.grindSpeed * Time.fixedDeltaTime * 3f;
+            if ((player.transform.position - trackRef.GetExitPoint(leftToRight)).sqrMagnitude < exitDist * exitDist)
+            {
+                GrindJump();
+                return;
+            }
+        }
+
         // 再次检查currentTrack，确保安全
         if (playerModel.CurrentTrack.Value != null)
         {

@@ -25,6 +25,7 @@ namespace SkateGame
         PowerGrindState = 6,
         HitState = 7,
         CruiseState = 8,
+        RecoveryState = 9,
     }
 }
 

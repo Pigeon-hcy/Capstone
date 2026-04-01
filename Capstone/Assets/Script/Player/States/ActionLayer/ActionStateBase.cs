@@ -27,7 +27,7 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
         /* 
         设置动画层权重 
         */
-        if(!(this is NoActionState))
+        if(!(this is NoActionState || this is RecoveryState))
         {
             player.animator.SetLayerWeight(0, 0);
             player.animator.SetLayerWeight(1, 1);

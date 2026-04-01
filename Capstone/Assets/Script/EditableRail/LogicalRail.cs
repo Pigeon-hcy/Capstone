@@ -259,6 +259,14 @@ public class TrackDirComputeTool
         return (bestPoint, bestTan);
     }
 
+    /// <summary>Returns the world position of the node the player exits toward based on travel direction.</summary>
+    public Vector3 GetExitPoint(int dirSign)
+    {
+        if (rail == null || rail.nodes == null || rail.nodes.Count < 2) return Vector3.zero;
+        int idx = (dirSign * CalTool(zAngle)) >= 0 ? rail.nodes.Count - 1 : 0;
+        return rail.nodes[idx].transform.position;
+    }
+
      float CalTool(float angleInDeg)
         {
             angleInDeg = angleInDeg % 360;
