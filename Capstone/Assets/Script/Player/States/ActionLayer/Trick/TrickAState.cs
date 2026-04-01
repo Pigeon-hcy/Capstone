@@ -5,7 +5,7 @@ using QFramework;
 
 public class TrickAState : TrickState
 {
-    
+    bool AttackTriggered;
     public TrickAState(PlayerController player, Rigidbody2D rb) : base(player, rb)
     {
         isLoop = playerModel.Config.Value.isLoopTrickA;
@@ -17,19 +17,21 @@ public class TrickAState : TrickState
 
     protected override void EnterTrickState()
     {
+        AttackTriggered = false;
         player.SendEvent<TrickAInputEvent>();
         player.TrickAEffect.PlayFeedbacks();
         
     }
     protected override void UpdateActionState()
     {
-        if(DetectInteractiveObjects(out Collider2D[] colliders)){
+        if(DetectInteractiveObjects(out Collider2D[] colliders) && !AttackTriggered){
             //尝试对第一个进行交互
             IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
             interact?.DoInteraction();
             player.TrickABoostEffect.PlayFeedbacks();
             player.SendEvent<TrickARewardEvent>();
-            player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
+            AttackTriggered = true;
+            // player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
     }
 }   
