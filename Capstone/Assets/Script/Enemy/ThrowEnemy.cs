@@ -30,6 +30,7 @@ namespace SkateGame
            if (bulletFactory == null || pTrans == null)
                return;
 
+           animator.SetTrigger("Attack");
            // 1️⃣ 判断左右
            bool playerOnRight = pTrans.position.x >= transform.position.x;
 

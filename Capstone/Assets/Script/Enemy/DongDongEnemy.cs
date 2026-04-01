@@ -55,6 +55,7 @@ namespace SkateGame
 
         protected override void AtkTowardsPlayer(Transform pTrans)
         {
+            animator.SetTrigger("Attack");
             _attacking = true;
             _getPlayer = false;
             detector.Close();
