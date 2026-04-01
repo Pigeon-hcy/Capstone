@@ -55500,7 +55500,7 @@ MonoBehaviour:
   bottomLeft: {fileID: 5770009860846134919}
   bottomRight: {fileID: 8471675605899274312}
   bodyCollider: {fileID: 8047088689554580087}
-  slamHitbox: {fileID: 0}
+  trickDetectHitbox: {fileID: 7636381761587207038}
   vineGun: {fileID: 6980180234252946943}
   rb: {fileID: 0}
   animator: {fileID: 5511330455926906929}
@@ -70383,6 +70383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 661356452922729016}
+  - component: {fileID: 7636381761587207038}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: PlayerHitBox
@@ -70405,6 +70406,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2273798486754886740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &7636381761587207038
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3507689137211907151}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2.8, y: 2.8}
+  m_Direction: 0
 --- !u!1 &3859582513938473550
 GameObject:
   m_ObjectHideFlags: 0

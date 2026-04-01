@@ -53,20 +53,21 @@ public class TrickState : ActionStateBase, ICanGetSystem, IBelongToArchitecture
             }
     }
     protected bool DetectInteractiveObjects(out Collider2D[] detectColliders)
+    {
+        detectColliders = null;
+        if (player == null || player.trickDetectHitbox == null) return false;
+
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("InteractiveLayer"));
+        filter.useTriggers = true;
+
+        var results = new System.Collections.Generic.List<Collider2D>();
+        if (Physics2D.OverlapCollider(player.trickDetectHitbox, filter, results) > 0)
         {
-            detectColliders = null;   
-            if (player == null) return false;
-            Vector2 playerPosition = player.transform.position;
-            float detectionRadius = 2f; // 检测半径
-            
-            // 方法1: 使用 Physics2D.OverlapCircle 检测圆形区域
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(playerPosition, detectionRadius, LayerMask.GetMask("InteractiveLayer"));
-            if(colliders.Length > 0)
-            {
-                this.GetModel<IPlayerModel>().IsInPower.Value = true;
-                detectColliders  =colliders;
-                return true;
-            }
-            return false;
+            this.GetModel<IPlayerModel>().IsInPower.Value = true;
+            detectColliders = results.ToArray();
+            return true;
         }
+        return false;
+    }
 } 

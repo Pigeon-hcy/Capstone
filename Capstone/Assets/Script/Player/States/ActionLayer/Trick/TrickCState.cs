@@ -26,7 +26,6 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
         }
         if(playerModel.IsGrounded.Value)
         {
-            player.OpenSlamHitbox(playerModel.Config.Value.slamHitboxDurationTrickC);
             player.SendEvent<TrickCLandEvent>();
             player.stateMachine.SwitchState<RecoveryState>(StateLayer.Action);
         }

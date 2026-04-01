@@ -46,8 +46,8 @@ namespace SkateGame
         public Transform bottomRight;
         public Collider2D bodyCollider;
         [Header("Hitbox")]
-        public Collider2D slamHitbox;
-        Coroutine _slamHitboxRoutine;
+        public Collider2D trickDetectHitbox;
+        
         Coroutine _clearTricksRoutine;
 
         [Header("Grappling Vine Gun")]
@@ -277,30 +277,7 @@ namespace SkateGame
                 StopCoroutine(_clearTricksRoutine);
                 _clearTricksRoutine = null;
             }
-
-            if (_slamHitboxRoutine != null)
-            {
-                StopCoroutine(_slamHitboxRoutine);
-                _slamHitboxRoutine = null;
-            }
         }
-        
-        #region Hitbox
-        public void OpenSlamHitbox(float duration)
-        {
-            if (slamHitbox == null) return;
-            if (_slamHitboxRoutine != null) StopCoroutine(_slamHitboxRoutine);
-            slamHitbox.enabled = true;
-            _slamHitboxRoutine = StartCoroutine(SlamHitboxRoutine(duration));
-        }
-
-        IEnumerator SlamHitboxRoutine(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            if (slamHitbox != null) slamHitbox.enabled = false;
-            _slamHitboxRoutine = null;
-        }
-        #endregion
 
 
         /// <summary>
