@@ -88,6 +88,7 @@ namespace SkateGame
             }
 
             playDeath();
+            stopTimeStopEffect();
             if (playerController == null)
                 UpdatePlayerController();
             if (playerController == null)
@@ -195,6 +196,17 @@ namespace SkateGame
         public void playDeath()
         {
             AudioManager.Instance.fmodPlayDeath();
+        }
+
+        public void stopTimeStopEffect()
+        {
+            var TeachTimeStopBoxs = Object.FindObjectsByType<TeachTimeStop>(FindObjectsSortMode.None);
+            if (TeachTimeStopBoxs == null) return;
+            foreach (var box in TeachTimeStopBoxs)
+            {
+                box.timeStopEffect.StopFeedbacks();
+                box.CompleteEffectBack.PlayFeedbacks();
+            }
         }
     }
 

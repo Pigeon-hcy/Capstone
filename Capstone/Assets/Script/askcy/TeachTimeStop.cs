@@ -39,7 +39,7 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
             timeStopEffect.Events.OnStop.RemoveListener(OnTimeStopEffectStop);
     }
 
-    private void OnTimeStopEffectStop()
+    public void OnTimeStopEffectStop()
     {
         isTimeStopped = false;
         ExitTutorial();
