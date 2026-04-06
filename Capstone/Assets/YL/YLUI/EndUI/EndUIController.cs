@@ -1,31 +1,32 @@
-using System.Collections;
 using SkateGame;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EndUIController : MonoBehaviour
 {
-    [SerializeField] RectTransform shutterTrans;
-    [SerializeField] Animator shutterAnim;
-    [SerializeField] EndUICollider endUICollider;
     [SerializeField] GameObject navigator;
-    
-    private void Start()
+    [SerializeField] EndUICamShutter camShutter;
+
+    Collider2D playerCollider;
+
+    public void EndSequence_A(Collider2D other)
     {
-        endUICollider.OnTriggerEntered += OnTargetHit;
+        camShutter.gameObject.SetActive(true);
+        StartCoroutine(camShutter.StartEndAnimation());
+        playerCollider = other;
+
+        PlayerController playerController = other.GetComponent<PlayerController>();
+        playerController.enabled = false;
+
+        StartCoroutine(SlowPlayer());
     }
 
-    private void OnTargetHit(Collider2D other)
+    public void EndSequence_B() //called by animation event
     {
-        StartCoroutine(StartEndAnimation());
-    }
+        Collider2D other = playerCollider;
 
-    public void EndSequence_A()
-    {
-        StartCoroutine(StartEndAnimation());
-    }
-
-    public void EndSequence_B(Collider2D other)
-    {
         Rigidbody2D rb = other.attachedRigidbody;
         if (rb == null) rb = other.GetComponent<Rigidbody2D>();
         if (rb != null)
@@ -33,54 +34,33 @@ public class EndUIController : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
-        
-        PlayerController playerController = other.GetComponent<PlayerController>();
-        if (playerController != null)
-        {
-            playerController.disableInput = true;
-            playerController.rb.linearVelocity = Vector2.zero;
-        }
     }
 
     public void EndSequence_C()
     {
         navigator.SetActive(true);
         GameStateController.Instance.EnterUIPause();
+        EventSystem.current?.SetSelectedGameObject(navigator);
     }
 
-    IEnumerator StartEndAnimation()
+    IEnumerator SlowPlayer()
     {
-        shutterTrans.gameObject.SetActive(true);
-        shutterAnim.Play("anim_EndUI", 0, 0);
-        shutterTrans.localScale = Vector3.one * 1.2f;
-        //shutterTrans.localRotation = Quaternion.Euler(0, 0, 15f);
-        
-        float lerpSpeed = 1f;
+        Rigidbody2D rb = playerCollider.attachedRigidbody;
 
-        while (shutterTrans.localScale.x > 1.001f)
+        float elapsed = 0f;
+
+        while (elapsed < 0.5f)
         {
-            shutterTrans.localScale = Vector3.Lerp(
-                shutterTrans.localScale, 
-                Vector3.one, 
-                Time.deltaTime * lerpSpeed
-            );
+            rb.linearVelocity *= 0.99f;
 
-            /*
-            shutterTrans.localRotation = Quaternion.Lerp(
-                shutterTrans.localRotation, 
-                Quaternion.identity, 
-                Time.deltaTime * lerpSpeed
-            );
-            */
-
-            yield return null;
+            elapsed += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
-        
-        shutterTrans.localScale = Vector3.one;
-        shutterTrans.localRotation = Quaternion.identity;
 
-        shutterTrans.localScale = Vector3.one;
-    }
-
+        if (rb.linearVelocity.magnitude < 0.1f)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    } 
 
 }

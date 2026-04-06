@@ -86,11 +86,14 @@ namespace SkateGame
                     }
                     Debug.Log($"LevelSelectArea: 已保存 | 当前场景={sceneName} | PassedLevelIndex={passed} | 已通关关卡: {string.Join(", ", passedLevels)}");
                 }
-              
+
 
                 // 显示 UI
                 //ShowCanvas();
-                endUIController.EndSequence_A();
+
+                endUIController.transform.parent.gameObject.SetActive(true);
+                endUIController.gameObject.SetActive(true);
+                endUIController.EndSequence_A(other);
 
                 /*
                 // ----------------------------
