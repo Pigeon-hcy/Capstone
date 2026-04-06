@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using QFramework;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using MoreMountains.Feedbacks;
 
 namespace SkateGame
 {
@@ -89,11 +90,11 @@ namespace SkateGame
 
 
                 // 显示 UI
-                //ShowCanvas();
+                ShowCanvas();
 
-                endUIController.transform.parent.gameObject.SetActive(true);
-                endUIController.gameObject.SetActive(true);
-                endUIController.EndSequence_A(other);
+                // endUIController.transform.parent.gameObject.SetActive(true);
+                // endUIController.gameObject.SetActive(true);
+                // endUIController.EndSequence_A(other);
 
                 /*
                 // ----------------------------
@@ -148,8 +149,12 @@ namespace SkateGame
             if (levelSelectCanvas != null)
             {
                 levelSelectCanvas.gameObject.SetActive(true);
-                // 找到Canvas下第一个可被选中的Selectable 
-                // TODO: 指定Selectable
+                Transform mmfEndFeedback = levelSelectCanvas.transform.Find("MMF_EndFeedback");
+                if (mmfEndFeedback != null)
+                {
+                    mmfEndFeedback.GetComponent<MMF_Player>().PlayFeedbacks();
+                  
+                }
                 GameObject firstSelectable = levelSelectCanvas.GetComponentsInChildren<UnityEngine.UI.Selectable>()[0].gameObject;
                 EventSystem.current?.SetSelectedGameObject(firstSelectable);
                 Debug.Log("LevelCanvas 显示");
