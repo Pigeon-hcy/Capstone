@@ -51,7 +51,7 @@ public class EndUIController : MonoBehaviour
 
         while (elapsed < 0.5f)
         {
-            rb.linearVelocity *= 0.99f;
+            rb.linearVelocity *= 0.9f;
 
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
