@@ -15,6 +15,8 @@ namespace SkateGame
         private ILevelProgressModel levelProgressModel;
         private ILevelModel levelModel;
         
+        EndUIController endUIController;
+        
         protected override void OnEnable()
         {
             Debug.Log("LevelSelectArea: OnEnable");
@@ -46,6 +48,7 @@ namespace SkateGame
                 if (levelSelectCanvas != null)
                 {
                     levelSelectCanvas.gameObject.SetActive(false);
+                    endUIController = levelSelectCanvas.GetComponentInChildren<EndUIController>();
                     Debug.Log("LevelSelectArea: LevelCanvas 初始化成功");
                 }
             }
@@ -83,11 +86,16 @@ namespace SkateGame
                     }
                     Debug.Log($"LevelSelectArea: 已保存 | 当前场景={sceneName} | PassedLevelIndex={passed} | 已通关关卡: {string.Join(", ", passedLevels)}");
                 }
-              
+
 
                 // 显示 UI
-                ShowCanvas();
+                //ShowCanvas();
 
+                endUIController.transform.parent.gameObject.SetActive(true);
+                endUIController.gameObject.SetActive(true);
+                endUIController.EndSequence_A(other);
+
+                /*
                 // ----------------------------
                 // ① 清零玩家速度，避免滑过去
                 // ----------------------------
@@ -109,6 +117,7 @@ namespace SkateGame
                     playerController.rb.linearVelocity = Vector2.zero;
                 }
                 GameStateController.Instance.EnterUIPause();
+                */
             }
         }
 
