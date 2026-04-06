@@ -167,7 +167,7 @@ MonoBehaviour:
   cameraDistanceChangeSpeed: 5
   speedThreshold: 5
   slowSpeedDuration: 3
-  specialCameraPositionYWhenWallRide: 1.5
+  specialCameraPositionYWhenWallRide: 8
   specialCameraPositionZWhenWallRide: 0
   EnterTimeWhenWallRide: 0.25
   ExitTimeWhenWallRide: 0.25
