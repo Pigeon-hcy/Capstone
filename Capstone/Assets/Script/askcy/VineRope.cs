@@ -92,12 +92,18 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
             return;
         }
 
+        playGrappleShoot();
         currentState = RopeState.Extending;
         extendDirection = direction.normalized;
         currentDistance = 0f;
         m_lineRenderer.positionCount = 2;
         m_lineRenderer.enabled = true;
         enabled = true;
+    }
+
+    public void playGrappleShoot()
+    {
+        AudioManager.Instance.fmodPlayGrappleShoot();
     }
 
     /// <summary>
@@ -169,6 +175,12 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
             IsGrappling = false 
         });
         currentState = RopeState.Retraction;
+        playGrappleRetract();
+    }
+
+    public void playGrappleRetract()
+    {
+        AudioManager.Instance.fmodPlayGrappleRetract();
     }
 
     /// <summary>
@@ -204,6 +216,12 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
             m_lineRenderer.enabled = false;
         }
         enabled = false;
+        pauseGrappleRetract();
+    }
+
+    public void pauseGrappleRetract()
+    {
+        AudioManager.Instance.fmodPauseGrappleRetract();
     }
     private void GrappleFailed()
     {

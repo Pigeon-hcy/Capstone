@@ -173,6 +173,13 @@ MonoBehaviour:
       Data3: -1804978816
       Data4: 1677160444
     Path: event:/SFX_GrappleAttach
+  _grappleRetractEvent:
+    Guid:
+      Data1: -2137971022
+      Data2: 1308398063
+      Data3: 1522600321
+      Data4: 578876051
+    Path: event:/SFX_GrappleRetract
   _walkEvent:
     Guid:
       Data1: -1306479955
