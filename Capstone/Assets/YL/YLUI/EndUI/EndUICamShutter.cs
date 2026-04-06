@@ -1,11 +1,16 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 
 public class EndUICamShutter : MonoBehaviour
 {
     [SerializeField] EndUIController endUIController;
     [SerializeField] RectTransform rect;
     [SerializeField] Animator animator;
+    [SerializeField] CinemachineCamera originalCamera;
+
+    [SerializeField] CinemachineCamera RightCamera;
+    [SerializeField] CinemachineCamera LeftCamera;
 
     public IEnumerator StartEndAnimation()
     {
@@ -52,5 +57,26 @@ public class EndUICamShutter : MonoBehaviour
     public void PlayAnimation()
     {
         animator.Play("anim_EndUI", 0, 0);
+    }
+
+    public void changeCameraToRight()
+    {
+        RightCamera.Priority = 10;
+        LeftCamera.Priority = 1;
+        originalCamera.Priority = 1;
+    }
+
+    public void changeCameraToLeft()
+    {
+        LeftCamera.Priority = 10;
+        RightCamera.Priority = 1;
+        originalCamera.Priority = 1;
+    }
+
+    public void changeCameraToOriginal()
+    {
+        originalCamera.Priority = 10;
+        RightCamera.Priority = 1;
+        LeftCamera.Priority = 1;
     }
 }
