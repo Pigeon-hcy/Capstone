@@ -30,6 +30,8 @@ public class EnergyBarChild : MonoBehaviour
         image.color = Color.white;
         mmSpringRectTrans.Bump(new Vector3(750, 1000, 50));
         wasActive = true;
+
+        //Put Get Energy SFX Here
     }
 
     public void Deactivate()
@@ -39,5 +41,7 @@ public class EnergyBarChild : MonoBehaviour
         image.color = Color.black;
         mmSpringScale.Bump(new Vector3(20, 20, 20));
         wasActive = false;
+
+        //Put Lose Energy SFX Here
     }
 }
