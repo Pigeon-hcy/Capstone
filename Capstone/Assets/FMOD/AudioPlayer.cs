@@ -98,47 +98,60 @@ public class AudioPlayer : MonoBehaviour
 
     public void playAudio()
     {
+        if (speaker == null)
+            return;
+        var music = speaker.GetComponent<MusicManager>();
+        if (music == null)
+            return;
         if (LM1)
         {
-            speaker.GetComponent<MusicManager>().fmodPlayLM1();
+            music.fmodPlayLM1();
         }
         else if (LM2)
         {
-            speaker.GetComponent<MusicManager>().fmodPlayLM2();
+            music.fmodPlayLM2();
         }
         else if (LM3)
         {
-            speaker.GetComponent<MusicManager>().fmodPlayLM3();
+            music.fmodPlayLM3();
         }
         else if (LM7)
         {
-            speaker.GetComponent<MusicManager>().fmodPlayLM7();
+            music.fmodPlayLM7();
         }
     }
     public void pauseAudio()
     {
+        if (speaker == null)
+            return;
+        var music = speaker.GetComponent<MusicManager>();
+        if (music == null)
+            return;
         if (LM1)
         {
-            speaker.GetComponent<MusicManager>().fmodPauseLM1();
+            music.fmodPauseLM1();
         }
         else if (LM2)
         {
-            speaker.GetComponent<MusicManager>().fmodPauseLM2();
+            music.fmodPauseLM2();
         }
         else if (LM3)
         {
-            speaker.GetComponent<MusicManager>().fmodPauseLM3();
+            music.fmodPauseLM3();
         }
         else if (LM7)
         {
-            speaker.GetComponent<MusicManager>().fmodPauseLM7();
+            music.fmodPauseLM7();
         }
     }
     public void setNewMusicValue ()
     {
-        if (LM7)
+        if (speaker == null)
+            return;
+        var music = speaker.GetComponent<MusicManager>();
+        if (LM7 && music != null)
         {
-            speaker.GetComponent<MusicManager>().setTargetValue7(newValue);
+            music.setTargetValue7(newValue);
             Debug.Log("B");
         }
     }

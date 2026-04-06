@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using QFramework;
+using MoreMountains.Feedbacks;
 
 namespace SkateGame
 {
@@ -23,8 +24,12 @@ namespace SkateGame
         [SerializeField] private GameState _current = GameState.Menu;
         public GameState Current => _current;
         private GameState _stateBeforePause = GameState.InGame;
-		[SerializeField] private GameObject playerUI;
+        [SerializeField] private GameObject playerUI;
         private IInputGateSystem gate;
+
+        /// <summary> GameState 使用 timeScale=0 暂停时为 true；此时禁止 MMTimeManager 写入 Time.timeScale，避免与 MMF 冲突。 </summary>
+        bool _mmfTimescaleLocked;
+        public bool MmfTimescaleLocked => _mmfTimescaleLocked;
 
         void OnEnable()
         {
@@ -48,6 +53,12 @@ namespace SkateGame
             _instance = this;
             DontDestroyOnLoad(gameObject);
             ApplyState(_current);
+        }
+
+        void Start()
+        {
+            if (_mmfTimescaleLocked)
+                SetMmfTimescaleWriteLocked(true);
         }
 
 		public void EnterMenu() => Switch(GameState.Menu);
@@ -112,12 +123,12 @@ namespace SkateGame
         private void OnTogglePause(TogglePauseEvent evt)
         {
             if (_current == GameState.Menu) return;
-            if (_current == GameState.InGame || _current == GameState.Dialogue || _current == GameState.Tutorial)
+            if (_current == GameState.InGame || _current == GameState.Dialogue)
             {
                 _stateBeforePause = _current;
                 EnterPause();
             }
-            else if (_current == GameState.Pause || _current == GameState.UIPause)
+            else if (_current == GameState.Pause)
             {
                 Switch(_stateBeforePause);
             }
@@ -149,6 +160,7 @@ namespace SkateGame
         {
             if (stop)
             {
+                SetMmfTimescaleWriteLocked(true);
                 Time.timeScale = 0f;
                 Time.fixedDeltaTime = 0.02f * Time.timeScale;
             }
@@ -156,7 +168,18 @@ namespace SkateGame
             {
                 Time.timeScale = 1f;
                 Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                SetMmfTimescaleWriteLocked(false);
             }
+        }
+
+        void SetMmfTimescaleWriteLocked(bool locked)
+        {
+            _mmfTimescaleLocked = locked;
+            MMTimeManager mm = MMTimeManager.TryGetInstance();
+            if (mm == null)
+                mm = Object.FindAnyObjectByType<MMTimeManager>(FindObjectsInactive.Include);
+            if (mm != null)
+                mm.UpdateTimescale = !locked;
         }
     }
 }

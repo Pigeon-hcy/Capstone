@@ -119,6 +119,7 @@ namespace SkateGame
                 }
                 GameStateController.Instance.EnterUIPause();
                 */
+                GameStateController.Instance?.EnterTutorial();
             }
         }
 
@@ -130,6 +131,7 @@ namespace SkateGame
 
                 // 隐藏 UI
                 HideCanvas();
+                GameStateController.Instance?.EnterInGame();
 
                 // ----------------------------
                 // 恢复射击
@@ -140,7 +142,7 @@ namespace SkateGame
                 }
 
                 playerController = null;
-                GameStateController.Instance.EnterInGame();
+                GameStateController.Instance?.EnterInGame();
             }
         }
 
@@ -152,11 +154,15 @@ namespace SkateGame
                 Transform mmfEndFeedback = levelSelectCanvas.transform.Find("MMF_EndFeedback");
                 if (mmfEndFeedback != null)
                 {
-                    mmfEndFeedback.GetComponent<MMF_Player>().PlayFeedbacks();
-                  
+                    MMF_Player mmfPlayer = mmfEndFeedback.GetComponent<MMF_Player>();
+                    if (mmfPlayer != null)
+                        mmfPlayer.PlayFeedbacks();
                 }
-                GameObject firstSelectable = levelSelectCanvas.GetComponentsInChildren<UnityEngine.UI.Selectable>()[0].gameObject;
-                EventSystem.current?.SetSelectedGameObject(firstSelectable);
+                // 找到Canvas下第一个可被选中的Selectable 
+                // TODO: 指定Selectable
+                var selectables = levelSelectCanvas.GetComponentsInChildren<UnityEngine.UI.Selectable>();
+                if (selectables != null && selectables.Length > 0)
+                    EventSystem.current?.SetSelectedGameObject(selectables[0].gameObject);
                 Debug.Log("LevelCanvas 显示");
             }
         }

@@ -25,6 +25,8 @@ public class EndUIController : MonoBehaviour
 
     public void EndSequence_B() //called by animation event
     {
+        if (playerCollider == null)
+            return;
         Collider2D other = playerCollider;
 
         Rigidbody2D rb = other.attachedRigidbody;
@@ -38,9 +40,11 @@ public class EndUIController : MonoBehaviour
 
     public void EndSequence_C()
     {
-        navigator.SetActive(true);
-        GameStateController.Instance.EnterUIPause();
-        EventSystem.current?.SetSelectedGameObject(navigator);
+        if (navigator != null)
+            navigator.SetActive(true);
+        GameStateController.Instance?.EnterUIPause();
+        if (navigator != null)
+            EventSystem.current?.SetSelectedGameObject(navigator);
     }
 
     IEnumerator SlowPlayer()

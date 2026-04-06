@@ -48,4 +48,9 @@ public class EndUICamShutter : MonoBehaviour
     {
         endUIController.EndSequence_C();
     }
+
+    public void PlayAnimation()
+    {
+        animator.Play("anim_EndUI", 0, 0);
+    }
 }
