@@ -117,11 +117,11 @@ namespace SkateGame
             foreach (var t in tickToggles)
                 t.ResetOnPlayerDeath();
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.6f);
 
             PlayDeathMMFEffects();
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.6f);
 
             player.position = respawnModel.LatestCheckpoint.Value;
             rb.linearVelocity = Vector2.zero;
@@ -152,8 +152,8 @@ namespace SkateGame
             MMF_Player startPlayer = deathTrans.transform.Find("MMF_StartTrans").GetComponent<MMF_Player>();
             MMF_Player endPlayer = deathTrans.transform.Find("MMF_EndTrans").GetComponent<MMF_Player>();
 
-            startPlayer.DurationMultiplier = 0.6f;
-            endPlayer.DurationMultiplier = 0.6f;
+            startPlayer.DurationMultiplier = 0.9f;
+            endPlayer.DurationMultiplier = 0.9f;
 
             startPlayer.PlayFeedbacks();
             endPlayer.PlayFeedbacks();
