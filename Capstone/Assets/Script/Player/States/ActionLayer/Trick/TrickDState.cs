@@ -22,7 +22,7 @@ public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
         /// TODO：自瞄敌人 
         float direction = inputModel.Move.Value.x != 0f ? (inputModel.Move.Value.x < 0f ? -1f : 1f) : playerModel.IsFacingRight.Value ? 1f : -1f;
         player.vineGun.FireGrabbingHook(90f - 45f * direction);
-        playGrappleShoot();
+        //playGrappleShoot();
     }
 
     public void playGrappleShoot()

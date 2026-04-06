@@ -104,6 +104,10 @@ public class AudioManager : MonoBehaviour
     public EventReference _grappleAttachEvent;
     private EventInstance _grappleAttachEventInstance;
 
+    //GrappleRetract
+    public EventReference _grappleRetractEvent;
+    private EventInstance _grappleRetractEventInstance;
+
     //Walk
     public EventReference _walkEvent;
     private EventInstance _walkEventInstance;
@@ -222,6 +226,9 @@ public class AudioManager : MonoBehaviour
 
         //Grapple Attach
         _grappleAttachEventInstance = RuntimeManager.CreateInstance(_grappleAttachEvent);
+
+        //Grapple Retract
+        _grappleRetractEventInstance = RuntimeManager.CreateInstance(_grappleRetractEvent);
 
         //Walk
         _walkEventInstance = RuntimeManager.CreateInstance(_walkEvent);
@@ -569,11 +576,31 @@ public class AudioManager : MonoBehaviour
     {
         if (_grappleAttachEventInstance.isValid())
         {
+            //if (_grappleShootEventInstance.isValid())
+            //{
+            //    _grappleShootEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            //}
+            _grappleAttachEventInstance.start();
+        }
+    }
+
+    //Grapple Retract
+    public void fmodPlayGrappleRetract()
+    {
+        if (_grappleRetractEventInstance.isValid())
+        {
             if (_grappleShootEventInstance.isValid())
             {
                 _grappleShootEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
-            _grappleAttachEventInstance.start();
+            _grappleRetractEventInstance.start();
+        }
+    }
+    public void fmodPauseGrappleRetract()
+    {
+        if (_grappleRetractEventInstance.isValid())
+        {
+            _grappleRetractEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 
