@@ -3,6 +3,7 @@ using QFramework;
 using UnityEngine;
 using System.Collections;
 using MoreMountains.Feedbacks;
+using Lofelt.NiceVibrations;
 
 namespace SkateGame
 {
@@ -196,6 +197,7 @@ namespace SkateGame
         public void playDeath()
         {
             AudioManager.Instance.fmodPlayDeath();
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.Failure);
         }
 
         public void stopTimeStopEffect()

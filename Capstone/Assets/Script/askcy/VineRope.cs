@@ -1,6 +1,7 @@
 using UnityEngine;
 using QFramework;
 using SkateGame;
+using Lofelt.NiceVibrations;
 
 public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEvent
 {
@@ -144,6 +145,7 @@ public class VineRope : MonoBehaviour, ICanGetSystem, ICanGetModel, ICanSendEven
         });
         grappleTime = 0f;
         currentState = RopeState.Grappling;
+        HapticPatterns.PlayEmphasis(0.1f, 0.3f);
         playGrappleAttach();
     }
 

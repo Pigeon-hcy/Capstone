@@ -340,7 +340,6 @@ namespace SkateGame
             vPush = Mathf.Abs(pushSpeed) * vPush.normalized;
             
             playerModel.PushSpeed.Value = pushSpeed;
-            Debug.Log($"Applied Movement: vPhysics={vPhysics}, vPush={vPush}, vMove={vMove}, pushSpeed={pushSpeed}");
         }
 
         private void ProjectVPush()

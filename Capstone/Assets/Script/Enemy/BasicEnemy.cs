@@ -4,6 +4,7 @@ using System.Net.Security;
 using BaseUtility;
 using Hitbox;
 using System.Collections.Generic;
+using Lofelt.NiceVibrations;
 
 namespace SkateGame
 {
@@ -352,6 +353,7 @@ namespace SkateGame
                 var energySystem = this.GetSystem<IEnergySystem>();
                 energySystem.AddEnergy(1);
                 MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
+                HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
                 play360();
                 Die();
             }

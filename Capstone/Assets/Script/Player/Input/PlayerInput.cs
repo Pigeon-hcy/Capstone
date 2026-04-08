@@ -172,13 +172,26 @@ namespace SkateGame
             else return Vector2.right;
 		}
 
+        private static InputDeviceType ClassifyDevice(InputDevice device)
+        {
+            if (device is not Gamepad) return InputDeviceType.KeyboardMouse;
+            string name = device.name + device.displayName;
+            if (name.IndexOf("DualShock", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                name.IndexOf("DualSense", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                name.IndexOf("Sony",      System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return InputDeviceType.GamepadPS;
+            if (name.IndexOf("Xbox",   System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                name.IndexOf("XInput", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return InputDeviceType.GamepadXbox;
+            return InputDeviceType.Gamepad;
+        }
+
         private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
         {
             if (device == null || _currentDevice == device) return;
 
             _currentDevice = device;
-            var type = device is Gamepad ? InputDeviceType.Gamepad : InputDeviceType.KeyboardMouse;
-            this.SendEvent(new InputDeviceSwitchedEvent { DeviceType = type });
+            this.SendEvent(new InputDeviceSwitchedEvent { DeviceType = ClassifyDevice(device) });
         }
 
         public void SetShootLock(bool locked)
