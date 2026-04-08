@@ -2901,6 +2901,7 @@ MonoBehaviour:
   musicSlider: {fileID: 2099603878775853653}
   sfxSlider: {fileID: 7134357337212030553}
   pauseText: {fileID: 8179876666244985563}
+  defaultSelected: {fileID: 5980737512509397363}
 --- !u!222 &293799857418816233
 CanvasRenderer:
   m_ObjectHideFlags: 0

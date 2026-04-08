@@ -1308,6 +1308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navigator: {fileID: 4074708263282519417}
+  defaultSelected: {fileID: 3388430773277534618}
   camShutter: {fileID: 9191059443413512073}
 --- !u!1 &6231192135228627540
 GameObject:

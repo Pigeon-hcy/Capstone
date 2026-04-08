@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using QFramework;
 using SkateGame;
 
@@ -19,6 +20,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
     [SerializeField] GameObject pauseText;
+    [SerializeField] GameObject defaultSelected;
 
     Vector3 bumpAmount;
 
@@ -140,6 +142,9 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             // SFX for button popup
             yield return new WaitForSecondsRealtime(0.05f);
         }
+
+        if (defaultSelected != null && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(defaultSelected);
     }
 
     IEnumerator OptionsBumpRoutine()

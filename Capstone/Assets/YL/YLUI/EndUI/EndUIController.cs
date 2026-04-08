@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class EndUIController : MonoBehaviour
 {
     [SerializeField] GameObject navigator;
+    [SerializeField] GameObject defaultSelected;
     [SerializeField] EndUICamShutter camShutter;
 
     Collider2D playerCollider;
@@ -43,8 +44,8 @@ public class EndUIController : MonoBehaviour
         if (navigator != null)
             navigator.SetActive(true);
         GameStateController.Instance?.EnterUIPause();
-        if (navigator != null)
-            EventSystem.current?.SetSelectedGameObject(navigator);
+        if (defaultSelected != null)
+            EventSystem.current?.SetSelectedGameObject(defaultSelected);
     }
 
     IEnumerator SlowPlayer()
