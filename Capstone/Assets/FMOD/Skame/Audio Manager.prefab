@@ -208,3 +208,10 @@ MonoBehaviour:
       Data3: 1662351523
       Data4: -1230914971
     Path: event:/SFX_UIContinue
+  _missileEvent:
+    Guid:
+      Data1: -25930641
+      Data2: 1332314468
+      Data3: 725265835
+      Data4: 845901375
+    Path: event:/SFX_MissileShoot

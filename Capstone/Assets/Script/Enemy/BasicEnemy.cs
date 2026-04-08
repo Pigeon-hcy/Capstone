@@ -4,8 +4,8 @@ using System.Net.Security;
 using BaseUtility;
 using Hitbox;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using Lofelt.NiceVibrations;
-
 namespace SkateGame
 {
 
@@ -75,6 +75,8 @@ namespace SkateGame
     public Transform boxSource;
     
     protected Animator animator;
+
+    public MMF_Player OnDieFeedback;
     
     protected virtual void Start()
     {
@@ -355,6 +357,11 @@ namespace SkateGame
                 MessageSystem.Instance.Send<EnemyMessage>(EnemyMessage.Die, box,this);
                 HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
                 play360();
+                if(OnDieFeedback != null)
+                {
+                    OnDieFeedback.PlayFeedbacks();
+                }
+
                 Die();
             }
 

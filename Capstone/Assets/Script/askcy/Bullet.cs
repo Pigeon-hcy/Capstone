@@ -34,6 +34,7 @@ public class Bullet : MonoBehaviour
     {
         transform.position = startPoint;
         isActive = true;
+        _playMissile();
         StartCoroutine(ShowIndicator());
     }
 
@@ -49,6 +50,10 @@ public class Bullet : MonoBehaviour
         offscreenIndicator.enabled = true;
         yield return new WaitForSeconds(indicatorTimer);
         offscreenIndicator.enabled = false;
+    }
+    public void _playMissile()
+    {
+        AudioManager.Instance.fmodPlayMissile();
     }
 
 
