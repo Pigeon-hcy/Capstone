@@ -123,6 +123,10 @@ public class AudioManager : MonoBehaviour
     //UI Close
     public EventReference _closeEvent;
     private EventInstance _closeEventInstance;
+
+    //Missile Shoot
+    public EventReference _missileEvent;
+    private EventInstance _missileEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -241,6 +245,9 @@ public class AudioManager : MonoBehaviour
 
         //UI Close
         _closeEventInstance = RuntimeManager.CreateInstance(_closeEvent);
+
+        //Missile Shoot
+        _missileEventInstance = RuntimeManager.CreateInstance(_missileEvent);
         #endregion
     }
 
@@ -653,6 +660,22 @@ public class AudioManager : MonoBehaviour
         if (_closeEventInstance.isValid())
         {
             _closeEventInstance.start();
+        }
+    }
+
+    //Missile Shoot
+    public void fmodPlayMissile()
+    {
+        if (_missileEventInstance.isValid())
+        {
+            _missileEventInstance.start();
+        }
+    }
+    public void fmodPauseMissile()
+    {
+        if (_missileEventInstance.isValid())
+        {
+            _missileEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
     #endregion

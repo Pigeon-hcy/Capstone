@@ -52,6 +52,7 @@ public class AttackTrigger : MonoBehaviour
     {
         if (!other.CompareTag("Player") || isResetting) return;
 
+        _pauseMissile();
         _launchCoroutine = StartCoroutine(LaunchBullets());
         isResetting = true;
         resetTimer = resetTime;
@@ -65,6 +66,7 @@ public class AttackTrigger : MonoBehaviour
             {
                 bullet.gameObject.SetActive(true);
                 bullet.launch();
+                //_playMissile();
             }
             yield return new WaitForSeconds(attackInterval);
         }
@@ -89,5 +91,13 @@ public class AttackTrigger : MonoBehaviour
                 bullet.gameObject.SetActive(false);
             }
         }
+    }
+    public void _playMissile()
+    {
+        AudioManager.Instance.fmodPlayMissile();
+    }
+    public void _pauseMissile()
+    {
+        AudioManager.Instance.fmodPauseMissile();
     }
 }
