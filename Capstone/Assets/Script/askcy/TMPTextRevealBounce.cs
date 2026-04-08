@@ -52,25 +52,25 @@ public class TMPTextRevealBounce : MonoBehaviour, ICanRegisterEvent, IBelongToAr
             return;
         }
 
-        // 根据当前输入设备替换占位符（例如 {Jump} -> Space/A）
-        string jumpKey = LastDeviceType == InputDeviceType.Gamepad ? "A" : "Space";
-        string processed = content.Replace("{Jump}", jumpKey);
+        bool isKeyboard = LastDeviceType == InputDeviceType.KeyboardMouse;
+        bool isPS  = LastDeviceType == InputDeviceType.GamepadPS;
+        // use Xbox labels except on PS controller
+        string jumpKey = isKeyboard ? "Space"  : (isPS ? "X"  : "A");
+        string dashKey = isKeyboard ? "K"      : (isPS ? "○"  : "B");
+        string pushKey = isKeyboard ? "Shift"  : (isPS ? "R2" : "RT");
+        string hookKey = isKeyboard ? "J"      : (isPS ? "□"  : "X");
+        string slamKey = isKeyboard ? "S"      : (isPS ? "L2" : "LT");
 
-        string dashKey = LastDeviceType == InputDeviceType.Gamepad ? "X" : "K";
-        processed = processed.Replace("{Dash}", dashKey);
-
-        string pushKey = LastDeviceType == InputDeviceType.Gamepad ? "R2" : "Shift";
-        processed = processed.Replace("{Push}", pushKey);
-
-        string hookKey = LastDeviceType == InputDeviceType.Gamepad ? "Y" : "J";
-        processed = processed.Replace("{Hook}", hookKey);
-
-        string slamKey = LastDeviceType == InputDeviceType.Gamepad ? "L2" : "S";
-        processed = processed.Replace("{Slam}", slamKey);
+        string newText = content
+            .Replace("{Jump}", jumpKey)
+            .Replace("{Dash}", dashKey)
+            .Replace("{Push}", pushKey)
+            .Replace("{Hook}", hookKey)
+            .Replace("{Slam}", slamKey);
 
         
 
         // 通过 Typewriter 的 ShowText 来设置文本并触发打字机
-        typewriter.ShowText(processed);
+        typewriter.ShowText(newText);
     }
 }

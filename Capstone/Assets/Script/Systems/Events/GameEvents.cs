@@ -139,7 +139,7 @@ namespace SkateGame
     }
 
     // Input device hot-switch event
-    public enum InputDeviceType { KeyboardMouse, Gamepad }
+    public enum InputDeviceType { KeyboardMouse, Gamepad, GamepadPS, GamepadXbox }
     public struct InputDeviceSwitchedEvent
     {
         public InputDeviceType DeviceType;

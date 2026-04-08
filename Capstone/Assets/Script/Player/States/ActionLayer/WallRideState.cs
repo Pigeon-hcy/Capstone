@@ -1,6 +1,7 @@
 using UnityEngine;
 using SkateGame;
 using QFramework;
+using Lofelt.NiceVibrations;
 
 public class WallRideState : ActionStateBase
 {
@@ -88,9 +89,11 @@ public class WallRideState : ActionStateBase
         AudioManager.Instance.fmodPlayWallRide();
         // FOR JERRY'S AUDIO - LANDING
         AudioManager.Instance.fmodPlayLanding();
+        HapticPatterns.PlayConstant(0.1f, 0.1f, 10f);
     }
     public void pauseWallRide()
     {
         AudioManager.Instance.fmodPauseWallRide();
+        HapticController.Stop();
     }
 }

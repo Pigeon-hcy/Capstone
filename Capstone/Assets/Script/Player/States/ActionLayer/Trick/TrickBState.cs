@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using SkateGame;
 using QFramework;
+using Lofelt.NiceVibrations;
 
 public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
 {
@@ -18,6 +19,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     {
         // FOR JERRY'S AUDIO - DASH
         //Debug.LogError("触发了");
+        HapticPatterns.PlayEmphasis(0.1f, 0.3f);
         player.TrickBEffect.PlayFeedbacks();
         playerModel.VelocityBeforeTrick.Value = rb.linearVelocity.x;
         // TODO: fix direction calculation

@@ -1,6 +1,7 @@
 using UnityEngine;
 using SkateGame;
 using QFramework;
+using Lofelt.NiceVibrations;
 
 public class GrindState : ActionStateBase
 {   
@@ -157,10 +158,12 @@ public class GrindState : ActionStateBase
         AudioManager.Instance.fmodPlayRailGrind();
             // FOR JERRY'S AUDIO - LANDING
             AudioManager.Instance.fmodPlayLanding();
+        HapticPatterns.PlayConstant(0.1f, 0.1f, 10f);
     }
     private void pauseRailGrind()
     {
         AudioManager.Instance.fmodPauseRailGrind();
+        HapticController.Stop();
     }
     private void GrindJump()
     {
