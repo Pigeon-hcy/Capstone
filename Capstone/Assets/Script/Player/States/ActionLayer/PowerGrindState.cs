@@ -19,9 +19,6 @@ public class PowerGrindState : ActionStateBase
         brakingRight = playerModel.PushSpeed.Value > 0;
         isInterrupted = true;
         player.SendEvent<PowerGrindInputEvent>(new PowerGrindInputEvent { IsPowerGrinding = true, IsInterrupted = isInterrupted });
-        // 开始检查反向输入窗口
-        StartCheckReverseWindow();
-        
         // 播放MMF效果
         if (player.powerGrindEffect != null)
             player.powerGrindEffect.PlayFeedbacks();
@@ -72,37 +69,6 @@ public class PowerGrindState : ActionStateBase
         pausePowerGrind();
     }
 
-    // private void CheckReverse()
-    // {
-        
-    //     if (playerModel.IsCheckingReverseWindow.Value)
-    //     {
-    //         // 计时
-    //         playerModel.ReverseTimer.Value += Time.deltaTime;
-    //         if (playerModel.ReverseTimer.Value >= playerModel.Config.Value.reverseInputWindow)
-    //         {
-    //             playerModel.IsCheckingReverseWindow.Value = false;
-    //             return;
-    //         }
-    //         float currentVelocityX = rb.linearVelocity.x;
-
-    //         // 如果当前有水平速度且输入方向与速度方向相反
-    //         if (Mathf.Abs(currentVelocityX) > 1f && Mathf.Abs(inputModel.Move.Value.x) > 0.01f)
-    //         {
-    //             if (Mathf.Sign(inputModel.Move.Value.x) != Mathf.Sign(currentVelocityX))
-    //             {
-    //                 player.stateMachine.SwitchState<ReverseState>(StateLayer.Movement);
-    //                 playerModel.IsCheckingReverseWindow.Value = false;
-    //                 return; // 进入反向状态后直接返回，不处理其他逻辑
-    //             }
-    //         }
-    //     }
-    // }
-    private void StartCheckReverseWindow()
-    {
-        playerModel.IsCheckingReverseWindow.Value = true;
-        playerModel.ReverseTimer.Value = 0f;
-    }
 
     public void playPowerGrind()
     {

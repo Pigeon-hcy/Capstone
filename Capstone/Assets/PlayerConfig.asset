@@ -21,7 +21,7 @@ MonoBehaviour:
   pushReverseCooldown: 0.5
   firstPushKickInterval: 0.1
   pushKickInterval: 0.7
-  pushKickSpeedIncrement: 6
+  pushKickSpeedIncrement: 8
   pushMountSpeed: 5
   applyPushKickThreshold: 20
   pushKickDelay: 0.2
@@ -123,6 +123,7 @@ MonoBehaviour:
   maxAirHorizontalSpeedConfig: 8
   normalG: 3.2
   gravityMagnitude: 9.81
+  maxUpwardSpeed: 24
   baseMaxAimTime: 3
   bulletPrefabs:
   - {fileID: 9141978474503307967, guid: f82702240d0fd6445947da81cd3c4534, type: 3}

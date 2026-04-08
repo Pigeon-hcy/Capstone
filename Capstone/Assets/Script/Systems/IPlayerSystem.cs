@@ -9,7 +9,6 @@ namespace SkateGame
         public bool JumpQueued;
         public bool JumpCutQueued;
         public bool WallJumpQueued;
-        public bool ReverseQueued;
         public bool GrappleImpulseQueued;
         public bool GrindResetSpeedQueued;
         public bool TrickBResetSpeedQueued;
@@ -32,7 +31,6 @@ namespace SkateGame
             JumpQueued = false;
             JumpCutQueued = false;
             WallJumpQueued = false;
-            ReverseQueued = false;
             GrappleImpulseQueued = false;
             GrindResetSpeedQueued = false;
             TrickBResetSpeedQueued = false;
@@ -46,7 +44,6 @@ namespace SkateGame
             JumpQueued = false;
             JumpCutQueued = false;
             WallJumpQueued = false;
-            ReverseQueued = false;
             GrappleImpulseQueued = false;
             GrindResetSpeedQueued = false;
             TrickBResetSpeedQueued = false;
@@ -114,7 +111,6 @@ namespace SkateGame
             this.RegisterEvent<MountEvent>(OnMount);
             this.RegisterEvent<GrindInputEvent>(OnGrindInput);
             this.RegisterEvent<PowerGrindInputEvent>(OnPowerGrindInput);
-            this.RegisterEvent<ReverseInputEvent>(OnReverseInput);
             this.RegisterEvent<TrickAInputEvent>(OnTrickAInput);
             this.RegisterEvent<TrickARewardEvent>(OnTrickAReward);
             this.RegisterEvent<TrickBInputEvent>(OnTrickBInput);
@@ -192,7 +188,6 @@ namespace SkateGame
             if (!evt.IsPowerGrinding && !evt.IsInterrupted)
                 walkCooldownTimer = playerModel.Config.Value.powerGrindWalkDelay;
         }
-        private void OnReverseInput(ReverseInputEvent evt) { pending.ReverseQueued = true; }
         private void OnGrindInput(GrindInputEvent evt) 
         { 
             pending.Grinding = evt.IsGrinding; 
@@ -293,9 +288,7 @@ namespace SkateGame
                     // ApplySlopeCompensation();
                 }
                 // Actions
-                // 3: Reverse (deprecated)
-                // if (pending.ReverseQueued) ApplyReverse();
-                // 4: jumps
+                // 3: jumps
                 if (pending.JumpQueued) ApplyJumpImpulse();
                 if (pending.WallJumpQueued) ApplyWallJumpImpulse();
                 if (pending.Jumping) ApplyJumpHeld();
@@ -504,13 +497,6 @@ namespace SkateGame
         #endregion
 
         #region Tricks
-        private void ApplyReverse()
-        {
-            pushSpeed = -pushSpeed;
-            vPush = pushSpeed * groundRight;
-            ChangePushDirection(-1f);
-        }
-
         private void ApplyGrind()
         {
             vOveride = playerModel.GrindDirection.Value * playerModel.Config.Value.grindSpeed;

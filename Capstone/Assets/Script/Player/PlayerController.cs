@@ -74,7 +74,6 @@ namespace SkateGame
         [Header("MMF效果")]
         public MMF_Player moveEffect;
         public MMF_Player powerGrindEffect;
-        public MMF_Player ReverseEffect;
         public MMF_Player GrindEffect;
         public MMF_Player WallRideEffect;
         public MMF_Player TrickAEffect;
@@ -147,7 +146,6 @@ namespace SkateGame
             stateMachine.AddState(new WallJumpState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new WallSlideState(this, rb), StateLayer.Movement);
             // stateMachine.AddState(new DoubleJumpState(this, rb), StateLayer.Movement);
-            stateMachine.AddState(new ReverseState(this, rb), StateLayer.Movement);
             stateMachine.AddState(new LandState(this, rb), StateLayer.Movement);
             // Action Layer
             stateMachine.AddState(new NoActionState(this, rb), StateLayer.Action);
