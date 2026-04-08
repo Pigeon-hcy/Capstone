@@ -9,7 +9,6 @@ namespace SkateGame
         AirState = 3,
         JumpState = 4,
         DoubleJumpState = 5,
-        ReverseState = 6,
         WallJumpState = 7,
         WallSlideState = 8,
     }

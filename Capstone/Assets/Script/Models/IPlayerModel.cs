@@ -99,8 +99,6 @@ namespace SkateGame
         BindableProperty<float> WallRideCooldownTimer { get; } // 用来控制两次滑墙之间的冷却时间
         BindableProperty<Vector2> WallJumpWallNormal { get; }
         BindableProperty<bool> WasGrounded { get; }
-        BindableProperty<bool> IsCheckingReverseWindow { get; }
-        BindableProperty<float> ReverseTimer { get; }
         BindableProperty<bool> HasPerformedTrickInAir { get; }
         BindableProperty<bool> IsFacingRight { get; }
         BindableProperty<float> CurrentRotationDeg { get; }
@@ -181,8 +179,6 @@ namespace SkateGame
         public BindableProperty<float> WallRideCooldownTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> WallJumpWallNormal { get; } = new BindableProperty<Vector2>(Vector2.zero);
         public BindableProperty<bool> WasGrounded { get; } = new BindableProperty<bool>(true);
-        public BindableProperty<bool> IsCheckingReverseWindow { get; } = new BindableProperty<bool>(false);
-        public BindableProperty<float> ReverseTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<bool> HasPerformedTrickInAir { get; } = new BindableProperty<bool>(false);
         public BindableProperty<bool> IsFacingRight { get; } = new BindableProperty<bool>(true);
         public BindableProperty<float> CurrentRotationDeg { get; } = new BindableProperty<float>(0f);

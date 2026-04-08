@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using QFramework;
 using System.Collections.Generic;
-using TMPro;
 
 namespace SkateGame
 {
@@ -20,17 +19,8 @@ namespace SkateGame
 
         public GameObject allLevelCanvas;
         public GameObject basicCanvas;
-        private GameObject levelItemPrefab;
-        private Transform groupForButton;
         protected override void InitializeController()
         {
-            levelItemPrefab = Resources.Load<GameObject>("LevelItem");
-            Debug.Log(levelItemPrefab != null ? "prefab:有" : "prefab:无");
-            GameObject levelCanvas = GameObject.Find("LevelCanvas");
-            Debug.Log(levelCanvas != null ? "levelCanvas:有" : "levelCanvas:无");
-            groupForButton = levelCanvas.transform.Find("AllSelection/groupforButton");
-            Debug.Log(groupForButton != null ? "groupForButton:有" : "groupForButton:无");
-
             isLoadingLevel = false;
             
             levelModel = this.GetModel<ILevelModel>();
@@ -50,7 +40,6 @@ namespace SkateGame
 
             InitializeButtons();
             RefreshButtonStatesOnShow();
-            BindingLevelInfoToPrefab();
         }
 
         /// <summary>
@@ -126,7 +115,6 @@ namespace SkateGame
                 allLevelCanvas.gameObject.SetActive(true);
             }
             RefreshButtonStatesOnShow();
-            BindingLevelInfoToPrefab();
         }
         
         public void HideAllLevelCanvas()
@@ -238,28 +226,6 @@ namespace SkateGame
             UpdateButtonStates();
         }
 
-        public void BindingLevelInfoToPrefab(){
-            if (levelItemPrefab == null || groupForButton == null) return;
-           //delete existed old items
-            for (int i = groupForButton.childCount - 1; i >= 0; i--)
-            {
-                Destroy(groupForButton.GetChild(i).gameObject);
-            }
-            for (int i = 0; i < levelList.Count; i++)
-            {
-                int index = i;
-                GameObject item = Instantiate(levelItemPrefab, groupForButton);
-                item.transform.localScale = Vector3.one;
-                levelItem levelItem = item.GetComponent<levelItem>();
-                levelItem.setUp(levelList[i]);
-                // FOR JERRY'S AUDIO - UI CLICK
-                levelItem.button.onClick.AddListener(() => OnLevelButtonClick(index));
-                levelItem.GetComponentInChildren<Image>().sprite = levelList[i].image;
-                levelItem.button.GetComponentInChildren<TextMeshProUGUI>().text = levelList[i].Name;
-                
-                
-            }
-        }
     }
 }
 

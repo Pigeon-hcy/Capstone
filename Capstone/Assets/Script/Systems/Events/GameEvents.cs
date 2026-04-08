@@ -87,11 +87,6 @@ namespace SkateGame
         public bool IsInterrupted;
     }
     
-    // 反向输入事件
-    public struct ReverseInputEvent
-    {
-    }
-    
     // 跳跃执行事件
     public struct JumpExecuteEvent
     {
