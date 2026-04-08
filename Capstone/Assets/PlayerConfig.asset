@@ -21,7 +21,7 @@ MonoBehaviour:
   pushReverseCooldown: 0.5
   firstPushKickInterval: 0.1
   pushKickInterval: 0.7
-  pushKickSpeedIncrement: 8
+  pushKickSpeedIncrement: 9
   pushMountSpeed: 5
   applyPushKickThreshold: 20
   pushKickDelay: 0.2
@@ -86,6 +86,7 @@ MonoBehaviour:
   grappleImpulse: 30
   groundRotationSpeed: 10
   airRotationSpeed: 6
+  maxRotationSnapDeg: 90
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

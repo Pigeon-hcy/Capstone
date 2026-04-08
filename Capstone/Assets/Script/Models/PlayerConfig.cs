@@ -105,6 +105,7 @@ namespace SkateGame
         [Header("Rotation")]
         public float groundRotationSpeed = 50f;
         public float airRotationSpeed = 10f;
+        public float maxRotationSnapDeg = 90f;
 
         [Header("Collision")]
         public LayerMask groundLayer;
