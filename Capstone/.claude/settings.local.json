@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(grep -E \"\\\\.asset$\")",
-      "Bash(ls -la /Users/a23544/Documents/GitHub/Capstone/Capstone/Assets/Art/Tilemap/tilemap*)"
+      "Bash(ls -la /Users/a23544/Documents/GitHub/Capstone/Capstone/Assets/Art/Tilemap/tilemap*)",
+      "Bash(find Assets -name \"*.prefab\" -type f ! -path \"*/Feel/*\" ! -path \"*/FunkyCode/*\" -exec grep -l \"Canvas:\" {})",
+      "Bash(find Assets/Scenes Assets/Prefab Assets/YL Assets/NPC.prefab Assets/playerhubLevelCanvas.prefab Assets/MainMenuLevelCanvas.prefab Assets/RealUpdateCanvas.prefab Assets/Resources -maxdepth 5 \\\\\\(-name *.unity -o -name *.prefab \\\\\\))",
+      "Bash(find Assets/Scenes Assets/Prefab Assets/YL Assets/Resources -maxdepth 5 \\\\\\(-name *.unity -o -name *.prefab \\\\\\))",
+      "Bash(ls Assets/*.prefab)"
     ]
   }
 }
