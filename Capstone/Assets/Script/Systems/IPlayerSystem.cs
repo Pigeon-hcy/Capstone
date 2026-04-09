@@ -326,6 +326,7 @@ namespace SkateGame
 
                 // 7: Check walk
                 if (walkCooldownTimer > 0f) walkCooldownTimer -= Time.fixedDeltaTime;
+                Debug.Log("Applying movement. vPhysics: " + vPhysics + ", vPush: " + vPush + ", vMove: " + vMove + ", vOveride: " + vOveride);
                 CheckWalk(cachedMoveInput);
             }
             
@@ -588,6 +589,7 @@ namespace SkateGame
         #region Animation
         public void ApplyRotation()
         {
+            Debug.Log("Applying rotation. Current: " + rb.rotation + ", Target: " + playerModel.TargetRotationDeg.Value);
             if (Mathf.Abs(rb.rotation - playerModel.TargetRotationDeg.Value) > 0.01f)
             {
                 bool isGrounded = playerModel.IsGrounded.Value;

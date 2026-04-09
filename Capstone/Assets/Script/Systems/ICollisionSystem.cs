@@ -54,12 +54,14 @@ namespace SkateGame
                 }
             }
 
-            // rotate if grounded; clamp per-frame change to avoid single-frame flip at curved ramp bottoms
-            float targetAngle = grounded && angle > 0f
+            float newAngle = grounded && angle > 0f
                 ? angle * Mathf.Sign(Vector3.Cross(Vector2.up, hit.normal).z)
                 : 0f;
-            playerModel.TargetRotationDeg.Value = Mathf.MoveTowards(
-                playerModel.TargetRotationDeg.Value, targetAngle, playerModel.Config.Value.maxRotationSnapDeg);
+            // Filter spikes only while already grounded; allow free update when landing from air
+            float delta = Mathf.Abs(newAngle - playerModel.TargetRotationDeg.Value);
+            if (!playerModel.IsGrounded.Value || delta <= playerModel.Config.Value.maxRotationSnapDeg)
+                playerModel.TargetRotationDeg.Value = newAngle;
+            Debug.Log("GroundCheck: grounded=" + grounded + ", slidingWall=" + slidingWall + ", angle=" + angle + ", targetRotation=" + playerModel.TargetRotationDeg.Value);
             playerModel.WasGrounded.Value = playerModel.IsGrounded.Value;
             playerModel.IsGrounded.Value = grounded;
             playerModel.IsSlidingWall.Value = slidingWall;

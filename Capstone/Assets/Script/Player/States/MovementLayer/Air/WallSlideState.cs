@@ -21,12 +21,15 @@ public class WallSlideState : AirborneMovementState, ICanGetSystem
 
     protected override void UpdateAirMovement()
     {
-        // Refresh angle only while wall data is still valid
-        if (playerModel.IsSlidingWall.Value)
-            _wallAngle = playerModel.SlidingWallAngle.Value;
-        else if (playerModel.IsNearFgWall.Value)
-            _wallAngle = playerModel.FgWallAngle.Value;
+        // Refresh angle only while wall data is still valid; filter spikes
+        float newAngle = _wallAngle;
+        if (playerModel.IsSlidingWall.Value) newAngle = playerModel.SlidingWallAngle.Value;
+        else if (playerModel.IsNearFgWall.Value) newAngle = playerModel.FgWallAngle.Value;
+        Debug.Log("isSlidingWall: " + playerModel.IsSlidingWall.Value + ", isNearFgWall: " + playerModel.IsNearFgWall.Value + ", newAngle: " + newAngle);
+        if (Mathf.Abs(newAngle - _wallAngle) <= playerModel.Config.Value.maxRotationSnapDeg)
+            _wallAngle = newAngle;
         playerModel.TargetRotationDeg.Value = _wallAngle;
+        Debug.Log("Wall Angle: " + _wallAngle);
 
         if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value){
             playerModel.WallJumpWallNormal.Value = (Vector2)(Quaternion.Euler(0f, 0f, _wallAngle) * Vector2.up);
@@ -34,7 +37,9 @@ public class WallSlideState : AirborneMovementState, ICanGetSystem
         }
         else if (CheckFloorBelow().hitFloor && !IsMovingAwayFromFloor())
         {
-            playerModel.TargetRotationDeg.Value = CheckFloorBelow().floorAngle;
+            if (Mathf.Abs(newAngle - _wallAngle) > playerModel.Config.Value.maxRotationSnapDeg) return;
+            Debug.Log("newAngle: " + newAngle + ", _wallAngle: " + _wallAngle);
+            // playerModel.TargetRotationDeg.Value = CheckFloorBelow().floorAngle;
             this.GetSystem<IPlayerSystem>().ApplyWallSlideLandPush(_wallAngle);
             player.stateMachine.SwitchState<LandState>(StateLayer.Movement);
         }

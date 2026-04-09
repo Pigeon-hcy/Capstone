@@ -86,7 +86,7 @@ MonoBehaviour:
   grappleImpulse: 30
   groundRotationSpeed: 10
   airRotationSpeed: 6
-  maxRotationSnapDeg: 90
+  maxRotationSnapDeg: 30
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
