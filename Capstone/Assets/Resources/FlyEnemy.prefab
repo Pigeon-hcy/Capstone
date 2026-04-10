@@ -460,7 +460,7 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 0
-  boxSource: {fileID: 0}
+  boxSource: {fileID: 6222754311934576700}
   OnDieFeedback: {fileID: 1712598337980323243}
   lineObject: {fileID: 4418447133533142851}
   headObject: {fileID: 1137374562308425481}
@@ -484,5 +484,10 @@ MonoBehaviour:
 --- !u!4 &4448858483514330726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6565947952973124126, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
+  m_PrefabInstance: {fileID: 7395873589258378360}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6222754311934576700 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3528783388151665732, guid: b34fc02a8e1c747d8a192d132d056ac2, type: 3}
   m_PrefabInstance: {fileID: 7395873589258378360}
   m_PrefabAsset: {fileID: 0}
