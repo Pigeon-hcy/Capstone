@@ -166,4 +166,16 @@ namespace SkateGame
         public Vector2 Direction;
         public float ForceMagnitude;
     }
+
+    // 计时器更新事件
+    public struct TimerUpdatedEvent
+    {
+        public float ElapsedTime;
+    }
+
+    // 计时器状态变化事件
+    public struct TimerStateChangedEvent
+    {
+        public bool IsRunning;
+    }
 }

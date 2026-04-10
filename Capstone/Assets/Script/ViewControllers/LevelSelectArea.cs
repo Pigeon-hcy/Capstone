@@ -15,6 +15,7 @@ namespace SkateGame
         private ILevelProgressSystem levelProgressSystem;  // 关卡进度系统
         private ILevelProgressModel levelProgressModel;
         private ILevelModel levelModel;
+        private ITimerSystem timerSystem;
         
         EndUIController endUIController;
         
@@ -40,6 +41,7 @@ namespace SkateGame
             levelProgressSystem = this.GetSystem<ILevelProgressSystem>();
             levelProgressModel = this.GetModel<ILevelProgressModel>();
             levelModel = this.GetModel<ILevelModel>();
+            timerSystem = this.GetSystem<ITimerSystem>();
             
             // 查找关卡 UI 画布
             GameObject canvasObject = GameObject.Find("LevelCanvas");
@@ -68,6 +70,8 @@ namespace SkateGame
             if (other.CompareTag(playerTag))
             {
                 Debug.Log("玩家进入 Level Trigger");
+                // 停止计时
+                timerSystem?.StopTimer();
                 // FOR JERRY'S AUDIO - LEVEL FINISH
                 // ----------------------------
                 // 保存当前关卡进度（到达终点时保存）
