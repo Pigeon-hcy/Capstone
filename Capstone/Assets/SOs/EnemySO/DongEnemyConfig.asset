@@ -18,6 +18,7 @@ MonoBehaviour:
   maxHealth: 30
   startFacingRight: 1
   canBeKilledByQ: 1
+  directFirstAtk: 0
   gravityScale: 0
   guardIncreaseSpeed: 1
   guardDecreaseSpeed: 0.5
@@ -52,7 +53,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  fallTime: 2
+  fallTime: 0.5
   resetCurve:
     serializedVersion: 2
     m_Curve:
