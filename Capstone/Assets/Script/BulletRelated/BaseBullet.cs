@@ -32,6 +32,15 @@ namespace BulletToolKit
             Debug.Log("触发了");
             Destroy(gameObject);
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                Destroy(gameObject);
+            }
+
+        }
     }
     
     

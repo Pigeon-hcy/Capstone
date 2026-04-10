@@ -60,9 +60,9 @@ namespace SkateGame
            // 5️⃣ 发射
            bullet.StartShoot(
                new HitBoxInitValue(
-                   enemyModel.AtkTags.Value,
+                   config.AtkTags,
                    new EffectPackage(0),
-                   new Vector2(1f, 1f)
+                   new Vector2(1.5f, 1.5f)
                )
            );
            directFirstAtk = false;
