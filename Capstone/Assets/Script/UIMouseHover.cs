@@ -59,7 +59,8 @@ public class UIMouseHover : MonoBehaviour,
         baseWidth = rectTransform.rect.width;
         baseHeight = rectTransform.rect.height;
         targetRotation = Quaternion.identity;
-
+        
+        canvasCamera = Camera.main;
         if (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
             canvasCamera = parentCanvas.worldCamera;
         vfxPrefab = GetComponentInChildren<ParticleSystem>().gameObject;
