@@ -60,13 +60,15 @@ public class TMPTextRevealBounce : MonoBehaviour, ICanRegisterEvent, IBelongToAr
         string pushKey = isKeyboard ? "Shift"  : (isPS ? "R2" : "RT");
         string hookKey = isKeyboard ? "J"      : (isPS ? "□"  : "X");
         string slamKey = isKeyboard ? "S"      : (isPS ? "L2" : "LT");
+        string moveKey = isKeyboard ? "AD"     : (isPS ? "L-Stick" : "L-Stick");
 
         string newText = content
             .Replace("{Jump}", jumpKey)
             .Replace("{Dash}", dashKey)
             .Replace("{Push}", pushKey)
             .Replace("{Hook}", hookKey)
-            .Replace("{Slam}", slamKey);
+            .Replace("{Slam}", slamKey)
+            .Replace("{Move}", moveKey);
 
         
 

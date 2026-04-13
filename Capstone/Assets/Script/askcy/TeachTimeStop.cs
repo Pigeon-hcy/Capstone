@@ -12,7 +12,8 @@ public enum TeachTimeStopRequiredInput
     Push,
     Brake,
     Shoot,
-    SwitchItem
+    SwitchItem,
+    Move
 }
 
 public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
@@ -91,6 +92,7 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
             case TeachTimeStopRequiredInput.Brake: return inputModel.BrakeStart.Value;
             case TeachTimeStopRequiredInput.Shoot: return inputModel.ShootStart.Value;
             case TeachTimeStopRequiredInput.SwitchItem: return inputModel.SwitchItem.Value;
+            case TeachTimeStopRequiredInput.Move: return inputModel.Move.Value != Vector2.zero;
             default: return false;
         }
     }
