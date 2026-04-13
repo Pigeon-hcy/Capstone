@@ -25,9 +25,7 @@ public class UIMouseHover : MonoBehaviour,
     [SerializeField] private Material rainbowMaterial;
 
     [Header("点击VFX + 加载关卡")]
-    [SerializeField] private GameObject vfxPrefab;
-    [SerializeField] private string sceneToLoad;
-    [SerializeField] private float delayAfterVFX = 0.5f;
+    private GameObject vfxPrefab;
 
     private RectTransform rectTransform;
     private Image buttonImage;
@@ -64,6 +62,9 @@ public class UIMouseHover : MonoBehaviour,
 
         if (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
             canvasCamera = parentCanvas.worldCamera;
+        vfxPrefab = GetComponentInChildren<ParticleSystem>().gameObject;
+        if (vfxPrefab != null) Debug.Log("vfxPrefab: " + vfxPrefab.name);
+        
     }
 
     void Update()
@@ -125,20 +126,19 @@ public class UIMouseHover : MonoBehaviour,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (isLoadingScene) return;
-        if (vfxPrefab == null || string.IsNullOrEmpty(sceneToLoad)) return;
+        if (vfxPrefab == null) return;
 
-        isLoadingScene = true;
         StartCoroutine(PlayVFXAndLoadScene());
+        Debug.Log("PlayVFXAndLoadScene");
     }
 
     private IEnumerator PlayVFXAndLoadScene()
     {
-        GameObject vfx = Instantiate(vfxPrefab, rectTransform.position, Quaternion.identity);
-
-        if (parentCanvas != null && parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
-            vfx.transform.SetParent(parentCanvas.transform, false);
-
-        ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+        
+        
+        
+        ParticleSystem ps = vfxPrefab.GetComponent<ParticleSystem>();
+        ps.Play();
         if (ps != null)
         {
             ps.Play();
@@ -149,9 +149,9 @@ public class UIMouseHover : MonoBehaviour,
             yield return new WaitForSeconds(1f);
         }
 
-        yield return new WaitForSeconds(delayAfterVFX);
+        //yield return new WaitForSeconds(delayAfterVFX);
 
-        Destroy(vfx);
-        SceneManager.LoadScene(sceneToLoad);
+        
+        
     }
 }
