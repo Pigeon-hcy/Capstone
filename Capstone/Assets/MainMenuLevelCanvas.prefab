@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -380,6 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -409,6 +410,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &1042243173969103580
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -680,6 +682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -709,6 +712,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &1367316004719932810
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1055,6 +1059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -1084,6 +1089,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &2360991494899084357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 552, y: -211}
+  m_AnchoredPosition: {x: 619, y: -241}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2743404167178562573
@@ -1280,7 +1286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1355,6 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -1384,6 +1391,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &3007999262079262834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1714,7 +1722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1789,6 +1797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -1818,6 +1827,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &3344808147141686159
 GameObject:
   m_ObjectHideFlags: 0
@@ -2114,7 +2124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2189,6 +2199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -2218,6 +2229,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &4151778247737134616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2414,7 +2426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2489,6 +2501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -2518,6 +2531,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &5625351006599103723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,7 +2864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2925,6 +2939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -2954,6 +2969,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &6870135664095355729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3436,7 +3452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3511,6 +3527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -3540,6 +3557,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &9066029950402691688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,7 +3618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: da9bfbf1041a3f849a9d20bca357b23e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3675,6 +3693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationRange: 30
+  rotationSmooth: 8
   scaleMultiplier: 1.5
   duration: 0.15
   scaleCurve:
@@ -3704,6 +3723,7 @@ MonoBehaviour:
   enableIdle: 0
   idleZRange: 6
   idleZSpeed: 1.5
+  rainbowMaterial: {fileID: 0}
 --- !u!1 &9180284178606409507
 GameObject:
   m_ObjectHideFlags: 0
