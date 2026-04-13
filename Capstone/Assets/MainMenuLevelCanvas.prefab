@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 5607423774983729411}
   - component: {fileID: 3962579181893782554}
   - component: {fileID: 3612555859880786692}
+  - component: {fileID: 554297444970431785}
   m_Layer: 5
   m_Name: Button (4)
   m_TagString: Untagged
@@ -366,6 +367,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &554297444970431785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356109528201434641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &1042243173969103580
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,6 +557,7 @@ GameObject:
   - component: {fileID: 7382703855443694308}
   - component: {fileID: 5997433586515480453}
   - component: {fileID: 8928138275961947167}
+  - component: {fileID: 7887175787794701487}
   m_Layer: 5
   m_Name: Button (8)
   m_TagString: Untagged
@@ -623,6 +667,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7887175787794701487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295171402111428479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &1367316004719932810
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,6 +932,7 @@ GameObject:
   - component: {fileID: 8495339005879307362}
   - component: {fileID: 5869905929610464866}
   - component: {fileID: 2222240955185800251}
+  - component: {fileID: 2393948017948469419}
   m_Layer: 5
   m_Name: Button (7)
   m_TagString: Untagged
@@ -955,6 +1042,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2393948017948469419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173868228987124962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &2360991494899084357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1232,7 @@ GameObject:
   - component: {fileID: 2743404167178562573}
   - component: {fileID: 4303218368222222320}
   - component: {fileID: 5066127453205478803}
+  - component: {fileID: 3359098751611192489}
   m_Layer: 5
   m_Name: Button (10)
   m_TagString: Untagged
@@ -1212,6 +1342,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3359098751611192489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2945477556403384023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &3007999262079262834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1666,7 @@ GameObject:
   - component: {fileID: 915450557323814239}
   - component: {fileID: 968634452737759749}
   - component: {fileID: 3932385033901304330}
+  - component: {fileID: 2474334424835066339}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -1603,6 +1776,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2474334424835066339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331332038640230200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &3344808147141686159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +2066,7 @@ GameObject:
   - component: {fileID: 208023783508672774}
   - component: {fileID: 2991343033197353316}
   - component: {fileID: 6128540605346881187}
+  - component: {fileID: 2438980670117502879}
   m_Layer: 5
   m_Name: Button (9)
   m_TagString: Untagged
@@ -1960,6 +2176,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2438980670117502879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111232575727956503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &4151778247737134616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2108,6 +2366,7 @@ GameObject:
   - component: {fileID: 231475907672995170}
   - component: {fileID: 1951065655497014228}
   - component: {fileID: 5812545532160959439}
+  - component: {fileID: 3713232751343441280}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -2217,6 +2476,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3713232751343441280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514772004633056364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &5625351006599103723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2501,6 +2802,7 @@ GameObject:
   - component: {fileID: 1705931171042260228}
   - component: {fileID: 6328702889936158972}
   - component: {fileID: 2992240200466122746}
+  - component: {fileID: 7614469962736111798}
   m_Layer: 5
   m_Name: Button (6)
   m_TagString: Untagged
@@ -2610,6 +2912,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7614469962736111798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6686795788410743798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &6870135664095355729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2639,7 +2983,7 @@ RectTransform:
   m_GameObject: {fileID: 6870135664095355729}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3026657462831829797}
@@ -2647,9 +2991,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4417622410471362366
 Canvas:
   m_ObjectHideFlags: 0
@@ -3044,6 +3388,7 @@ GameObject:
   - component: {fileID: 6405255461358689945}
   - component: {fileID: 5638354000668264063}
   - component: {fileID: 7453351138171427772}
+  - component: {fileID: 3672907035459483078}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -3153,6 +3498,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3672907035459483078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8203740824274352061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &9066029950402691688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,6 +3552,7 @@ GameObject:
   - component: {fileID: 6523544814600441097}
   - component: {fileID: 2668382435142271018}
   - component: {fileID: 8923608817271209222}
+  - component: {fileID: 8965425344559180503}
   m_Layer: 5
   m_Name: Button (5)
   m_TagString: Untagged
@@ -3274,6 +3662,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8965425344559180503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066029950402691688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7dfecbcc7c57b044b3296f5c4f5173b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRange: 30
+  scaleMultiplier: 1.5
+  duration: 0.15
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableIdle: 0
+  idleZRange: 6
+  idleZSpeed: 1.5
 --- !u!1 &9180284178606409507
 GameObject:
   m_ObjectHideFlags: 0
