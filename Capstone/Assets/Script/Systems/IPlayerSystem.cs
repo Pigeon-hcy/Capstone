@@ -311,7 +311,7 @@ namespace SkateGame
                 // Slam: override velocity downward; on release, reset vPhysics.y so updraft can recover
                 if (pending.Slamming)
                 {
-                    vOveride = new Vector2(vPush.x + vMove.x, -playerModel.Config.Value.TrickCspeed);
+                    vOveride = new Vector2(vPush.x + vMove.x, -playerModel.Config.Value.TrickCSpeed);
                     isSlamming = true;
                 }
                 else if (isSlamming)
@@ -529,7 +529,7 @@ namespace SkateGame
         }
         private void ApplyTrickCLand()
         {
-            float slamIntoSlope = Vector2.Dot(Vector2.down * playerModel.Config.Value.TrickCBoostspeed, groundRight);
+            float slamIntoSlope = Vector2.Dot(Vector2.down * playerModel.Config.Value.TrickCLandBoostSpeed, groundRight);
             if (Mathf.Sign(slamIntoSlope) == Mathf.Sign(pushSpeed)) vPhysics = slamIntoSlope * groundRight;
             else vPhysics = Vector2.zero;
         }

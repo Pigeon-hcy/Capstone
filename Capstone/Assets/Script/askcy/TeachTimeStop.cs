@@ -26,6 +26,10 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
 
     public MMF_Player CompleteEffectBack;
 
+    public float minTimeStopDuration = 1f;
+
+    private float _tutorialStartedUnscaledTime;
+
     private void OnEnable()
     {
         if (timeStopEffect != null && timeStopEffect.Events != null)
@@ -53,6 +57,7 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
         if (GameStateController.Instance == null || GameStateController.Instance.Current != GameState.InGame) return;
 
         isTimeStopped = true;
+        _tutorialStartedUnscaledTime = Time.unscaledTime;
         GameStateController.Instance.EnterTutorial();
         timeStopEffect.PlayFeedbacks();
     }
@@ -60,6 +65,10 @@ public class TeachTimeStop : MonoBehaviour, ICanGetModel, IBelongToArchitecture
     private void Update()
     {
         if (!isTimeStopped) return;
+
+        if (minTimeStopDuration > 0f &&
+            Time.unscaledTime - _tutorialStartedUnscaledTime < minTimeStopDuration)
+            return;
 
         var inputModel = this.GetModel<IInputModel>();
         if (GetRequiredInputPressed(inputModel))

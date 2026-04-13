@@ -79,15 +79,11 @@ namespace SkateGame
         [Header("Trick C State")]
         public bool isLoopTrickC = true;
         public bool ignoringMovementLayerTrickC = true;
-        public float TrickCspeed = 10f;
-        [Range(0f, 1f)] public float TrickCinertia = 0.67f;
+        public float TrickCSpeed = 10f;
+        [Range(0f, 1f)] public float TrickCInertia = 0.67f;
         public float recoveryDurationTrickC = 0.5f;
         public float slamHitboxDurationTrickC = 0.25f;
-        [Header("Trick C Boost State")]
-        public bool isLoopTrickCBoost = true;
-        public bool ignoringMovementLayerTrickCBoost = true;
-        public float minDurationTrickCBoost = 0.5f;
-        public float TrickCBoostspeed = 10f;
+        public float TrickCLandBoostSpeed = 10f;
         [Header("Trick D State")]
         public bool isLoopTrickD = false;
         public float durationTrickD = 0.5f;
@@ -126,6 +122,7 @@ namespace SkateGame
         public float jumpHoldForce = 6f;
         public float jumpHoldMaxTime = 0.2f;
         public float coyoteTime = 0.1f;
+        public float jumpBufferTime = 0.1f;
         [Range(0f, 1f)] public float jumpCutMultiplier = 0.5f;
 
         [Header("Wall Jump")]

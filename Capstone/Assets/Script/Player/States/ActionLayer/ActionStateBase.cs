@@ -134,5 +134,11 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             if (playerModel.WallRideCooldownTimer.Value < 0f)
                 playerModel.WallRideCooldownTimer.Value = 0f;
         }
+        if (playerModel.TrickACooldownTimer.Value > 0f)
+        {
+            playerModel.TrickACooldownTimer.Value -= Time.deltaTime;
+            if (playerModel.TrickACooldownTimer.Value < 0f)
+                playerModel.TrickACooldownTimer.Value = 0f;
+        }
     }
 }

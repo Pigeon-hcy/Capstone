@@ -42,6 +42,7 @@ namespace SkateGame
         BindableProperty<float> DoubleJumpDuration { get; }
         BindableProperty<bool> IsGrindJump { get; }
         BindableProperty<float> CoyoteTimer { get; }
+        BindableProperty<float> JumpBufferTimer { get; }
 
         /// <summary>
         /// land相关
@@ -69,6 +70,7 @@ namespace SkateGame
         /// </summary>
         BindableProperty<bool> IsInPower { get; }
         BindableProperty<float> VelocityBeforeTrick { get; }
+        BindableProperty<float> TrickACooldownTimer { get; }
         /// <summary>
         /// Action Layer 基础参数
         /// </summary>
@@ -137,6 +139,7 @@ namespace SkateGame
         public BindableProperty<float> DoubleJumpDuration { get; } = new BindableProperty<float>(0f);
         public BindableProperty<bool> IsGrindJump { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> CoyoteTimer { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> JumpBufferTimer { get; } = new BindableProperty<float>(0f);
         
         // land相关
         public BindableProperty<float> LandDuration { get; } = new BindableProperty<float>(0f);
@@ -156,6 +159,7 @@ namespace SkateGame
         // Trick相关
         public BindableProperty<bool> IsInPower { get; } = new BindableProperty<bool>(false);
         public BindableProperty<float> VelocityBeforeTrick { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> TrickACooldownTimer { get; } = new BindableProperty<float>(0f);
 
         // Action Layer 基础参数
         public BindableProperty<bool> IsIgnoringMovementLayer { get; } = new BindableProperty<bool>(false);

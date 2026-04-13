@@ -156,7 +156,6 @@ namespace SkateGame
             stateMachine.AddState(new TrickBState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickBBoostState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickCState(this, rb), StateLayer.Action);
-            stateMachine.AddState(new TrickCBoostState(this, rb), StateLayer.Action);
             stateMachine.AddState(new TrickDState(this, rb), StateLayer.Action);
             stateMachine.AddState(new GrindState(this, rb), StateLayer.Action);
             stateMachine.AddState(new WallRideState(this, rb), StateLayer.Action);

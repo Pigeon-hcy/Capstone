@@ -42,8 +42,12 @@ public abstract class GroundMovementState : StateBase, ICanGetSystem
 
     private void switchAirborneMovement()
     {
-        if (inputModel.JumpStart.Value && !playerModel.IsIgnoringMovementLayer.Value)
+        bool jumpBuffered = playerModel.JumpBufferTimer.Value > 0f;
+        if ((inputModel.JumpStart.Value || jumpBuffered) && !playerModel.IsIgnoringMovementLayer.Value)
+        {
+            playerModel.JumpBufferTimer.Value = 0f;
             player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
+        }
         else CheckFall();
     }
     private void CheckFall()
