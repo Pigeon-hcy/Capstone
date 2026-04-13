@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIMouseHover : MonoBehaviour,
-    IPointerEnterHandler, IPointerExitHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [Header("立体旋转")]
     [SerializeField] private float rotationRange = 15f;
@@ -19,9 +21,19 @@ public class UIMouseHover : MonoBehaviour,
     [SerializeField] private float idleZRange = 3f;
     [SerializeField] private float idleZSpeed = 1.5f;
 
+    [Header("材质效果")]
+    [SerializeField] private Material rainbowMaterial;
+
+    [Header("点击VFX + 加载关卡")]
+    [SerializeField] private GameObject vfxPrefab;
+    [SerializeField] private string sceneToLoad;
+    [SerializeField] private float delayAfterVFX = 0.5f;
+
     private RectTransform rectTransform;
+    private Image buttonImage;
     private Canvas parentCanvas;
     private Camera canvasCamera;
+    private bool isLoadingScene;
     private Vector3 originalScale;
     private Quaternion targetRotation;
     private bool isHovering;
@@ -34,6 +46,13 @@ public class UIMouseHover : MonoBehaviour,
     {
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
+
+        buttonImage = GetComponent<Image>();
+        if (buttonImage == null)
+            buttonImage = GetComponentInChildren<Image>();
+
+        if (buttonImage != null && rainbowMaterial != null)
+            buttonImage.material = rainbowMaterial;
     }
 
     void Start()
@@ -101,5 +120,38 @@ public class UIMouseHover : MonoBehaviour,
         animTimer = 0f;
         isAnimating = true;
         targetRotation = Quaternion.identity;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (isLoadingScene) return;
+        if (vfxPrefab == null || string.IsNullOrEmpty(sceneToLoad)) return;
+
+        isLoadingScene = true;
+        StartCoroutine(PlayVFXAndLoadScene());
+    }
+
+    private IEnumerator PlayVFXAndLoadScene()
+    {
+        GameObject vfx = Instantiate(vfxPrefab, rectTransform.position, Quaternion.identity);
+
+        if (parentCanvas != null && parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
+            vfx.transform.SetParent(parentCanvas.transform, false);
+
+        ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            yield return new WaitForSeconds(ps.main.duration);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
+        yield return new WaitForSeconds(delayAfterVFX);
+
+        Destroy(vfx);
+        SceneManager.LoadScene(sceneToLoad);
     }
 }

@@ -140,5 +140,11 @@ public abstract class ActionStateBase : StateBase, ICanGetSystem, IBelongToArchi
             if (playerModel.TrickACooldownTimer.Value < 0f)
                 playerModel.TrickACooldownTimer.Value = 0f;
         }
+        if (playerModel.AutoGJumpIgnoreTimer.Value > 0f)
+        {
+            playerModel.AutoGJumpIgnoreTimer.Value -= Time.deltaTime;
+            if (playerModel.AutoGJumpIgnoreTimer.Value < 0f)
+                playerModel.AutoGJumpIgnoreTimer.Value = 0f;
+        }
     }
 }

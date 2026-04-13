@@ -43,6 +43,7 @@ MonoBehaviour:
   grindSpeed: 32
   grindResetSpeed: 10
   grindJumpIgnoreTime: 0.2
+  autoGJumpIgnoreTime: 0.2
   isLoopBgWallRide: 1
   ignoringMovementLayerBgWallRide: 0
   BgWallRideCooldown: 0.5
@@ -53,6 +54,7 @@ MonoBehaviour:
   recoveryDurationTrickA: 0
   TrickARewardForceVertical: 16
   TrickARewardForceHorizontal: 10
+  TrickACooldown: 0.3
   isLoopTrickB: 0
   durationTrickB: 0.2
   ignoringMovementLayerTrickB: 1
@@ -70,7 +72,7 @@ MonoBehaviour:
   TrickCInertia: 0.25
   recoveryDurationTrickC: 0.1
   slamHitboxDurationTrickC: 0.25
-  TrickCLandBoostSpeed: 10
+  TrickCLandBoostSpeed: 15
   isLoopTrickD: 0
   durationTrickD: 0.25
   ignoringMovementLayerTrickD: 1

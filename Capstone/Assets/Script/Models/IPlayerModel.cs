@@ -98,6 +98,7 @@ namespace SkateGame
         // 非输入的运行时/调参（来自 InputController，但不包含 isEHeld/isWHeld 等原始输入）
         BindableProperty<Track> CurrentTrack { get; }
         BindableProperty<float> GrindJumpTimer { get; } // 用来防止跳跃后被吸附到原先滑轨
+        BindableProperty<float> AutoGJumpIgnoreTimer { get; } // 自动离轨后短暂屏蔽误触trick
         BindableProperty<float> WallRideCooldownTimer { get; } // 用来控制两次滑墙之间的冷却时间
         BindableProperty<Vector2> WallJumpWallNormal { get; }
         BindableProperty<bool> WasGrounded { get; }
@@ -180,6 +181,7 @@ namespace SkateGame
         // 非输入的运行时/调参（来自 InputController，但不包含 isEHeld/isWHeld 等原始输入）
         public BindableProperty<Track> CurrentTrack { get; } = new BindableProperty<Track>(null);
         public BindableProperty<float> GrindJumpTimer { get; } = new BindableProperty<float>(0f);
+        public BindableProperty<float> AutoGJumpIgnoreTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<float> WallRideCooldownTimer { get; } = new BindableProperty<float>(0f);
         public BindableProperty<Vector2> WallJumpWallNormal { get; } = new BindableProperty<Vector2>(Vector2.zero);
         public BindableProperty<bool> WasGrounded { get; } = new BindableProperty<bool>(true);
