@@ -65,20 +65,20 @@ public class GrindState : ActionStateBase
         // 首先检查E键是否按住，如果没有按住立即退出
         if (!inputModel.Grind.Value)
         {
-            GrindJump();
+            GrindJump(autoTriggered: false);
             return;
         }
-        
+
         // 如果按下跳跃键，直接跳跃
         if (inputModel.JumpStart.Value)
         {
-            GrindJump();
+            GrindJump(autoTriggered: false);
             return;
         }
         // 然后检查currentTrack是否为null
         if (playerModel.CurrentTrack.Value == null)
         {
-            GrindJump();
+            GrindJump(autoTriggered: true);
             return;
         }
 
@@ -88,7 +88,7 @@ public class GrindState : ActionStateBase
             float exitDist = playerModel.Config.Value.grindSpeed * Time.fixedDeltaTime * 3f;
             if ((player.transform.position - trackRef.GetExitPoint(leftToRight)).sqrMagnitude < exitDist * exitDist)
             {
-                GrindJump();
+                GrindJump(autoTriggered: true);
                 return;
             }
         }
@@ -165,9 +165,11 @@ public class GrindState : ActionStateBase
         AudioManager.Instance.fmodPauseRailGrind();
         HapticController.Stop();
     }
-    private void GrindJump()
+    private void GrindJump(bool autoTriggered = false)
     {
         playerModel.IsGrindJump.Value = true;
+        if (autoTriggered)
+            playerModel.AutoGJumpIgnoreTimer.Value = playerModel.Config.Value.autoGJumpIgnoreTime;
         player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         player.stateMachine.SwitchState<JumpState>(StateLayer.Movement);
     }
