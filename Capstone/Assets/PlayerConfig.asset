@@ -49,7 +49,7 @@ MonoBehaviour:
   BgWallrideDuration: 1.5
   isLoopTrickA: 0
   durationTrickA: 0.3
-  ignoringMovementLayerTrickA: 1
+  ignoringMovementLayerTrickA: 0
   recoveryDurationTrickA: 0
   TrickARewardForceVertical: 16
   TrickARewardForceHorizontal: 10
@@ -66,14 +66,11 @@ MonoBehaviour:
   ignoringMovementLayerTrickBBoost: 0
   isLoopTrickC: 1
   ignoringMovementLayerTrickC: 1
-  TrickCspeed: 40
-  TrickCinertia: 0.25
+  TrickCSpeed: 40
+  TrickCInertia: 0.25
   recoveryDurationTrickC: 0.1
   slamHitboxDurationTrickC: 0.25
-  isLoopTrickCBoost: 1
-  ignoringMovementLayerTrickCBoost: 1
-  minDurationTrickCBoost: 0.5
-  TrickCBoostspeed: 15
+  TrickCLandBoostSpeed: 10
   isLoopTrickD: 0
   durationTrickD: 0.25
   ignoringMovementLayerTrickD: 1
@@ -105,6 +102,7 @@ MonoBehaviour:
   jumpHoldForce: 18
   jumpHoldMaxTime: 0.2
   coyoteTime: 0.1
+  jumpBufferTime: 0.1
   jumpCutMultiplier: 0.9
   wallSlideEntrySpeed: 2
   wallJumpImpulse: 18

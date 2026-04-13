@@ -115,6 +115,11 @@ namespace SkateGame
             inputModel.Move.Value = _moveAction.ReadValue<Vector2>();
             inputModel.JumpStart.Value = _jumpAction.WasPressedThisFrame();
             inputModel.JumpReleased.Value = _jumpAction.WasReleasedThisFrame();
+            var playerModel = this.GetModel<IPlayerModel>();
+            if (inputModel.JumpStart.Value)
+                playerModel.JumpBufferTimer.Value = playerModel.Config.Value.jumpBufferTime;
+            else if (playerModel.JumpBufferTimer.Value > 0f)
+                playerModel.JumpBufferTimer.Value -= Time.deltaTime;
             inputModel.Grind.Value = _grindAction.IsPressed();
             inputModel.GrindStart.Value = _grindAction.WasPressedThisFrame();
             inputModel.SwitchItem.Value = _switchItemAction.WasPressedThisFrame();

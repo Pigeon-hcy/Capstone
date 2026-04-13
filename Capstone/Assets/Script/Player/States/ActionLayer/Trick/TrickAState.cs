@@ -24,6 +24,7 @@ public class TrickAState : TrickState
     }
     protected override void UpdateActionState()
     {
+        CheckSwitchAction();
         if(DetectInteractiveObjects(out Collider2D[] colliders) && !AttackTriggered){
             //尝试对第一个进行交互
             IInteractable interact = colliders[0].GetComponentInParent<IInteractable>();
@@ -33,5 +34,10 @@ public class TrickAState : TrickState
             AttackTriggered = true;
             // player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
+    }
+
+    protected override void ExitActionState()
+    {
+        playerModel.TrickACooldownTimer.Value = 0.5f;
     }
 }   
