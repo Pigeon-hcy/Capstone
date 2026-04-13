@@ -284,6 +284,7 @@ namespace SkateGame
         void OnTriggerEnter2D(Collider2D other)
         {
             Debug.Log($"OnTriggerEnter2D: {other.name} (isTrigger: {other.isTrigger})");
+            if(!bodyCollider.IsTouching(other)) return;
 
             if (other.isTrigger)
             {

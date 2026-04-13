@@ -38,6 +38,6 @@ public class TrickAState : TrickState
 
     protected override void ExitActionState()
     {
-        playerModel.TrickACooldownTimer.Value = 0.5f;
+        playerModel.TrickACooldownTimer.Value = playerModel.Config.Value.TrickACooldown;
     }
 }   

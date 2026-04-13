@@ -49,6 +49,7 @@ namespace SkateGame
         public float grindSpeed = 28f;
         public float grindResetSpeed = 10f;
         public float grindJumpIgnoreTime = 0.2f;
+        public float autoGJumpIgnoreTime = 0.15f;
 
         [Header("Bg Wall Ride State")]
         public bool isLoopBgWallRide = true;
@@ -63,6 +64,7 @@ namespace SkateGame
         public float recoveryDurationTrickA = 0.5f;
         public float TrickARewardForceVertical = 14f;
         public float TrickARewardForceHorizontal = 14f;
+        public float TrickACooldown = 0.3f;
         [Header("Trick B State")]
         public bool isLoopTrickB = false;
         public float durationTrickB = 0.25f;
