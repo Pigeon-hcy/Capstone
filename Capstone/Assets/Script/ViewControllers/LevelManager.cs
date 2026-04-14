@@ -19,6 +19,10 @@ namespace SkateGame
 
         public GameObject allLevelCanvas;
         public GameObject basicCanvas;
+
+        [Header("卡片效果")]
+        [SerializeField] private GameObject cardVfxPrefab;
+        [SerializeField] private Material cardMaterial;
         private void Awake()
         {
             // Canvas canvas = GetComponent<Canvas>();
@@ -48,6 +52,7 @@ namespace SkateGame
             SyncCurrentLevelIndex(currentSceneName);
 
             InitializeButtons();
+            SetupCardEffects();
             RefreshButtonStatesOnShow();
         }
 
@@ -112,6 +117,29 @@ namespace SkateGame
                     bool canClick = i <= passedIndex;
                     lvl.button.interactable = canClick;
                    
+                }
+            }
+        }
+
+        private void SetupCardEffects()
+        {
+            foreach (var lvl in levelList)
+            {
+                if (lvl.button == null) continue;
+                var go = lvl.button.gameObject;
+
+                // 添加 VFX 粒子特效作为子物体
+                if (cardVfxPrefab != null && go.GetComponentInChildren<ParticleSystem>() == null)
+                {
+                    var vfx = Instantiate(cardVfxPrefab, go.transform);
+                    vfx.transform.localPosition = Vector3.zero;
+                }
+
+                // 添加 UIMouseHover（悬浮缩放 + 旋转 + 点击播放粒子）
+                if (go.GetComponent<UIMouseHover>() == null)
+                {
+                    var hover = go.AddComponent<UIMouseHover>();
+                    hover.Setup(30f, 1.5f, false, cardMaterial);
                 }
             }
         }

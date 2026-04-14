@@ -62,8 +62,8 @@ public class UIMouseHover : MonoBehaviour,
         canvasCamera = Camera.main;
         if (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
             canvasCamera = parentCanvas.worldCamera;
-        vfxPrefab = GetComponentInChildren<ParticleSystem>().gameObject;
-        if (vfxPrefab != null) Debug.Log("vfxPrefab: " + vfxPrefab.name);
+        var ps = GetComponentInChildren<ParticleSystem>();
+        vfxPrefab = ps != null ? ps.gameObject : null;
         
     }
 
@@ -105,6 +105,19 @@ public class UIMouseHover : MonoBehaviour,
         else if (!isAnimating)
         {
             rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, Quaternion.identity, Time.unscaledDeltaTime * rotationSmooth);
+        }
+    }
+
+    public void Setup(float rotRange, float scaleMult, bool idle, Material mat)
+    {
+        rotationRange = rotRange;
+        scaleMultiplier = scaleMult;
+        enableIdle = idle;
+        if (mat != null)
+        {
+            rainbowMaterial = mat;
+            if (buttonImage != null)
+                buttonImage.material = mat;
         }
     }
 
