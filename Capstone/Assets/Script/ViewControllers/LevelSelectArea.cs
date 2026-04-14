@@ -95,35 +95,10 @@ namespace SkateGame
 
                 // 显示 UI
                 ShowCanvas();
-
-                // endUIController.transform.parent.gameObject.SetActive(true);
-                // endUIController.gameObject.SetActive(true);
-                // endUIController.EndSequence_A(other);
-
-                /*
-                // ----------------------------
-                // ① 清零玩家速度，避免滑过去
-                // ----------------------------
-                Rigidbody2D rb = other.attachedRigidbody;
-                if (rb == null) rb = other.GetComponent<Rigidbody2D>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = Vector2.zero;
-                    rb.angularVelocity = 0f;
-                }
-
-                // ----------------------------
-                // ② 禁止射击（使用 disableInput）
-                // ----------------------------
-                playerController = other.GetComponent<PlayerController>();
-                if (playerController != null)
-                {
-                    playerController.disableInput = true;
-                    playerController.rb.linearVelocity = Vector2.zero;
-                }
-                GameStateController.Instance.EnterUIPause();
-                */
-                GameStateController.Instance?.EnterTutorial();
+                // 激活 navigator（包含 NextLevel / SelectLevel 按钮）并进入 UIPause
+                if (endUIController != null)
+                    endUIController.EndSequence_C();
+                GameStateController.Instance?.EnterUIPause();
             }
         }
 

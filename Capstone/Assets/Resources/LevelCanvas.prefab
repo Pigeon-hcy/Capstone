@@ -3941,35 +3941,35 @@ MonoBehaviour:
   levelList:
   - SceneName: New_1-1
     Name: New_1-1
-    button: {fileID: 0}
+    button: {fileID: 2553562371000686756}
   - SceneName: New_1-2
     Name: New_1-2
-    button: {fileID: 0}
+    button: {fileID: 1561070194911671394}
   - SceneName: New_1-3
     Name: New_1-3
-    button: {fileID: 0}
+    button: {fileID: 567850150024030538}
   - SceneName: New_1-4
     Name: New_1-4
-    button: {fileID: 0}
+    button: {fileID: 5872572045636481014}
   - SceneName: New_1-5
     Name: New_1-5
-    button: {fileID: 0}
+    button: {fileID: 3843891831951166898}
   - SceneName: New_1-6
     Name: New_1-6
-    button: {fileID: 0}
+    button: {fileID: 2402181787918495927}
   - SceneName: New_1-7
     Name: New_1-7
-    button: {fileID: 0}
+    button: {fileID: 2794305750929450805}
   - SceneName: New_1-8
     Name: New_1-8
-    button: {fileID: 0}
+    button: {fileID: 778585764624529603}
   - SceneName: New_1-9
     Name: New_1-9
-    button: {fileID: 0}
+    button: {fileID: 4147931537628628586}
   - SceneName: New_1-10
     Name: New_1-10
-    button: {fileID: 0}
-  allLevelCanvas: {fileID: 0}
+    button: {fileID: 5872269874630554786}
+  allLevelCanvas: {fileID: 5198075948538086420}
   basicCanvas: {fileID: 5902398572690119871}
 --- !u!1 &2734934294427446662
 GameObject:
@@ -4670,7 +4670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6081798857342673497
 RectTransform:
   m_ObjectHideFlags: 0
