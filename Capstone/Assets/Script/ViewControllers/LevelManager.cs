@@ -21,11 +21,11 @@ namespace SkateGame
         public GameObject basicCanvas;
         private void Awake()
         {
-            Canvas canvas = GetComponent<Canvas>();
-            GameObject camObj = GameObject.Find("Main Camera");
-            Debug.Log("LevelManager Awake: canvas=" + canvas + ", camObj=" + camObj);
-            if (canvas != null && camObj != null)
-                canvas.worldCamera = camObj.GetComponent<Camera>();
+            // Canvas canvas = GetComponent<Canvas>();
+            // GameObject camObj = GameObject.Find("Main Camera");
+            // Debug.Log("LevelManager Awake: canvas=" + canvas + ", camObj=" + camObj);
+            // if (canvas != null && camObj != null)
+            //     canvas.worldCamera = camObj.GetComponent<Camera>();
         }
 
         protected override void InitializeController()

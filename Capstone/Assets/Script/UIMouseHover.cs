@@ -39,6 +39,7 @@ public class UIMouseHover : MonoBehaviour,
     private bool isAnimating;
     private float baseWidth;
     private float baseHeight;
+    private bool dimensionsCached;
 
     void Awake()
     {
@@ -56,8 +57,6 @@ public class UIMouseHover : MonoBehaviour,
     void Start()
     {
         originalScale = rectTransform.localScale;
-        baseWidth = rectTransform.rect.width;
-        baseHeight = rectTransform.rect.height;
         targetRotation = Quaternion.identity;
         
         canvasCamera = Camera.main;
@@ -72,7 +71,7 @@ public class UIMouseHover : MonoBehaviour,
     {
         if (isAnimating)
         {
-            animTimer += Time.deltaTime;
+            animTimer += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(animTimer / duration);
             float curveValue = scaleCurve.Evaluate(t);
 
@@ -85,7 +84,7 @@ public class UIMouseHover : MonoBehaviour,
                 isAnimating = false;
         }
 
-        if (isHovering)
+        if (isHovering && dimensionsCached)
         {
             Vector2 screenCenter = RectTransformUtility.WorldToScreenPoint(canvasCamera, rectTransform.position);
             Vector2 mouseScreen = Input.mousePosition;
@@ -95,22 +94,30 @@ public class UIMouseHover : MonoBehaviour,
             float normalizedY = Mathf.Clamp(offset.y / (baseHeight * 0.5f), -1f, 1f);
 
             targetRotation = Quaternion.Euler(-normalizedY * rotationRange, normalizedX * rotationRange, 0f);
-            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, targetRotation, Time.deltaTime * rotationSmooth);
+            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, targetRotation, Time.unscaledDeltaTime * rotationSmooth);
         }
         else if (enableIdle && !isAnimating)
         {
-            float tiltZ = Mathf.Sin(Time.time * idleZSpeed) * idleZRange;
+            float tiltZ = Mathf.Sin(Time.unscaledTime * idleZSpeed) * idleZRange;
             targetRotation = Quaternion.Euler(0f, 0f, tiltZ);
-            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, targetRotation, Time.deltaTime * rotationSmooth);
+            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, targetRotation, Time.unscaledDeltaTime * rotationSmooth);
         }
         else if (!isAnimating)
         {
-            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, Quaternion.identity, Time.deltaTime * rotationSmooth);
+            rectTransform.localRotation = Quaternion.Lerp(rectTransform.localRotation, Quaternion.identity, Time.unscaledDeltaTime * rotationSmooth);
         }
+    }
+
+    private void CacheDimensions()
+    {
+        baseWidth = rectTransform.rect.width;
+        baseHeight = rectTransform.rect.height;
+        dimensionsCached = true;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!dimensionsCached) CacheDimensions();
         isHovering = true;
         animTimer = 0f;
         isAnimating = true;
