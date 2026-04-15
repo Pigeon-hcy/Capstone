@@ -52,7 +52,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &256062246697266904
 RectTransform:
   m_ObjectHideFlags: 0
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4651924557495327246, guid: 50be6066c4869e041889067a7c072aa7, type: 3}
+  m_Sprite: {fileID: 6660568586452416549, guid: f0a2f7669cb628f4bba1bedd3702c1e9, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1758,8 +1758,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 256062246697266904}
-  - {fileID: 8441535948235629120}
   - {fileID: 790239787980508191}
+  - {fileID: 8441535948235629120}
   - {fileID: 2925390685930736613}
   - {fileID: 6777013886555776915}
   - {fileID: 6435904784413350292}
@@ -2390,18 +2390,18 @@ MonoBehaviour:
   updateInterval: 0.016
   tricksText: {fileID: 2999757089019883176}
   gradeSprites:
-  - {fileID: 4651924557495327246, guid: 50be6066c4869e041889067a7c072aa7, type: 3}
-  - {fileID: 1816491123366482399, guid: 0ae7d7c7cc9611b4595b6568acbce168, type: 3}
-  - {fileID: -636177624662960999, guid: 9dbe0402bd6efa847bbe61e9b9992c0e, type: 3}
-  - {fileID: 1443190807939881256, guid: 8554712f8ff149b4581480fc76cdec5c, type: 3}
-  - {fileID: 7596078805163123562, guid: 0b3cc1ea2b01dc84fab9d9aeacac1f34, type: 3}
+  - {fileID: 6660568586452416549, guid: f0a2f7669cb628f4bba1bedd3702c1e9, type: 3}
+  - {fileID: -8221802452147339452, guid: 895c4f6522f769246960569ee2df017b, type: 3}
+  - {fileID: -4645683575930941925, guid: c43bdf1dc6644bb429cb2df689df78d1, type: 3}
+  - {fileID: 6413734476913471024, guid: a0c3a12c8cb93f24c9c2378a8dd74bee, type: 3}
+  - {fileID: 1335385452945238478, guid: 7868aa4f35c68c242a7773d538036634, type: 3}
   gradeImage: {fileID: 646278441353493996}
   frameSprites:
-  - {fileID: -3081564391799170456, guid: 0dec048d7c089d6489b3b1915e0bcb2f, type: 3}
-  - {fileID: 7671177557647991054, guid: 0201eb845abc0434eadfade844280ef7, type: 3}
-  - {fileID: -8518353998632125802, guid: 17ac47fc2f79dd3418070c4647067912, type: 3}
-  - {fileID: 1416718495989851635, guid: 96d45f691144bf9459ac40c820736186, type: 3}
-  - {fileID: -1109473710268908277, guid: 12592aeb06cb03f479d326ee220935c5, type: 3}
+  - {fileID: 1128515751340648272, guid: ea0b58d6742dd0344b48bf2c9f757fe9, type: 3}
+  - {fileID: 7839472567634266479, guid: 90be5bc7219a276469bd8adb876ac674, type: 3}
+  - {fileID: 1280646856677322220, guid: fceae17595c62004ba49638e02f3a24b, type: 3}
+  - {fileID: -8079357727930904666, guid: 763fda9a038352149b67eaf4dca031a1, type: 3}
+  - {fileID: 4146786208365501868, guid: 9fb6b89a4ad4a8041a033b50f9a9e725, type: 3}
   frameImage: {fileID: 1623216247833424360}
   decorationSprites:
   - {fileID: 4383076622727950813, guid: 94788fab446477144a7ab9a0c7c54ddf, type: 3}
@@ -4982,7 +4982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3081564391799170456, guid: 0dec048d7c089d6489b3b1915e0bcb2f, type: 3}
+  m_Sprite: {fileID: 1128515751340648272, guid: ea0b58d6742dd0344b48bf2c9f757fe9, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

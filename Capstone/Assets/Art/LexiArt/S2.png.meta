@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 77567fb6749d8425687502e8f49821d3
+guid: f0a2f7669cb628f4bba1bedd3702c1e9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1000823467669046979
-    second: Paper_Cardboard_01_normalogl_0
+      213: 6660568586452416549
+    second: S2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
-    sRGBTexture: 0
+    enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -55,9 +55,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 1
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Paper_Cardboard_01_normalogl_0
+      name: S2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 4096
-        height: 4096
+        x: 44
+        y: 52
+        width: 178
+        height: 222
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3936b6db5c5c12f0800000000000000
-      internalID: -1000823467669046979
+      spriteID: 5283f9517d71f6c50800000000000000
+      internalID: 6660568586452416549
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Paper_Cardboard_01_normalogl_0: -1000823467669046979
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
