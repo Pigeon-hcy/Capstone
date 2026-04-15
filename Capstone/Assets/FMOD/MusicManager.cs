@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using FMODUnity;
 using FMOD.Studio;
 
@@ -76,6 +77,21 @@ public class MusicManager : MonoBehaviour
         //BMX1
         bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
         #endregion
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu")
+        {
+            fmodPlayMainM();
+        }
     }
 
     // Update is called once per frame
