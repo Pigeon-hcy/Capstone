@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using FMODUnity;
 using FMOD.Studio;
 
@@ -9,6 +10,10 @@ public class MusicManager : MonoBehaviour
     //Test
     public EventReference testEvent;
     private EventInstance testEventInstance;
+
+    //MXMain
+    public EventReference mainMusicEvent;
+    private EventInstance mainMusicEventInstance;
 
     //MX1
     public EventReference levelMusic1Event;
@@ -46,6 +51,9 @@ public class MusicManager : MonoBehaviour
         testEventInstance = RuntimeManager.CreateInstance(testEvent);
 
         //MX1
+        mainMusicEventInstance = RuntimeManager.CreateInstance(mainMusicEvent);
+
+        //MX1
         levelMusic1EventInstance = RuntimeManager.CreateInstance(levelMusic1Event);
 
         //MX2
@@ -69,6 +77,21 @@ public class MusicManager : MonoBehaviour
         //BMX1
         bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
         #endregion
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu")
+        {
+            fmodPlayMainM();
+        }
     }
 
     // Update is called once per frame
@@ -103,15 +126,45 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    //LevelMusic1
+    //Pause All
     public void fmodPauseAll()
     {
         fmodPauseBM1();
+        fmodPauseMainM();
         fmodPauseLM1();
         fmodPauseLM2();
         fmodPauseLM3();
         fmodPauseLM7();
     }
+
+    //MainMusic
+    public void fmodPlayMainM()
+    {
+        fmodPauseAll();
+        if (mainMusicEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            mainMusicEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                mainMusicEventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseMainM()
+    {
+        if (mainMusicEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            mainMusicEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                mainMusicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
+    //LevelMusic1
     public void fmodPlayLM1()
     {
         fmodPauseAll();
@@ -138,7 +191,7 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-     //LevelMusic2
+    //LevelMusic2
     public void fmodPlayLM2()
     {
         fmodPauseAll();

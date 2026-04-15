@@ -16,6 +16,8 @@ public class AudioPlayer : MonoBehaviour
 
     public bool pause;
 
+    public bool MM;
+
     public bool LM1;
 
     public bool LM2;
@@ -103,7 +105,11 @@ public class AudioPlayer : MonoBehaviour
         var music = speaker.GetComponent<MusicManager>();
         if (music == null)
             return;
-        if (LM1)
+        if (MM)
+        {
+            music.fmodPlayMainM();
+        }
+        else if (LM1)
         {
             music.fmodPlayLM1();
         }
@@ -127,7 +133,11 @@ public class AudioPlayer : MonoBehaviour
         var music = speaker.GetComponent<MusicManager>();
         if (music == null)
             return;
-        if (LM1)
+        if (MM)
+        {
+            music.fmodPauseMainM();
+        }
+        else if (LM1)
         {
             music.fmodPauseLM1();
         }
