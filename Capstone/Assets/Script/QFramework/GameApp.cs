@@ -10,7 +10,6 @@ namespace SkateGame
             this.RegisterModel<IPlayerModel>(new PlayerModel());
             this.RegisterModel<IInputModel>(new InputModel());
             this.RegisterModel<IGameModel>(new GameModel());
-            this.RegisterModel<ITrickListModel>(new TrickListModel());
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<ILevelProgressModel>(new LevelProgressModel());
             this.RegisterModel<IEnemyModel>(new EnemyModel());
@@ -24,7 +23,6 @@ namespace SkateGame
             this.RegisterSystem<ICollisionSystem>(new CollisionSystem());
             this.RegisterSystem<IEnemyAssetSystem>(new EnemyAssetSystem());
             this.RegisterSystem<IPlayerSystem>(new PlayerSystem());
-            this.RegisterSystem<ITrickSystem>(new TrickSystem());
             this.RegisterSystem<ILevelSystem>(new LevelSystem());
             this.RegisterSystem<ILevelProgressSystem>(new LevelProgressSystem());
             this.RegisterSystem<IRespawnSystem>(new RespawnSystem());

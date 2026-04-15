@@ -11,8 +11,6 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
         isLoop = playerModel.Config.Value.isLoopTrickB;
         stateDuration = playerModel.Config.Value.durationTrickB;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickB;
-        this.trickName = "TrickB";
-        this.scoreValue = 10; 
     }
 
     protected override void EnterTrickState()

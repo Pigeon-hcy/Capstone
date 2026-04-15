@@ -132,3 +132,6 @@ MonoBehaviour:
   - {fileID: 9141978474503307967, guid: d3b347cd22ab0934d8acd88568dfeecb, type: 3}
   bulletSpeed: 15
   bulletMaxCount: 2
+  scoringDecayPerSecond: 5
+  scoringSpeedGainRate: 0.4
+  scoringKillBonus: 20

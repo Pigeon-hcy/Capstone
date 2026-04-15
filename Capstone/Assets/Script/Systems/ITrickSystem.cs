@@ -3,126 +3,42 @@ using UnityEngine;
 using System.Collections.Generic;
 
 namespace SkateGame
-{//For scoring system of tricks
+{
     public interface ITrickSystem : ISystem
     {
         void AddTrick(TrickState trick);
         void RemoveAllTricks();
-        int GetTrickScore(TrickState trick);
-        int SumOfScore();
-        char DetectGrade(int sumScore);
         BindableProperty<List<TrickState>> TrickList { get; }
-        BindableProperty<char> Grade { get; }
         void printTrickList();
-        int DecreaseSumByTime(int currentSum, float elapsedSeconds, float decreasePerSecond = 1f);
     }
 
-    public class TrickSystem : AbstractSystem, ITrickSystem, ICanSendCommand, ICanSendEvent
+    public class TrickSystem : AbstractSystem, ITrickSystem, ICanSendEvent
     {
         private ITrickListModel trickListModel;
-        
-        // 暴露TrickListModel的属性
+
         public BindableProperty<List<TrickState>> TrickList => trickListModel.TrickList;
-        public BindableProperty<char> Grade => trickListModel.Grade;
-        
+
         protected override void OnInit()
         {
-            // 获取TrickListModel
             trickListModel = this.GetModel<ITrickListModel>();
         }
 
-        #region Public Methods
-        
         public void AddTrick(TrickState trick)
         {
-            if (trick != null)
-            {
-                trickListModel.TrickList.Value.Add(trick);
-                
-                // 发送 TrickList 变化事件
-                this.SendEvent(new TrickListChangedEvent
-                {
-                    LatestTrick = trick
-                });
-                
-            }
+            if (trick == null) return;
+            trickListModel.TrickList.Value.Add(trick);
+            this.SendEvent(new TrickListChangedEvent { LatestTrick = trick });
         }
-        
 
         public void RemoveAllTricks()
         {
             trickListModel.TrickList.Value.Clear();
-            
         }
 
-        public int GetTrickScore(TrickState trick)
-        {
-            return trick?.ScoreValue ?? 0;
-        }
-
-        public int SumOfScore()
-        {
-            int sum = 0;
-            foreach (TrickState trick in trickListModel.TrickList.Value)
-            {
-                sum += GetTrickScore(trick);
-            }
-            return sum;
-        }
-
-        public char DetectGrade(int sumScore)
-        {
-            switch (sumScore)
-            {
-                case 10:
-                    return 'C';
-                case 20:
-                    return 'B';
-                case 30:
-                    return 'A';
-                default:
-                    return 'D';
-            }
-        }
-        
         public void printTrickList()
         {
             foreach (TrickState trick in trickListModel.TrickList.Value)
-            {
                 Debug.Log("System print trick list: " + trick.GetType().Name);
-            }
         }
-        
-       
-        public int DecreaseSumByTime(int currentSum, float elapsedSeconds, float decreasePerSecond = 1f)
-        {
-            if (currentSum <= 0 || elapsedSeconds <= 0)
-            {
-                return currentSum;
-            }
-            
-            // 计算应该减少的分数
-            float decreaseAmount = elapsedSeconds * decreasePerSecond;
-            
-            // 减少分数，确保不会小于0
-            int newSum = Mathf.Max(0, currentSum - Mathf.RoundToInt(decreaseAmount));
-            
-            Debug.Log($"TrickSystem: 总分随时间减少 - 原始: {currentSum}, 经过时间: {elapsedSeconds}秒, 减少: {Mathf.RoundToInt(decreaseAmount)}, 新总分: {newSum}");
-            
-            return newSum;
-        }
-        
-        #endregion
-
-        #region Private Methods
-        
-        private void UpdateGrade()
-        {
-            int totalScore = SumOfScore();
-            trickListModel.Grade.Value = DetectGrade(totalScore);
-            Debug.Log($"TrickSystem: 更新等级 - 总分: {totalScore}, 等级: {trickListModel.Grade.Value}");
-        }
-        
-        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace SkateGame
     {
         Die
     }
-    public class BasicEnemyController : MonoBehaviour, IController, IAttackable, IInteractable
+    public class BasicEnemyController : MonoBehaviour, IController, IAttackable, IInteractable, IBelongToArchitecture, ICanSendEvent
     {
         public EnemyConfig config;
 
@@ -399,6 +399,7 @@ namespace SkateGame
 
     void Die()
     {
+        this.SendEvent<EnemyKilledEvent>();
         //【死亡音效】
         if (rb) rb.linearVelocity = Vector2.zero;
         if(dmgBox!= null)
