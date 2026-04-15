@@ -164,5 +164,11 @@ namespace SkateGame
         public GameObject[] bulletPrefabs;   // 可切换的子弹类型
         public float bulletSpeed = 15f;
         public int bulletMaxCount = 2;
+
+        [Header("Scoring")]
+        public float scoringDecayPerSecond = 5f;
+        // score/s gained per unit of PushSpeed; break-even = decayPerSecond / speedGainRate
+        public float scoringSpeedGainRate = 0.5f;
+        public float scoringKillBonus = 20f;
     }
 }

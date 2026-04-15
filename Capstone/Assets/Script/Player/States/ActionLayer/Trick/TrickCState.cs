@@ -9,8 +9,6 @@ public class TrickCState : TrickState, ICanGetSystem, IBelongToArchitecture
     {
         isLoop = playerModel.Config.Value.isLoopTrickC;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickC;
-        this.trickName = "TrickC";
-        this.scoreValue = 10; 
     }
 
     protected override void EnterTrickState()

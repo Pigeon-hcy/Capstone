@@ -19,21 +19,14 @@ namespace SkateGame
         public Sprite[] decorationSprites = new Sprite[5];
         public Image decorationImage;
 
-        public float decayPerSecond = 0.1f;
-
-        private ITrickListModel trickModel;
         private IPlayerModel playerModel;
-        private ITrickSystem trickSystem;
+        private PlayerConfig config;
 
-        private float sum = 0f;
+        private float score = 0f;
         private int gradeIndex = 4;
-        private float fill = 0f;
-
-        private int groundedFrame = 0;
-        private const int groundedNeed = 3;
 
         // --------------------------
-        //升级动画
+        // Grade-up animation
         // --------------------------
         private bool playPopAnim = false;
         private float animTime = 0f;
@@ -49,25 +42,24 @@ namespace SkateGame
 
         protected override void InitializeController()
         {
-            trickModel = this.GetModel<ITrickListModel>();
             playerModel = this.GetModel<IPlayerModel>();
-            trickSystem = this.GetSystem<ITrickSystem>();
+            config = playerModel.Config.Value;
 
             gradeIndex = 4;
-            fill = 0f;
+            score = 0f;
 
             UpdateAllSprites();
             gradeImage.fillAmount = 0f;
 
             baseScale = frameImage.transform.localScale;
+
+            this.RegisterEvent<EnemyKilledEvent>(_ => OnEnemyKilled())
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
         }
 
         protected override void OnRealTimeUpdate()
         {
-            HandleLandingDetection();
-            UpdateFill(Time.deltaTime);
-
-            // 处理升级动画
+            UpdateScore(Time.deltaTime);
             UpdatePopAnimation(Time.deltaTime);
 
             if (!isGameStarted && Input.anyKeyDown)
@@ -77,70 +69,50 @@ namespace SkateGame
             }
         }
 
-        private void HandleLandingDetection()
+        // Continuously update score from speed/decay, then sync grade and fill bar
+        private void UpdateScore(float dt)
         {
-            if (playerModel == null) return;
-
-            if (playerModel.IsGrounded.Value)
+            float speed = Mathf.Abs(playerModel.PushSpeed.Value);
+            score = score + (config.scoringSpeedGainRate * speed - config.scoringDecayPerSecond) * dt;
+            score = Mathf.Clamp(score, 0f, 100f);
+            int newGrade = CalculateGrade((int)score);
+            if (newGrade != gradeIndex)
             {
-                groundedFrame++;
-                if (groundedFrame == groundedNeed)
-                    OnLanding();
-            }
-            else
-            {
-                groundedFrame = 0;
-            }
-        }
-
-        private void UpdateFill(float dt)
-        {
-            fill -= decayPerSecond * dt;
-
-            if (fill <= 0f)
-            {
-                fill = 0f;
-
-                if (gradeIndex < 4)
+                bool upgraded = newGrade < gradeIndex;
+                gradeIndex = newGrade;
+                UpdateAllSprites();
+                if (upgraded)
                 {
-                    gradeIndex++;
-                    fill = 1f;
-                    UpdateAllSprites();
+                    TriggerPopAnimation();
+                    // FOR JERRY'S AUDIO - D/C/B/A/S RANK (gradeIndex: 4=D, 3=C, 2=B, 1=A, 0=S)
+                    gainScoreEffect.PlayFeedbacks();
                 }
             }
 
-            gradeImage.fillAmount = fill;
+            gradeImage.fillAmount = GetFillInGrade(score);
         }
 
-        private void OnLanding()
+        private void OnEnemyKilled()
         {
-            tricksText.text = "";
+            score += config.scoringKillBonus;
+        }
 
-            int added = trickSystem.SumOfScore();
-            sum += added;
-
-            int newGrade = CalculateGrade((int)sum);
-
-            if (newGrade < gradeIndex)
-            {
-                gradeIndex = newGrade;
-                fill = 1f;
-
-                UpdateAllSprites();
-                TriggerPopAnimation();
-                // FOR JERRY'S AUDIO - D/C/B/A/S RANK (gradeIndex: 4=D, 3=C, 2=B, 1=A, 0=S)
-                gainScoreEffect.PlayFeedbacks();
-            }
-
-            trickSystem.RemoveAllTricks();
+        // Returns normalized fill (0-1) within the current grade band
+        private float GetFillInGrade(float s)
+        {
+            if (s >= 100f) return 1f;
+            if (s >= 80f)  return (s - 80f) / 20f;
+            if (s >= 60f)  return (s - 60f) / 20f;
+            if (s >= 20f)  return (s - 20f) / 40f;
+            return s / 20f;
         }
 
         private int CalculateGrade(int s)
         {
             if (s >= 100) return 0;
-            if (s >= 80) return 1;
-            if (s >= 60) return 2;
-            if (s >= 20) return 3;
+            if (s >= 80)  return 1;
+            if (s >= 60)  return 2;
+            if (s >= 20)  return 3;
             return 4;
         }
 
@@ -155,7 +127,7 @@ namespace SkateGame
         }
 
         // -----------------------------
-        // 升级动画
+        // Grade-up animation
         // -----------------------------
         private void TriggerPopAnimation()
         {
@@ -180,9 +152,8 @@ namespace SkateGame
                 return;
             }
 
-            // Easing：先大后回
+            // Ease: pop then return
             float scaleFactor = Mathf.Lerp(popScale, 1f, t);
-
             Vector3 scaled = baseScale * scaleFactor;
 
             frameImage.transform.localScale = scaled;

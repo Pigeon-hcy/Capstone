@@ -1,6 +1,5 @@
 using UnityEngine;
 using QFramework;
-using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using System;
@@ -48,8 +47,6 @@ namespace SkateGame
         [Header("Hitbox")]
         public Collider2D trickDetectHitbox;
         
-        Coroutine _clearTricksRoutine;
-
         [Header("Grappling Vine Gun")]
         public VineGun vineGun;
 
@@ -222,22 +219,6 @@ namespace SkateGame
             // 检测玩家方向变化并更新粒子特效
             CheckPlayerDirectionChange();
 
-            //过几秒自动清空tricklist和grade
-            if (this.GetSystem<ITrickSystem>().TrickList.Value.Count > 0
-                && _clearTricksRoutine == null
-                && isActiveAndEnabled
-                && gameObject.activeInHierarchy)
-            {
-                _clearTricksRoutine = StartCoroutine(ClearTricksAfterDelay(5f));
-            }
-        }
-        //过几秒自动清空tricklist和grade
-        private IEnumerator ClearTricksAfterDelay(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            this.GetSystem<ITrickSystem>().RemoveAllTricks();
-            this.GetModel<ITrickListModel>().Grade.Value = 'D';
-            _clearTricksRoutine = null;
         }
 
         // 检测玩家是否掉落过低
@@ -268,12 +249,6 @@ namespace SkateGame
         protected override void OnDisable()
         {
             base.OnDisable();
-
-            if (_clearTricksRoutine != null)
-            {
-                StopCoroutine(_clearTricksRoutine);
-                _clearTricksRoutine = null;
-            }
         }
 
 

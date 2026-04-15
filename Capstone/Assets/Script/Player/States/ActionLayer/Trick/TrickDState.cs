@@ -11,8 +11,6 @@ public class TrickDState : TrickState, ICanGetSystem, IBelongToArchitecture
         isLoop = playerModel.Config.Value.isLoopTrickD;
         stateDuration = playerModel.Config.Value.durationTrickD;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickD;
-        this.trickName = "TrickD";
-        this.scoreValue = 10; 
         energySystem = this.GetSystem<IEnergySystem>();
     }
 

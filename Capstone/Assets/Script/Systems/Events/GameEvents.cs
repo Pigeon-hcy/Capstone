@@ -138,6 +138,11 @@ namespace SkateGame
         public bool IsHitting;
     }
 
+    // 击杀敌人事件
+    public struct EnemyKilledEvent
+    {
+    }
+
     // Input device hot-switch event
     public enum InputDeviceType { KeyboardMouse, Gamepad, GamepadPS, GamepadXbox }
     public struct InputDeviceSwitchedEvent

@@ -11,8 +11,6 @@ public class TrickAState : TrickState
         isLoop = playerModel.Config.Value.isLoopTrickA;
         stateDuration = playerModel.Config.Value.durationTrickA;
         ignoringMovementLayer = playerModel.Config.Value.ignoringMovementLayerTrickA;
-        this.trickName = "TrickA";
-        this.scoreValue = 10; 
     }
 
     protected override void EnterTrickState()
