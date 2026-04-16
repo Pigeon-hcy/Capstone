@@ -224,7 +224,7 @@ namespace SkateGame
         // 检测玩家是否掉落过低
         private bool CheckFallOutOfBounds()
         {
-            if (transform.position.y < -20f)
+            if (transform.position.y < -30f)
             {
                 
                 var respawnSystem = this.GetSystem<IRespawnSystem>();
