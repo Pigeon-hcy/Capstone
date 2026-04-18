@@ -1,12 +1,20 @@
+using FMOD.Studio;
+using FMODUnity;
+using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
-using FMODUnity;
-using FMOD.Studio;
 
 public class CutscenePlayer : MonoBehaviour
 {
     VideoPlayer videoPlayer;
+
+    public int videoIndex;
+
+    public TextAsset csvFile;
+    List<float> skipTimestamps = new List<float>();
+    private int currentSkipIndex = 0;
 
     #region FMOD
 
@@ -21,6 +29,8 @@ public class CutscenePlayer : MonoBehaviour
         videoPlayer.prepareCompleted += OnPrepared;
         videoPlayer.loopPointReached += OnVideoEnd;
 
+        ParseCSV();
+
         #region FMOD
 
         //Test
@@ -32,6 +42,27 @@ public class CutscenePlayer : MonoBehaviour
     void Start()
     {
         videoPlayer.Prepare();
+    }
+
+    void ParseCSV()
+    {
+        if (csvFile == null) return;
+
+        string[] lines = csvFile.text.Split(new[] { '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+        if (videoIndex >= 0 && videoIndex < lines.Length)
+        {
+            string targetLine = lines[videoIndex];
+            string[] values = targetLine.Split(',');
+
+            for (int i = 1; i < values.Length; i++)
+            {
+                if (float.TryParse(values[i].Trim(), out float time))
+                {
+                    skipTimestamps.Add(time);
+                }
+            }
+        }
     }
 
     void OnPrepared(VideoPlayer source)
@@ -50,9 +81,18 @@ public class CutscenePlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            videoPlayer.time += 10.0f; 
-            testEventInstance.getTimelinePosition(out int currentPos);
-            testEventInstance.setTimelinePosition(currentPos + 10000);
+            float currentTime = (float)videoPlayer.time;
+
+            foreach (float timestamp in skipTimestamps)
+            {
+                if (timestamp > currentTime + 0.2f)
+                {
+                    videoPlayer.time = timestamp;
+                    testEventInstance.setTimelinePosition((int)(timestamp * 1000));
+
+                    return; 
+                }
+            }
         }
     }
 }
