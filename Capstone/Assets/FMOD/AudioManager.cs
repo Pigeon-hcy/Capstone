@@ -127,6 +127,18 @@ public class AudioManager : MonoBehaviour
     //Missile Shoot
     public EventReference _missileEvent;
     private EventInstance _missileEventInstance;
+
+    //Enemy Attack Flying
+    public EventReference _enemyFlyingEvent;
+    private EventInstance _enemyFlyingEventInstance;
+
+    //Enemy Attack Throwing
+    public EventReference _enemyThrowingEvent;
+    private EventInstance _enemyThrowingEventInstance;
+
+    //Enemy Attack Brick
+    public EventReference _enemyBrickEvent;
+    private EventInstance _enemyBrickEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -248,6 +260,15 @@ public class AudioManager : MonoBehaviour
 
         //Missile Shoot
         _missileEventInstance = RuntimeManager.CreateInstance(_missileEvent);
+
+        //Enemy Attack Flying
+        _enemyFlyingEventInstance = RuntimeManager.CreateInstance(_enemyFlyingEvent);
+
+        //Enemy Attack Throwing
+        _enemyThrowingEventInstance = RuntimeManager.CreateInstance(_enemyThrowingEvent);
+
+        //Enemy Attack Brick
+        _enemyBrickEventInstance = RuntimeManager.CreateInstance(_enemyBrickEvent);
         #endregion
     }
 
@@ -676,6 +697,33 @@ public class AudioManager : MonoBehaviour
         if (_missileEventInstance.isValid())
         {
             _missileEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+    }
+
+    //Enemy Attack Flying
+    public void fmodPlayEnemyFlying()
+    {
+        if (_enemyFlyingEventInstance.isValid())
+        {
+            _enemyFlyingEventInstance.start();
+        }
+    }
+
+    //Enemy Attack Throwing
+    public void fmodPlayEnemyThrowing()
+    {
+        if (_enemyThrowingEventInstance.isValid())
+        {
+            _enemyThrowingEventInstance.start();
+        }
+    }
+
+    //Enemy Attack Brick
+    public void fmodPlayEnemyBrick()
+    {
+        if (_enemyBrickEventInstance.isValid())
+        {
+            _enemyBrickEventInstance.start();
         }
     }
     #endregion
