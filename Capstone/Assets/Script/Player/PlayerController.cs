@@ -86,7 +86,7 @@ namespace SkateGame
         public MMF_Player powerGrindEffectPlayer;
         public MMF_Player landEffectPlayer;
         public MMF_Player pushEffectPlayer;
-
+        public MMF_Player highSpeedEffect;
 
         [Header("粒子特效容器")]
         public Transform particleEffectContainer; // 粒子特效容器
@@ -219,6 +219,20 @@ namespace SkateGame
             // 检测玩家方向变化并更新粒子特效
             CheckPlayerDirectionChange();
 
+            // Play effect when speed crosses the scoring break-even threshold
+            CheckScoreThreshold();
+        }
+
+        private bool _wasAboveScoreThreshold = false;
+        private void CheckScoreThreshold()
+        {
+            if (!highSpeedEffect) return;
+            var cfg = playerModel.Config.Value;
+            float speed = Mathf.Abs(playerModel.PushSpeed.Value);
+            bool above = cfg.scoringSpeedGainRate * speed > cfg.scoringDecayPerSecond;
+            if (above && !_wasAboveScoreThreshold) highSpeedEffect?.PlayFeedbacks();
+            else if (highSpeedEffect.IsPlaying && !above) highSpeedEffect?.StopFeedbacks();
+            _wasAboveScoreThreshold = above;
         }
 
         // 检测玩家是否掉落过低
