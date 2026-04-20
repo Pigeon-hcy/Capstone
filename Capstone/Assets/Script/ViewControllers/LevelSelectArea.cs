@@ -16,6 +16,8 @@ namespace SkateGame
         private ILevelProgressModel levelProgressModel;
         private ILevelModel levelModel;
         private ITimerSystem timerSystem;
+        private ITimerModel timerModel;
+        private IBestTimeSystem bestTimeSystem;
         
         EndUIController endUIController;
         
@@ -42,6 +44,8 @@ namespace SkateGame
             levelProgressModel = this.GetModel<ILevelProgressModel>();
             levelModel = this.GetModel<ILevelModel>();
             timerSystem = this.GetSystem<ITimerSystem>();
+            timerModel = this.GetModel<ITimerModel>();
+            bestTimeSystem = this.GetSystem<IBestTimeSystem>();
             
             // 查找关卡 UI 画布
             GameObject canvasObject = GameObject.Find("LevelCanvas");
@@ -70,8 +74,13 @@ namespace SkateGame
             if (other.CompareTag(playerTag))
             {
                 Debug.Log("玩家进入 Level Trigger");
-                // 停止计时
+                // 停止计时并比较最佳成绩
+                float elapsed = timerModel != null ? timerModel.ElapsedTime.Value : 0f;
                 timerSystem?.StopTimer();
+                if (bestTimeSystem != null && levelModel != null)
+                {
+                    bestTimeSystem.TrySaveBestTime(levelModel.CurrentLevelIndex, elapsed);
+                }
                 // FOR JERRY'S AUDIO - LEVEL FINISH
                 // ----------------------------
                 // 保存当前关卡进度（到达终点时保存）
