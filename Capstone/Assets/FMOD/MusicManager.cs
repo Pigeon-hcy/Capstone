@@ -34,6 +34,14 @@ public class MusicManager : MonoBehaviour
     public float currentValue7;
     public float targetValue7;
 
+    //MX8
+    public EventReference levelMusic8Event;
+    private EventInstance levelMusic8EventInstance;
+
+    //MX10
+    public EventReference levelMusic10Event;
+    private EventInstance levelMusic10EventInstance;
+
 
     //BMX1
     public EventReference bossMusic1Event;
@@ -73,6 +81,12 @@ public class MusicManager : MonoBehaviour
 
         currentValue7 = 1f;
         targetValue7 = 1f;
+
+        //MX8
+        levelMusic8EventInstance = RuntimeManager.CreateInstance(levelMusic8Event);
+
+        //MX10
+        levelMusic10EventInstance = RuntimeManager.CreateInstance(levelMusic10Event);
 
         //BMX1
         bossMusic1EventInstance = RuntimeManager.CreateInstance(bossMusic1Event);
@@ -271,9 +285,63 @@ public class MusicManager : MonoBehaviour
             }
         }
     }
-    public void setTargetValue7 (float newValue)
+    public void setTargetValue7(float newValue)
     {
         targetValue7 = newValue;
+    }
+
+    //LevelMusic8
+    public void fmodPlayLM8()
+    {
+        fmodPauseAll();
+        if (levelMusic8EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic8EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                levelMusic8EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM8()
+    {
+        if (levelMusic8EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic8EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic8EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
+    //LevelMusic10
+    public void fmodPlayLM10()
+    {
+        fmodPauseAll();
+        if (levelMusic8EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic10EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                levelMusic10EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM10()
+    {
+        if (levelMusic10EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic10EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic10EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
     }
 
     //BossMusic1
