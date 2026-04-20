@@ -67,27 +67,41 @@ MonoBehaviour:
     Path: event:/MX_Music1-2
   levelMusic2Event:
     Guid:
-      Data1: 2144581001
-      Data2: 1171911465
-      Data3: -502477651
-      Data4: -1143734506
-    Path: event:/MX_Music3
-  levelMusic3Event:
-    Guid:
       Data1: -1194424405
       Data2: 1295361466
       Data3: 604565897
       Data4: 1030778322
-    Path: event:/MX_Music4
+    Path: event:/MX_Music3
+  levelMusic3Event:
+    Guid:
+      Data1: 1568359722
+      Data2: 1235607635
+      Data3: 53949321
+      Data4: -2083291743
+    Path: event:/MX_Music4-5
   levelMusic7Event:
     Guid:
       Data1: 1291229686
       Data2: 1299396945
       Data3: -1391368284
       Data4: 1549571003
-    Path: event:/MX_Music7
+    Path: event:/MX_Music6-7
   currentValue7: 0
   targetValue7: 0
+  levelMusic8Event:
+    Guid:
+      Data1: 121758079
+      Data2: 1235834796
+      Data3: 180770450
+      Data4: 208572081
+    Path: event:/MX_Music8-9
+  levelMusic10Event:
+    Guid:
+      Data1: 232081863
+      Data2: 1198717529
+      Data3: 1061657764
+      Data4: 1490999316
+    Path: event:/MX_Music10
   bossMusic1Event:
     Guid:
       Data1: 1826733611

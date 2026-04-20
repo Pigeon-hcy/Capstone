@@ -26,6 +26,10 @@ public class AudioPlayer : MonoBehaviour
 
     public bool LM7;
 
+    public bool LM8;
+
+    public bool LM10;
+
     public float newValue;
 
     public GameObject speaker;
@@ -125,6 +129,14 @@ public class AudioPlayer : MonoBehaviour
         {
             music.fmodPlayLM7();
         }
+        else if (LM8)
+        {
+            music.fmodPlayLM8();
+        }
+        else if (LM10)
+        {
+            music.fmodPlayLM10();
+        }
     }
     public void pauseAudio()
     {
@@ -152,6 +164,14 @@ public class AudioPlayer : MonoBehaviour
         else if (LM7)
         {
             music.fmodPauseLM7();
+        }
+        else if (LM8)
+        {
+            music.fmodPauseLM8();
+        }
+        else if (LM10)
+        {
+            music.fmodPauseLM10();
         }
     }
     public void setNewMusicValue ()
