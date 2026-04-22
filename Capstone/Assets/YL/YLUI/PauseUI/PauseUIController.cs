@@ -1,11 +1,12 @@
 using MoreMountains.Feedbacks;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using QFramework;
 using SkateGame;
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegisterEvent, ICanSendEvent
 {
@@ -21,6 +22,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
     [SerializeField] Slider sfxSlider;
     [SerializeField] GameObject pauseText;
     [SerializeField] GameObject defaultSelected;
+    [SerializeField] GameObject controllerLayout;
 
     Vector3 bumpAmount;
 
@@ -45,6 +47,20 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
         animator.speed = 0;
         bumpAmount = new Vector3(750, 1000, 50);
         InitializeVolumeSliders();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            canInput = true;
+            image.enabled = true;
+            state = PauseUIState.StartAnimation;
+            animator.speed = 1f;
+            animator.enabled = true;
+            animator.Play("anim_PauseStart");
+            PauseClicked();
+        }
     }
 
     void OnEnable() => this.RegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
@@ -145,13 +161,21 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
 
         if (defaultSelected != null && EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(defaultSelected);
+
+        if (controllerLayout != null)
+        {
+            controllerLayout.SetActive(true);
+            controllerLayout.GetComponent<MMSpringScale>().Bump(new Vector3(5f, 5f, 5f));
+        }
     }
 
     IEnumerator OptionsBumpRoutine()
     {
         yield return null;
 
-        var spring = options.GetComponent<MMSpringScale>();
+        if (controllerLayout != null) controllerLayout.SetActive(false);
+
+        MMSpringScale spring = options.GetComponent<MMSpringScale>();
         if (spring != null)
         {
             spring.Bump(new Vector3(20f, 20f, 20f));
