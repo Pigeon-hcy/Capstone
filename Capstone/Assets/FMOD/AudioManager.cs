@@ -703,6 +703,7 @@ public class AudioManager : MonoBehaviour
     //Enemy Attack Flying
     public void fmodPlayEnemyFlying()
     {
+        Debug.Log("[SFX] fmodPlayEnemyFlying called, valid=" + _enemyFlyingEventInstance.isValid() + ", eventRef.IsNull=" + _enemyFlyingEvent.IsNull);
         if (_enemyFlyingEventInstance.isValid())
         {
             _enemyFlyingEventInstance.start();
@@ -712,6 +713,7 @@ public class AudioManager : MonoBehaviour
     //Enemy Attack Throwing
     public void fmodPlayEnemyThrowing()
     {
+        Debug.Log("[SFX] fmodPlayEnemyThrowing called, valid=" + _enemyThrowingEventInstance.isValid() + ", eventRef.IsNull=" + _enemyThrowingEvent.IsNull);
         if (_enemyThrowingEventInstance.isValid())
         {
             _enemyThrowingEventInstance.start();
@@ -721,6 +723,7 @@ public class AudioManager : MonoBehaviour
     //Enemy Attack Brick
     public void fmodPlayEnemyBrick()
     {
+        Debug.Log("[SFX] fmodPlayEnemyBrick called, valid=" + _enemyBrickEventInstance.isValid() + ", eventRef.IsNull=" + _enemyBrickEvent.IsNull);
         if (_enemyBrickEventInstance.isValid())
         {
             _enemyBrickEventInstance.start();

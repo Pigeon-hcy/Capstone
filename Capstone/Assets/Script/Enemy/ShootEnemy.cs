@@ -39,6 +39,12 @@ namespace SkateGame
             directFirstAtk = false;
         }
 
+        protected override void PlayAttackSFX()
+        {
+            Debug.Log("[SFX] ShootEnemy PlayAttackSFX -> fmodPlayEnemyFlying, AudioManager.Instance=" + (AudioManager.Instance != null));
+            AudioManager.Instance.fmodPlayEnemyFlying();
+        }
+
         protected override void Guard(Transform pTrans, float guard)
         {
             base.Guard(pTrans, guard);

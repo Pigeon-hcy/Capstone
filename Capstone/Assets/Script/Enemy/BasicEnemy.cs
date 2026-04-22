@@ -158,6 +158,7 @@ namespace SkateGame
             if (GuardProcess >= 1f)
             {
                 GuardProcess = 0f;
+                PlayAttackSFX();
                 AtkTowardsPlayer(trans);
             }
 
@@ -312,6 +313,10 @@ namespace SkateGame
             */
             directFirstAtk = false;
 
+        }
+
+        protected virtual void PlayAttackSFX()
+        {
         }
 
         protected virtual void Guard(Transform pTrans, float guard)

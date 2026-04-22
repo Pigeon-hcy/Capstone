@@ -62,6 +62,12 @@ namespace SkateGame
             _atkCoroutine = StartCoroutine(FallAndResetCoroutine());
             directFirstAtk = false;
         }
+
+        protected override void PlayAttackSFX()
+        {
+            Debug.Log("[SFX] DongDongEnemy PlayAttackSFX -> fmodPlayEnemyBrick, AudioManager.Instance=" + (AudioManager.Instance != null));
+            AudioManager.Instance.fmodPlayEnemyBrick();
+        }
         
         private IEnumerator FallAndResetCoroutine()
         {

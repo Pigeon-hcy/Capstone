@@ -67,6 +67,12 @@ namespace SkateGame
            );
            directFirstAtk = false;
        }
+
+       protected override void PlayAttackSFX()
+       {
+           Debug.Log("[SFX] ThrowEnemy PlayAttackSFX -> fmodPlayEnemyThrowing, AudioManager.Instance=" + (AudioManager.Instance != null));
+           AudioManager.Instance.fmodPlayEnemyThrowing();
+       }
     }
 }
 
