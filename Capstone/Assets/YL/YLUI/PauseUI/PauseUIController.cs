@@ -106,6 +106,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             mainButtons.SetActive(false);
             options.SetActive(false);
             pauseText.SetActive(false);
+            if (controllerLayout != null) controllerLayout.SetActive(false);
             image.enabled = false;
             state = PauseUIState.Inactive;
         }
