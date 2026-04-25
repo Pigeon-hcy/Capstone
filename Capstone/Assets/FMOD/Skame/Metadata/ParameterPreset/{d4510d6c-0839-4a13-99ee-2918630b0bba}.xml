@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{d4510d6c-0839-4a13-99ee-2918630b0bba}">
+		<property name="name">
+			<value>vdOff</value>
+		</property>
+		<relationship name="folder">
+			<destination>{9b0ef9ed-367c-4591-bd94-151d37213a16}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{754674ac-71e1-44ff-8d37-bcc9126113ea}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{754674ac-71e1-44ff-8d37-bcc9126113ea}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
