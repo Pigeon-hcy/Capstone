@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class WipeController : MonoBehaviour
 {
@@ -30,19 +31,26 @@ public class WipeController : MonoBehaviour
 
     void Update()
     {
-        image.materialForRendering.SetFloat(circleSizeId, circleSize);
+        image.materialForRendering.SetFloat(circleSizeId, circleSize * 4f);
     }
 
     public void AnimateIn()
     {
+        image.enabled = true;
         animator.ResetTrigger("Out"); //NOT NEEDED BUT TO FIX BUG
         animator.SetTrigger("In");
     }
 
     public void AnimateOut()
     {
+        image.enabled = true;
         animator.ResetTrigger("In");
         animator.SetTrigger("Out");
+    }
+
+    public void DisableImage()
+    {
+        image.enabled = false;
     }
 
     public void LoadScene()
@@ -52,8 +60,12 @@ public class WipeController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        AnimateIn();
+        if (animator) StartCoroutine(AnimateInWithDelay(1.0f));
     }
 
-
+    IEnumerator AnimateInWithDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        AnimateIn();
+    }
 }

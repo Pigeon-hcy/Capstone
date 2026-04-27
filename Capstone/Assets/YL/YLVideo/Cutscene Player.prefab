@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6568779855566482243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002754310583715377}
+  - component: {fileID: 3062005371983350166}
+  - component: {fileID: 7196166833138786783}
+  m_Layer: 0
+  m_Name: Cutscene Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2002754310583715377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568779855566482243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3062005371983350166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568779855566482243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45bb65c38888a23428ee0bf6146734f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoIndex: 1
+  csvFile: {fileID: 4900000, guid: 357669c905f181944af94a986f7c0658, type: 3}
+  videoClips:
+  - {fileID: 0}
+  - {fileID: 32900000, guid: 66f46ff0f5c12a44bb81f0c440bca977, type: 3}
+  - {fileID: 32900000, guid: 4b25fbde216994a4badfc14a6d759ab7, type: 3}
+  - {fileID: 32900000, guid: aa6771538592b6a4fb5ed6d529a7fe2a, type: 3}
+  fmodEvents:
+  - Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  - Guid:
+      Data1: 343016853
+      Data2: 1267829530
+      Data3: 1442267287
+      Data4: 409329798
+    Path: event:/VD_Act1
+  - Guid:
+      Data1: 76538856
+      Data2: 1245250831
+      Data3: 665185449
+      Data4: 1553976514
+    Path: event:/VD_Act2
+  - Guid:
+      Data1: 1487717382
+      Data2: 1073850081
+      Data3: 1499637639
+      Data4: 580178251
+    Path: event:/VD_Act3
+  sceneNames:
+  - 
+  - Bootstrap
+  - Bootstrap
+  - Bootstrap
+  wipeController: {fileID: 0}
+  testEvent:
+    Guid:
+      Data1: 343016853
+      Data2: 1267829530
+      Data3: 1442267287
+      Data4: 409329798
+    Path: event:/VD_Act1
+--- !u!328 &7196166833138786783
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568779855566482243}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 0}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 0
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 1
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 1
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 00
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 0
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
