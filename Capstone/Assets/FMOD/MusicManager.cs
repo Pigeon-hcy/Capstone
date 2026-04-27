@@ -27,6 +27,10 @@ public class MusicManager : MonoBehaviour
     public EventReference levelMusic3Event;
     private EventInstance levelMusic3EventInstance;
 
+    //MX4
+    public EventReference levelMusic4Event;
+    private EventInstance levelMusic4EventInstance;
+
     //MX7
     public EventReference levelMusic7Event;
     private EventInstance levelMusic7EventInstance;
@@ -37,6 +41,10 @@ public class MusicManager : MonoBehaviour
     //MX8
     public EventReference levelMusic8Event;
     private EventInstance levelMusic8EventInstance;
+
+    //MX9
+    public EventReference levelMusic9Event;
+    private EventInstance levelMusic9EventInstance;
 
     //MX10
     public EventReference levelMusic10Event;
@@ -82,6 +90,9 @@ public class MusicManager : MonoBehaviour
         //MX3
         levelMusic3EventInstance = RuntimeManager.CreateInstance(levelMusic3Event);
 
+        //MX4
+        levelMusic4EventInstance = RuntimeManager.CreateInstance(levelMusic4Event);
+
         //MX7
         levelMusic7EventInstance = RuntimeManager.CreateInstance(levelMusic7Event);
 
@@ -96,6 +107,9 @@ public class MusicManager : MonoBehaviour
 
         //MX8
         levelMusic8EventInstance = RuntimeManager.CreateInstance(levelMusic8Event);
+
+        //MX9
+        levelMusic9EventInstance = RuntimeManager.CreateInstance(levelMusic9Event);
 
         //MX10
         levelMusic10EventInstance = RuntimeManager.CreateInstance(levelMusic10Event);
@@ -169,9 +183,11 @@ public class MusicManager : MonoBehaviour
         fmodPauseLM1();
         fmodPauseLM2();
         fmodPauseLM3();
+        fmodPauseLM4();
         fmodPauseLM7();
         fmodPauseLM8();
-        fmodPauseLM10();
+        fmodPauseLM8();
+        fmodPauseLM9();
         fmodPauseVD1();
         fmodPauseVD2();
         fmodPauseVD3();
@@ -213,8 +229,12 @@ public class MusicManager : MonoBehaviour
             levelMusic1EventInstance.getPlaybackState(out playbackState);
             if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
             {
-                fmodPauseAll();
-                levelMusic1EventInstance.start();
+                VD1EventInstance.getPlaybackState(out playbackState);
+                if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+                {
+                    fmodPauseAll();
+                    levelMusic1EventInstance.start();
+                }
             }
         }
     }
@@ -285,7 +305,34 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    //LevelMusic3
+    //LevelMusic4
+    public void fmodPlayLM4()
+    {
+        if (levelMusic4EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic4EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                fmodPauseAll();
+                levelMusic4EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM4()
+    {
+        if (levelMusic4EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic4EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic4EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
+    //LevelMusic7
     public void fmodPlayLM7()
     {
         if (levelMusic7EventInstance.isValid())
@@ -343,6 +390,33 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    //LevelMusic9
+    public void fmodPlayLM9()
+    {
+        if (levelMusic9EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic9EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                fmodPauseAll();
+                levelMusic8EventInstance.start();
+            }
+        }
+    }
+    public void fmodPauseLM9()
+    {
+        if (levelMusic9EventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            levelMusic9EventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                levelMusic9EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
     //LevelMusic10
     public void fmodPlayLM10()
     {
@@ -352,8 +426,12 @@ public class MusicManager : MonoBehaviour
             levelMusic10EventInstance.getPlaybackState(out playbackState);
             if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
             {
-                fmodPauseAll();
-                levelMusic10EventInstance.start();
+                VD3EventInstance.getPlaybackState(out playbackState);
+                if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+                {
+                    fmodPauseAll();
+                    levelMusic10EventInstance.start();
+                }
             }
         }
     }

@@ -112,6 +112,10 @@ public class AudioManager : MonoBehaviour
     public EventReference _walkEvent;
     private EventInstance _walkEventInstance;
 
+    //Dash
+    public EventReference _dashEvent;
+    private EventInstance _dashEventInstance;
+
     //UI Click
     public EventReference _clickEvent;
     private EventInstance _clickEventInstance;
@@ -268,6 +272,9 @@ public class AudioManager : MonoBehaviour
 
         //Walk
         _walkEventInstance = RuntimeManager.CreateInstance(_walkEvent);
+
+        //Dash
+        _dashEventInstance = RuntimeManager.CreateInstance(_dashEvent);
 
         //UI Click
         _clickEventInstance = RuntimeManager.CreateInstance(_clickEvent);
@@ -690,6 +697,15 @@ public class AudioManager : MonoBehaviour
     public void fmodMoveFalse()
     {
         moving = false;
+    }
+
+    //Dash
+    public void fmodPlayDash()
+    {
+        if (_dashEventInstance.isValid())
+        {
+            _dashEventInstance.start();
+        }
     }
 
     //UI Click

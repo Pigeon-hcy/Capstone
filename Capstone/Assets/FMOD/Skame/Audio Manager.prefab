@@ -187,6 +187,13 @@ MonoBehaviour:
       Data3: -2094420560
       Data4: -1977221551
     Path: event:/SFX_Walk
+  _dashEvent:
+    Guid:
+      Data1: 1671019787
+      Data2: 1306582595
+      Data3: -452328316
+      Data4: -212716778
+    Path: event:/SFX_Dash
   _clickEvent:
     Guid:
       Data1: -998169792
