@@ -15,7 +15,10 @@ public class CutscenePlayer : MonoBehaviour
     public TextAsset csvFile;
     public List<VideoClip> videoClips = new List<VideoClip>();
     public List<EventReference> fmodEvents = new List<EventReference>();
+    public List<string> sceneNames = new List<string>();
     List<float> skipTimestamps = new List<float>();
+
+    [SerializeField] WipeController wipeController;
 
     #region FMOD
 
@@ -28,7 +31,7 @@ public class CutscenePlayer : MonoBehaviour
         videoPlayer = GetComponent<VideoPlayer>();
         videoPlayer.playOnAwake = false;
         videoPlayer.prepareCompleted += OnPrepared;
-        videoPlayer.loopPointReached += OnVideoEnd;
+        //videoPlayer.loopPointReached += OnVideoEnd;
         videoPlayer.clip = videoClips[videoIndex];
 
         ParseCSV();
@@ -44,6 +47,7 @@ public class CutscenePlayer : MonoBehaviour
     void Start()
     {
         videoPlayer.Prepare();
+        wipeController.sceneName = sceneNames[videoIndex];
     }
 
     void ParseCSV()
@@ -74,10 +78,12 @@ public class CutscenePlayer : MonoBehaviour
         testEventInstance.start();
     }
 
+    /*
     void OnVideoEnd(VideoPlayer vp)
     {
-        SceneManager.LoadScene("New_Test_Testforvideo");
+        
     }
+    */
 
     void Update()
     {
@@ -85,16 +91,22 @@ public class CutscenePlayer : MonoBehaviour
         {
             float currentTime = (float)videoPlayer.time;
 
-            foreach (float timestamp in skipTimestamps)
+            for (int i = 0; i < skipTimestamps.Count - 1; i++)
             {
-                if (timestamp > currentTime + 0.2f)
+                if (skipTimestamps[i] > currentTime + 0.2f)
                 {
-                    videoPlayer.time = timestamp;
-                    testEventInstance.setTimelinePosition((int)(timestamp * 1000));
+                    videoPlayer.time = skipTimestamps[i];
+                    testEventInstance.setTimelinePosition((int)(skipTimestamps[i] * 1000));
 
-                    return; 
+                    return;
                 }
             }
+        }
+
+        if (videoPlayer.time >= skipTimestamps[skipTimestamps.Count - 1])
+        {
+            videoPlayer.playbackSpeed = 0;
+            wipeController.AnimateOut();
         }
     }
 }
