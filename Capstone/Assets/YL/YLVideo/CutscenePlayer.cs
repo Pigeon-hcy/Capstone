@@ -13,8 +13,9 @@ public class CutscenePlayer : MonoBehaviour
     public int videoIndex;
 
     public TextAsset csvFile;
+    public List<VideoClip> videoClips = new List<VideoClip>();
+    public List<EventReference> fmodEvents = new List<EventReference>();
     List<float> skipTimestamps = new List<float>();
-    private int currentSkipIndex = 0;
 
     #region FMOD
 
@@ -28,13 +29,14 @@ public class CutscenePlayer : MonoBehaviour
         videoPlayer.playOnAwake = false;
         videoPlayer.prepareCompleted += OnPrepared;
         videoPlayer.loopPointReached += OnVideoEnd;
+        videoPlayer.clip = videoClips[videoIndex];
 
         ParseCSV();
 
         #region FMOD
 
         //Test
-        testEventInstance = RuntimeManager.CreateInstance(testEvent);
+        testEventInstance = RuntimeManager.CreateInstance(fmodEvents[videoIndex]);
 
         #endregion
     }
