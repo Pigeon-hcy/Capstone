@@ -25,6 +25,7 @@ namespace SkateGame
         HitState = 7,
         CruiseState = 8,
         RecoveryState = 9,
+        DashState = 10,
     }
 }
 
