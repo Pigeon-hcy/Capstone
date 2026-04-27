@@ -109,6 +109,9 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
         ActionKit.ScreenTransition.FadeOut()
             .Duration(0.25f)
             .StartGlobal();
+
+        // 与 LevelManager.LoadLevelWithFade 一致：进入关卡后通知 GameStateController 等监听方
+        GameApp.Interface.SendEvent(new SceneChangeEvent());
     }
 
     public void ShowLevelSelectCanvas()
