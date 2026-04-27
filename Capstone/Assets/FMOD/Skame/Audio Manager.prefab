@@ -215,3 +215,59 @@ MonoBehaviour:
       Data3: 725265835
       Data4: 845901375
     Path: event:/SFX_MissileShoot
+  _enemyFlyingEvent:
+    Guid:
+      Data1: 1485487980
+      Data2: 1107963717
+      Data3: -221919596
+      Data4: -1806790238
+    Path: event:/SFX_EnemyAttackFlying
+  _enemyThrowingEvent:
+    Guid:
+      Data1: -1704772689
+      Data2: 1182416432
+      Data3: -179212905
+      Data4: -1545404677
+    Path: event:/SFX_EnemyAttackThrow
+  _enemyBrickEvent:
+    Guid:
+      Data1: 880966603
+      Data2: 1297826691
+      Data3: 1477345176
+      Data4: -743048081
+    Path: event:/SFX_EnemyAttackBrick
+  _rankSEvent:
+    Guid:
+      Data1: 886866550
+      Data2: 1092178904
+      Data3: -1707983737
+      Data4: -1446129541
+    Path: event:/SFX_RankS
+  _rankAEvent:
+    Guid:
+      Data1: -432453550
+      Data2: 1099975712
+      Data3: 742268056
+      Data4: 1490470499
+    Path: event:/SFX_RankA
+  _rankBEvent:
+    Guid:
+      Data1: 833017277
+      Data2: 1206310287
+      Data3: 1279535550
+      Data4: 750887619
+    Path: event:/SFX_RankB
+  _rankCEvent:
+    Guid:
+      Data1: 694964611
+      Data2: 1107603567
+      Data3: -1969138271
+      Data4: 977263919
+    Path: event:/SFX_RankC
+  _rankDEvent:
+    Guid:
+      Data1: -1648312538
+      Data2: 1126042047
+      Data3: 1976885940
+      Data4: 87668152
+    Path: event:/SFX_RankD

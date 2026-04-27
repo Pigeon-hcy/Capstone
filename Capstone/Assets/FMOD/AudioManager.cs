@@ -139,6 +139,26 @@ public class AudioManager : MonoBehaviour
     //Enemy Attack Brick
     public EventReference _enemyBrickEvent;
     private EventInstance _enemyBrickEventInstance;
+
+    //Rank S
+    public EventReference _rankSEvent;
+    private EventInstance _rankSEventInstance;
+
+    //Rank A
+    public EventReference _rankAEvent;
+    private EventInstance _rankAEventInstance;
+
+    //Rank B
+    public EventReference _rankBEvent;
+    private EventInstance _rankBEventInstance;
+
+    //Rank C
+    public EventReference _rankCEvent;
+    private EventInstance _rankCEventInstance;
+
+    //Rank D
+    public EventReference _rankDEvent;
+    private EventInstance _rankDEventInstance;
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -269,6 +289,21 @@ public class AudioManager : MonoBehaviour
 
         //Enemy Attack Brick
         _enemyBrickEventInstance = RuntimeManager.CreateInstance(_enemyBrickEvent);
+
+        //Rank S
+        _rankSEventInstance = RuntimeManager.CreateInstance(_rankSEvent);
+
+        //Rank A
+        _rankAEventInstance = RuntimeManager.CreateInstance(_rankAEvent);
+
+        //Rank B
+        _rankBEventInstance = RuntimeManager.CreateInstance(_rankBEvent);
+
+        //Rank C
+        _rankCEventInstance = RuntimeManager.CreateInstance(_rankCEvent);
+
+        //Rank D
+        _rankDEventInstance = RuntimeManager.CreateInstance(_rankDEvent);
         #endregion
     }
 
@@ -727,6 +762,51 @@ public class AudioManager : MonoBehaviour
         if (_enemyBrickEventInstance.isValid())
         {
             _enemyBrickEventInstance.start();
+        }
+    }
+
+    //Rank S
+    public void fmodPlayRankS()
+    {
+        if (_rankSEventInstance.isValid())
+        {
+            _rankSEventInstance.start();
+        }
+    }
+
+    //Rank A
+    public void fmodPlayRankA()
+    {
+        if (_rankAEventInstance.isValid())
+        {
+            _rankAEventInstance.start();
+        }
+    }
+
+    //Rank B
+    public void fmodPlayRankB()
+    {
+        if (_rankBEventInstance.isValid())
+        {
+            _rankBEventInstance.start();
+        }
+    }
+
+    //Rank C
+    public void fmodPlayRankC()
+    {
+        if (_rankCEventInstance.isValid())
+        {
+            _rankCEventInstance.start();
+        }
+    }
+
+    //Rank D
+    public void fmodPlayRankD()
+    {
+        if (_rankDEventInstance.isValid())
+        {
+            _rankDEventInstance.start();
         }
     }
     #endregion
