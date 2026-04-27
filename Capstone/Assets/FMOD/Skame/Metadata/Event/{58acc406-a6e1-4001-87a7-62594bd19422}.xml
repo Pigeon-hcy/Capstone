@@ -32,9 +32,6 @@
 		<relationship name="timeline">
 			<destination>{5716712c-1d1d-4ba3-8ea8-f22fa5550e54}</destination>
 		</relationship>
-		<relationship name="parameters">
-			<destination>{5b8aca1b-e03c-4064-b22a-5dc98ede5e38}</destination>
-		</relationship>
 		<relationship name="banks">
 			<destination>{6aebdcc4-2ba2-4cbf-b30f-b7e5d0c40d97}</destination>
 		</relationship>
@@ -77,6 +74,9 @@
 		<relationship name="automationTracks">
 			<destination>{9b656f97-0fc3-4147-babf-a1957fbec37f}</destination>
 		</relationship>
+		<relationship name="modules">
+			<destination>{993d41f7-f2fb-4491-af78-fc052aae7c1a}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{79f442f1-e93d-4a8d-8ef2-e056b869c74c}</destination>
 		</relationship>
@@ -84,11 +84,10 @@
 	<object class="Timeline" id="{5716712c-1d1d-4ba3-8ea8-f22fa5550e54}">
 		<relationship name="modules">
 			<destination>{7ba01d62-a687-47dd-bdab-7abc95b09cdf}</destination>
+			<destination>{993d41f7-f2fb-4491-af78-fc052aae7c1a}</destination>
 		</relationship>
-	</object>
-	<object class="ParameterProxy" id="{5b8aca1b-e03c-4064-b22a-5dc98ede5e38}">
-		<relationship name="preset">
-			<destination>{754674ac-71e1-44ff-8d37-bcc9126113ea}</destination>
+		<relationship name="markers">
+			<destination>{aaa1fb46-13dc-4437-8ecb-9563c6cca84b}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{baba7d41-2a63-4e0d-8861-b00aaf670012}">
@@ -149,6 +148,17 @@
 			<destination>{6b181c97-54f9-428d-b339-4c0b617619ee}</destination>
 		</relationship>
 	</object>
+	<object class="SingleSound" id="{993d41f7-f2fb-4491-af78-fc052aae7c1a}">
+		<property name="start">
+			<value>0.049999999999982947</value>
+		</property>
+		<property name="length">
+			<value>165.71383219954654</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{1c6b8b8e-e10d-40dd-a0c5-05f9077abb86}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{79f442f1-e93d-4a8d-8ef2-e056b869c74c}">
 		<property name="volume">
 			<value>-18</value>
@@ -167,6 +177,20 @@
 		</relationship>
 		<relationship name="output">
 			<destination>{baba7d41-2a63-4e0d-8861-b00aaf670012}</destination>
+		</relationship>
+	</object>
+	<object class="LoopRegion" id="{aaa1fb46-13dc-4437-8ecb-9563c6cca84b}">
+		<property name="position">
+			<value>93.060000000000002</value>
+		</property>
+		<property name="length">
+			<value>72</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{5716712c-1d1d-4ba3-8ea8-f22fa5550e54}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{aa69f50b-82ba-466a-a989-5966b669938f}</destination>
 		</relationship>
 	</object>
 	<object class="ADSRModulator" id="{ef80bbe3-b4db-4582-a262-e221fe7472df}">
@@ -263,7 +287,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-24</value>
+			<value>-20</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{186c2146-1f27-4cbe-8b55-798b37be8d81}">
@@ -271,7 +295,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>-18</value>
+			<value>-15.2000008</value>
 		</property>
 	</object>
 </objects>
