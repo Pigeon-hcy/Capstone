@@ -120,6 +120,11 @@ public class AudioManager : MonoBehaviour
     public EventReference _checkpointEvent;
     private EventInstance _checkpointEventInstance;
 
+    //Fan SFX
+    public EventReference fanEvent;
+    private EventInstance fanEventInstance;
+    FMOD.Studio.PARAMETER_ID fanParameter;
+
     //UI Click
     public EventReference _clickEvent;
     private EventInstance _clickEventInstance;
@@ -282,6 +287,15 @@ public class AudioManager : MonoBehaviour
 
         //Checkpoint
         _checkpointEventInstance = RuntimeManager.CreateInstance(_checkpointEvent);
+
+        //Fan
+        fanEventInstance = RuntimeManager.CreateInstance(fanEvent);
+
+        FMOD.Studio.EventDescription fanEventDescription;
+        fanEventInstance.getDescription(out fanEventDescription);
+        FMOD.Studio.PARAMETER_DESCRIPTION fanEventParameterDescription;
+        fanEventDescription.getParameterDescriptionByName("FanSpeed", out fanEventParameterDescription);
+        fanParameter = fanEventParameterDescription.id;
 
         //UI Click
         _clickEventInstance = RuntimeManager.CreateInstance(_clickEvent);
@@ -722,6 +736,39 @@ public class AudioManager : MonoBehaviour
         {
             _checkpointEventInstance.start();
         }
+    }
+
+    //Fan
+    public void fmodPlayFan()
+    {
+        if (fanEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            fanEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.STOPPED)
+            {
+                fanEventInstance.start();
+            }
+        }
+    }
+
+    public void fmodPauseFan()
+    {
+        if (fanEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            fanEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                fanEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
+        }
+    }
+
+    public void fmodFanModify(float distancce)
+    {
+        fanEventInstance.setParameterByID(fanParameter, distancce);
+        Debug.Log(fanParameter);
     }
 
     //UI Click

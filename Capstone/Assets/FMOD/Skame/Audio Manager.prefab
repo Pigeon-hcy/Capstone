@@ -201,6 +201,13 @@ MonoBehaviour:
       Data3: 109026951
       Data4: -1393632048
     Path: event:/SFX_Checkpoint
+  fanEvent:
+    Guid:
+      Data1: -1464874979
+      Data2: 1236191233
+      Data3: -1942251344
+      Data4: -1356481275
+    Path: event:/SFX_Fan
   _clickEvent:
     Guid:
       Data1: -998169792

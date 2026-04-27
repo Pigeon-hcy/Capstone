@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{52215b3c-5e0a-4c9b-9827-ee1086bc1284}">
+		<property name="assetPath">
+			<value>helicopter.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>8.0399999999999991</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>
+		</relationship>
+	</object>
+</objects>
