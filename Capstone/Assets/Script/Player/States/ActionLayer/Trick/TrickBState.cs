@@ -16,6 +16,7 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     protected override void EnterTrickState()
     {
         // FOR JERRY'S AUDIO - DASH
+        _playDash();
         //Debug.LogError("触发了");
         HapticPatterns.PlayEmphasis(0.1f, 0.3f);
         player.TrickBEffect.PlayFeedbacks();
@@ -43,5 +44,9 @@ public class TrickBState : TrickState, ICanGetSystem, IBelongToArchitecture
     {
         player.SendEvent<TrickBInputEvent>(new TrickBInputEvent { IsTrickingB = false });
         player.SendEvent<TrickBResetSpeedEvent>();
-    } 
+    }
+    public void _playDash()
+    {
+        AudioManager.Instance.fmodPlayDash();
+    }
 }
