@@ -7,7 +7,19 @@
       "Bash(find Assets/Scenes Assets/Prefab Assets/YL Assets/NPC.prefab Assets/playerhubLevelCanvas.prefab Assets/MainMenuLevelCanvas.prefab Assets/RealUpdateCanvas.prefab Assets/Resources -maxdepth 5 \\\\\\(-name *.unity -o -name *.prefab \\\\\\))",
       "Bash(find Assets/Scenes Assets/Prefab Assets/YL Assets/Resources -maxdepth 5 \\\\\\(-name *.unity -o -name *.prefab \\\\\\))",
       "Bash(ls Assets/*.prefab)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(git -C \"E:/Capstone\" lfs pull --include=\"Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(git -C \"E:/Capstone\" status)",
+      "Read(//e/Capstone/Capstone/**)",
+      "Bash(git -C \"E:/Capstone\" lfs fetch origin)",
+      "Bash(git -C \"E:/Capstone\" lfs checkout \"Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(git -C \"E:/Capstone\" lfs fsck)",
+      "Bash(git -C \"E:/Capstone\" add \"Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(git -C \"E:/Capstone\" checkout -- \"Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(cp \"E:/Capstone/.git/lfs/objects/ba/c6/bac6d443620252a612e88e975b308e36f187705d99a8a9e5dc38c8940c39ce58\" \"E:/Capstone/Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(git -C \"E:/Capstone\" diff --cached -- \"Capstone/Assets/Scenes/New Move Set Scene/New_1-7.unity\")",
+      "Bash(git -C E:/Capstone commit -m ' *)",
+      "Bash(git -C \"E:/Capstone\" log --oneline -3)"
     ]
   }
 }
