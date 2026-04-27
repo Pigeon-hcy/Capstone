@@ -109,3 +109,24 @@ MonoBehaviour:
       Data3: -1145184069
       Data4: 1598164377
     Path: event:/SFX_1-5Bgm
+  VD1Event:
+    Guid:
+      Data1: 343016853
+      Data2: 1267829530
+      Data3: 1442267287
+      Data4: 409329798
+    Path: event:/VD_Act1
+  VD2Event:
+    Guid:
+      Data1: 76538856
+      Data2: 1245250831
+      Data3: 665185449
+      Data4: 1553976514
+    Path: event:/VD_Act2
+  VD3Event:
+    Guid:
+      Data1: 1487717382
+      Data2: 1073850081
+      Data3: 1499637639
+      Data4: 580178251
+    Path: event:/VD_Act3
