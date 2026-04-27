@@ -194,6 +194,13 @@ MonoBehaviour:
       Data3: -452328316
       Data4: -212716778
     Path: event:/SFX_Dash
+  _checkpointEvent:
+    Guid:
+      Data1: -971561714
+      Data2: 1191650555
+      Data3: 109026951
+      Data4: -1393632048
+    Path: event:/SFX_Checkpoint
   _clickEvent:
     Guid:
       Data1: -998169792

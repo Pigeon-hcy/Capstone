@@ -116,6 +116,10 @@ public class AudioManager : MonoBehaviour
     public EventReference _dashEvent;
     private EventInstance _dashEventInstance;
 
+    //Checkpoint
+    public EventReference _checkpointEvent;
+    private EventInstance _checkpointEventInstance;
+
     //UI Click
     public EventReference _clickEvent;
     private EventInstance _clickEventInstance;
@@ -275,6 +279,9 @@ public class AudioManager : MonoBehaviour
 
         //Dash
         _dashEventInstance = RuntimeManager.CreateInstance(_dashEvent);
+
+        //Checkpoint
+        _checkpointEventInstance = RuntimeManager.CreateInstance(_checkpointEvent);
 
         //UI Click
         _clickEventInstance = RuntimeManager.CreateInstance(_clickEvent);
@@ -705,6 +712,15 @@ public class AudioManager : MonoBehaviour
         if (_dashEventInstance.isValid())
         {
             _dashEventInstance.start();
+        }
+    }
+
+    //Checkpoint
+    public void fmodPlayCheckpoint()
+    {
+        if (_checkpointEventInstance.isValid())
+        {
+            _checkpointEventInstance.start();
         }
     }
 

@@ -40,8 +40,9 @@ namespace SkateGame
                 // 标记为已激活
                 isActivated = true;
                 playerFeedback.PlayFeedbacks();
-                
+
                 // FOR JERRY'S AUDIO - CHECKPOINT
+                _playCheckpoint();
                 // 发送事件，传递检查点位置
                 this.SendEvent(new PassRespawnPointEvent
                 {
@@ -51,10 +52,14 @@ namespace SkateGame
                 
             }
         }
-        
-       
-        
-        
+        public void _playCheckpoint()
+        {
+            AudioManager.Instance.fmodPlayCheckpoint();
+        }
+
+
+
+
     }
 }
 

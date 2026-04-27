@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using QFramework;
 using MoreMountains.Feedbacks;
 using TMPro;
@@ -62,11 +63,21 @@ namespace SkateGame
             UpdateScore(Time.deltaTime);
             UpdatePopAnimation(Time.deltaTime);
 
-            if (!isGameStarted && Input.anyKeyDown)
+            if (!isGameStarted && WasShiftPressedThisFrame())
             {
+                Debug.Log("Game started");
                 isGameStarted = true;
-                startScreenEffect.PlayFeedbacks();
+                if (startScreenEffect != null)
+                    startScreenEffect.PlayFeedbacks();
             }
+        }
+
+        /// <summary>与 PlayerInputs 一致使用新 Input System（Keyboard）。</summary>
+        private static bool WasShiftPressedThisFrame()
+        {
+            var kb = Keyboard.current;
+            if (kb == null) return false;
+            return kb.leftShiftKey.wasPressedThisFrame || kb.rightShiftKey.wasPressedThisFrame;
         }
 
         // Continuously update score from speed/decay, then sync grade and fill bar
