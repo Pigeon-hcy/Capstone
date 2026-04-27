@@ -155,6 +155,9 @@
 		<property name="timelockedOffset">
 			<value>0.11</value>
 		</property>
+		<property name="pitch">
+			<value>0.699999988</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{48a83747-7385-46e1-8037-90641123ff4f}</destination>
 		</relationship>
@@ -182,6 +185,9 @@
 		</property>
 		<property name="timelockedOffset">
 			<value>0.0050000000000000001</value>
+		</property>
+		<property name="pitch">
+			<value>3</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{a9c3fb26-ac88-45fa-b450-e378f3f7644d}</destination>
@@ -269,10 +275,10 @@
 	<object class="MixerBusFader" id="{3444b940-8e1c-412f-8f43-9851a9b3f3cd}" />
 	<object class="SFXReverbEffect" id="{84e87ece-a047-4193-be96-f91d9cd141e0}">
 		<property name="wetLevel">
-			<value>-26</value>
+			<value>-46</value>
 		</property>
 		<property name="dryLevel">
-			<value>-14.5</value>
+			<value>-4.5</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{a90d4661-f36e-40b3-bd29-650f63157daf}" />

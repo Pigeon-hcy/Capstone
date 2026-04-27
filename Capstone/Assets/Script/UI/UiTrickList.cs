@@ -96,6 +96,26 @@ namespace SkateGame
                 {
                     TriggerPopAnimation();
                     // FOR JERRY'S AUDIO - D/C/B/A/S RANK (gradeIndex: 4=D, 3=C, 2=B, 1=A, 0=S)
+                    if (gradeIndex == 4)
+                    {
+                        //_playRankD();
+                    }
+                    else if (gradeIndex == 3)
+                    {
+                        _playRankC();
+                    }
+                    else if (gradeIndex == 2)
+                    {
+                        _playRankB();
+                    }
+                    else if (gradeIndex == 1)
+                    {
+                        _playRankA();
+                    }
+                    else if (gradeIndex == 0)
+                    {
+                        _playRankS();
+                    }
                     gainScoreEffect.PlayFeedbacks();
                 }
             }
@@ -171,5 +191,26 @@ namespace SkateGame
             decorationImage.transform.localScale = scaled;
             gradeImage.transform.localScale = scaled;
         }
+        public void _playRankS()
+        {
+            AudioManager.Instance.fmodPlayRankS();
+        }
+        public void _playRankA()
+        {
+            AudioManager.Instance.fmodPlayRankA();
+        }
+        public void _playRankB()
+        {
+            AudioManager.Instance.fmodPlayRankB();
+        }
+        public void _playRankC()
+        {
+            AudioManager.Instance.fmodPlayRankC();
+        }
+        public void _playRankD()
+        {
+            AudioManager.Instance.fmodPlayRankD();
+        }
     }
+
 }
