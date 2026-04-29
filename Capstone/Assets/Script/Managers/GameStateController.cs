@@ -139,7 +139,7 @@ namespace SkateGame
         }
         private void SetPlayerUI(bool show)
         {
-            if (playerUI != null) playerUI.SetActive(show);
+            if (playerUI != null) playerUI.GetComponent<CanvasGroup>().alpha = show ? 1 : 0;
         }
         
         private void UseUiInput(bool use)
