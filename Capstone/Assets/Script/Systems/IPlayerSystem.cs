@@ -549,10 +549,20 @@ namespace SkateGame
         private void ApplyGrappleImpulse(Vector2 dir)
         {
             vPhysics += dir * playerModel.Config.Value.grappleImpulse;
+            ClampGrappleHorizontal();
         }
         private void ApplyGrappleForce(Vector2 dir)
         {
             vPhysics += dir * playerModel.Config.Value.grappleForce * Time.fixedDeltaTime;
+            ClampGrappleHorizontal();
+        }
+        private void ClampGrappleHorizontal()
+        {
+            var cfg = playerModel.Config.Value;
+            float maxHorizontal = cfg.maxPushSpeed + cfg.grappleMaxHorizontalBonus;
+            float totalX = vPhysics.x + vPush.x;
+            if (Mathf.Abs(totalX) > maxHorizontal)
+                vPhysics.x = Mathf.Sign(totalX) * maxHorizontal - vPush.x;
         }
         private void ApplyUpdraft()
         {

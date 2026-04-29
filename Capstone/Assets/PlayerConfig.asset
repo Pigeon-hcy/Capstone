@@ -77,12 +77,13 @@ MonoBehaviour:
   durationTrickD: 0.25
   ignoringMovementLayerTrickD: 1
   recoveryDurationTrickD: 1
-  extendSpeed: 50
+  extendSpeed: 80
   retractSpeed: 35
-  maxDistance: 20
+  maxDistance: 25
   grappleForce: 30
   grappleDuration: 0.15
-  grappleImpulse: 30
+  grappleImpulse: 35
+  grappleMaxHorizontalBonus: 5
   groundRotationSpeed: 10
   airRotationSpeed: 6
   maxRotationSnapDeg: 30

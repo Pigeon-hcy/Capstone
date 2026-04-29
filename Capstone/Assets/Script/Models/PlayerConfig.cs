@@ -97,6 +97,7 @@ namespace SkateGame
         public float grappleForce = 20f;
         public float grappleDuration = 0.5f;
         public float grappleImpulse = 10f;
+        public float grappleMaxHorizontalBonus = 5f; // max horizontal speed above maxPushSpeed allowed by grapple
 
         [Header("========== 基础参数 ==========")]
         
