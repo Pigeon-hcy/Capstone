@@ -21,7 +21,6 @@ namespace SkateGame
         public Image decorationImage;
 
         private IPlayerModel playerModel;
-        private PlayerConfig config;
 
         private float score = 0f;
         private int gradeIndex = 4;
@@ -44,7 +43,6 @@ namespace SkateGame
         protected override void InitializeController()
         {
             playerModel = this.GetModel<IPlayerModel>();
-            config = playerModel.Config.Value;
 
             gradeIndex = 4;
             score = 0f;
@@ -84,7 +82,8 @@ namespace SkateGame
         private void UpdateScore(float dt)
         {
             float speed = Mathf.Abs(playerModel.PushSpeed.Value);
-            score = score + (config.scoringSpeedGainRate * speed - config.scoringDecayPerSecond) * dt;
+            score = score + (playerModel.Config.Value.scoringSpeedGainRate * speed 
+                - playerModel.Config.Value.scoringDecayPerSecond) * dt;
             score = Mathf.Clamp(score, 0f, 100f);
             int newGrade = CalculateGrade((int)score);
             if (newGrade != gradeIndex)
@@ -125,7 +124,7 @@ namespace SkateGame
 
         private void OnEnemyKilled()
         {
-            score += config.scoringKillBonus;
+            score += playerModel.Config.Value.scoringKillBonus;
         }
 
         // Returns normalized fill (0-1) within the current grade band
