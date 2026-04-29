@@ -41,6 +41,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/New Move Set Scene/New_1-10.unity
     guid: 0cb31283309266746894ac4f8ff54626
+  - enabled: 1
+    path: Assets/YL/YLVideo/YLVideoScene 1.unity
+    guid: 6582814981377493cbc87b281b55fa06
+  - enabled: 1
+    path: Assets/YL/YLVideo/YLVideoScene 2.unity
+    guid: 06ca075c25d2f40dc8b832b3e865993a
+  - enabled: 1
+    path: Assets/YL/YLVideo/YLVideoScene 3.unity
+    guid: 23cd7fbd4ac4344e7a2ec687532bf6e7
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e15a66fba268bb4479843aa677c8aa23, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

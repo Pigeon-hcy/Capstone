@@ -12,7 +12,8 @@ namespace SkateGame
         InGame,
         Dialogue,
         Tutorial,
-        UIPause
+        UIPause,
+        CG
     }
 
 	public class GameStateController : MonoBehaviour, IBelongToArchitecture, ICanGetSystem, ICanRegisterEvent, ICanSendEvent
@@ -67,6 +68,7 @@ namespace SkateGame
         public void EnterPause() => Switch(GameState.Pause);
         public void EnterTutorial() => Switch(GameState.Tutorial);
         public void EnterUIPause() => Switch(GameState.UIPause);
+        public void EnterCG() => Switch(GameState.CG);
         public void Switch(GameState next)
         {
 			if (_current == GameState.Menu && next != GameState.InGame) return;
@@ -118,6 +120,12 @@ namespace SkateGame
                     SetPlayerUI(false);
                     Debug.Log("Enter UIPause");
                     break;
+                case GameState.CG:
+                    UseUiInput(true);
+                    TimeStop(false);
+                    SetPlayerUI(false);
+                    Debug.Log("Enter CG");
+                    break;
             }
         }
         private void OnTogglePause(TogglePauseEvent evt)
@@ -135,7 +143,8 @@ namespace SkateGame
         }
         private void OnSceneChange(SceneChangeEvent evt)
         {
-            EnterInGame();
+            if (evt.IsCG) EnterCG();
+            else EnterInGame();
         }
         private void SetPlayerUI(bool show)
         {

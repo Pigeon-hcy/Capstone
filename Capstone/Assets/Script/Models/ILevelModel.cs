@@ -7,9 +7,10 @@ namespace SkateGame
     [System.Serializable]
     public class Level
     {
-        public string SceneName;  // 场景名
-        public string Name;       // 关卡名（显示用）
+        public string SceneName;
+        public string Name;
         public Button button;     // 对应 UI 按钮
+        public string CutsceneSceneName; // empty if no cutscene
     }
 
     public interface ILevelModel : IModel

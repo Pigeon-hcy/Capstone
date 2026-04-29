@@ -194,13 +194,19 @@ namespace SkateGame
             var current = levelModel.LevelList[index];
             levelModel.CurrentLevelName = current.Name;
 
+            // Redirect to cutscene scene if one exists and hasn't been watched
+            var progressSystem = GameApp.Interface.GetSystem<ILevelProgressSystem>();
+            bool hasCutscene = !string.IsNullOrEmpty(current.CutsceneSceneName);
+            bool needsCutscene = hasCutscene && !progressSystem.HasWatchedCutscene(index);
+            string targetScene = needsCutscene ? current.CutsceneSceneName : current.SceneName;
+
             bool blackDone = false;
             ActionKit.ScreenTransition.FadeIn()
                 .Duration(0.25f)
                 .StartGlobal(() => blackDone = true);
             yield return new WaitUntil(() => blackDone);
 
-            var op = SceneManager.LoadSceneAsync(current.SceneName);
+            var op = SceneManager.LoadSceneAsync(targetScene);
             op.allowSceneActivation = false;
             while (op.progress < 0.9f)
                 yield return null;
@@ -214,7 +220,7 @@ namespace SkateGame
                 .Duration(0.25f)
                 .StartGlobal();
 
-            GameApp.Interface.SendEvent(new SceneChangeEvent());
+            GameApp.Interface.SendEvent(new SceneChangeEvent { IsCG = needsCutscene });
         }
 
         public void LoadNextLevel()

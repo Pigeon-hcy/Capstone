@@ -1,20 +1,16 @@
 using QFramework;
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
 
 namespace SkateGame
 {
     public interface ILevelProgressSystem : ISystem
     {
-        /// <summary>
-        /// 保存当前已通过的关卡到磁盘
-        /// </summary>
         void SaveLevel();
-        
-        /// <summary>
-        /// 从磁盘读取已解锁的关卡
-        /// </summary>
         void LoadLevelProgress();
+        bool HasWatchedCutscene(int levelIndex);
+        void MarkCutsceneWatched(int levelIndex);
     }
 
     [System.Serializable]
@@ -22,6 +18,7 @@ namespace SkateGame
     {
         public int passedLevelIndex = -1;
         public int lastClearedLevelIndex = -1;
+        public List<int> watchedCutscenes = new List<int>();
     }
 
     public class LevelProgressSystem : AbstractSystem, ILevelProgressSystem
@@ -39,6 +36,18 @@ namespace SkateGame
             LoadLevelProgress();
         }
         
+        public bool HasWatchedCutscene(int levelIndex)
+        {
+            return levelProgressModel.WatchedCutscenes.Contains(levelIndex);
+        }
+
+        public void MarkCutsceneWatched(int levelIndex)
+        {
+            if (levelProgressModel.WatchedCutscenes.Contains(levelIndex)) return;
+            levelProgressModel.WatchedCutscenes.Add(levelIndex);
+            SaveToDisk();
+        }
+
         public void SaveLevel()
         {
             // 获取当前关卡索引
@@ -74,16 +83,12 @@ namespace SkateGame
                     {
                         levelProgressModel.PassedLevelIndex = data.passedLevelIndex;
 
-                        // 兼容旧存档：老版本可能没有 lastClearedLevelIndex 字段
-                        // 若字段缺失，则默认用 passedLevelIndex 作为最近通关
                         if (jsonData.Contains("\"lastClearedLevelIndex\""))
-                        {
                             levelProgressModel.LastClearedLevelIndex = data.lastClearedLevelIndex;
-                        }
                         else
-                        {
                             levelProgressModel.LastClearedLevelIndex = data.passedLevelIndex;
-                        }
+
+                        levelProgressModel.WatchedCutscenes = data.watchedCutscenes ?? new List<int>();
 
                         Debug.Log($"LevelProgressSystem: 已加载关卡进度，最高通关={levelProgressModel.PassedLevelIndex}, 最近通关={levelProgressModel.LastClearedLevelIndex}");
                     }
@@ -116,7 +121,8 @@ namespace SkateGame
                 LevelProgressData data = new LevelProgressData
                 {
                     passedLevelIndex = levelProgressModel.PassedLevelIndex,
-                    lastClearedLevelIndex = levelProgressModel.LastClearedLevelIndex
+                    lastClearedLevelIndex = levelProgressModel.LastClearedLevelIndex,
+                    watchedCutscenes = levelProgressModel.WatchedCutscenes
                 };
                 
                 string jsonData = JsonUtility.ToJson(data, true);
