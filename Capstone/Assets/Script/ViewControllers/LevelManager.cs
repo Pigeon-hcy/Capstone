@@ -114,7 +114,7 @@ namespace SkateGame
                 Level lvl = levelList[i];
                 if (lvl.button != null)
                 {
-                    bool canClick = i <= passedIndex;
+                    bool canClick = i <= passedIndex + 1;
                     lvl.button.interactable = canClick;
                    
                 }

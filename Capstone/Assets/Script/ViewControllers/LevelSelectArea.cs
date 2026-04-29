@@ -47,17 +47,24 @@ namespace SkateGame
             timerModel = this.GetModel<ITimerModel>();
             bestTimeSystem = this.GetSystem<IBestTimeSystem>();
             
-            // 查找关卡 UI 画布
-            GameObject canvasObject = GameObject.Find("LevelCanvas");
-            if (canvasObject != null)
+            // 查找关卡 UI 画布（包含非激活对象）
+            foreach (var canvas in FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                levelSelectCanvas = canvasObject.GetComponent<Canvas>();
-                if (levelSelectCanvas != null)
+                if (canvas.gameObject.name == "LevelCanvas")
                 {
-                    levelSelectCanvas.gameObject.SetActive(false);
-                    endUIController = levelSelectCanvas.GetComponentInChildren<EndUIController>();
-                    Debug.Log("LevelSelectArea: LevelCanvas 初始化成功");
+                    levelSelectCanvas = canvas;
+                    break;
                 }
+            }
+            if (levelSelectCanvas != null)
+            {
+                levelSelectCanvas.gameObject.SetActive(false);
+                endUIController = levelSelectCanvas.GetComponentInChildren<EndUIController>(true);
+                Debug.Log("LevelSelectArea: LevelCanvas 初始化成功");
+            }
+            else
+            {
+                Debug.LogWarning("LevelSelectArea: 未找到 LevelCanvas");
             }
         }
 
@@ -139,6 +146,7 @@ namespace SkateGame
             if (levelSelectCanvas != null)
             {
                 levelSelectCanvas.gameObject.SetActive(true);
+                levelSelectCanvas.transform.localScale = Vector3.one;
                 Transform mmfEndFeedback = levelSelectCanvas.transform.Find("MMF_EndFeedback");
                 if (mmfEndFeedback != null)
                 {
