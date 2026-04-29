@@ -5,6 +5,8 @@ using FMOD.Studio;
 
 public class MusicManager : MonoBehaviour
 {
+    public static MusicManager Instance;
+
     #region FMOD
 
     //Test
@@ -67,6 +69,21 @@ public class MusicManager : MonoBehaviour
     public EventReference VD3Event;
     private EventInstance VD3EventInstance;
     #endregion
+
+    void Awake()
+    {
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -502,6 +519,11 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    public void fmodSkipVD1(int time)
+    {
+        VD1EventInstance.setTimelinePosition(time);
+    }
+
     //VD2
     public void fmodPlayVD2()
     {
@@ -529,6 +551,11 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    public void fmodSkipVD2(int time)
+    {
+        VD2EventInstance.setTimelinePosition(time);
+    }
+
     //VD3
     public void fmodPlayVD3()
     {
@@ -554,6 +581,11 @@ public class MusicManager : MonoBehaviour
                 VD3EventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
+    }
+
+    public void fmodSkipVD3(int time)
+    {
+        VD3EventInstance.setTimelinePosition(time);
     }
     #endregion
 }

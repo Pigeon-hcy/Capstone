@@ -167,10 +167,13 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 352cd2cd0d81846abaafa654fb62433d, type: 2}
   reportBoxFactory: {fileID: 11400000, guid: ec0b14ae412bc4a52abfefb1ca04d0bf, type: 2}
   prefabRef: {fileID: 7260997533893408423}
+  displayTrans: {fileID: 0}
   IfDrawRange: 0
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64
+  boxSource: {fileID: 0}
+  OnDieFeedback: {fileID: 0}
 --- !u!50 &5504529194136396313
 Rigidbody2D:
   serializedVersion: 5
@@ -299,7 +302,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a093959723f42e942b00bdf28fc191b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -4,6 +4,7 @@ using Unity.Cinemachine;
 
 public class EndUICamShutter : MonoBehaviour
 {
+    
     [SerializeField] EndUIController endUIController;
     [SerializeField] RectTransform rect;
     [SerializeField] Animator animator;

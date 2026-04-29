@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{db3cf677-81b2-49bd-af46-9723d5aba758}">
+		<property name="assetPath">
+			<value>skateboard_railgrind_edit.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.2307709750566893</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1f0f38bb-fb7d-461c-8261-3906b71c435b}</destination>
+		</relationship>
+	</object>
+</objects>

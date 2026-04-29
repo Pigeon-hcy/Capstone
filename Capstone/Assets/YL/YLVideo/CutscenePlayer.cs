@@ -75,7 +75,31 @@ public class CutscenePlayer : MonoBehaviour
     {
         Time.timeScale = 1f;
         source.Play();
-        testEventInstance.start();
+        //testEventInstance.start();
+        if (videoIndex == 1)
+        {
+            _playVD1();
+        }
+        else if (videoIndex == 2)
+        {
+            _playVD2();
+        }
+        else if (videoIndex == 3)
+        {
+            _playVD3();
+        }
+    }
+    public void _playVD1()
+    {
+        MusicManager.Instance.fmodPlayVD1();
+    }
+    public void _playVD2()
+    {
+        MusicManager.Instance.fmodPlayVD2();
+    }
+    public void _playVD3()
+    {
+        MusicManager.Instance.fmodPlayVD3();
     }
 
     /*
@@ -96,7 +120,19 @@ public class CutscenePlayer : MonoBehaviour
                 if (skipTimestamps[i] > currentTime + 0.2f)
                 {
                     videoPlayer.time = skipTimestamps[i];
-                    testEventInstance.setTimelinePosition((int)(skipTimestamps[i] * 1000));
+                    //testEventInstance.setTimelinePosition((int)(skipTimestamps[i] * 1000));
+                    if (videoIndex == 1)
+                    {
+                        _skipVD1((int)(skipTimestamps[i] * 1000));
+                    }
+                    else if (videoIndex == 2)
+                    {
+                        _skipVD2((int)(skipTimestamps[i] * 1000));
+                    }
+                    else if (videoIndex == 3)
+                    {
+                        _skipVD3((int)(skipTimestamps[i] * 1000));
+                    }
 
                     return;
                 }
@@ -108,5 +144,17 @@ public class CutscenePlayer : MonoBehaviour
             videoPlayer.playbackSpeed = 0;
             wipeController.AnimateOut();
         }
+    }
+    public void _skipVD1(int time)
+    {
+        MusicManager.Instance.fmodSkipVD1(time);
+    }
+    public void _skipVD2(int time)
+    {
+        MusicManager.Instance.fmodSkipVD2(time);
+    }
+    public void _skipVD3(int time)
+    {
+        MusicManager.Instance.fmodSkipVD3(time);
     }
 }
