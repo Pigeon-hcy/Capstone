@@ -11,6 +11,7 @@ namespace SkateGame
     }
     public struct SceneChangeEvent
     {
+        public bool IsCG;
     }
 
     public struct PlayerRespawnEvent

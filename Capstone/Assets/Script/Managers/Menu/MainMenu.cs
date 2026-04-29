@@ -10,8 +10,6 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
 {
     public IArchitecture GetArchitecture() => GameApp.Interface;
 
-    public List<Level> levelList = new List<Level>();
-
     public GameObject levelSelectCanvas;
     public GameObject defaultCanvas;
 
@@ -50,26 +48,12 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
                 backgroundImageList[i].gameObject.SetActive(i == bgIndex);
         }
     }
-    private void EnsureLevelModelPopulated()
-    {
-        var levelModel = this.GetModel<ILevelModel>();
-        if (levelModel.LevelList != null && levelModel.LevelList.Count > 0) return;
-        if (levelList == null || levelList.Count == 0) return;
-        var levelSystem = this.GetSystem<ILevelSystem>();
-        var levelProgressModel = this.GetModel<ILevelProgressModel>();
-        foreach (var lvl in levelList)
-            levelSystem.AddLevel(lvl);
-        int passed = levelProgressModel != null ? levelProgressModel.PassedLevelIndex : 0;
-        levelModel.CurrentLevelIndex = Mathf.Clamp(passed, 0, levelModel.LevelList.Count - 1);
-    }
-
     /// <summary>
     /// 继续当前关卡：加载当前进度对应的关卡场景。按钮绑定此方法即可。
     /// </summary>
     // FOR JERRY'S AUDIO - UI CLICK
     public void OnClickContinueCurrentLevel()
     {
-        EnsureLevelModelPopulated();
         var levelModel = this.GetModel<ILevelModel>();
         if (levelModel.LevelList == null || levelModel.LevelList.Count == 0) return;
         int idx = Mathf.Clamp(levelModel.CurrentLevelIndex, 0, levelModel.LevelList.Count - 1);
@@ -116,7 +100,6 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
 
     public void ShowLevelSelectCanvas()
     {
-        EnsureLevelModelPopulated();
         levelSelectCanvas.SetActive(true);
         defaultCanvas.SetActive(false);
     }
