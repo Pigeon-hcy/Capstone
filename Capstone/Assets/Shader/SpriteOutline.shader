@@ -4,7 +4,7 @@ Shader "Custom/SpriteOutline"
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
-        _OutlineColor ("Outline Color", Color) = (1,0,0,1)
+        [HDR] _OutlineColor ("Outline Color", Color) = (1,0,0,1)
         _OutlineThickness ("Outline Thickness", Range(0, 10)) = 1
         _OutlineEnabled ("Outline Enabled", Float) = 1
     }
