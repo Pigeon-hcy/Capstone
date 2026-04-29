@@ -18,6 +18,8 @@ public class EnergyRecoverItem : MonoBehaviour, IController
     public Sprite usedSprite;
     public Sprite normalSprite;
 
+    public MeshRenderer meshRenderer;
+
     void Start()
     {
         energySystem = this.GetSystem<IEnergySystem>();
@@ -40,10 +42,18 @@ public class EnergyRecoverItem : MonoBehaviour, IController
         if (isUsed)
         {
             spriteRenderer.sprite = usedSprite;
+            if(meshRenderer != null)
+            {
+                meshRenderer.enabled = false;
+            }
         }
         else
         {
             spriteRenderer.sprite = normalSprite;
+            if(meshRenderer != null)
+            {
+                meshRenderer.enabled = true;
+            }
         }
     }
 
