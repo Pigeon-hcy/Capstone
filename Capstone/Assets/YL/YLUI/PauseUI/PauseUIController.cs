@@ -141,7 +141,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
 
     public void Quit()
     {
-        FindFirstObjectByType<LevelManager>().ShowAllLevelCanvas();
+        SceneManager.LoadScene("MainMenu");
     }
 
     IEnumerator SpringCoroutine()
