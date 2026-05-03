@@ -69,7 +69,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     {
         if (GameStateController.Instance != null)
             GameStateController.Instance.EnterInGame();
-        ActionKit.Coroutine(() => LoadSceneWithFade("New_1-1")).StartGlobal();
+        ActionKit.Coroutine(() => LoadSceneWithFade("YLVideoScene 1")).StartGlobal();
     }
 
     private static IEnumerator LoadSceneWithFade(string sceneName)
