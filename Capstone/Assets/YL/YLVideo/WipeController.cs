@@ -63,6 +63,11 @@ public class WipeController : MonoBehaviour
         if (animator) StartCoroutine(AnimateInWithDelay(1.0f));
     }
 
+    public void TransitionCompleteSoKillYourself()
+    {
+        Destroy(transform.parent.gameObject);
+    }
+
     IEnumerator AnimateInWithDelay(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
