@@ -111,6 +111,17 @@ public class CutscenePlayer : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape) && skipTimestamps.Count > 0)
+        {
+            float endTime = skipTimestamps[skipTimestamps.Count - 1];
+            videoPlayer.time = endTime;
+            int ms = (int)(endTime * 1000);
+            if (videoIndex == 1) _skipVD1(ms);
+            else if (videoIndex == 2) _skipVD2(ms);
+            else if (videoIndex == 3) _skipVD3(ms);
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             float currentTime = (float)videoPlayer.time;
