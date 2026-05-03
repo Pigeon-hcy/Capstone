@@ -31,7 +31,16 @@
       "Bash(git -C \"E:/Capstone\" show HEAD:\"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
       "Bash(git -C \"E:/Capstone\" show HEAD:\"Capstone/Assets/Scenes/New Move Set Scene/New_1-3.unity\")",
       "Bash(cp \"E:/Capstone/.git/lfs/objects/46/13/46134557e34588f2c5fee8ed6accd0b56a53ebc58c76b8faa3b6327e68cd977a\" \"Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
-      "Bash(cp \"E:/Capstone/.git/lfs/objects/61/e7/61e7c2ed9700c22174fa832ea1de6fe2ceaaec7926c9d6db2ce4a2ef9ba17647\" \"Assets/Scenes/New Move Set Scene/New_1-3.unity\")"
+      "Bash(cp \"E:/Capstone/.git/lfs/objects/61/e7/61e7c2ed9700c22174fa832ea1de6fe2ceaaec7926c9d6db2ce4a2ef9ba17647\" \"Assets/Scenes/New Move Set Scene/New_1-3.unity\")",
+      "Bash(git -C \"E:/Capstone\" add \"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\" \"Capstone/Assets/Scenes/New Move Set Scene/New_1-3.unity\")",
+      "Bash(git -C \"E:/Capstone\" diff HEAD -- \"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
+      "Bash(git -C \"E:/Capstone\" ls-files --stage -- \"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
+      "Bash(git -C \"E:/Capstone\" check-attr -a -- \"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
+      "Bash(git -C \"E:/Capstone\" cat-file -p ebf00f20bb161d6a2cfdd06ee29377f93de50251)",
+      "Bash(git -C \"E:/Capstone\" cat-file -p HEAD:\"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
+      "Bash(git -C \"E:/Capstone\" log --oneline -5)",
+      "Bash(git -C \"E:/Capstone\" rev-parse HEAD)",
+      "Bash(git -C \"E:/Capstone\" log origin/main..HEAD --oneline)"
     ]
   }
 }
