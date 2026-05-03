@@ -1,0 +1,1417 @@
+fileFormatVersion: 2
+guid: 604944106a55d7f4a9f15a9efa13da99
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5792053864861096501
+    second: SkameControllerLayout NoController Final Fix 260502_0
+  - first:
+      213: 95398029988721362
+    second: SkameControllerLayout NoController Final Fix 260502_1
+  - first:
+      213: -276427921780322044
+    second: SkameControllerLayout NoController Final Fix 260502_2
+  - first:
+      213: 3146736848675068368
+    second: SkameControllerLayout NoController Final Fix 260502_3
+  - first:
+      213: -9172629909787841086
+    second: SkameControllerLayout NoController Final Fix 260502_4
+  - first:
+      213: -2544851440385540032
+    second: SkameControllerLayout NoController Final Fix 260502_5
+  - first:
+      213: -7158670228768431106
+    second: SkameControllerLayout NoController Final Fix 260502_6
+  - first:
+      213: -6002179014041399856
+    second: SkameControllerLayout NoController Final Fix 260502_7
+  - first:
+      213: 6894422366577180281
+    second: SkameControllerLayout NoController Final Fix 260502_8
+  - first:
+      213: 652440776556918259
+    second: SkameControllerLayout NoController Final Fix 260502_9
+  - first:
+      213: 1771970544563276031
+    second: SkameControllerLayout NoController Final Fix 260502_10
+  - first:
+      213: 6433658114611033325
+    second: SkameControllerLayout NoController Final Fix 260502_11
+  - first:
+      213: 5600026098912368908
+    second: SkameControllerLayout NoController Final Fix 260502_12
+  - first:
+      213: -4390924098403621096
+    second: SkameControllerLayout NoController Final Fix 260502_13
+  - first:
+      213: 5613762106954389512
+    second: SkameControllerLayout NoController Final Fix 260502_14
+  - first:
+      213: -7968857114435467567
+    second: SkameControllerLayout NoController Final Fix 260502_15
+  - first:
+      213: 5586440483473054527
+    second: SkameControllerLayout NoController Final Fix 260502_16
+  - first:
+      213: -42036164612150270
+    second: SkameControllerLayout NoController Final Fix 260502_17
+  - first:
+      213: -7740609695194917752
+    second: SkameControllerLayout NoController Final Fix 260502_18
+  - first:
+      213: -6256099651680227038
+    second: SkameControllerLayout NoController Final Fix 260502_19
+  - first:
+      213: 4860910499653383849
+    second: SkameControllerLayout NoController Final Fix 260502_20
+  - first:
+      213: -8626966967164375004
+    second: SkameControllerLayout NoController Final Fix 260502_21
+  - first:
+      213: 328808144992657946
+    second: SkameControllerLayout NoController Final Fix 260502_22
+  - first:
+      213: -8598282654863826325
+    second: SkameControllerLayout NoController Final Fix 260502_23
+  - first:
+      213: 4397265736608505882
+    second: SkameControllerLayout NoController Final Fix 260502_24
+  - first:
+      213: -3731265491980434337
+    second: SkameControllerLayout NoController Final Fix 260502_25
+  - first:
+      213: 3311954233246552931
+    second: SkameControllerLayout NoController Final Fix 260502_26
+  - first:
+      213: 3522668815415105519
+    second: SkameControllerLayout NoController Final Fix 260502_27
+  - first:
+      213: -97356179580389278
+    second: SkameControllerLayout NoController Final Fix 260502_28
+  - first:
+      213: -8465011568297045398
+    second: SkameControllerLayout NoController Final Fix 260502_29
+  - first:
+      213: -6506671646620353055
+    second: SkameControllerLayout NoController Final Fix 260502_30
+  - first:
+      213: 6419920761873336824
+    second: SkameControllerLayout NoController Final Fix 260502_31
+  - first:
+      213: 3766727966204254660
+    second: SkameControllerLayout NoController Final Fix 260502_32
+  - first:
+      213: -758029308313431013
+    second: SkameControllerLayout NoController Final Fix 260502_33
+  - first:
+      213: 6053130311137033831
+    second: SkameControllerLayout NoController Final Fix 260502_34
+  - first:
+      213: 8169473058123189397
+    second: SkameControllerLayout NoController Final Fix 260502_35
+  - first:
+      213: 2714577684598763976
+    second: SkameControllerLayout NoController Final Fix 260502_36
+  - first:
+      213: 4599542383588905376
+    second: SkameControllerLayout NoController Final Fix 260502_37
+  - first:
+      213: -1667272208325305216
+    second: SkameControllerLayout NoController Final Fix 260502_38
+  - first:
+      213: -6295544651056757399
+    second: SkameControllerLayout NoController Final Fix 260502_39
+  - first:
+      213: -4361654336857501873
+    second: SkameControllerLayout NoController Final Fix 260502_40
+  - first:
+      213: -671350270380803271
+    second: SkameControllerLayout NoController Final Fix 260502_41
+  - first:
+      213: -8359483045996017371
+    second: SkameControllerLayout NoController Final Fix 260502_42
+  - first:
+      213: -6187353034282373082
+    second: SkameControllerLayout NoController Final Fix 260502_43
+  - first:
+      213: 7563902918131995591
+    second: SkameControllerLayout NoController Final Fix 260502_44
+  - first:
+      213: 239839961843473998
+    second: SkameControllerLayout NoController Final Fix 260502_45
+  - first:
+      213: 6482828686752202319
+    second: SkameControllerLayout NoController Final Fix 260502_46
+  - first:
+      213: 5455411051959851409
+    second: SkameControllerLayout NoController Final Fix 260502_47
+  - first:
+      213: 9096897077252224885
+    second: SkameControllerLayout NoController Final Fix 260502_48
+  - first:
+      213: 7103320209061737539
+    second: SkameControllerLayout NoController Final Fix 260502_49
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_0
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53a59fe6d42816050800000000000000
+      internalID: 5792053864861096501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_1
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d2ffb9b00ce25100800000000000000
+      internalID: 95398029988721362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_2
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 401d84c054ee92cf0800000000000000
+      internalID: -276427921780322044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_3
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d9d8e2ed747bab20800000000000000
+      internalID: 3146736848675068368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_4
+      rect:
+        serializedVersion: 2
+        x: 1923
+        y: 754
+        width: 24
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cde8fa12b544b080800000000000000
+      internalID: -9172629909787841086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_5
+      rect:
+        serializedVersion: 2
+        x: 1957
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 040cda1291fdeacd0800000000000000
+      internalID: -2544851440385540032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_6
+      rect:
+        serializedVersion: 2
+        x: 2007
+        y: 793
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef3e71eea5b47ac90800000000000000
+      internalID: -7158670228768431106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_7
+      rect:
+        serializedVersion: 2
+        x: 2043
+        y: 754
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd02c5dcf9f3bca0800000000000000
+      internalID: -6002179014041399856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_8
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 754
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e375b3d98edaf50800000000000000
+      internalID: 6894422366577180281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_9
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 754
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f5b7a3fd6fed0900800000000000000
+      internalID: 652440776556918259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_10
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 754
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff8462d62dd479810800000000000000
+      internalID: 1771970544563276031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_11
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 719
+        width: 355
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de433bfd7f1f84950800000000000000
+      internalID: 6433658114611033325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_12
+      rect:
+        serializedVersion: 2
+        x: 1384
+        y: 669
+        width: 420
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c099696111a47bd40800000000000000
+      internalID: 5600026098912368908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_13
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 754
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81723feebcd4013c0800000000000000
+      internalID: -4390924098403621096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_14
+      rect:
+        serializedVersion: 2
+        x: 1861
+        y: 754
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 808909ea4e618ed40800000000000000
+      internalID: 5613762106954389512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_15
+      rect:
+        serializedVersion: 2
+        x: 1983
+        y: 754
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d6ca3cdcaee86190800000000000000
+      internalID: -7968857114435467567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_16
+      rect:
+        serializedVersion: 2
+        x: 2007
+        y: 754
+        width: 11
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3bd5408506078d40800000000000000
+      internalID: 5586440483473054527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_17
+      rect:
+        serializedVersion: 2
+        x: 2017
+        y: 754
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20ca29cb458aa6ff0800000000000000
+      internalID: -42036164612150270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_18
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 569
+        width: 773
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88456f46e74d39490800000000000000
+      internalID: -7740609695194917752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_19
+      rect:
+        serializedVersion: 2
+        x: 1978
+        y: 554
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 221b726538edd29a0800000000000000
+      internalID: -6256099651680227038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_20
+      rect:
+        serializedVersion: 2
+        x: 2004
+        y: 554
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a67ec0685c657340800000000000000
+      internalID: 4860910499653383849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_21
+      rect:
+        serializedVersion: 2
+        x: 2031
+        y: 554
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4207321404bd64880800000000000000
+      internalID: -8626966967164375004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_22
+      rect:
+        serializedVersion: 2
+        x: 2057
+        y: 554
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a12ea890449209400800000000000000
+      internalID: 328808144992657946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_23
+      rect:
+        serializedVersion: 2
+        x: 2083
+        y: 554
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6260762b73cca880800000000000000
+      internalID: -8598282654863826325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_24
+      rect:
+        serializedVersion: 2
+        x: 1331
+        y: 469
+        width: 473
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a10eb85c3e9360d30800000000000000
+      internalID: 4397265736608505882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_25
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 454
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5445dbddc1e73cc0800000000000000
+      internalID: -3731265491980434337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_26
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 454
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3631301e3dc66fd20800000000000000
+      internalID: 3311954233246552931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_27
+      rect:
+        serializedVersion: 2
+        x: 1861
+        y: 454
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe7d92caf9803e030800000000000000
+      internalID: 3522668815415105519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_28
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 454
+        width: 21
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 268fb6b021f16aef0800000000000000
+      internalID: -97356179580389278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_29
+      rect:
+        serializedVersion: 2
+        x: 1907
+        y: 454
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a62151404dc368a80800000000000000
+      internalID: -8465011568297045398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_30
+      rect:
+        serializedVersion: 2
+        x: 1934
+        y: 454
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ed76197c98a3b5a0800000000000000
+      internalID: -6506671646620353055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_31
+      rect:
+        serializedVersion: 2
+        x: 1957
+        y: 454
+        width: 22
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f98d913be3281950800000000000000
+      internalID: 6419920761873336824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_32
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 166
+        width: 605
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c95227d02b164430800000000000000
+      internalID: 3766727966204254660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_33
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 354
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1494ac3c50fa75f0800000000000000
+      internalID: -758029308313431013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_34
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 354
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76ef87672f9010450800000000000000
+      internalID: 6053130311137033831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_35
+      rect:
+        serializedVersion: 2
+        x: 1861
+        y: 354
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c8e8f667ccf5170800000000000000
+      internalID: 8169473058123189397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_36
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 354
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c136bd850e1ca520800000000000000
+      internalID: 2714577684598763976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_37
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 254
+        width: 37
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a19b2fad6bd4df30800000000000000
+      internalID: 4599542383588905376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_38
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 254
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08c93e692c8acd8e0800000000000000
+      internalID: -1667272208325305216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_39
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 254
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 965c62ebe7bb1a8a0800000000000000
+      internalID: -6295544651056757399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_40
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 254
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4f019a5d7a4873c0800000000000000
+      internalID: -4361654336857501873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_41
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 269
+        width: 303
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93bf61e6c72eea6f0800000000000000
+      internalID: -671350270380803271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_42
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 254
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 529c189c5762dfb80800000000000000
+      internalID: -8359483045996017371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_43
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 254
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 620f9a3823b122aa0800000000000000
+      internalID: -6187353034282373082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_44
+      rect:
+        serializedVersion: 2
+        x: 1861
+        y: 254
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c35cc6f0a168f860800000000000000
+      internalID: 7563902918131995591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_45
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 241
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4e9f90bc25145300800000000000000
+      internalID: 239839961843473998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_46
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 154
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4eb395d752a7f950800000000000000
+      internalID: 6482828686752202319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_47
+      rect:
+        serializedVersion: 2
+        x: 1834
+        y: 154
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1999ecf927385bb40800000000000000
+      internalID: 5455411051959851409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_48
+      rect:
+        serializedVersion: 2
+        x: 1861
+        y: 154
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57778efb1bbae3e70800000000000000
+      internalID: 9096897077252224885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkameControllerLayout NoController Final Fix 260502_49
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 154
+        width: 27
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3447afa5810149260800000000000000
+      internalID: 7103320209061737539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SkameControllerLayout NoController Final Fix 260502_0: 5792053864861096501
+      SkameControllerLayout NoController Final Fix 260502_1: 95398029988721362
+      SkameControllerLayout NoController Final Fix 260502_10: 1771970544563276031
+      SkameControllerLayout NoController Final Fix 260502_11: 6433658114611033325
+      SkameControllerLayout NoController Final Fix 260502_12: 5600026098912368908
+      SkameControllerLayout NoController Final Fix 260502_13: -4390924098403621096
+      SkameControllerLayout NoController Final Fix 260502_14: 5613762106954389512
+      SkameControllerLayout NoController Final Fix 260502_15: -7968857114435467567
+      SkameControllerLayout NoController Final Fix 260502_16: 5586440483473054527
+      SkameControllerLayout NoController Final Fix 260502_17: -42036164612150270
+      SkameControllerLayout NoController Final Fix 260502_18: -7740609695194917752
+      SkameControllerLayout NoController Final Fix 260502_19: -6256099651680227038
+      SkameControllerLayout NoController Final Fix 260502_2: -276427921780322044
+      SkameControllerLayout NoController Final Fix 260502_20: 4860910499653383849
+      SkameControllerLayout NoController Final Fix 260502_21: -8626966967164375004
+      SkameControllerLayout NoController Final Fix 260502_22: 328808144992657946
+      SkameControllerLayout NoController Final Fix 260502_23: -8598282654863826325
+      SkameControllerLayout NoController Final Fix 260502_24: 4397265736608505882
+      SkameControllerLayout NoController Final Fix 260502_25: -3731265491980434337
+      SkameControllerLayout NoController Final Fix 260502_26: 3311954233246552931
+      SkameControllerLayout NoController Final Fix 260502_27: 3522668815415105519
+      SkameControllerLayout NoController Final Fix 260502_28: -97356179580389278
+      SkameControllerLayout NoController Final Fix 260502_29: -8465011568297045398
+      SkameControllerLayout NoController Final Fix 260502_3: 3146736848675068368
+      SkameControllerLayout NoController Final Fix 260502_30: -6506671646620353055
+      SkameControllerLayout NoController Final Fix 260502_31: 6419920761873336824
+      SkameControllerLayout NoController Final Fix 260502_32: 3766727966204254660
+      SkameControllerLayout NoController Final Fix 260502_33: -758029308313431013
+      SkameControllerLayout NoController Final Fix 260502_34: 6053130311137033831
+      SkameControllerLayout NoController Final Fix 260502_35: 8169473058123189397
+      SkameControllerLayout NoController Final Fix 260502_36: 2714577684598763976
+      SkameControllerLayout NoController Final Fix 260502_37: 4599542383588905376
+      SkameControllerLayout NoController Final Fix 260502_38: -1667272208325305216
+      SkameControllerLayout NoController Final Fix 260502_39: -6295544651056757399
+      SkameControllerLayout NoController Final Fix 260502_4: -9172629909787841086
+      SkameControllerLayout NoController Final Fix 260502_40: -4361654336857501873
+      SkameControllerLayout NoController Final Fix 260502_41: -671350270380803271
+      SkameControllerLayout NoController Final Fix 260502_42: -8359483045996017371
+      SkameControllerLayout NoController Final Fix 260502_43: -6187353034282373082
+      SkameControllerLayout NoController Final Fix 260502_44: 7563902918131995591
+      SkameControllerLayout NoController Final Fix 260502_45: 239839961843473998
+      SkameControllerLayout NoController Final Fix 260502_46: 6482828686752202319
+      SkameControllerLayout NoController Final Fix 260502_47: 5455411051959851409
+      SkameControllerLayout NoController Final Fix 260502_48: 9096897077252224885
+      SkameControllerLayout NoController Final Fix 260502_49: 7103320209061737539
+      SkameControllerLayout NoController Final Fix 260502_5: -2544851440385540032
+      SkameControllerLayout NoController Final Fix 260502_6: -7158670228768431106
+      SkameControllerLayout NoController Final Fix 260502_7: -6002179014041399856
+      SkameControllerLayout NoController Final Fix 260502_8: 6894422366577180281
+      SkameControllerLayout NoController Final Fix 260502_9: 652440776556918259
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
