@@ -129,6 +129,8 @@ public class AudioManager : MonoBehaviour
     private EventInstance fanEventInstance;
     FMOD.Studio.PARAMETER_ID fanParameter;
 
+    private float _fanDistance;
+
     //UI Click
     public EventReference _clickEvent;
     private EventInstance _clickEventInstance;
@@ -382,6 +384,8 @@ public class AudioManager : MonoBehaviour
             wallRideEventInstance.setParameterByID(wallRideParameter, currentSpeed);
             railGrindEventInstance.setParameterByID(railGrindParameter, currentSpeed);
         }
+        fmodFanModify(_fanDistance);
+        _fanDistance = 1;
     }
 
     #region Music
@@ -787,6 +791,16 @@ public class AudioManager : MonoBehaviour
                 fanEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
+    }
+
+    public float fmodGetFanDistance()
+    {
+        return _fanDistance;
+    }
+
+    public void fmodSetFanDistance(float distance)
+    {
+        _fanDistance = distance;
     }
 
     public void fmodFanModify(float distancce)
