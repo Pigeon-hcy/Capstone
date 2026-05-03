@@ -92,6 +92,9 @@
 		<property name="length">
 			<value>1.2867291666666667</value>
 		</property>
+		<property name="pitch">
+			<value>1.20000005</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{81392cdf-f108-47e7-a659-0a9551e126ae}</destination>
 			<destination>{87711072-ab1a-4914-9252-3e4d908103f7}</destination>
@@ -104,7 +107,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{a032c80a-ca5f-400f-b479-7850773b392e}">
 		<property name="volume">
-			<value>-1</value>
+			<value>-11</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -122,6 +125,8 @@
 	<object class="MixerBusEffectChain" id="{4fc794db-bec9-4a7b-a700-67c6f86a7dbb}">
 		<relationship name="effects">
 			<destination>{6546b763-4724-420b-a030-a527be4403e2}</destination>
+			<destination>{57936f2a-d069-4a33-9e1f-e2a6bd1f9035}</destination>
+			<destination>{7ea71601-bf48-47b1-80e6-0b54ba554403}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e45eb822-8f52-4c5c-8ed9-2fe010adb2ad}" />
@@ -164,5 +169,21 @@
 	</object>
 	<object class="MixerBusPanner" id="{4333ed65-abba-4f52-9cbf-4c0962d42286}" />
 	<object class="MixerBusFader" id="{6546b763-4724-420b-a030-a527be4403e2}" />
+	<object class="ThreeEQEffect" id="{57936f2a-d069-4a33-9e1f-e2a6bd1f9035}">
+		<property name="lowGain">
+			<value>-3</value>
+		</property>
+		<property name="midGain">
+			<value>-2.5</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{7ea71601-bf48-47b1-80e6-0b54ba554403}">
+		<property name="decayTime">
+			<value>500</value>
+		</property>
+		<property name="wetLevel">
+			<value>-18.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{a4e094e5-492b-4b69-9b5a-2e85349141ae}" />
 </objects>

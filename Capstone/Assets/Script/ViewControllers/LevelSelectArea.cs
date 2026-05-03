@@ -89,6 +89,7 @@ namespace SkateGame
                     bestTimeSystem.TrySaveBestTime(levelModel.CurrentLevelIndex, elapsed);
                 }
                 // FOR JERRY'S AUDIO - LEVEL FINISH
+                _playLevelEnd();
                 // ----------------------------
                 // 保存当前关卡进度（到达终点时保存）
                 // ----------------------------
@@ -116,6 +117,10 @@ namespace SkateGame
                     endUIController.EndSequence_C();
                 GameStateController.Instance?.EnterUIPause();
             }
+        }
+        public void _playLevelEnd()
+        {
+            AudioManager.Instance.fmodPlayLevelEnd();
         }
 
         private void OnTriggerExit2D(Collider2D other)

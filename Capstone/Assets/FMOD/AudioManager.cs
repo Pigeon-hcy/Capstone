@@ -120,6 +120,10 @@ public class AudioManager : MonoBehaviour
     public EventReference _checkpointEvent;
     private EventInstance _checkpointEventInstance;
 
+    //Level End
+    public EventReference _levelEndEvent;
+    private EventInstance _levelEndEventInstance;
+
     //Fan SFX
     public EventReference fanEvent;
     private EventInstance fanEventInstance;
@@ -291,6 +295,9 @@ public class AudioManager : MonoBehaviour
 
         //Checkpoint
         _checkpointEventInstance = RuntimeManager.CreateInstance(_checkpointEvent);
+
+        //Level End
+        _levelEndEventInstance = RuntimeManager.CreateInstance(_levelEndEvent);
 
         //Fan
         fanEventInstance = RuntimeManager.CreateInstance(fanEvent);
@@ -742,6 +749,16 @@ public class AudioManager : MonoBehaviour
         if (_checkpointEventInstance.isValid())
         {
             _checkpointEventInstance.start();
+        }
+    }
+
+    //Level End
+    public void fmodPlayLevelEnd()
+    {
+        if (_levelEndEventInstance.isValid())
+        {
+            _levelEndEventInstance.start();
+            fmodPauseMove();
         }
     }
 
