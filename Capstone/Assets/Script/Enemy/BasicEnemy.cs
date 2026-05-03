@@ -376,6 +376,10 @@ namespace SkateGame
         {
             AudioManager.Instance.fmodPlay360();
         }
+        public void playEnemyDeath()
+        {
+            AudioManager.Instance.fmodPlayEnemyDeath();
+        }
 
         void OnDrawGizmos()
         {
@@ -411,6 +415,7 @@ namespace SkateGame
             dmgBox.CloseBox();
         dmgBox = null;
         animator.SetTrigger("Die");
+        playEnemyDeath();
         Destroy(gameObject, 0.1f);
     }
 

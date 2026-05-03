@@ -153,6 +153,10 @@ public class AudioManager : MonoBehaviour
     public EventReference _enemyBrickEvent;
     private EventInstance _enemyBrickEventInstance;
 
+    //Enemy Death
+    public EventReference _enemyDeathEvent;
+    private EventInstance _enemyDeathEventInstance;
+
     //Rank S
     public EventReference _rankSEvent;
     private EventInstance _rankSEventInstance;
@@ -317,6 +321,9 @@ public class AudioManager : MonoBehaviour
 
         //Enemy Attack Brick
         _enemyBrickEventInstance = RuntimeManager.CreateInstance(_enemyBrickEvent);
+
+        //Enemy Death
+        _enemyDeathEventInstance = RuntimeManager.CreateInstance(_enemyDeathEvent);
 
         //Rank S
         _rankSEventInstance = RuntimeManager.CreateInstance(_rankSEvent);
@@ -841,6 +848,15 @@ public class AudioManager : MonoBehaviour
         if (_enemyBrickEventInstance.isValid())
         {
             _enemyBrickEventInstance.start();
+        }
+    }
+
+    //Enemy Death
+    public void fmodPlayEnemyDeath()
+    {
+        if (_enemyDeathEventInstance.isValid())
+        {
+            _enemyDeathEventInstance.start();
         }
     }
 

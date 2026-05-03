@@ -257,6 +257,13 @@ MonoBehaviour:
       Data3: 1477345176
       Data4: -743048081
     Path: event:/SFX_EnemyAttackBrick
+  _enemyDeathEvent:
+    Guid:
+      Data1: 1923623772
+      Data2: 1219337579
+      Data3: -938840643
+      Data4: -1507471482
+    Path: event:/SFX_EnemyDeath
   _rankSEvent:
     Guid:
       Data1: 886866550
