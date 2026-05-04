@@ -104,20 +104,15 @@ namespace SkateGame
         }
 
         /// <summary>
-        /// 根据 PassedLevelIndex 更新按钮状态：已通关及之前的关卡可点击，否则不可点击并变暗
+        /// 所有关卡按钮始终可点击（解锁全部关卡）
         /// </summary>
         private void UpdateButtonStates()
         {
-            int passedIndex = levelProgressModel?.PassedLevelIndex ?? -1;
             for (int i = 0; i < levelList.Count; i++)
             {
                 Level lvl = levelList[i];
                 if (lvl.button != null)
-                {
-                    bool canClick = i <= passedIndex + 1;
-                    lvl.button.interactable = canClick;
-                   
-                }
+                    lvl.button.interactable = true;
             }
         }
 
