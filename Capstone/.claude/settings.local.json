@@ -40,7 +40,8 @@
       "Bash(git -C \"E:/Capstone\" cat-file -p HEAD:\"Capstone/Assets/Scenes/New Move Set Scene/New_1-2.unity\")",
       "Bash(git -C \"E:/Capstone\" log --oneline -5)",
       "Bash(git -C \"E:/Capstone\" rev-parse HEAD)",
-      "Bash(git -C \"E:/Capstone\" log origin/main..HEAD --oneline)"
+      "Bash(git -C \"E:/Capstone\" log origin/main..HEAD --oneline)",
+      "Bash(grep -lr *)"
     ]
   }
 }
