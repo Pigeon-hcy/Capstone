@@ -49,6 +49,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
         InitializeVolumeSliders();
     }
 
+    /*For Test Only
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -62,6 +63,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             PauseClicked();
         }
     }
+    */
 
     void OnEnable() => this.RegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
     void OnDisable() => this.UnRegisterEvent<GameStateChangedEvent>(OnGameStateChanged);
