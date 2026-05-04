@@ -61,7 +61,7 @@ namespace SkateGame
             UpdateScore(Time.deltaTime);
             UpdatePopAnimation(Time.deltaTime);
 
-            if (!isGameStarted && WasShiftPressedThisFrame())
+            if (!isGameStarted && WasAnyKeyPressedThisFrame())
             {
                 Debug.Log("Game started");
                 isGameStarted = true;
@@ -70,12 +70,17 @@ namespace SkateGame
             }
         }
 
-        /// <summary>与 PlayerInputs 一致使用新 Input System（Keyboard）。</summary>
-        private static bool WasShiftPressedThisFrame()
+        /// <summary>与 PlayerInputs 一致使用新 Input System：本帧按下键盘任意键。</summary>
+        private static bool WasAnyKeyPressedThisFrame()
         {
             var kb = Keyboard.current;
             if (kb == null) return false;
-            return kb.leftShiftKey.wasPressedThisFrame || kb.rightShiftKey.wasPressedThisFrame;
+            foreach (var key in kb.allKeys)
+            {
+                if (key.wasPressedThisFrame)
+                    return true;
+            }
+            return false;
         }
 
         // Continuously update score from speed/decay, then sync grade and fill bar
