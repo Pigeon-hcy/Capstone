@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
-using QFramework;
-using SkateGame;
 
 public class WipeController : MonoBehaviour
 {
@@ -58,7 +56,6 @@ public class WipeController : MonoBehaviour
     public void LoadScene()
     {
         SceneManager.LoadScene(sceneName);
-        GameApp.Interface.SendEvent(new SceneChangeEvent { IsCG = false });
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
