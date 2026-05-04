@@ -86,12 +86,15 @@ namespace SkateGame
         public MMF_Player powerGrindEffectPlayer;
         public MMF_Player landEffectPlayer;
         public MMF_Player pushEffectPlayer;
-        public MMF_Player highSpeedEffect;
+        public MMF_Player highSpeedDustEffect;
+        public MMF_Player highSpeedWindEffect;
 
         private bool isHighSpeed = false;
+        private bool isDustPlaying = false;
 
         [Header("粒子特效容器")]
         public Transform particleEffectContainer; // 粒子特效容器
+        public GameObject highSpeedPPrefab;
 
         [Header("死亡路径追踪")]
         [Tooltip("用于显示死亡路径的点预制体，留空则不显示轨迹")]
@@ -126,6 +129,9 @@ namespace SkateGame
             {
                 aimLine.enabled = false;
             }
+
+            if (highSpeedPPrefab != null)
+                Instantiate(highSpeedPPrefab, transform.position, Quaternion.identity, transform.parent);
 
             // 初始化分层状态机
             stateMachine = new LayeredStateMachine();
@@ -437,14 +443,30 @@ namespace SkateGame
 
         private void UpdateHighSpeedEffect()
         {
-            if (highSpeedEffect == null) return;
             var cfg = playerModel.Config.Value;
             float speed = Mathf.Abs(playerModel.PushSpeed.Value);
             bool gaining = cfg.scoringSpeedGainRate * speed > cfg.scoringDecayPerSecond;
-            if (gaining == isHighSpeed) return;
-            isHighSpeed = gaining;
-            if (gaining) highSpeedEffect.PlayFeedbacks();
-            else highSpeedEffect.StopFeedbacks();
+
+            if (gaining != isHighSpeed)
+            {
+                isHighSpeed = gaining;
+                if (highSpeedWindEffect != null)
+                {
+                    if (gaining) highSpeedWindEffect.PlayFeedbacks();
+                    else highSpeedWindEffect.StopFeedbacks();
+                }
+            }
+
+            if (highSpeedDustEffect != null)
+            {
+                bool dustShouldPlay = isHighSpeed && playerModel.IsGrounded.Value;
+                if (dustShouldPlay != isDustPlaying)
+                {
+                    isDustPlaying = dustShouldPlay;
+                    if (dustShouldPlay) highSpeedDustEffect.PlayFeedbacks();
+                    else highSpeedDustEffect.StopFeedbacks();
+                }
+            }
         }
 
         #region Player Direction

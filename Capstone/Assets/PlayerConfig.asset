@@ -134,5 +134,5 @@ MonoBehaviour:
   bulletSpeed: 15
   bulletMaxCount: 2
   scoringDecayPerSecond: 5
-  scoringSpeedGainRate: 0.4
+  scoringSpeedGainRate: 0.25
   scoringKillBonus: 20

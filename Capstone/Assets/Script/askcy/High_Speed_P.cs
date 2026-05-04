@@ -9,6 +9,7 @@ public class High_Speed_P : MonoBehaviour
 {
     public bool facingRight = true;
 
+    public MMF_Player highSpeedEffect;
     public ParticleSystem highSpeedP;
     [SerializeField]
     Vector3 worldOffset;
@@ -61,14 +62,14 @@ public class High_Speed_P : MonoBehaviour
         if (pc != null)
         {
             _player = pc.transform;
+            if (highSpeedEffect != null)
+                pc.highSpeedWindEffect = highSpeedEffect;
             return;
         }
 
         GameObject tagged = GameObject.FindGameObjectWithTag("Player");
         if (tagged != null)
-        {
             _player = tagged.transform;
-        }
     }
 
     public void PlayHighSpeedP()
