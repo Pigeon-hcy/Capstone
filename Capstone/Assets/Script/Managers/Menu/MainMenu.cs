@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using QFramework;
 using SkateGame;
@@ -12,6 +10,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
 
     public GameObject levelSelectCanvas;
     public GameObject defaultCanvas;
+    public LevelManager levelManager;
 
     
     [Header("主界面背景：按最近一次通关关卡显示对应 Image。0: 1-1~1-3, 1: 1-4~1-7, 2: 1-8~1-10")]
@@ -54,48 +53,18 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     // FOR JERRY'S AUDIO - UI CLICK
     public void OnClickContinueCurrentLevel()
     {
+        if (levelManager == null) return;
         var levelModel = this.GetModel<ILevelModel>();
         if (levelModel.LevelList == null || levelModel.LevelList.Count == 0) return;
         int idx = Mathf.Clamp(levelModel.CurrentLevelIndex, 0, levelModel.LevelList.Count - 1);
-        string sceneName = levelModel.LevelList[idx].SceneName;
-        if (string.IsNullOrEmpty(sceneName)) return;
-        if (GameStateController.Instance != null)
-            GameStateController.Instance.EnterInGame();
-        ActionKit.Coroutine(() => LoadSceneWithFade(sceneName)).StartGlobal();
+        levelManager.LoadLevel(idx);
     }
 
     // FOR JERRY'S AUDIO - UI CLICK
     public void OnClickStart()
     {
-        if (GameStateController.Instance != null)
-            GameStateController.Instance.EnterInGame();
-        ActionKit.Coroutine(() => LoadSceneWithFade("YLVideoScene 1")).StartGlobal();
-    }
-
-    private static IEnumerator LoadSceneWithFade(string sceneName)
-    {
-        bool blackDone = false;
-        ActionKit.ScreenTransition.FadeIn()
-            .Duration(0.25f)
-            .StartGlobal(() => blackDone = true);
-        yield return new WaitUntil(() => blackDone);
-
-        var op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = false;
-        while (op.progress < 0.9f)
-            yield return null;
-
-        op.allowSceneActivation = true;
-        while (!op.isDone)
-            yield return null;
-        yield return null;
-
-        ActionKit.ScreenTransition.FadeOut()
-            .Duration(0.25f)
-            .StartGlobal();
-
-        // 与 LevelManager.LoadLevelWithFade 一致：进入关卡后通知 GameStateController 等监听方
-        GameApp.Interface.SendEvent(new SceneChangeEvent());
+        if (levelManager == null) return;
+        levelManager.LoadLevel(0);
     }
 
     public void ShowLevelSelectCanvas()
