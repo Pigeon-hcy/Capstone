@@ -86,7 +86,7 @@ namespace SkateGame
             {
 				case GameState.Menu:
                     UseUiInput(true);
-					TimeStop(true);
+					TimeStop(false);
                     SetPlayerUI(false);
 					Debug.Log("Enter Menu");
 					break;
