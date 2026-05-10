@@ -2,88 +2,110 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform))]
 public class UiButtonHover : MonoBehaviour,
     IPointerEnterHandler,
     IPointerExitHandler,
     IPointerMoveHandler
 {
     [Header("Scale")]
-    public float hoverScale = 1.1f;
-    public float scaleSpeed = 10f;
+    [SerializeField] private float hoverScale = 1.1f;
+    [SerializeField] private float scaleSpeed = 12f;
 
     [Header("Tilt")]
-    public float tiltAmount = 10f;
-    public float tiltSmoothSpeed = 8f;
+    [SerializeField] private float tiltAmount = 10f;
+    [SerializeField] private float tiltSmoothSpeed = 10f;
 
     [Header("Outline")]
-    public Color outlineHoverColor = Color.white;
-    public float outlineHoverSize = 8f;
+    [SerializeField] private Color outlineHoverColor = Color.white;
+    [SerializeField] private float outlineHoverSize = 6f;
 
     private RectTransform rectTransform;
+    private Outline outline;
 
     private Vector3 originalScale;
     private Quaternion targetRotation;
 
-    private bool hovering = false;
-    private Vector2 localMousePosition;
+    private float hoverAmount;
+    private bool hovering;
 
-    private Outline outline;
-    private Vector2 originalOutlineSize;
-    private Color originalOutlineColor;
-
-    void Awake()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
 
-        originalScale = rectTransform.localScale;
-        targetRotation = Quaternion.identity;
-
-        // Get or add outline
         outline = GetComponent<Outline>();
 
         if (outline == null)
             outline = gameObject.AddComponent<Outline>();
 
-        originalOutlineSize = outline.effectDistance;
-        originalOutlineColor = outline.effectColor;
+        originalScale = rectTransform.localScale;
 
-        // Start disabled
-        outline.enabled = false;
+        outline.enabled = true;
+
+        Color startColor = outlineHoverColor;
+        startColor.a = 0f;
+
+        outline.effectColor = startColor;
+        outline.effectDistance = Vector2.zero;
+
+        targetRotation = Quaternion.identity;
     }
 
-    void Update()
+    private void Update()
     {
+        float scaleT = 1f - Mathf.Exp(-scaleSpeed * Time.deltaTime);
+        float rotT = 1f - Mathf.Exp(-tiltSmoothSpeed * Time.deltaTime);
+
+        // Hover animation
+        float targetHover = hovering ? 1f : 0f;
+
+        hoverAmount = Mathf.Lerp(
+            hoverAmount,
+            targetHover,
+            scaleT
+        );
+
         // Scale
-        Vector3 targetScale = hovering
-            ? originalScale * hoverScale
-            : originalScale;
+        Vector3 targetScale = Vector3.Lerp(
+            originalScale,
+            originalScale * hoverScale,
+            hoverAmount
+        );
 
         rectTransform.localScale = Vector3.Lerp(
             rectTransform.localScale,
             targetScale,
-            Time.deltaTime * scaleSpeed
+            scaleT
         );
 
         // Rotation
         rectTransform.localRotation = Quaternion.Lerp(
             rectTransform.localRotation,
             targetRotation,
-            Time.deltaTime * tiltSmoothSpeed
+            rotT
+        );
+
+        // Outline fade
+        Color outlineColor = outlineHoverColor;
+        outlineColor.a = hoverAmount;
+
+        outline.effectColor = outlineColor;
+
+        float outlineSize = Mathf.Lerp(
+            0f,
+            outlineHoverSize,
+            hoverAmount
+        );
+
+        outline.effectDistance = new Vector2(
+            outlineSize,
+            outlineSize
         );
     }
-
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         hovering = true;
-
-        // Enable outline
-        outline.enabled = true;
-        outline.effectColor = outlineHoverColor;
-        outline.effectDistance = new Vector2(
-            outlineHoverSize,
-            outlineHoverSize
-        );
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -91,9 +113,6 @@ public class UiButtonHover : MonoBehaviour,
         hovering = false;
 
         targetRotation = Quaternion.identity;
-
-        // Disable outline
-        outline.enabled = false;
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -102,29 +121,45 @@ public class UiButtonHover : MonoBehaviour,
             rectTransform,
             eventData.position,
             eventData.pressEventCamera,
-            out localMousePosition
+            out Vector2 localPos
         );
 
         float width = rectTransform.rect.width;
         float height = rectTransform.rect.height;
 
         float normalizedX = Mathf.Clamp(
-            localMousePosition.x / (width / 2),
+            localPos.x / (width * 0.5f),
             -1f,
             1f
         );
 
         float normalizedY = Mathf.Clamp(
-            localMousePosition.y / (height / 2),
+            localPos.y / (height * 0.5f),
             -1f,
             1f
         );
 
+        // Softer tilt response
+        normalizedX *= 0.7f;
+        normalizedY *= 0.7f;
+
         float rotX = -normalizedY * tiltAmount;
         float rotY = normalizedX * tiltAmount;
 
-        targetRotation = Quaternion.Euler(rotX, rotY, 0);
+        targetRotation = Quaternion.Euler(rotX, rotY, 0f);
     }
 
-   
+    private void OnDisable()
+    {
+        hovering = false;
+
+        hoverAmount = 0f;
+
+        rectTransform.localScale = originalScale;
+        rectTransform.localRotation = Quaternion.identity;
+
+        targetRotation = Quaternion.identity;
+
+        EventSystem.current?.SetSelectedGameObject(null);
+    }
 }
