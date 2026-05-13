@@ -158,6 +158,9 @@ namespace SkateGame
             if (allLevelCanvas != null)
                 allLevelCanvas.gameObject.SetActive(false);
             basicCanvas.SetActive(true);
+            var first = basicCanvas.GetComponentInChildren<Selectable>();
+            if (EventSystem.current != null && first != null)
+                EventSystem.current.SetSelectedGameObject(first.gameObject);
         }
 
        
