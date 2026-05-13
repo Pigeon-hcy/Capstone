@@ -146,6 +146,9 @@ namespace SkateGame
         {
             if (levelSelectCanvas != null)
             {
+
+                AudioManager.Instance.SetMenuOpen();
+
                 levelSelectCanvas.gameObject.SetActive(true);
                 levelSelectCanvas.transform.localScale = Vector3.one;
                 Transform mmfEndFeedback = levelSelectCanvas.transform.Find("MMF_EndFeedback");
@@ -168,6 +171,8 @@ namespace SkateGame
         {
             if (levelSelectCanvas != null)
             {
+                AudioManager.Instance.SetMenuClose();
+
                 levelSelectCanvas.gameObject.SetActive(false);
                 EventSystem.current?.SetSelectedGameObject(null);
                 Debug.Log("LevelCanvas 隐藏");
