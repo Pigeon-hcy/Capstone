@@ -545,6 +545,9 @@ namespace SkateGame
             Vector2 rewardDir = new Vector2(direction, .5f).normalized;
             float rewardForce = direction == 0f ? playerModel.Config.Value.TrickARewardForceVertical : playerModel.Config.Value.TrickARewardForceHorizontal;
             vPhysics = rewardDir * rewardForce;
+            // 清除跳跃保持，防止与杀敌弹跳叠加飞太高
+            pending.Jumping = false;
+            pending.JumpQueued = false;
         }
         private void ApplyGrappleImpulse(Vector2 dir)
         {
