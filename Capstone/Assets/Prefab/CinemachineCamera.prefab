@@ -59,7 +59,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 78.3
+    FieldOfView: 40
     OrthographicSize: 8.87
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -162,8 +162,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   raycastDistance: 50
-  stopCameraDistance: 10
-  playerMovingCameraDistance: 15
+  stopCameraDistance: 20
+  playerMovingCameraDistance: 30
   cameraDistanceChangeSpeed: 5
   speedThreshold: 5
   slowSpeedDuration: 3
