@@ -54,12 +54,18 @@ public class TMPTextRevealBounce : MonoBehaviour, ICanRegisterEvent, IBelongToAr
 
         bool isKeyboard = LastDeviceType == InputDeviceType.KeyboardMouse;
         bool isPS  = LastDeviceType == InputDeviceType.GamepadPS;
+
+        // PS Circle / Square 字形在像素字体里通常缺失，运行时探测字体（含 fallback）是否支持，缺则降级为 ASCII。
+        var probeFont = (text != null) ? text.font : GetComponent<TMP_Text>()?.font;
+        string psCircle = (probeFont != null && probeFont.HasCharacter('○', searchFallbacks: true)) ? "○" : "O";
+        string psSquare = (probeFont != null && probeFont.HasCharacter('□', searchFallbacks: true)) ? "□" : "[]";
+
         // use Xbox labels except on PS controller
-        string jumpKey = isKeyboard ? "Space"  : (isPS ? "X"  : "A");
-        string dashKey = isKeyboard ? "K"      : (isPS ? "○"  : "B");
-        string pushKey = isKeyboard ? "Shift"  : (isPS ? "R2" : "RT");
-        string hookKey = isKeyboard ? "J"      : (isPS ? "□"  : "X");
-        string slamKey = isKeyboard ? "S"      : (isPS ? "L2" : "LT");
+        string jumpKey = isKeyboard ? "Space"  : (isPS ? "X"      : "A");
+        string dashKey = isKeyboard ? "K"      : (isPS ? psCircle : "B");
+        string pushKey = isKeyboard ? "Shift"  : (isPS ? "R2"     : "RT");
+        string hookKey = isKeyboard ? "J"      : (isPS ? psSquare : "X");
+        string slamKey = isKeyboard ? "S"      : (isPS ? "L2"     : "LT");
         string moveKey = isKeyboard ? "AD"     : (isPS ? "L-Stick" : "L-Stick");
 
         string newText = content
