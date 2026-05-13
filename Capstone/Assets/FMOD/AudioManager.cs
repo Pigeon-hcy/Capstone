@@ -806,7 +806,7 @@ public class AudioManager : MonoBehaviour
     public void fmodFanModify(float distancce)
     {
         fanEventInstance.setParameterByID(fanParameter, distancce);
-        Debug.Log(fanParameter);
+        //Debug.Log(fanParameter);
     }
 
     //UI Click

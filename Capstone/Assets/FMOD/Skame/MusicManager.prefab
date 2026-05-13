@@ -60,11 +60,11 @@ MonoBehaviour:
     Path: event:/MX_MusicMainMenu
   levelMusic1Event:
     Guid:
-      Data1: 1090214265
-      Data2: 1147090406
-      Data3: 1774827666
-      Data4: 676086429
-    Path: event:/MX_Music1-2
+      Data1: 1418845685
+      Data2: 1133944672
+      Data3: -1350418812
+      Data4: 1222208822
+    Path: event:/MX_Music1
   levelMusic2Event:
     Guid:
       Data1: 1090214265
