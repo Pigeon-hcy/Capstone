@@ -955,6 +955,36 @@ public class AudioManager : MonoBehaviour
         fmodPlayClick();
     }
 
+    public void SetMenuOpen()
+    {
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Menu_On", 0);
+
+        if (movingEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            movingEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                movingEventInstance.setPaused(true);
+            }
+        }
+    }
+
+    public void SetMenuClose()
+    {
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Menu_On", 1);
+
+        if (movingEventInstance.isValid())
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            movingEventInstance.getPlaybackState(out playbackState);
+            if (playbackState == FMOD.Studio.PLAYBACK_STATE.PLAYING)
+            {
+                movingEventInstance.setPaused(false);
+            }
+        }
+    }
+
     ///// <summary>
     ///// 加载保存的音量设置
     ///// </summary>

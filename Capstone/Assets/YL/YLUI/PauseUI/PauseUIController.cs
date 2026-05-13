@@ -84,6 +84,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             animator.Play("anim_PauseStart");
             //Pause
             _playPauseMenuOpen();
+            AudioManager.Instance.SetMenuOpen();
         }
         else if (e.OldState == GameState.Pause)
         {
@@ -92,6 +93,7 @@ public class PauseUIController : MonoBehaviour, IBelongToArchitecture, ICanRegis
             animator.Play("anim_PauseEnd");
             //Continue
             _playPauseMenuClose();
+            AudioManager.Instance.SetMenuClose();
         }
     }
 

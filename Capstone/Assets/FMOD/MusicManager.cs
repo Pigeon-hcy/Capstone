@@ -213,6 +213,7 @@ public class MusicManager : MonoBehaviour
     //MainMusic
     public void fmodPlayMainM()
     {
+        AudioManager.Instance.SetMenuClose();
         if (mainMusicEventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -240,6 +241,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic1
     public void fmodPlayLM1()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic1EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -271,6 +273,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic2
     public void fmodPlayLM2()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic2EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -298,6 +301,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic3
     public void fmodPlayLM3()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic3EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -325,6 +329,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic4
     public void fmodPlayLM4()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic4EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -352,6 +357,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic7
     public void fmodPlayLM7()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic7EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -383,6 +389,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic8
     public void fmodPlayLM8()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic8EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -410,6 +417,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic9
     public void fmodPlayLM9()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic9EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -437,6 +445,7 @@ public class MusicManager : MonoBehaviour
     //LevelMusic10
     public void fmodPlayLM10()
     {
+        AudioManager.Instance.SetMenuClose();
         if (levelMusic10EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -468,6 +477,7 @@ public class MusicManager : MonoBehaviour
     //BossMusic1
     public void fmodPlayBM1()
     {
+        AudioManager.Instance.SetMenuClose();
         if (bossMusic1EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -495,6 +505,7 @@ public class MusicManager : MonoBehaviour
     //VD1
     public void fmodPlayVD1()
     {
+        AudioManager.Instance.SetMenuClose();
         if (VD1EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -527,6 +538,7 @@ public class MusicManager : MonoBehaviour
     //VD2
     public void fmodPlayVD2()
     {
+        AudioManager.Instance.SetMenuClose();
         if (VD2EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
@@ -559,6 +571,7 @@ public class MusicManager : MonoBehaviour
     //VD3
     public void fmodPlayVD3()
     {
+        AudioManager.Instance.SetMenuClose();
         if (VD3EventInstance.isValid())
         {
             FMOD.Studio.PLAYBACK_STATE playbackState;
