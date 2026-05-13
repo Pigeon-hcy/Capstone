@@ -2,6 +2,7 @@ using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
@@ -19,6 +20,8 @@ public class CutscenePlayer : MonoBehaviour
 
     [SerializeField] WipeController wipeController;
 
+    InputSystem_Actions inputActions;
+
     #region FMOD
 
     //Test
@@ -32,6 +35,9 @@ public class CutscenePlayer : MonoBehaviour
         videoPlayer.prepareCompleted += OnPrepared;
         //videoPlayer.loopPointReached += OnVideoEnd;
         videoPlayer.clip = videoClips[videoIndex];
+
+        inputActions = new InputSystem_Actions();
+        inputActions.Player.Enable();
 
         ParseCSV();
 
@@ -110,7 +116,9 @@ public class CutscenePlayer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && skipTimestamps.Count > 0)
+        bool escapePressed = inputActions.Player.Pause.WasPressedThisFrame();
+        bool spacePressed  = inputActions.Player.Jump.WasPressedThisFrame();
+        if (escapePressed && skipTimestamps.Count > 0)
         {
             float endTime = skipTimestamps[skipTimestamps.Count - 1];
             videoPlayer.time = endTime;
@@ -121,7 +129,7 @@ public class CutscenePlayer : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (spacePressed)
         {
             float currentTime = (float)videoPlayer.time;
 
