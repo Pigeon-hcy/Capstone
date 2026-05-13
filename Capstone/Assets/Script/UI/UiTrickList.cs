@@ -70,15 +70,15 @@ namespace SkateGame
             }
         }
 
-        /// <summary>与 PlayerInputs 一致使用新 Input System：本帧按下键盘任意键。</summary>
         private static bool WasAnyKeyPressedThisFrame()
         {
-            var kb = Keyboard.current;
-            if (kb == null) return false;
-            foreach (var key in kb.allKeys)
+            foreach (var device in InputSystem.devices)
             {
-                if (key.wasPressedThisFrame)
-                    return true;
+                foreach (var control in device.allControls)
+                {
+                    if (control is UnityEngine.InputSystem.Controls.ButtonControl btn && btn.wasPressedThisFrame)
+                        return true;
+                }
             }
             return false;
         }
