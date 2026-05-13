@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using SkateGame;
 using QFramework;
 
@@ -30,8 +29,10 @@ public class TrickAState : TrickState
             player.TrickABoostEffect.PlayFeedbacks();
             player.SendEvent<TrickARewardEvent>();
             AttackTriggered = true;
-            // player.stateMachine.SwitchState<NoActionState>(StateLayer.Action);
         }
+        // 命中后再次按跳跃可立即重进 TrickA
+        if (AttackTriggered && inputModel.JumpStart.Value && !playerModel.IsNearFgWall.Value)
+            player.stateMachine.ReenterCurrentState(StateLayer.Action);
     }
 
     protected override void ExitActionState()
