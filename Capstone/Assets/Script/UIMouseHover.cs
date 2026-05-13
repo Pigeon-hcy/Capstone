@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIMouseHover : MonoBehaviour,
-    IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,
+    ISelectHandler, IDeselectHandler
 {
     [Header("立体旋转")]
     [SerializeField] private float rotationRange = 15f;
@@ -137,6 +138,22 @@ public class UIMouseHover : MonoBehaviour,
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovering = false;
+        animTimer = 0f;
+        isAnimating = true;
+        targetRotation = Quaternion.identity;
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (!dimensionsCached) CacheDimensions();
+        isHovering = true;
+        animTimer = 0f;
+        isAnimating = true;
+    }
+
+    public void OnDeselect(BaseEventData eventData)
     {
         isHovering = false;
         animTimer = 0f;

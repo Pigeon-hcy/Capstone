@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using QFramework;
 using SkateGame;
@@ -11,6 +12,9 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     public GameObject levelSelectCanvas;
     public GameObject defaultCanvas;
     public LevelManager levelManager;
+
+    [Header("手柄导航默认选中")]
+    [SerializeField] private GameObject defaultFirstSelected;
 
     
     [Header("主界面背景：按最近一次通关关卡显示对应 Image。0: 1-1~1-3, 1: 1-4~1-7, 2: 1-8~1-10")]
@@ -30,6 +34,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     private void Start()
     {
         ApplyBackgroundByProgress();
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(defaultFirstSelected);
     }
 
     private void ApplyBackgroundByProgress()
@@ -77,6 +82,7 @@ public class MainMenu : MonoBehaviour, IBelongToArchitecture, ICanGetModel, ICan
     {
         levelSelectCanvas.SetActive(false);
         defaultCanvas.SetActive(true);
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(defaultFirstSelected);
     }
     public void QuitGame()
     {

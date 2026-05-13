@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using QFramework;
@@ -145,16 +146,17 @@ namespace SkateGame
             if (allLevelCanvas != null)
             {
                 allLevelCanvas.gameObject.SetActive(true);
+                var first = allLevelCanvas.GetComponentInChildren<Selectable>();
+                if (EventSystem.current != null && first != null)
+                    EventSystem.current.SetSelectedGameObject(first.gameObject);
             }
             RefreshButtonStatesOnShow();
         }
-        
+
         public void HideAllLevelCanvas()
         {
             if (allLevelCanvas != null)
-            {
                 allLevelCanvas.gameObject.SetActive(false);
-            }
             basicCanvas.SetActive(true);
         }
 

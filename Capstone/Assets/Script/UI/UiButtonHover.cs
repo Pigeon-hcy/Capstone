@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class UiButtonHover : MonoBehaviour,
     IPointerEnterHandler,
     IPointerExitHandler,
-    IPointerMoveHandler
+    IPointerMoveHandler,
+    ISelectHandler,
+    IDeselectHandler
 {
     [Header("Scale")]
     [SerializeField] private float hoverScale = 1.1f;
@@ -103,15 +105,19 @@ public class UiButtonHover : MonoBehaviour,
         );
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        hovering = true;
-    }
+    public void OnPointerEnter(PointerEventData eventData) => hovering = true;
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
+        targetRotation = Quaternion.identity;
+    }
 
+    public void OnSelect(BaseEventData eventData) => hovering = true;
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        hovering = false;
         targetRotation = Quaternion.identity;
     }
 
