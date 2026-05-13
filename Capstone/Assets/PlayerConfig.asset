@@ -19,9 +19,9 @@ MonoBehaviour:
   maxPushSpeed: 24
   pushTimeToMaxSpeed: 1
   pushReverseCooldown: 0.5
-  firstPushKickInterval: 0.1
+  firstPushKickInterval: 0
   pushKickInterval: 0.7
-  pushKickSpeedIncrement: 9
+  pushKickSpeedIncrement: 10
   pushMountSpeed: 5
   applyPushKickThreshold: 20
   pushKickDelay: 0.2
@@ -134,5 +134,5 @@ MonoBehaviour:
   bulletSpeed: 15
   bulletMaxCount: 2
   scoringDecayPerSecond: 5
-  scoringSpeedGainRate: 0.25
+  scoringSpeedGainRate: 0.28
   scoringKillBonus: 20
