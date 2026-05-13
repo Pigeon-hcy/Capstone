@@ -55,8 +55,8 @@ public class UiButtonHover : MonoBehaviour,
 
     private void Update()
     {
-        float scaleT = 1f - Mathf.Exp(-scaleSpeed * Time.deltaTime);
-        float rotT = 1f - Mathf.Exp(-tiltSmoothSpeed * Time.deltaTime);
+        float scaleT = 1f - Mathf.Exp(-scaleSpeed * Time.unscaledDeltaTime);
+        float rotT = 1f - Mathf.Exp(-tiltSmoothSpeed * Time.unscaledDeltaTime);
 
         // Hover animation
         float targetHover = hovering ? 1f : 0f;
